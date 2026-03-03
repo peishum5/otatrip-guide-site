@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Message Sent — OTA Trip Guide" noIndex={true}>
+  <div class="max-w-2xl mx-auto px-4 py-24 text-center">
+    <div class="text-6xl mb-6">🍶</div>
+    <h1 class="text-3xl font-bold text-navy-dark mb-4">Message Received!</h1>
+    <p class="text-gray-600 text-lg mb-8">
+      Thank you for reaching out. We'll reply to your inquiry within 24 hours.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="/" class="bg-navy-dark hover:bg-navy-light text-white font-bold px-8 py-3 rounded-lg transition-colors">
+        Back to Home
+      </a>
+      <a href="/blog" class="border border-gray-300 text-navy-dark hover:border-gold hover:text-gold font-medium px-8 py-3 rounded-lg transition-colors">
+        Browse Travel Guides
+      </a>
+    </div>
+  </div>
+</BaseLayout>

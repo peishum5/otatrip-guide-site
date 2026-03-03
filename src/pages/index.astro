@@ -1,0 +1,216 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GroupCTA from '../components/GroupCTA.astro';
+import { getCollection } from 'astro:content';
+
+const blogPosts = await getCollection('blog');
+const latestPosts = blogPosts.slice(0, 3);
+
+const stats = [
+  { number: '200+', label: 'Guests Guided' },
+  { number: '4.9★', label: 'Average Rating' },
+  { number: '8', label: 'Max Group Size' },
+  { number: '2018', label: 'Year Founded' },
+];
+---
+
+<BaseLayout
+  title="OTA Trip Guide — Kyoto Local Tours & Travel Guides"
+  description="Explore Kyoto with local expert guides. Book the Gion Sake Walking Tour or browse our practical travel guides for first-time visitors."
+>
+  <!-- Hero Section -->
+  <section class="relative bg-navy-dark text-white overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-navy-dark via-navy to-navy-light opacity-90"></div>
+
+    <div class="relative max-w-6xl mx-auto px-4 py-24 md:py-32">
+      <div class="max-w-2xl">
+        <div class="text-gold text-xs font-bold uppercase tracking-widest mb-4">Kyoto Local Experts</div>
+        <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-6">
+          Discover Kyoto<br />
+          <span class="text-gold">Like a Local</span>
+        </h1>
+        <p class="text-gray-300 text-lg md:text-xl leading-relaxed mb-8 max-w-xl">
+          Intimate evening walks through Gion's lantern-lit alleys. Premium sake tastings at bars only locals know.
+          Small groups, big experiences.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a
+            href="/tours/gion-sake-walk"
+            class="bg-gold hover:bg-gold-light text-navy-dark font-bold px-8 py-4 rounded-lg transition-colors text-center"
+          >
+            See Gion Sake Walk
+          </a>
+          <a
+            href="/blog"
+            class="border border-white/40 text-white hover:border-gold hover:text-gold font-medium px-8 py-4 rounded-lg transition-colors text-center"
+          >
+            Browse Travel Guides
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Bar -->
+  <section class="bg-navy text-white">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        {stats.map(stat => (
+          <div>
+            <div class="text-gold text-3xl font-bold">{stat.number}</div>
+            <div class="text-gray-400 text-sm mt-1">{stat.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Tour Highlight Section -->
+  <section class="max-w-6xl mx-auto px-4 py-16">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <div class="text-gold text-xs font-bold uppercase tracking-widest mb-3">Signature Experience</div>
+        <h2 class="text-3xl md:text-4xl font-bold text-navy-dark mb-4">Gion Sake Walking Tour</h2>
+        <p class="text-gray-600 leading-relaxed mb-6">
+          Kyoto's most atmospheric neighborhood after dark. Three local sake bars, stone-paved alleys,
+          lantern light, and stories from a guide who's lived it for years.
+        </p>
+        <ul class="space-y-3 mb-8">
+          {[
+            '3 premium sake tastings at curated local bars',
+            "Walk Hanamikoji & Shinbashi — Gion's most iconic streets",
+            'Max 8 guests for an intimate experience',
+            'Light snacks included',
+          ].map(item => (
+            <li class="flex items-start gap-3 text-gray-700">
+              <span class="text-gold mt-0.5 shrink-0">✓</span>
+              {item}
+            </li>
+          ))}
+        </ul>
+        <div class="flex gap-4">
+          <a href="/tours/gion-sake-walk" class="bg-navy-dark hover:bg-navy-light text-white font-bold px-6 py-3 rounded-lg transition-colors text-sm">
+            Tour Details &amp; Book
+          </a>
+          <a href="/groups" class="text-navy-dark hover:text-gold font-medium px-6 py-3 rounded-lg border border-gray-300 hover:border-gold transition-colors text-sm">
+            Group Inquiries
+          </a>
+        </div>
+      </div>
+
+      <!-- Tour card visual -->
+      <div class="bg-gradient-to-br from-navy-dark to-navy rounded-2xl p-8 text-white shadow-2xl">
+        <div class="text-gold text-xs font-bold uppercase tracking-widest mb-4">Evening Tour</div>
+        <h3 class="text-2xl font-bold mb-2">Gion Sake Walk</h3>
+        <p class="text-gray-300 text-sm mb-6">3 hours &middot; Up to 8 guests &middot; Gion District</p>
+        <div class="space-y-3 text-sm">
+          <div class="flex justify-between border-b border-white/10 pb-2">
+            <span class="text-gray-400">Meeting point</span>
+            <span>Gion-Shijo St. Exit 6</span>
+          </div>
+          <div class="flex justify-between border-b border-white/10 pb-2">
+            <span class="text-gray-400">Start time</span>
+            <span>17:30 or 18:00</span>
+          </div>
+          <div class="flex justify-between border-b border-white/10 pb-2">
+            <span class="text-gray-400">Language</span>
+            <span>English</span>
+          </div>
+          <div class="flex justify-between border-b border-white/10 pb-2">
+            <span class="text-gray-400">Includes</span>
+            <span>3 sake tastings + snacks</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Rating</span>
+            <span class="text-gold">4.9/5</span>
+          </div>
+        </div>
+        <a href="/tours/gion-sake-walk#booking" class="block mt-8 bg-gold hover:bg-gold-light text-navy-dark font-bold py-3 rounded-lg text-center transition-colors text-sm">
+          Check Availability
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- B2B Group CTA -->
+  <section class="max-w-6xl mx-auto px-4">
+    <GroupCTA />
+  </section>
+
+  <!-- Latest Blog Posts -->
+  <section class="max-w-6xl mx-auto px-4 py-16">
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <div class="text-gold text-xs font-bold uppercase tracking-widest mb-1">Travel Guides</div>
+        <h2 class="text-3xl font-bold text-navy-dark">Plan Your Kyoto Trip</h2>
+      </div>
+      <a href="/blog" class="text-navy-dark hover:text-gold font-medium text-sm transition-colors hidden md:block">
+        All guides &rarr;
+      </a>
+    </div>
+
+    {latestPosts.length > 0 ? (
+      <div class="grid md:grid-cols-3 gap-6">
+        {latestPosts.map(post => (
+          <article class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
+            <a href={`/blog/${post.slug}`} class="block">
+              <div class="bg-gradient-to-br from-navy to-navy-light h-40 flex items-end p-4">
+                <span class="text-gold text-xs font-bold uppercase tracking-wider">{post.data.category || 'Kyoto Guide'}</span>
+              </div>
+              <div class="p-5">
+                <h3 class="font-bold text-navy-dark group-hover:text-gold transition-colors leading-snug mb-2 line-clamp-2">
+                  {post.data.title}
+                </h3>
+                <p class="text-gray-500 text-sm leading-relaxed line-clamp-3">{post.data.description}</p>
+                <div class="mt-4 text-gold text-sm font-medium">Read guide &rarr;</div>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <p class="text-gray-500 text-center py-12">Blog posts coming soon.</p>
+    )}
+
+    <div class="text-center mt-8 md:hidden">
+      <a href="/blog" class="text-navy-dark hover:text-gold font-medium text-sm transition-colors">
+        View all guides &rarr;
+      </a>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="bg-gray-50 py-16">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="text-center mb-12">
+        <div class="text-gold text-xs font-bold uppercase tracking-widest mb-2">Why OTA Trip Guide</div>
+        <h2 class="text-3xl font-bold text-navy-dark">Kyoto from the Inside</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8">
+        {[
+          {
+            icon: '🏮',
+            title: 'Local Expertise',
+            desc: "Our guides have lived in Gion for years. We take you to bars, alleys, and viewpoints that aren't in any guidebook.",
+          },
+          {
+            icon: '🍶',
+            title: 'Authentic Tastings',
+            desc: 'No tourist-trap sake. We pour what Kyoto residents actually drink, explained in plain English.',
+          },
+          {
+            icon: '👥',
+            title: 'Small Groups',
+            desc: 'Max 8 guests means real conversation, flexible pacing, and a genuine experience — not a crowd.',
+          },
+        ].map(item => (
+          <div class="text-center">
+            <div class="text-4xl mb-4">{item.icon}</div>
+            <h3 class="text-lg font-bold text-navy-dark mb-2">{item.title}</h3>
+            <p class="text-gray-600 text-sm leading-relaxed">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

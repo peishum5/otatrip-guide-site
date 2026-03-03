@@ -1,0 +1,37 @@
+---
+// Bokun booking widget component
+// Replace BOKUN_WIDGET_ID with the actual widget ID from Bokun dashboard
+const BOKUN_WIDGET_ID = 'BOKUN_WIDGET_ID_PLACEHOLDER';
+---
+
+<div class="booking-widget my-8 rounded-xl overflow-hidden shadow-lg border border-gray-200">
+  <div class="bg-navy-dark text-white px-6 py-4">
+    <h3 class="text-lg font-bold text-gold">Book Your Spot</h3>
+    <p class="text-gray-300 text-sm mt-1">Secure your place on the Gion Sake Walking Tour</p>
+  </div>
+
+  <!-- Bokun Widget Container -->
+  <!-- Replace the placeholder below with your actual Bokun embed code -->
+  <div id="bokun-widget" class="min-h-[400px] bg-gray-50 flex items-center justify-center p-8">
+    <div class="text-center text-gray-500">
+      <p class="text-lg font-medium mb-2">Booking Widget</p>
+      <p class="text-sm">Add your Bokun widget embed code here.</p>
+      <p class="text-sm mt-4">
+        <a href="https://bokun.io" target="_blank" rel="noopener noreferrer" class="text-navy-light hover:underline">
+          Get your widget code from Bokun dashboard →
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <!--
+    TO INTEGRATE BOKUN:
+    1. Log in to your Bokun dashboard
+    2. Go to Marketplace → Booking Engine → Widgets
+    3. Copy the embed script and paste it above, replacing the placeholder div
+
+    Example format:
+    <script src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=YOUR_UUID" defer></script>
+    <div class="bokunWidget" data-src="https://widgets.bokun.io/online-sales/YOUR_UUID/experience/YOUR_ACTIVITY_ID?adultCount=2"></div>
+  -->
+</div>
