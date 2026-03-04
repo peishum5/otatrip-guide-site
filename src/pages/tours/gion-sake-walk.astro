@@ -42,46 +42,65 @@ const faqs = [
   },
   {
     q: 'Can I book for a private group?',
-    a: 'Yes. Private bookings are available for groups of 2–8 (and larger for corporate or agency bookings). Contact us via the Groups page.',
+    a: 'Yes. Private bookings are available for groups of 2–8. Contact us via the Groups page.',
   },
+];
+
+const photos = [
+  { src: '/images/tours/tour-yasaka-gate.jpg',   alt: 'Group at Yasaka Shrine gate at night' },
+  { src: '/images/tours/tour-sake-pour.jpg',      alt: 'Sake being poured at a local bar' },
+  { src: '/images/tours/tour-gion-walk.jpg',      alt: 'Walking through Gion under lantern light' },
+  { src: '/images/tours/tour-sake-toast.jpg',     alt: 'Guests toasting with sake shots' },
+  { src: '/images/tours/tour-alley-group.jpg',    alt: 'Guide explaining in a Gion alley' },
+  { src: '/images/tours/tour-guide.jpg',          alt: 'Local guide pointing out Kyoto landmarks' },
+  { src: '/images/tours/tour-shrine-stone.jpg',   alt: 'Guest at Yasaka Shrine stone tunnel' },
+  { src: '/images/tours/tour-night-city.jpg',     alt: 'Group walking through Kyoto at night' },
+  { src: '/images/tours/tour-kiyomizu-night.jpg', alt: 'Kiyomizu-dera pagoda at night' },
 ];
 ---
 
 <BaseLayout
-  title="Gion Sake Walking Tour — Kyoto Evening Experience | OTA Trip Guide"
-  description="An intimate 3-hour evening walk through Gion's lantern-lit alleys with sake tastings at 3 local bars. Small groups of max 8 guests. Kyoto local expert guides."
+  title="Gion Sake Walking Tour — Kyoto Evening Experience | OTAtrip Guide"
+  description="An intimate 3-hour evening walk through Gion's lantern-lit alleys with sake tastings at 3 local bars. Small groups of max 8 guests. Rated 4.9/5."
   canonical="/tours/gion-sake-walk"
+  ogImage="/images/tours/tour-yasaka-gate.jpg"
 >
   <Fragment slot="head">
     <script is:inline type="text/javascript" src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=f23bdb2c-1b09-450d-bc03-a0a0b23700e9" async></script>
   </Fragment>
 
   <!-- Hero -->
-  <section class="bg-navy-dark text-white py-16 md:py-24">
-    <div class="max-w-4xl mx-auto px-4">
-      <div class="text-gold text-xs font-bold uppercase tracking-widest mb-4">Evening Tour &middot; Gion District</div>
-      <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6">
+  <section class="relative bg-nes-black overflow-hidden">
+    <img
+      src="/images/tours/tour-yasaka-gate.jpg"
+      alt="Group at Yasaka Shrine gate"
+      class="absolute inset-0 w-full h-full object-cover opacity-60"
+      loading="eager"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-nes-black via-nes-black/60 to-transparent"></div>
+    <div class="relative z-10 max-w-4xl mx-auto px-4 py-24 md:py-32">
+      <p class="font-pixel text-[0.5rem] text-nes-amber mb-4 rpg-prefix">EVENING TOUR · GION DISTRICT</p>
+      <h1 class="font-sans text-3xl md:text-4xl font-bold text-nes-white leading-tight mb-4">
         Gion Sake Walking Tour
       </h1>
-      <p class="text-gray-300 text-xl leading-relaxed mb-8 max-w-2xl">
+      <p class="font-sans text-gray-300 text-base leading-relaxed mb-8 max-w-xl">
         Walk the stone-paved alleys of Kyoto's most iconic neighborhood after dark.
         Three local sake bars. Lantern light. Stories from a guide who calls Gion home.
       </p>
-
-      <!-- Quick facts -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-navy/60 rounded-xl p-6">
+      <div class="flex flex-wrap gap-6 font-sans text-sm mb-8">
         {[
           { label: 'Duration', value: '3 hours' },
-          { label: 'Group size', value: 'Max 8 guests' },
+          { label: 'Group size', value: 'Max 8' },
           { label: 'Language', value: 'English' },
-          { label: 'Rating', value: '4.9 / 5' },
+          { label: 'Rating', value: '★ 4.9 / 5' },
         ].map(item => (
-          <div class="text-center">
-            <div class="text-gold font-bold text-lg">{item.value}</div>
-            <div class="text-gray-400 text-xs mt-0.5">{item.label}</div>
+          <div>
+            <div class="text-nes-amber font-bold">{item.value}</div>
+            <div class="text-gray-500 text-xs">{item.label}</div>
           </div>
         ))}
       </div>
+      <a href="#booking" class="nes-btn nes-btn-gold">BOOK YOUR SPOT</a>
     </div>
   </section>
 
@@ -89,68 +108,97 @@ const faqs = [
 
     <!-- Highlights -->
     <section class="mb-12">
-      <h2 class="text-2xl font-bold text-navy-dark mb-6">What's Included</h2>
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-pixel text-[0.5rem] text-nes-amber">WHAT'S INCLUDED</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
+      </div>
       <div class="grid md:grid-cols-2 gap-3">
         {highlights.map(item => (
-          <div class="flex items-start gap-3 bg-gray-50 rounded-lg px-4 py-3">
-            <span class="text-gold shrink-0 mt-0.5">✓</span>
-            <span class="text-gray-700 text-sm">{item}</span>
+          <div class="flex items-start gap-3 bg-gray-900 border border-gray-800 px-4 py-3">
+            <span class="text-nes-green shrink-0 font-sans text-sm">[OK]</span>
+            <span class="font-sans text-gray-300 text-sm leading-relaxed">{item}</span>
           </div>
         ))}
       </div>
     </section>
 
-    <!-- Tour timeline -->
+    <!-- Photo gallery -->
     <section class="mb-12">
-      <h2 class="text-2xl font-bold text-navy-dark mb-6">Tour Timeline</h2>
-      <div class="relative">
-        <div class="absolute left-16 top-0 bottom-0 w-px bg-gray-200"></div>
-        <div class="space-y-6">
-          {timeline.map(item => (
-            <div class="flex items-start gap-6">
-              <div class="w-14 shrink-0 text-right">
-                <span class="text-gold font-bold text-sm">{item.time}</span>
-              </div>
-              <div class="relative flex items-start gap-4 pb-2">
-                <div class="w-3 h-3 rounded-full bg-gold shrink-0 mt-1 z-10"></div>
-                <p class="text-gray-700 text-sm leading-relaxed">{item.desc}</p>
-              </div>
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-pixel text-[0.5rem] text-nes-amber">TOUR PHOTOS</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
+      </div>
+      <div class="columns-2 md:columns-3 gap-2 space-y-2">
+        {photos.map(photo => (
+          <div class="break-inside-avoid overflow-hidden border border-gray-800">
+            <img
+              src={photo.src}
+              alt={photo.alt}
+              class="w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-pixel text-[0.5rem] text-nes-amber">TOUR TIMELINE</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
+      </div>
+      <div class="space-y-5">
+        {timeline.map(item => (
+          <div class="flex items-start gap-5">
+            <span class="font-pixel text-[0.5rem] text-nes-cyan shrink-0 w-12 text-right pt-1">{item.time}</span>
+            <div class="flex-1 border-l border-gray-700 pl-5 pb-3">
+              <p class="font-sans text-sm text-gray-300 leading-relaxed">{item.desc}</p>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </section>
 
     <!-- Meeting point -->
-    <section class="mb-12 bg-navy-dark text-white rounded-xl p-6">
-      <h2 class="text-xl font-bold mb-4 text-gold">Meeting Point</h2>
-      <div class="grid md:grid-cols-2 gap-6">
-        <div>
-          <p class="text-gray-300 text-sm leading-relaxed mb-3">
-            <strong class="text-white">Gion-Shijo Station, Exit 6</strong><br />
-            Keihan Line, Gion-Shijo Station<br />
-            Gion-cho, Higashiyama-ku, Kyoto
-          </p>
-          <p class="text-gray-400 text-xs">
-            Look for your guide holding a small OTA Trip Guide sign near the exit. Please arrive 5 minutes early.
-          </p>
-        </div>
-        <div class="bg-navy rounded-lg p-4 text-sm">
-          <div class="font-medium text-gold mb-3">Practical Info</div>
-          <div class="space-y-2 text-gray-300">
-            <div class="flex justify-between"><span>Start time</span><span>17:30</span></div>
-            <div class="flex justify-between"><span>End time</span><span>~20:30</span></div>
-            <div class="flex justify-between"><span>Dress code</span><span>Casual (comfortable shoes)</span></div>
-            <div class="flex justify-between"><span>Min. age</span><span>18+ (alcohol tour)</span></div>
+    <section class="mb-12">
+      <div class="dialogue-box">
+        <p class="font-pixel text-[0.5rem] text-nes-cyan mb-4">// MEETING POINT</p>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <p class="font-sans text-nes-white font-semibold text-sm mb-1">Gion-Shijo Station, Exit 6</p>
+            <p class="font-sans text-gray-400 text-xs leading-relaxed">
+              Keihan Line, Gion-Shijo Station<br />
+              Gion-cho, Higashiyama-ku, Kyoto
+            </p>
+            <p class="font-sans text-gray-600 text-xs mt-3">
+              Look for your guide holding a small OTAtrip Guide sign. Please arrive 5 minutes early.
+            </p>
+          </div>
+          <div class="space-y-2 font-sans text-xs">
+            {[
+              { k: 'Start time', v: '17:30' },
+              { k: 'End time', v: '~20:30' },
+              { k: 'Dress code', v: 'Casual (comfortable shoes)' },
+              { k: 'Min. age', v: '18+ (alcohol tour)' },
+            ].map(row => (
+              <div class="flex justify-between border-b border-gray-800 pb-2">
+                <span class="text-gray-500">{row.k}</span>
+                <span class="text-nes-white">{row.v}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Booking Widget -->
+    <!-- Booking -->
     <section id="booking" class="mb-12">
-      <h2 class="text-2xl font-bold text-navy-dark mb-2">Book Your Spot</h2>
-      <p class="text-gray-500 text-sm mb-6">Tours fill quickly, especially on weekends. Secure your place below.</p>
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-pixel text-[0.5rem] text-nes-amber">BOOK YOUR SPOT</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
+      </div>
+      <p class="font-sans text-gray-500 text-sm mb-6">Tours fill quickly, especially on weekends.</p>
       <BookingWidget widgetPath="experience-calendar/1115233" />
     </section>
 
@@ -162,15 +210,18 @@ const faqs = [
 
     <!-- FAQ -->
     <section class="mb-12">
-      <h2 class="text-2xl font-bold text-navy-dark mb-6">Frequently Asked Questions</h2>
-      <div class="space-y-4">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-pixel text-[0.5rem] text-nes-amber">FAQ</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
+      </div>
+      <div class="space-y-3">
         {faqs.map(faq => (
-          <details class="border border-gray-200 rounded-lg overflow-hidden group">
-            <summary class="flex items-center justify-between px-6 py-4 cursor-pointer font-medium text-navy-dark hover:text-gold transition-colors">
+          <details class="border border-gray-800 bg-gray-900 group">
+            <summary class="flex items-center justify-between px-5 py-4 cursor-pointer font-sans text-sm font-medium text-nes-white hover:text-nes-amber transition-colors">
               {faq.q}
-              <span class="ml-4 text-gray-400 group-open:rotate-180 transition-transform shrink-0">&#9660;</span>
+              <span class="ml-4 text-gray-600 shrink-0 group-open:rotate-180 transition-transform">▼</span>
             </summary>
-            <div class="px-6 pb-5 text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-4">
+            <div class="px-5 pb-4 font-sans text-sm text-gray-400 leading-relaxed border-t border-gray-800 pt-4">
               {faq.a}
             </div>
           </details>
@@ -178,27 +229,27 @@ const faqs = [
       </div>
     </section>
 
-    <!-- Schema JSON-LD -->
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "TouristAttraction",
-      "name": "Gion Sake Walking Tour",
-      "description": "An intimate 3-hour evening walking tour through Gion with sake tastings at 3 local bars. Small groups of max 8 guests.",
-      "url": "https://otatrip-guide.com/tours/gion-sake-walk",
-      "provider": {
-        "@type": "TouristInformationCenter",
-        "name": "OTA Trip Guide",
-        "url": "https://otatrip-guide.com"
-      },
-      "offers": {
-        "@type": "Offer",
-        "availability": "https://schema.org/InStock"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "reviewCount": "200"
-      }
-    })} />
   </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "TouristAttraction",
+    "name": "Gion Sake Walking Tour",
+    "description": "An intimate 3-hour evening walking tour through Gion with sake tastings at 3 local bars. Small groups of max 8 guests.",
+    "url": "https://otatrip-guide.com/tours/gion-sake-walk",
+    "provider": {
+      "@type": "TouristInformationCenter",
+      "name": "OTAtrip Guide",
+      "url": "https://otatrip-guide.com"
+    },
+    "offers": {
+      "@type": "Offer",
+      "availability": "https://schema.org/InStock"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "200"
+    }
+  })} />
 </BaseLayout>
