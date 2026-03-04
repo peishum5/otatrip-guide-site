@@ -4,7 +4,6 @@ import { getCollection } from 'astro:content';
 
 const allPosts = await getCollection('blog');
 
-// Group by category folder (plan, itineraries, etc.)
 const categories = {
   'Planning Basics': allPosts.filter(p => p.slug.startsWith('plan/')),
   'Itineraries': allPosts.filter(p => p.slug.startsWith('itineraries/')),
@@ -12,15 +11,15 @@ const categories = {
 ---
 
 <BaseLayout
-  title="Kyoto Travel Guides — OTA Trip Guide Blog"
+  title="Kyoto Travel Guides — OTAtrip Guide Blog"
   description="Practical travel guides for first-time visitors to Kyoto. Planning basics, itineraries, neighborhoods, food, and more — written by local experts."
 >
   <!-- Header -->
-  <section class="bg-navy-dark text-white py-16">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <div class="text-gold text-xs font-bold uppercase tracking-widest mb-3">Local Knowledge</div>
-      <h1 class="text-4xl md:text-5xl font-bold mb-4">Kyoto Travel Guides</h1>
-      <p class="text-gray-300 text-lg max-w-2xl mx-auto">
+  <section class="scanlines bg-nes-black py-16 text-center">
+    <div class="relative z-10 max-w-4xl mx-auto px-4">
+      <p class="font-pixel text-[0.5rem] text-nes-amber mb-4 rpg-prefix">LOCAL KNOWLEDGE</p>
+      <h1 class="font-pixel text-nes-white mb-4" style="font-size: clamp(1rem, 4vw, 2rem);">KYOTO TRAVEL GUIDES</h1>
+      <p class="font-sans text-gray-400 text-sm max-w-2xl mx-auto">
         Practical, firsthand guides from local experts who know Kyoto's streets, seasons, and secrets.
       </p>
     </div>
@@ -30,22 +29,22 @@ const categories = {
     {Object.entries(categories).map(([category, posts]) => posts.length > 0 && (
       <section class="mb-14">
         <div class="flex items-center gap-4 mb-6">
-          <h2 class="text-2xl font-bold text-navy-dark">{category}</h2>
-          <div class="flex-1 border-t border-gray-200"></div>
-          <span class="text-gray-400 text-sm">{posts.length} guides</span>
+          <h2 class="font-pixel text-[0.55rem] text-nes-amber">{category.toUpperCase()}</h2>
+          <div class="flex-1 border-t border-gray-800"></div>
+          <span class="font-sans text-xs text-gray-600">{posts.length} guides</span>
         </div>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {posts.map(post => (
-            <article class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
+            <article class="border-2 border-gray-700 hover:border-nes-amber transition-colors group bg-nes-black">
               <a href={`/blog/${post.slug}`} class="block p-6">
-                <div class="text-gold text-xs font-bold uppercase tracking-wider mb-2">{category}</div>
-                <h3 class="font-bold text-navy-dark group-hover:text-gold transition-colors leading-snug mb-3 text-lg">
+                <p class="font-sans text-xs text-nes-cyan font-medium mb-2">{category}</p>
+                <h3 class="font-sans font-bold text-nes-white group-hover:text-nes-amber transition-colors leading-snug mb-3 text-base">
                   {post.data.title}
                 </h3>
-                <p class="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-4">{post.data.description}</p>
-                <div class="flex items-center justify-between text-xs text-gray-400">
-                  <span>{post.data.author || 'Local Guide'}</span>
-                  <span class="text-gold font-medium">Read &rarr;</span>
+                <p class="font-sans text-gray-500 text-sm leading-relaxed line-clamp-3 mb-4">{post.data.description}</p>
+                <div class="flex items-center justify-between text-xs">
+                  <span class="font-sans text-gray-600">{post.data.author || 'Local Guide'}</span>
+                  <span class="font-sans text-nes-cyan font-medium">Read &rarr;</span>
                 </div>
               </a>
             </article>
@@ -54,22 +53,21 @@ const categories = {
       </section>
     ))}
 
-    <!-- All posts section (catch-all) -->
     {allPosts.filter(p => !p.slug.startsWith('plan/') && !p.slug.startsWith('itineraries/')).length > 0 && (
       <section class="mb-14">
         <div class="flex items-center gap-4 mb-6">
-          <h2 class="text-2xl font-bold text-navy-dark">More Guides</h2>
-          <div class="flex-1 border-t border-gray-200"></div>
+          <h2 class="font-pixel text-[0.55rem] text-nes-amber">MORE GUIDES</h2>
+          <div class="flex-1 border-t border-gray-800"></div>
         </div>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {allPosts.filter(p => !p.slug.startsWith('plan/') && !p.slug.startsWith('itineraries/')).map(post => (
-            <article class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
+            <article class="border-2 border-gray-700 hover:border-nes-amber transition-colors group bg-nes-black">
               <a href={`/blog/${post.slug}`} class="block p-6">
-                <h3 class="font-bold text-navy-dark group-hover:text-gold transition-colors leading-snug mb-3 text-lg">
+                <h3 class="font-sans font-bold text-nes-white group-hover:text-nes-amber transition-colors leading-snug mb-3 text-base">
                   {post.data.title}
                 </h3>
-                <p class="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-4">{post.data.description}</p>
-                <div class="text-gold text-xs font-medium">Read guide &rarr;</div>
+                <p class="font-sans text-gray-500 text-sm leading-relaxed line-clamp-3 mb-4">{post.data.description}</p>
+                <span class="font-sans text-xs text-nes-cyan font-medium">Read guide &rarr;</span>
               </a>
             </article>
           ))}
@@ -78,7 +76,7 @@ const categories = {
     )}
 
     {allPosts.length === 0 && (
-      <p class="text-gray-500 text-center py-20 text-lg">Travel guides coming soon.</p>
+      <p class="font-sans text-gray-500 text-center py-20">Travel guides coming soon.</p>
     )}
   </div>
 </BaseLayout>
