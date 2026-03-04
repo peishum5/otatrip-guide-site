@@ -52,6 +52,9 @@ const fullTitle = title.includes('OTA Trip Guide') ? title : `${title} | OTA Tri
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+  <!-- Page-specific head injections (e.g. Bokun widget script) -->
+  <slot name="head" />
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
