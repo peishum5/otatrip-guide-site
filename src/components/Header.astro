@@ -1,50 +1,63 @@
 ---
 const navLinks = [
-  { href: '/tours/gion-sake-walk', label: 'Gion Sake Walk' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/groups', label: 'Groups & Agencies' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/tours/gion-sake-walk', label: 'GION SAKE WALK' },
+  { href: '/blog', label: 'BLOG' },
+  { href: '/guide', label: 'OUR GUIDE' },
+  { href: '/contact', label: 'CONTACT' },
 ];
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="bg-navy-dark text-white shadow-md sticky top-0 z-50">
-  <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-    <a href="/" class="flex items-center gap-2 group">
-      <span class="text-gold font-serif text-xl font-bold group-hover:text-gold-light transition-colors">OTA Trip Guide</span>
-      <span class="hidden sm:block text-gray-400 text-sm">Kyoto Local Experts</span>
+<header class="bg-nes-black border-b-2 border-nes-amber sticky top-0 z-50">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="/" class="flex flex-col gap-0.5 group">
+      <span class="font-pixel text-[0.65rem] text-nes-amber pixel-flicker leading-tight">OTA TRIP GUIDE</span>
+      <span class="font-pixel text-[0.45rem] text-nes-cyan pixel-cursor leading-tight">KYOTO LOCAL EXPERTS</span>
     </a>
 
     <!-- Mobile menu button -->
-    <button id="mobile-menu-btn" class="md:hidden text-gray-300 hover:text-white" aria-label="Toggle menu">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-      </svg>
+    <button id="mobile-menu-btn" class="md:hidden font-pixel text-[0.5rem] text-nes-amber border border-nes-amber px-3 py-2 hover:bg-nes-amber hover:text-nes-black transition-colors" aria-label="Toggle menu">
+      [MENU]
     </button>
 
     <!-- Desktop nav -->
-    <nav class="hidden md:flex items-center gap-6">
+    <nav class="hidden md:flex items-center gap-5">
       {navLinks.map(link => (
-        <a
-          href={link.href}
-          class={`text-sm font-medium transition-colors hover:text-gold ${currentPath === link.href ? 'text-gold' : 'text-gray-300'} ${link.label === 'Groups & Agencies' ? 'border border-gold text-gold px-3 py-1.5 rounded hover:bg-gold hover:text-navy-dark' : ''}`}
-        >
-          {link.label}
-        </a>
+        link.label === 'GROUPS' ? (
+          <a
+            href={link.href}
+            class="nes-btn nes-btn-outline text-[0.4rem] py-1.5 px-3"
+          >
+            {link.label}
+          </a>
+        ) : (
+          <a
+            href={link.href}
+            class={`font-pixel text-[0.45rem] transition-colors hover:text-nes-amber ${currentPath === link.href ? 'text-nes-amber' : 'text-gray-400'}`}
+          >
+            {link.label}
+          </a>
+        )
       ))}
+      <a href="/groups" class="nes-btn nes-btn-outline" style="font-size: 0.4rem; padding: 0.5rem 0.75rem;">
+        GROUPS
+      </a>
     </nav>
   </div>
 
   <!-- Mobile nav -->
-  <nav id="mobile-menu" class="hidden md:hidden bg-navy border-t border-navy-light px-4 pb-4">
+  <nav id="mobile-menu" class="hidden md:hidden bg-nes-black border-t border-nes-amber px-4 pb-4">
     {navLinks.map(link => (
       <a
         href={link.href}
-        class="block py-2 text-gray-300 hover:text-gold text-sm font-medium transition-colors"
+        class="block py-3 font-pixel text-[0.45rem] text-gray-400 hover:text-nes-amber transition-colors border-b border-gray-800"
       >
         {link.label}
       </a>
     ))}
+    <a href="/groups" class="block py-3 font-pixel text-[0.45rem] text-nes-amber hover:text-nes-black hover:bg-nes-amber transition-colors">
+      GROUPS &amp; AGENCIES
+    </a>
   </nav>
 </header>
 

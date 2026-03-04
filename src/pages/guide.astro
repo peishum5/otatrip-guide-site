@@ -1,0 +1,125 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const guides = [
+  {
+    id: 'yuki',
+    name: 'YUKI TANAKA',
+    class: 'SAKE MASTER',
+    level: 12,
+    portrait: '🍶',
+    bio: 'Born and raised in Fushimi — Kyoto\'s sake heartland. Yuki spent 8 years working at a traditional sake brewery before becoming a full-time guide. Her knowledge of nihonshu styles, brewing history, and hidden Gion bars is unrivalled.',
+    stats: [
+      { label: 'SAKE KNOWLEDGE', value: 95 },
+      { label: 'GION EXPERTISE', value: 98 },
+      { label: 'LANGUAGES', value: 80, note: 'EN/JP' },
+      { label: 'YRS IN KYOTO', value: 85, note: '12 YRS' },
+    ],
+  },
+  {
+    id: 'kenji',
+    name: 'KENJI MORI',
+    class: 'HISTORY MAGE',
+    level: 9,
+    portrait: '⛩️',
+    bio: 'A former university lecturer in Kyoto history who traded lecture halls for lantern-lit alleyways. Kenji weaves together centuries of Gion folklore with sharp wit and an eye for hidden gems most guides walk right past.',
+    stats: [
+      { label: 'KYOTO HISTORY', value: 99 },
+      { label: 'STORYTELLING', value: 92 },
+      { label: 'LANGUAGES', value: 75, note: 'EN/JP' },
+      { label: 'YRS IN KYOTO', value: 72, note: '9 YRS' },
+    ],
+  },
+  {
+    id: 'emi',
+    name: 'EMI KAWASHIMA',
+    class: 'FOOD RANGER',
+    level: 7,
+    portrait: '🍜',
+    bio: 'Half-American, half-Japanese, and entirely obsessed with Kyoto cuisine. Emi grew up eating kaiseki with her grandparents and street food on the way home from school. She bridges cultures effortlessly and makes every guest feel at home.',
+    stats: [
+      { label: 'FOOD EXPERTISE', value: 93 },
+      { label: 'GION EXPERTISE', value: 82 },
+      { label: 'LANGUAGES', value: 98, note: 'EN/JP' },
+      { label: 'YRS IN KYOTO', value: 62, note: '7 YRS' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Our Guides | OTA Trip Guide"
+  description="Meet the local experts who lead your Kyoto experience. Sake masters, history guides, and food specialists — all based in Gion."
+  canonical="/guide"
+>
+  <!-- PLAYER SELECT Header -->
+  <section class="scanlines bg-nes-black py-16 text-center">
+    <div class="relative z-10 max-w-3xl mx-auto px-4">
+      <p class="font-pixel text-[0.4rem] text-gray-600 mb-4">★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★</p>
+      <p class="font-pixel text-[0.45rem] text-nes-amber mb-6 rpg-prefix">SELECT YOUR GUIDE</p>
+      <h1 class="font-pixel text-nes-white mb-6" style="font-size: clamp(1.2rem, 5vw, 2.5rem);">PLAYER SELECT</h1>
+      <p class="font-pixel text-[0.5rem] text-nes-cyan pixel-cursor">CHOOSE YOUR GUIDE</p>
+      <p class="font-pixel text-[0.4rem] text-gray-600 mt-6">★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★</p>
+    </div>
+  </section>
+
+  <!-- Guide Cards -->
+  <section class="max-w-6xl mx-auto px-4 py-16">
+    <div class="grid md:grid-cols-3 gap-8">
+      {guides.map((guide, i) => (
+        <div class="dialogue-box flex flex-col">
+          <!-- Portrait + Identity -->
+          <div class="text-center mb-6 border-b border-gray-800 pb-6">
+            <div class="w-24 h-24 mx-auto bg-gray-900 border-2 border-nes-amber flex items-center justify-center text-5xl mb-4">
+              {guide.portrait}
+            </div>
+            <p class="font-pixel text-[0.35rem] text-nes-cyan mb-2">PLAYER {i + 1}</p>
+            <h2 class="font-pixel text-[0.55rem] text-nes-white mb-3 leading-relaxed">{guide.name}</h2>
+            <div class="inline-block border border-nes-cyan px-3 py-1 mb-3">
+              <span class="font-pixel text-[0.4rem] text-nes-cyan">{guide.class}</span>
+            </div>
+            <p class="font-pixel text-[0.4rem] text-nes-green">LV. {guide.level}</p>
+          </div>
+
+          <!-- Stats -->
+          <div class="mb-6 border-b border-gray-800 pb-6">
+            <p class="font-pixel text-[0.4rem] text-nes-cyan mb-4">// STATS</p>
+            <div class="space-y-4">
+              {guide.stats.map(stat => (
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span class="font-pixel text-[0.33rem] text-gray-500">{stat.label}</span>
+                    {stat.note && (
+                      <span class="font-pixel text-[0.33rem] text-nes-amber">{stat.note}</span>
+                    )}
+                  </div>
+                  <div class="stat-bar-track">
+                    <div class="stat-bar-fill" style={`width: ${stat.value}%`}></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Bio -->
+          <div class="mb-6 flex-1">
+            <p class="font-pixel text-[0.4rem] text-nes-cyan mb-4">// BIO</p>
+            <p class="font-sans text-sm text-gray-300 leading-relaxed">{guide.bio}</p>
+          </div>
+
+          <!-- CTA -->
+          <a href="/tours/gion-sake-walk" class="nes-btn nes-btn-gold block w-full text-center">
+            START ADVENTURE
+          </a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Back link -->
+  <div class="text-center pb-16 border-t border-gray-900 pt-8">
+    <a href="/" class="font-pixel text-[0.45rem] text-nes-amber hover:text-nes-cyan transition-colors">
+      &lt; BACK TO QUEST SELECT
+    </a>
+  </div>
+</BaseLayout>

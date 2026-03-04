@@ -20,60 +20,39 @@ const displayDate = last_updated || pubDate;
 <BaseLayout title={title} description={description} canonical={canonical} ogImage={hero_image}>
   <article class="max-w-3xl mx-auto px-4 py-10">
     <!-- Breadcrumb -->
-    <nav class="text-xs text-gray-500 mb-6 flex items-center gap-1" aria-label="Breadcrumb">
-      <a href="/" class="hover:text-gold transition-colors">Home</a>
-      <span>›</span>
-      <a href="/blog" class="hover:text-gold transition-colors">Blog</a>
+    <nav class="font-pixel text-[0.35rem] text-gray-600 mb-8 flex items-center gap-2 flex-wrap" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-nes-amber transition-colors">HOME</a>
+      <span class="text-nes-amber">&gt;</span>
+      <a href="/blog" class="hover:text-nes-amber transition-colors">BLOG</a>
       {category && (
         <>
-          <span>›</span>
-          <span class="text-gray-400">{category}</span>
+          <span class="text-nes-amber">&gt;</span>
+          <span class="text-gray-500">{category.toUpperCase()}</span>
         </>
       )}
     </nav>
 
     <!-- Hero image -->
     {hero_image && hero_image !== '' && (
-      <div class="mb-8 rounded-xl overflow-hidden shadow-md">
+      <div class="mb-8 border-2 border-gray-700 overflow-hidden">
         <img src={hero_image} alt={title} class="w-full h-64 md:h-80 object-cover" loading="eager" />
       </div>
     )}
 
     <!-- Title + meta -->
-    <header class="mb-8">
-      <h1 class="text-3xl md:text-4xl font-bold text-navy-dark leading-tight mb-4">{title}</h1>
-      <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500">
-        <span class="flex items-center gap-1">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-          </svg>
-          {author}
-        </span>
+    <header class="mb-10 border-b border-gray-800 pb-8">
+      <p class="font-pixel text-[0.35rem] text-nes-cyan mb-4 rpg-prefix">{category ? category.toUpperCase() : 'KYOTO GUIDE'}</p>
+      <h1 class="font-pixel text-nes-white leading-relaxed mb-6" style="font-size: clamp(0.7rem, 2.5vw, 1rem);">{title}</h1>
+      <div class="flex flex-wrap items-center gap-6 font-pixel text-[0.35rem] text-gray-600">
+        <span class="rpg-prefix">{author}</span>
         {displayDate && displayDate !== '' && (
-          <span class="flex items-center gap-1">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            Updated: {displayDate}
-          </span>
+          <span class="rpg-prefix">UPDATED: {displayDate}</span>
         )}
       </div>
     </header>
 
-    <!-- Content -->
-    <div class="prose prose-lg max-w-none
-      prose-headings:text-navy-dark prose-headings:font-bold
-      prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4
-      prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
-      prose-p:text-gray-700 prose-p:leading-relaxed
-      prose-a:text-navy-light prose-a:no-underline hover:prose-a:text-gold
-      prose-strong:text-navy-dark
-      prose-table:text-sm
-      prose-th:bg-navy-dark prose-th:text-white prose-th:font-medium
-      prose-td:border prose-td:border-gray-200
-      prose-blockquote:border-l-gold prose-blockquote:text-gray-600 prose-blockquote:not-italic
-      prose-code:text-navy-dark prose-code:bg-gray-100 prose-code:px-1 prose-code:rounded
-    ">
+    <!-- Content — prose stays font-sans for readability -->
+    <div class="prose prose-lg max-w-none font-sans">
       <slot />
     </div>
 
@@ -81,13 +60,13 @@ const displayDate = last_updated || pubDate;
     <ArticleCTA />
 
     <!-- Author box -->
-    <div class="mt-10 border-t border-gray-200 pt-8 flex items-start gap-4">
-      <div class="w-12 h-12 rounded-full bg-navy-dark flex items-center justify-center shrink-0">
-        <span class="text-gold font-bold text-lg">LG</span>
+    <div class="mt-10 border-t border-gray-800 pt-8 flex items-start gap-4">
+      <div class="w-12 h-12 border-2 border-nes-amber bg-nes-black flex items-center justify-center shrink-0">
+        <span class="font-pixel text-[0.5rem] text-nes-amber">LG</span>
       </div>
       <div>
-        <div class="font-semibold text-navy-dark">{author}</div>
-        <p class="text-sm text-gray-500 mt-1 leading-relaxed">
+        <div class="font-pixel text-[0.45rem] text-nes-white mb-2">{author}</div>
+        <p class="font-sans text-sm text-gray-500 leading-relaxed">
           Local guide based in Gion, Kyoto. Leading intimate walking tours and sake experiences since 2018.
           Passionate about connecting travelers with authentic Kyoto culture.
         </p>
