@@ -6,21 +6,65 @@ const tours = [
     id: 'gion-sake-walk',
     name: 'GION SAKE WALKING TOUR',
     tagline: 'Lantern-lit alleys. Local sake bars. Old Kyoto.',
+    description: 'An intimate evening walk through Gion\'s most atmospheric streets. Visit three hand-picked local sake bars, taste Fushimi-style sake, and hear the stories behind Kyoto\'s most iconic neighborhood.',
     duration: '3 hours',
     groupSize: 'Max 8 guests',
-    language: 'English',
+    time: 'Evening',
     rating: '4.9',
     reviews: '200+',
     icon: '🏮',
     href: '/tours/gion-sake-walk',
     tags: ['Evening', 'Sake', 'Walking', 'Gion'],
+    highlights: [
+      '3 sake tastings at curated local bars',
+      'Walk Hanamikoji & Shinbashi',
+      'Light snacks included',
+    ],
+  },
+  {
+    id: 'izakaya-hopping',
+    name: 'KYOTO IZAKAYA HOPPING',
+    tagline: 'Pontocho & Gion backstreets. Real local izakayas.',
+    description: 'Explore the vibrant backstreets of Kiyamachi and Pontocho with a local guide. Visit 2–3 izakayas that locals actually love — no tourist traps, no hidden commissions. Customizable for dietary preferences.',
+    duration: '3 hours',
+    groupSize: 'Small group',
+    time: 'Evening',
+    rating: null,
+    reviews: null,
+    icon: '🍻',
+    href: '/contact',
+    tags: ['Evening', 'Food', 'Walking', 'Pontocho'],
+    highlights: [
+      '2–3 local izakayas in Pontocho & Kiyamachi',
+      'No hidden commissions — pay direct',
+      'Customizable for dietary needs',
+    ],
+  },
+  {
+    id: 'shimogamo-manga-walk',
+    name: 'SHIMOGAMO SHRINE & MANGA WALK',
+    tagline: 'World Heritage shrine. Cinematic photos. Custom manga souvenir.',
+    description: 'A morning walk through ancient Shimogamo Shrine and Tadasu-no-Mori forest, finishing at the iconic Kamogawa Delta. We capture cinematic shots along the way — then turn them into a one-of-a-kind manga-style print just for you.',
+    duration: 'Morning tour',
+    groupSize: 'Small group',
+    time: 'Morning',
+    rating: null,
+    reviews: null,
+    icon: '⛩️',
+    href: '/contact',
+    tags: ['Morning', 'Walking', 'Shrine', 'Manga', 'Photo'],
+    highlights: [
+      'Shimogamo Shrine & Tadasu-no-Mori forest',
+      'Original manga-style print souvenir',
+      'High-res digital photos included',
+    ],
   },
 ];
 ---
 
 <BaseLayout
   title="Tours | OTAtrip Guide"
-  description="Explore Kyoto with OTAtrip Guide. Book local walking tours in Gion — sake tastings, night walks, and hidden gems. Rated 4.9/5 on TripAdvisor."
+  description="Explore Kyoto with OTAtrip Guide. Evening sake tours, izakaya hopping in Pontocho, and World Heritage walks with manga souvenirs. Rated 4.9/5 on TripAdvisor."
   canonical="/tours"
 >
   <!-- Header -->
@@ -28,60 +72,69 @@ const tours = [
     <div class="relative z-10 max-w-3xl mx-auto px-4">
       <p class="font-pixel text-[0.5rem] text-nes-amber mb-4 rpg-prefix">AVAILABLE QUESTS</p>
       <h1 class="font-pixel text-nes-white mb-4" style="font-size: clamp(1rem, 4vw, 2rem);">SELECT A TOUR</h1>
-      <p class="font-sans text-gray-400 text-sm">All tours are small-group, English-language experiences led by local Gion experts.</p>
+      <p class="font-sans text-gray-400 text-sm">Small-group, English-language experiences led by local Kyoto experts.</p>
     </div>
   </section>
 
   <!-- Tour list -->
   <section class="max-w-4xl mx-auto px-4 py-16">
-    <div class="space-y-6">
+    <div class="space-y-8">
       {tours.map((tour, i) => (
         <div class="dialogue-box">
           <div class="flex flex-col md:flex-row gap-6 items-start">
-            <!-- Icon -->
-            <div class="w-16 h-16 bg-gray-900 border-2 border-nes-amber flex items-center justify-center text-4xl shrink-0">
-              {tour.icon}
+            <!-- Icon + number -->
+            <div class="flex flex-col items-center gap-2 shrink-0">
+              <div class="w-16 h-16 bg-gray-900 border-2 border-nes-amber flex items-center justify-center text-4xl">
+                {tour.icon}
+              </div>
+              <span class="font-sans text-xs text-gray-600">QUEST {String(i + 1).padStart(2, '0')}</span>
             </div>
 
             <!-- Info -->
             <div class="flex-1">
-              <div class="flex flex-wrap items-center gap-2 mb-2">
-                <span class="font-sans text-xs text-nes-cyan">QUEST {String(i + 1).padStart(2, '0')}</span>
-                <span class="font-sans text-xs text-nes-amber">★ {tour.rating} ({tour.reviews} reviews)</span>
+              <div class="flex flex-wrap items-center gap-3 mb-2">
+                <span class="font-sans text-xs text-nes-cyan font-medium">{tour.time}</span>
+                {tour.rating && (
+                  <span class="font-sans text-xs text-nes-amber">★ {tour.rating} ({tour.reviews} reviews)</span>
+                )}
               </div>
               <h2 class="font-pixel text-[0.6rem] text-nes-white leading-relaxed mb-2">{tour.name}</h2>
-              <p class="font-sans text-sm text-gray-300 mb-4">{tour.tagline}</p>
-              <div class="flex flex-wrap gap-4 font-sans text-xs text-gray-500">
+              <p class="font-sans text-sm text-gray-300 leading-relaxed mb-4">{tour.description}</p>
+
+              <ul class="space-y-1 mb-4">
+                {tour.highlights.map(h => (
+                  <li class="font-sans text-xs text-gray-400 flex items-start gap-2">
+                    <span class="text-nes-green shrink-0">[OK]</span>{h}
+                  </li>
+                ))}
+              </ul>
+
+              <div class="flex flex-wrap gap-4 font-sans text-xs text-gray-500 mb-3">
                 <span>⏱ {tour.duration}</span>
                 <span>👥 {tour.groupSize}</span>
-                <span>🌐 {tour.language}</span>
+                <span>🌐 English</span>
               </div>
-              <div class="flex flex-wrap gap-2 mt-3">
+
+              <div class="flex flex-wrap gap-2">
                 {tour.tags.map(tag => (
-                  <span class="font-sans text-xs border border-gray-700 text-gray-500 px-2 py-0.5">{tag}</span>
+                  <span class="font-sans text-xs border border-gray-800 text-gray-600 px-2 py-0.5">{tag}</span>
                 ))}
               </div>
             </div>
 
             <!-- CTA -->
             <div class="shrink-0">
-              <a href={tour.href} class="nes-btn nes-btn-gold">VIEW TOUR</a>
+              <a href={tour.href} class="nes-btn nes-btn-gold">
+                {tour.href === '/contact' ? 'BOOK NOW' : 'VIEW TOUR'}
+              </a>
             </div>
           </div>
         </div>
       ))}
     </div>
 
-    <!-- More coming -->
-    <div class="mt-8 border-2 border-dashed border-gray-800 p-8 text-center">
-      <p class="font-pixel text-[0.5rem] text-gray-600 mb-2">// MORE QUESTS LOADING...</p>
-      <p class="font-sans text-sm text-gray-600">More tours coming soon. <a href="/contact" class="text-nes-cyan hover:text-nes-amber transition-colors">Contact us</a> for private & custom tours.</p>
-    </div>
-  </section>
-
-  <!-- Group CTA -->
-  <section class="max-w-4xl mx-auto px-4 pb-16">
-    <div class="dialogue-box text-center">
+    <!-- Group CTA -->
+    <div class="dialogue-box text-center mt-12">
       <p class="font-pixel text-[0.5rem] text-nes-cyan mb-3">// FOR AGENCIES & GROUPS</p>
       <h3 class="font-pixel text-[0.6rem] text-nes-white leading-relaxed mb-4">NEED A CUSTOM TOUR?</h3>
       <p class="font-sans text-sm text-gray-300 mb-6 max-w-md mx-auto">Private bookings, custom routes, and group pricing available for travel agencies and corporate groups.</p>
