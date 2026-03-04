@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BookingWidget from '../../components/BookingWidget.astro';
 import GroupCTA from '../../components/GroupCTA.astro';
+import ReviewsSection from '../../components/ReviewsSection.astro';
 
 const highlights = [
   'Visit 3 hand-picked sake bars in Gion — places locals actually go',
@@ -152,6 +153,9 @@ const faqs = [
       <p class="text-gray-500 text-sm mb-6">Tours fill quickly, especially on weekends. Secure your place below.</p>
       <BookingWidget widgetPath="experience/901507" />
     </section>
+
+    <!-- Reviews -->
+    <ReviewsSection />
 
     <!-- Group CTA -->
     <GroupCTA />

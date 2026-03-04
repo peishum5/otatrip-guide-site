@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import GroupCTA from '../components/GroupCTA.astro';
+import ReviewsSection from '../components/ReviewsSection.astro';
 import { getCollection } from 'astro:content';
 
 const blogPosts = await getCollection('blog');
@@ -165,6 +166,11 @@ const stats = [
         VIEW ALL GUIDES &gt;
       </a>
     </div>
+  </section>
+
+  <!-- Reviews -->
+  <section class="max-w-6xl mx-auto px-4">
+    <ReviewsSection />
   </section>
 
   <!-- Why Choose Us -->

@@ -1,0 +1,87 @@
+---
+const reviews = [
+  {
+    name: 'Kyoko O.',
+    title: 'Great sunset in Kyoto',
+    date: 'Dec 2025',
+    type: 'Friends',
+    rating: 5,
+    text: "One of the things I appreciated the most was, instead of giving long lectures about architecture or history, they led the tour with conversations and answering our questions. We started at 15:30 in December and Kyoto was amazing in its sunset. The sake was really tasty. I think it was really worth the fee, route is nicely organized and fun. Overall we had a great time.",
+  },
+  {
+    name: 'Charlie C.',
+    title: 'Unforgettable tour in Gion',
+    date: 'Dec 2025',
+    type: 'Friends',
+    rating: 5,
+    text: "This Kyoto tour in Gion was one of the best experiences I've had! We visited the shrines, and the guide shared so much fascinating knowledge about the area. They were incredibly patient, took amazing photos of us, and really made the tour memorable. The sake tasting was fantastic too. Highly recommended!",
+  },
+  {
+    name: 'Solo Traveler',
+    title: "Must-do while you're in Kyoto",
+    date: 'Feb 2026',
+    type: 'Solo',
+    rating: 5,
+    text: "Wonderful experience with fantastic guides who were very knowledgable, saw shrines when they were virtually empty. Great for solo travelers!",
+  },
+  {
+    name: 'Nathe C.',
+    title: 'Local Experience with a Golden Heart',
+    date: 'Mar 2026',
+    type: 'Solo',
+    rating: 5,
+    text: "Mune was such an awesome guy! Telling me all about the city's hidden gems. Such a down to earth guy who was happy to answer all the questions I had in regards to Kyoto and Japan as a whole. The sake was perfect to start the tour since it is chilly season. Defs take up a tour with these guys! It's more than worth it. See you again Mune! Such a top bloke!",
+  },
+];
+---
+
+<div class="my-16">
+  <!-- Header -->
+  <div class="text-center mb-10">
+    <p class="font-pixel text-[0.4rem] text-nes-amber mb-3 rpg-prefix">PLAYER REVIEWS</p>
+    <h2 class="font-pixel text-nes-white leading-relaxed mb-4" style="font-size: clamp(0.65rem, 2vw, 0.9rem);">
+      WHAT GUESTS SAY
+    </h2>
+    <div class="font-pixel text-[0.4rem] text-nes-amber">
+      {'★'.repeat(5)}
+      <span class="text-gray-500 ml-2">4.9 / 5</span>
+    </div>
+  </div>
+
+  <!-- Review cards -->
+  <div class="grid md:grid-cols-2 gap-6">
+    {reviews.map(review => (
+      <div class="dialogue-box flex flex-col gap-4">
+        <!-- Title + stars -->
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="font-pixel text-[0.35rem] text-nes-amber">{'★'.repeat(review.rating)}</span>
+            <span class="font-pixel text-[0.3rem] text-gray-600">{review.type.toUpperCase()}</span>
+          </div>
+          <p class="font-pixel text-[0.45rem] text-nes-white leading-relaxed">{review.title}</p>
+        </div>
+
+        <!-- Body -->
+        <p class="font-sans text-sm text-gray-300 leading-relaxed flex-1">"{review.text}"</p>
+
+        <!-- Meta -->
+        <div class="flex items-center justify-between border-t border-gray-800 pt-3">
+          <span class="font-pixel text-[0.35rem] text-nes-cyan">{review.name}</span>
+          <span class="font-pixel text-[0.3rem] text-gray-600">{review.date}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <!-- TA link -->
+  <div class="text-center mt-8">
+    <a
+      href="https://www.tripadvisor.com/AttractionProductReview-g298564-d27759588-Kyoto_Gion_Night_Walk_Sake_Hidden_Gems_Geisha_Small_Group-Kyoto_Kyoto_Prefecture_K.html"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="nes-btn nes-btn-outline"
+    >
+      SEE ALL REVIEWS ON TRIPADVISOR
+    </a>
+  </div>
+</div>
