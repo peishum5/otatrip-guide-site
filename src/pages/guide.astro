@@ -48,18 +48,18 @@ const guides = [
 ---
 
 <BaseLayout
-  title="Our Guides | OTA Trip Guide"
+  title="Our Guides | OTAtrip Guide"
   description="Meet the local experts who lead your Kyoto experience. Sake masters, history guides, and food specialists — all based in Gion."
   canonical="/guide"
 >
   <!-- PLAYER SELECT Header -->
   <section class="scanlines bg-nes-black py-16 text-center">
     <div class="relative z-10 max-w-3xl mx-auto px-4">
-      <p class="font-pixel text-[0.4rem] text-gray-600 mb-4">★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★</p>
-      <p class="font-pixel text-[0.45rem] text-nes-amber mb-6 rpg-prefix">SELECT YOUR GUIDE</p>
+      <p class="font-pixel text-[0.5rem] text-gray-600 mb-4">★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★</p>
+      <p class="font-pixel text-[0.5rem] text-nes-amber mb-6 rpg-prefix">SELECT YOUR GUIDE</p>
       <h1 class="font-pixel text-nes-white mb-6" style="font-size: clamp(1.2rem, 5vw, 2.5rem);">PLAYER SELECT</h1>
       <p class="font-pixel text-[0.5rem] text-nes-cyan pixel-cursor">CHOOSE YOUR GUIDE</p>
-      <p class="font-pixel text-[0.4rem] text-gray-600 mt-6">★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★</p>
+      <p class="font-pixel text-[0.5rem] text-gray-600 mt-6">★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★</p>
     </div>
   </section>
 
@@ -73,24 +73,24 @@ const guides = [
             <div class="w-24 h-24 mx-auto bg-gray-900 border-2 border-nes-amber flex items-center justify-center text-5xl mb-4">
               {guide.portrait}
             </div>
-            <p class="font-pixel text-[0.35rem] text-nes-cyan mb-2">PLAYER {i + 1}</p>
+            <p class="font-sans text-xs text-nes-cyan mb-2">PLAYER {i + 1}</p>
             <h2 class="font-pixel text-[0.55rem] text-nes-white mb-3 leading-relaxed">{guide.name}</h2>
             <div class="inline-block border border-nes-cyan px-3 py-1 mb-3">
-              <span class="font-pixel text-[0.4rem] text-nes-cyan">{guide.class}</span>
+              <span class="font-pixel text-[0.5rem] text-nes-cyan">{guide.class}</span>
             </div>
-            <p class="font-pixel text-[0.4rem] text-nes-green">LV. {guide.level}</p>
+            <p class="font-sans text-xs text-nes-green font-bold mt-2">LV. {guide.level}</p>
           </div>
 
           <!-- Stats -->
           <div class="mb-6 border-b border-gray-800 pb-6">
-            <p class="font-pixel text-[0.4rem] text-nes-cyan mb-4">// STATS</p>
+            <p class="font-pixel text-[0.5rem] text-nes-cyan mb-4">// STATS</p>
             <div class="space-y-4">
               {guide.stats.map(stat => (
                 <div>
                   <div class="flex justify-between mb-1">
-                    <span class="font-pixel text-[0.33rem] text-gray-500">{stat.label}</span>
+                    <span class="font-sans text-xs text-gray-500">{stat.label}</span>
                     {stat.note && (
-                      <span class="font-pixel text-[0.33rem] text-nes-amber">{stat.note}</span>
+                      <span class="font-sans text-xs text-nes-amber font-medium">{stat.note}</span>
                     )}
                   </div>
                   <div class="stat-bar-track">
@@ -103,12 +103,12 @@ const guides = [
 
           <!-- Bio -->
           <div class="mb-6 flex-1">
-            <p class="font-pixel text-[0.4rem] text-nes-cyan mb-4">// BIO</p>
+            <p class="font-pixel text-[0.5rem] text-nes-cyan mb-4">// BIO</p>
             <p class="font-sans text-sm text-gray-300 leading-relaxed">{guide.bio}</p>
           </div>
 
           <!-- CTA -->
-          <a href="/tours/gion-sake-walk" class="nes-btn nes-btn-gold block w-full text-center">
+          <a href="/tours" class="nes-btn nes-btn-gold block w-full text-center">
             START ADVENTURE
           </a>
         </div>
@@ -118,7 +118,7 @@ const guides = [
 
   <!-- Back link -->
   <div class="text-center pb-16 border-t border-gray-900 pt-8">
-    <a href="/" class="font-pixel text-[0.45rem] text-nes-amber hover:text-nes-cyan transition-colors">
+    <a href="/" class="font-pixel text-[0.5rem] text-nes-amber hover:text-nes-cyan transition-colors">
       &lt; BACK TO QUEST SELECT
     </a>
   </div>

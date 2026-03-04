@@ -1,6 +1,6 @@
 ---
 const navLinks = [
-  { href: '/tours/gion-sake-walk', label: 'GION SAKE WALK' },
+  { href: '/tours', label: 'TOURS' },
   { href: '/blog', label: 'BLOG' },
   { href: '/guide', label: 'OUR GUIDE' },
   { href: '/contact', label: 'CONTACT' },
@@ -11,8 +11,8 @@ const currentPath = Astro.url.pathname;
 <header class="bg-nes-black border-b-2 border-nes-amber sticky top-0 z-50">
   <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
     <a href="/" class="flex flex-col gap-0.5 group">
-      <span class="font-pixel text-[0.65rem] text-nes-amber pixel-flicker leading-tight">OTA TRIP GUIDE</span>
-      <span class="font-pixel text-[0.45rem] text-nes-cyan pixel-cursor leading-tight">KYOTO LOCAL EXPERTS</span>
+      <span class="font-pixel text-[0.65rem] text-nes-amber pixel-flicker leading-tight">OTAtrip GUIDE</span>
+      <span class="font-pixel text-[0.5rem] text-nes-cyan leading-tight">KYOTO LOCAL EXPERTS</span>
     </a>
 
     <!-- Mobile menu button -->
@@ -21,25 +21,16 @@ const currentPath = Astro.url.pathname;
     </button>
 
     <!-- Desktop nav -->
-    <nav class="hidden md:flex items-center gap-5">
+    <nav class="hidden md:flex items-center gap-6">
       {navLinks.map(link => (
-        link.label === 'GROUPS' ? (
-          <a
-            href={link.href}
-            class="nes-btn nes-btn-outline text-[0.4rem] py-1.5 px-3"
-          >
-            {link.label}
-          </a>
-        ) : (
-          <a
-            href={link.href}
-            class={`font-pixel text-[0.45rem] transition-colors hover:text-nes-amber ${currentPath === link.href ? 'text-nes-amber' : 'text-gray-400'}`}
-          >
-            {link.label}
-          </a>
-        )
+        <a
+          href={link.href}
+          class={`font-pixel text-[0.5rem] transition-colors hover:text-nes-amber ${currentPath.startsWith(link.href) && link.href !== '/' ? 'text-nes-amber' : 'text-gray-400'}`}
+        >
+          {link.label}
+        </a>
       ))}
-      <a href="/groups" class="nes-btn nes-btn-outline" style="font-size: 0.4rem; padding: 0.5rem 0.75rem;">
+      <a href="/groups" class="nes-btn nes-btn-outline" style="font-size: 0.5rem; padding: 0.5rem 0.9rem;">
         GROUPS
       </a>
     </nav>
@@ -50,12 +41,12 @@ const currentPath = Astro.url.pathname;
     {navLinks.map(link => (
       <a
         href={link.href}
-        class="block py-3 font-pixel text-[0.45rem] text-gray-400 hover:text-nes-amber transition-colors border-b border-gray-800"
+        class="block py-3 font-pixel text-[0.5rem] text-gray-400 hover:text-nes-amber transition-colors border-b border-gray-800"
       >
         {link.label}
       </a>
     ))}
-    <a href="/groups" class="block py-3 font-pixel text-[0.45rem] text-nes-amber hover:text-nes-black hover:bg-nes-amber transition-colors">
+    <a href="/groups" class="block py-3 font-pixel text-[0.5rem] text-nes-amber hover:text-nes-black hover:bg-nes-amber transition-colors">
       GROUPS &amp; AGENCIES
     </a>
   </nav>

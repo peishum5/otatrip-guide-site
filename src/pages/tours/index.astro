@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const tours = [
+  {
+    id: 'gion-sake-walk',
+    name: 'GION SAKE WALKING TOUR',
+    tagline: 'Lantern-lit alleys. Local sake bars. Old Kyoto.',
+    duration: '3 hours',
+    groupSize: 'Max 8 guests',
+    language: 'English',
+    rating: '4.9',
+    reviews: '200+',
+    icon: '🏮',
+    href: '/tours/gion-sake-walk',
+    tags: ['Evening', 'Sake', 'Walking', 'Gion'],
+  },
+];
+---
+
+<BaseLayout
+  title="Tours | OTAtrip Guide"
+  description="Explore Kyoto with OTAtrip Guide. Book local walking tours in Gion — sake tastings, night walks, and hidden gems. Rated 4.9/5 on TripAdvisor."
+  canonical="/tours"
+>
+  <!-- Header -->
+  <section class="scanlines bg-nes-black py-16 text-center">
+    <div class="relative z-10 max-w-3xl mx-auto px-4">
+      <p class="font-pixel text-[0.5rem] text-nes-amber mb-4 rpg-prefix">AVAILABLE QUESTS</p>
+      <h1 class="font-pixel text-nes-white mb-4" style="font-size: clamp(1rem, 4vw, 2rem);">SELECT A TOUR</h1>
+      <p class="font-sans text-gray-400 text-sm">All tours are small-group, English-language experiences led by local Gion experts.</p>
+    </div>
+  </section>
+
+  <!-- Tour list -->
+  <section class="max-w-4xl mx-auto px-4 py-16">
+    <div class="space-y-6">
+      {tours.map((tour, i) => (
+        <div class="dialogue-box">
+          <div class="flex flex-col md:flex-row gap-6 items-start">
+            <!-- Icon -->
+            <div class="w-16 h-16 bg-gray-900 border-2 border-nes-amber flex items-center justify-center text-4xl shrink-0">
+              {tour.icon}
+            </div>
+
+            <!-- Info -->
+            <div class="flex-1">
+              <div class="flex flex-wrap items-center gap-2 mb-2">
+                <span class="font-sans text-xs text-nes-cyan">QUEST {String(i + 1).padStart(2, '0')}</span>
+                <span class="font-sans text-xs text-nes-amber">★ {tour.rating} ({tour.reviews} reviews)</span>
+              </div>
+              <h2 class="font-pixel text-[0.6rem] text-nes-white leading-relaxed mb-2">{tour.name}</h2>
+              <p class="font-sans text-sm text-gray-300 mb-4">{tour.tagline}</p>
+              <div class="flex flex-wrap gap-4 font-sans text-xs text-gray-500">
+                <span>⏱ {tour.duration}</span>
+                <span>👥 {tour.groupSize}</span>
+                <span>🌐 {tour.language}</span>
+              </div>
+              <div class="flex flex-wrap gap-2 mt-3">
+                {tour.tags.map(tag => (
+                  <span class="font-sans text-xs border border-gray-700 text-gray-500 px-2 py-0.5">{tag}</span>
+                ))}
+              </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="shrink-0">
+              <a href={tour.href} class="nes-btn nes-btn-gold">VIEW TOUR</a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- More coming -->
+    <div class="mt-8 border-2 border-dashed border-gray-800 p-8 text-center">
+      <p class="font-pixel text-[0.5rem] text-gray-600 mb-2">// MORE QUESTS LOADING...</p>
+      <p class="font-sans text-sm text-gray-600">More tours coming soon. <a href="/contact" class="text-nes-cyan hover:text-nes-amber transition-colors">Contact us</a> for private & custom tours.</p>
+    </div>
+  </section>
+
+  <!-- Group CTA -->
+  <section class="max-w-4xl mx-auto px-4 pb-16">
+    <div class="dialogue-box text-center">
+      <p class="font-pixel text-[0.5rem] text-nes-cyan mb-3">// FOR AGENCIES & GROUPS</p>
+      <h3 class="font-pixel text-[0.6rem] text-nes-white leading-relaxed mb-4">NEED A CUSTOM TOUR?</h3>
+      <p class="font-sans text-sm text-gray-300 mb-6 max-w-md mx-auto">Private bookings, custom routes, and group pricing available for travel agencies and corporate groups.</p>
+      <a href="/groups" class="nes-btn nes-btn-gold">VIEW GROUP OPTIONS</a>
+    </div>
+  </section>
+</BaseLayout>
