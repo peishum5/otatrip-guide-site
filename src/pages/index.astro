@@ -51,12 +51,11 @@ const latestPosts = blogPosts.slice(0, 3);
   <section class="bg-nes-black border-y-2 border-nes-amber">
     <div class="max-w-6xl mx-auto px-4 py-8">
       <p class="font-pixel text-[0.5rem] text-nes-cyan text-center mb-6">-- PLAYER STATS --</p>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <div class="grid grid-cols-3 gap-6 text-center">
         {[
-          { number: '200+', label: 'Guests Guided' },
+          { number: '1000+', label: 'Guests Guided' },
           { number: '4.9★', label: 'TripAdvisor Rating' },
-          { number: '8', label: 'Max Group Size' },
-          { number: '2018', label: 'Year Founded' },
+          { number: '2024', label: 'Year Founded' },
         ].map(stat => (
           <div>
             <div class="nes-number text-2xl md:text-3xl mb-1">{stat.number}</div>
