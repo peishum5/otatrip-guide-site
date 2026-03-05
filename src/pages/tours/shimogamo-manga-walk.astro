@@ -5,43 +5,73 @@ import GroupCTA from '../../components/GroupCTA.astro';
 import ReviewsSection from '../../components/ReviewsSection.astro';
 
 const highlights = [
-  'Walk ancient Shimogamo Shrine and Tadasu-no-Mori primeval forest',
-  'Finish at the iconic Kamogawa Delta — a Kyoto landmark',
-  'Cinematic photos taken throughout the walk',
-  'One-of-a-kind manga-style print souvenir created from your photos',
-  'High-res digital photos included and sent after the tour',
-  'Small groups for a relaxed, personal experience',
+  'Walking tour with a guide around Shimogamo Shrine',
+  'Your original short manga — you as the main character',
+  'Digital data: high-resolution files for your social media',
 ];
 
-const timeline = [
-  { time: '08:30', desc: 'Meet at Shimogamo Shrine main torii gate. Brief intro to the shrine\'s 2,600-year history.' },
-  { time: '08:45', desc: 'Walk through Tadasu-no-Mori — the ancient forest corridor leading to the shrine.' },
-  { time: '09:15', desc: 'Explore Shimogamo Shrine inner grounds. Photo stops at key locations.' },
-  { time: '09:45', desc: 'Walk south along the Kamo River toward the Delta.' },
-  { time: '10:15', desc: 'Arrive at Kamogawa Delta (Demachiyanagi). Final photo session.' },
-  { time: '10:30', desc: 'Tour ends. Your manga-style print will be created and sent digitally within a few days.' },
+const itinerary = [
+  {
+    stop: '01',
+    name: 'Kamogawa River',
+    desc: 'The Kamo River runs through the heart of Kyoto — a scenic and tranquil waterway lined with cherry blossom trees and rich in history. We start here for photos and an intro to the area.',
+    duration: null,
+  },
+  {
+    stop: '02',
+    name: 'Kamogawa Delta',
+    desc: 'Where the Kamo and Takano Rivers meet. Famous for its stepping stones ("tobiishi") — a beloved spot that appears in countless Japanese animations. Jump across and get the shot.',
+    duration: '15 min',
+  },
+  {
+    stop: '03',
+    name: 'Demachi Masugata Shopping Street',
+    desc: 'A charming covered arcade in the Demachi area. Nostalgic atmosphere, local sweets, and fresh produce. A slice of everyday Kyoto life most tourists never see.',
+    duration: '10 min',
+  },
+  {
+    stop: '04',
+    name: 'Tadasu-no-Mori Grove',
+    desc: 'A sacred woodland within the Shimogamo Shrine grounds — roughly 12 hectares of ancient forest that has remained largely untouched for centuries. One of the most atmospheric spots in Kyoto.',
+    duration: '15 min',
+  },
+  {
+    stop: '05',
+    name: 'Shimogamo Jinja',
+    desc: 'One of Kyoto\'s oldest Shinto shrines, dating to the 6th century. Located at the confluence of the Kamo and Takano Rivers and listed as a UNESCO World Heritage Site. We finish with photos inside the shrine grounds.',
+    duration: '20 min',
+  },
+];
+
+const notes = [
+  'Confirmation will be received at time of booking',
+  'Not recommended for travelers with back problems',
+  'No heart problems or other serious medical conditions',
+  'Not wheelchair accessible',
+  'Travelers should have a moderate physical fitness level',
+  'This tour involves a lot of walking — please wear comfortable clothing and shoes',
 ];
 
 const faqs = [
   {
-    q: 'What is the manga-style print?',
-    a: 'We take cinematic photos of you during the walk, then illustrate selected shots in a manga / anime-inspired style. You receive a high-res digital file — perfect for printing or sharing.',
+    q: 'What is the manga souvenir?',
+    a: 'We capture cinematic photos of you throughout the walk, then create a custom manga-style page featuring you as the main character. You receive a physical print plus high-resolution digital files.',
+  },
+  {
+    q: 'When do I receive my manga?',
+    a: 'The physical manga print and digital files are delivered after the tour. Exact timing confirmed at booking.',
+  },
+  {
+    q: 'What are the tour start times?',
+    a: 'Two slots available: 10:00 and 14:00. Select your preferred time when booking.',
   },
   {
     q: 'How much walking is involved?',
-    a: 'About 3–4 km in total on mostly flat paths through the forest and along the river. Easy pace with frequent stops.',
+    a: 'The route covers several km on mostly flat paths — through the forest, along the river, and inside the shrine. Comfortable shoes are essential.',
   },
   {
-    q: 'What time of day is best for photos?',
-    a: 'Morning light in Tadasu-no-Mori is exceptional — soft, filtered through the trees. The tour is timed to make the most of it.',
-  },
-  {
-    q: 'When do I receive my manga print?',
-    a: 'Digital files are sent within a few days after the tour via email or a file-sharing link.',
-  },
-  {
-    q: 'Can I book a private session?',
-    a: 'Yes. Private bookings for 1–4 guests are ideal for couples, families, or solo travelers wanting a personal photo experience.',
+    q: 'Is this suitable for children?',
+    a: 'Yes, families are very welcome. The pace is relaxed and the route is enjoyable for all ages. Not recommended for travelers with back problems or serious medical conditions.',
   },
 ];
 ---
@@ -65,20 +95,20 @@ const faqs = [
     />
     <div class="absolute inset-0 bg-gradient-to-t from-nes-black via-nes-black/60 to-transparent"></div>
     <div class="relative z-10 max-w-4xl mx-auto px-4 py-24 md:py-32">
-      <p class="font-pixel text-[0.9rem] text-nes-amber mb-4 rpg-prefix">MORNING TOUR · SHIMOGAMO & KAMOGAWA</p>
+      <p class="font-pixel text-[0.9rem] text-nes-amber mb-4 rpg-prefix">WALKING TOUR · SHIMOGAMO & KAMOGAWA</p>
       <h1 class="font-sans text-3xl md:text-4xl font-bold text-nes-white leading-tight mb-4">
         Shimogamo Shrine &amp; Manga Walk
       </h1>
       <p class="font-sans text-gray-300 text-base leading-relaxed mb-8 max-w-xl">
-        Ancient forest. World Heritage shrine. Soft morning light.
-        Walk it all — and leave with a one-of-a-kind manga portrait of your Kyoto moment.
+        Explore the hidden gems of Kyoto on this engaging walking tour of the mystical Shimogamo Shrine
+        and the iconic Kamogawa Delta — complete with a personalized manga-style souvenir featuring you as the main character.
       </p>
       <div class="flex flex-wrap gap-6 font-pixel text-[0.9rem] mb-8">
         {[
           { label: 'Duration', value: '~2 hours' },
-          { label: 'Group size', value: 'Small group' },
+          { label: 'Start times', value: '10:00 / 14:00' },
           { label: 'Language', value: 'English' },
-          { label: 'Time', value: 'Morning' },
+          { label: 'All ages', value: 'Welcome' },
         ].map(item => (
           <div>
             <div class="font-pixel text-[0.9rem] text-nes-amber">{item.value}</div>
@@ -151,18 +181,20 @@ const faqs = [
       </div>
     </section>
 
-    <!-- Timeline -->
+    <!-- Itinerary -->
     <section class="mb-12">
       <div class="flex items-center gap-4 mb-6">
-        <h2 class="font-pixel text-[0.9rem] text-nes-amber">TOUR TIMELINE</h2>
+        <h2 class="font-pixel text-[0.9rem] text-nes-amber">ITINERARY</h2>
         <div class="flex-1 border-t border-gray-800"></div>
       </div>
       <div class="space-y-5">
-        {timeline.map(item => (
+        {itinerary.map(item => (
           <div class="flex items-start gap-5">
-            <span class="font-pixel text-[0.9rem] text-nes-cyan shrink-0 w-12 text-right pt-1">{item.time}</span>
+            <span class="font-pixel text-[0.9rem] text-nes-cyan shrink-0 w-8 text-right pt-1">{item.stop}</span>
             <div class="flex-1 border-l border-gray-700 pl-5 pb-3">
-              <p class="font-sans text-sm text-gray-300 leading-relaxed">{item.desc}</p>
+              <p class="font-pixel text-[0.9rem] text-nes-white mb-2">{item.name.toUpperCase()}</p>
+              <p class="font-sans text-sm text-gray-300 leading-relaxed mb-1">{item.desc}</p>
+              {item.duration && <p class="font-pixel text-[0.9rem] text-gray-600">{item.duration} · Admission Free</p>}
             </div>
           </div>
         ))}
@@ -175,21 +207,21 @@ const faqs = [
         <p class="font-pixel text-[0.9rem] text-nes-cyan mb-4">// MEETING POINT</p>
         <div class="grid md:grid-cols-2 gap-6">
           <div>
-            <p class="font-pixel text-[0.9rem] text-nes-white font-semibold mb-1">Shimogamo Shrine Main Torii</p>
+            <p class="font-pixel text-[0.9rem] text-nes-white mb-1">Kamogawa Delta (Demachiyanagi)</p>
             <p class="font-sans text-gray-400 text-xs leading-relaxed">
-              Shimogamo Honmachi, Sakyo-ku, Kyoto<br />
-              10-min walk from Demachiyanagi Station (Eizan/Keihan)
+              Near Demachiyanagi Station (Keihan / Eizan Line)<br />
+              Exact meeting spot confirmed upon booking.
             </p>
             <p class="font-sans text-gray-600 text-xs mt-3">
-              Look for your guide at the large stone torii gate. Please arrive 5 minutes early.
+              Please arrive 5 minutes early. Your guide will be waiting at the meeting point.
             </p>
           </div>
           <div class="space-y-2 font-pixel text-[0.9rem]">
             {[
-              { k: 'Start time', v: '08:30' },
-              { k: 'End time', v: '~10:30' },
-              { k: 'Dress code', v: 'Comfortable shoes' },
-              { k: 'All ages', v: 'Welcome' },
+              { k: 'Morning slot', v: '10:00 start' },
+              { k: 'Afternoon slot', v: '14:00 start' },
+              { k: 'Duration', v: '~2 hours' },
+              { k: 'Shoes', v: 'Comfortable' },
             ].map(row => (
               <div class="flex justify-between border-b border-gray-800 pb-2">
                 <span class="text-gray-500">{row.k}</span>
@@ -198,6 +230,22 @@ const faqs = [
             ))}
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- Additional info -->
+    <section class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-pixel text-[0.9rem] text-nes-amber">ADDITIONAL INFO</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-3">
+        {notes.map(note => (
+          <div class="flex items-start gap-3 bg-gray-900 border border-gray-800 px-4 py-3">
+            <span class="font-pixel text-[0.9rem] text-nes-amber shrink-0">!</span>
+            <span class="font-sans text-gray-400 text-sm leading-relaxed">{note}</span>
+          </div>
+        ))}
       </div>
     </section>
 
