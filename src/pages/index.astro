@@ -191,8 +191,22 @@ const latestPosts = blogPosts.slice(0, 3);
     </div>
   </section>
 
-  <!-- Mini Game (embedded) -->
-  <section class="max-w-4xl mx-auto px-4 py-10">
+  <!-- Mobile CTA (shown instead of game on small screens) -->
+  <section class="md:hidden max-w-xl mx-auto px-4 py-10 text-center">
+    <div class="dialogue-box scanlines">
+      <p class="font-pixel text-[0.9rem] text-nes-cyan mb-3">// GION NIGHT RUN</p>
+      <p class="font-sans text-sm text-gray-300 mb-6 leading-relaxed">
+        Dodge tourists. Collect sake cups. Experience the real thing on desktop — or just book the tour.
+      </p>
+      <div class="flex flex-col gap-3">
+        <a href="/tours/gion-sake-walk" class="nes-btn nes-btn-gold">BOOK THE REAL TOUR →</a>
+        <a href="/tours" class="nes-btn nes-btn-outline">SEE ALL TOURS</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mini Game (desktop only) -->
+  <section class="max-w-4xl mx-auto px-4 py-10 hidden md:block">
     <div class="flex items-center gap-4 mb-6">
       <h2 class="font-pixel text-[0.9rem] text-nes-green">// MINI GAME</h2>
       <div class="flex-1 border-t border-gray-800"></div>
@@ -274,6 +288,7 @@ const latestPosts = blogPosts.slice(0, 3);
           tag: 'EVENING · GION',
           name: 'GION SAKE WALKING TOUR',
           meta: '3 hrs · Max 10 · Sake · EN',
+          price: 'from ¥5,600',
           href: '/tours/gion-sake-walk',
         },
         {
@@ -281,6 +296,7 @@ const latestPosts = blogPosts.slice(0, 3);
           tag: 'EVENING · PONTOCHO',
           name: 'KYOTO IZAKAYA HOPPING',
           meta: '3 hrs · Small group · Food · EN',
+          price: 'from ¥4,160',
           href: '/tours/izakaya-hopping',
         },
         {
@@ -288,6 +304,7 @@ const latestPosts = blogPosts.slice(0, 3);
           tag: 'MORNING · SHIMOGAMO',
           name: 'SHIMOGAMO SHRINE & MANGA WALK',
           meta: '2 hrs · 10:00 / 14:00 · Manga · EN',
+          price: 'from ¥8,500',
           href: '/tours/shimogamo-manga-walk',
         },
       ].map(tour => (
@@ -296,7 +313,7 @@ const latestPosts = blogPosts.slice(0, 3);
           <div class="flex-1">
             <p class="font-pixel text-[0.9rem] text-nes-cyan mb-1">{tour.tag}</p>
             <h3 class="font-pixel text-[0.9rem] text-nes-white leading-relaxed mb-1">{tour.name}</h3>
-            <p class="font-pixel text-[0.9rem] text-gray-500">{tour.meta}</p>
+            <p class="font-pixel text-[0.9rem] text-gray-500">{tour.meta} · <span class="text-nes-amber">{tour.price}</span></p>
           </div>
           <a href={tour.href} class="nes-btn nes-btn-gold shrink-0">VIEW TOUR</a>
         </div>

@@ -5,6 +5,7 @@ description: "Neighborhood‑by‑neighborhood guide to the best areas in Kyoto 
 author: "Local Guide"
 last_updated: "2025-03-01"
 hero_image: ""
+noIndex: true
 canonical: ""
 ---
 

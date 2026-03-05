@@ -12,6 +12,7 @@ const blog = defineCollection({
     canonical: z.string().optional(),
     category: z.string().optional(),
     slug: z.string().optional(),
+    noIndex: z.boolean().optional(),
   }),
 });
 

@@ -5,6 +5,7 @@ description: "Clear, practical guide for first‑time visitors to Kyoto: when to
 author: "Local Guide"
 last_updated: "2025-03-01"
 hero_image: ""
+noIndex: true
 canonical: ""
 ---
 

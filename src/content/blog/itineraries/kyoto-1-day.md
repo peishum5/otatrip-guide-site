@@ -5,6 +5,7 @@ description: "A realistic one‑day route hitting Kyoto’s essentials: Fushimi 
 author: "Local Guide"
 last_updated: "2025-03-01"
 hero_image: ""
+noIndex: true
 canonical: ""
 ---
 

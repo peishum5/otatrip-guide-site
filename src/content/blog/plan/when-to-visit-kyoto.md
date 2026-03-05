@@ -5,6 +5,7 @@ description: "Month‑by‑month guide to Kyoto’s weather, festivals, crowd le
 author: "Local Guide"
 last_updated: "2025-03-01"
 hero_image: ""
+noIndex: true
 canonical: ""
 ---
 

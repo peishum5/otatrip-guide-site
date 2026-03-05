@@ -5,6 +5,7 @@ description: "Cards vs. cash, reliable ATMs, eSIM/SIM options, and Wi‑Fi tips 
 author: "Local Guide"
 last_updated: "2025-03-01"
 hero_image: ""
+noIndex: true
 canonical: ""
 ---
 

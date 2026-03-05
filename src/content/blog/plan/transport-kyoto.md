@@ -5,6 +5,7 @@ description: "Practical transport guide for Kyoto: IC cards, buses vs. trains, t
 author: "Local Guide"
 last_updated: "2025-03-01"
 hero_image: ""
+noIndex: true
 canonical: ""
 ---
 

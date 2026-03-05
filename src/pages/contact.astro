@@ -21,7 +21,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="grid md:grid-cols-2 gap-4 mb-10">
       <a href="/groups" class="dialogue-box hover:border-nes-cyan transition-colors group block">
         <p class="font-pixel text-[0.9rem] text-nes-cyan mb-2">GROUPS &amp; AGENCIES</p>
-        <p class="font-pixel text-[0.9rem] text-nes-white group-hover:text-nes-amber transition-colors mb-1">GROUP INQUIRY FORM &rarr;</p>
+        <p class="font-pixel text-[0.9rem] text-nes-white group-hover:text-nes-amber transition-colors mb-1">SEND GROUP INQUIRY &rarr;</p>
         <p class="font-sans text-xs text-gray-500 mt-1">Custom tours, flexible groups</p>
       </a>
       <a href="/tours/gion-sake-walk#booking" class="dialogue-box hover:border-nes-cyan transition-colors group block">
@@ -31,81 +31,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </a>
     </div>
 
-    <!-- Contact form -->
+    <!-- Email CTA -->
     <div class="dialogue-box">
-      <h2 class="font-pixel text-[0.9rem] text-nes-white mb-6">// GENERAL INQUIRY</h2>
-
-      <form
-        name="contact"
-        method="POST"
-        action="/contact/success"
-        class="space-y-5"
-        data-netlify="true"
-      >
-        <input type="hidden" name="form-name" value="contact" />
-
-        <div>
-          <label for="name" class="block font-pixel text-[0.9rem] text-gray-400 mb-2">YOUR NAME *</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            required
-            class="w-full bg-gray-900 border-2 border-gray-700 focus:border-nes-amber px-4 py-3 text-sm text-nes-white outline-none transition-colors"
-            placeholder="Your name"
-          />
-        </div>
-
-        <div>
-          <label for="email" class="block font-pixel text-[0.9rem] text-gray-400 mb-2">EMAIL ADDRESS *</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            required
-            class="w-full bg-gray-900 border-2 border-gray-700 focus:border-nes-amber px-4 py-3 text-sm text-nes-white outline-none transition-colors"
-            placeholder="you@example.com"
-          />
-        </div>
-
-        <div>
-          <label for="subject" class="block font-pixel text-[0.9rem] text-gray-400 mb-2">SUBJECT</label>
-          <select
-            id="subject"
-            name="subject"
-            class="w-full bg-gray-900 border-2 border-gray-700 focus:border-nes-amber px-4 py-3 text-sm text-nes-white outline-none transition-colors"
-          >
-            <option value="general">General Question</option>
-            <option value="booking">Tour Booking Help</option>
-            <option value="group">Group / Agency Inquiry</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="message" class="block font-pixel text-[0.9rem] text-gray-400 mb-2">MESSAGE *</label>
-          <textarea
-            id="message"
-            name="message"
-            required
-            rows="5"
-            class="w-full bg-gray-900 border-2 border-gray-700 focus:border-nes-amber px-4 py-3 text-sm text-nes-white outline-none transition-colors resize-none"
-            placeholder="Your message..."
-          ></textarea>
-        </div>
-
-        <button type="submit" class="nes-btn nes-btn-gold w-full">
-          Send Message
-        </button>
-      </form>
-    </div>
-
-    <!-- Direct email -->
-    <div class="mt-8 text-center">
-      <p class="font-pixel text-[0.9rem] text-gray-600">
-        OR EMAIL DIRECTLY:
-        <a href="mailto:kyoto.otatrip.guide@gmail.com" class="text-nes-cyan hover:text-nes-amber transition-colors ml-1">kyoto.otatrip.guide@gmail.com</a>
+      <h2 class="font-pixel text-[0.9rem] text-nes-white mb-4">// GENERAL INQUIRY</h2>
+      <p class="font-sans text-sm text-gray-300 leading-relaxed mb-6">
+        Questions about tours, availability, or anything Kyoto-related? Send us an email and we'll get back to you within 24 hours.
       </p>
+      <a
+        href="mailto:kyoto.otatrip.guide@gmail.com"
+        class="nes-btn nes-btn-gold w-full text-center block"
+      >
+        EMAIL US NOW
+      </a>
+      <p class="font-sans text-xs text-gray-600 text-center mt-4">kyoto.otatrip.guide@gmail.com</p>
     </div>
 
   </div>

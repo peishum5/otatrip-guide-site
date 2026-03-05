@@ -11,7 +11,8 @@ const tours = [
     groupSize: 'Max 10 guests',
     time: 'Evening',
     rating: '4.9',
-    reviews: '200+',
+    reviews: '100+',
+    price: 'from ¥5,600',
     icon: '🏮',
     href: '/tours/gion-sake-walk',
     photo: '/images/tours/tour-gion-walk.jpg',
@@ -32,6 +33,7 @@ const tours = [
     time: 'Evening',
     rating: null,
     reviews: null,
+    price: 'from ¥4,160',
     icon: '🍻',
     href: '/tours/izakaya-hopping',
     photo: '/images/tours/izakaya/izakaya-guests.jpg',
@@ -53,6 +55,7 @@ const tours = [
     time: 'Morning',
     rating: null,
     reviews: null,
+    price: 'from ¥8,500',
     icon: '⛩️',
     href: '/tours/shimogamo-manga-walk',
     photo: '/images/tours/shimogamo/photo-bridge.jpg',
@@ -123,6 +126,7 @@ const tours = [
                 <span>⏱ {tour.duration}</span>
                 <span>👥 {tour.groupSize}</span>
                 <span>🌐 EN</span>
+                {tour.price && <span class="text-nes-amber">{tour.price}</span>}
               </div>
 
               <div class="flex flex-wrap gap-2">

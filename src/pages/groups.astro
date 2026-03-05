@@ -82,87 +82,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </section>
 
-    <!-- Contact form -->
+    <!-- Email CTA -->
     <section id="contact-form" class="mb-12">
       <div class="dialogue-box">
-        <p class="font-pixel text-[0.9rem] text-nes-cyan mb-6">// SEND A MESSAGE</p>
-
-        <form
-          name="group-inquiry"
-          method="POST"
-          action="/contact/success"
-          class="space-y-5"
-          data-netlify="true"
+        <p class="font-pixel text-[0.9rem] text-nes-cyan mb-4">// SEND US AN EMAIL</p>
+        <p class="font-sans text-sm text-gray-300 leading-relaxed mb-6">
+          Drop us an email with your <span class="text-nes-amber">group size</span>,
+          <span class="text-nes-amber">preferred dates</span>, and
+          <span class="text-nes-amber">what kind of experience</span> you have in mind.
+          We'll get back to you within 24 hours.
+        </p>
+        <a
+          href="mailto:kyoto.otatrip.guide@gmail.com?subject=Group%20Tour%20Inquiry"
+          class="nes-btn nes-btn-gold w-full text-center block"
         >
-          <input type="hidden" name="form-name" value="group-inquiry" />
-
-          <div class="grid sm:grid-cols-2 gap-5">
-            <div>
-              <label for="name" class="block font-pixel text-[0.9rem] text-gray-400 mb-2">YOUR NAME *</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                required
-                class="w-full bg-gray-900 border-2 border-gray-700 focus:border-nes-amber px-4 py-3 text-sm text-nes-white outline-none transition-colors"
-                placeholder="Your name"
-              />
-            </div>
-            <div>
-              <label for="email" class="block font-pixel text-[0.9rem] text-gray-400 mb-2">EMAIL ADDRESS *</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                required
-                class="w-full bg-gray-900 border-2 border-gray-700 focus:border-nes-amber px-4 py-3 text-sm text-nes-white outline-none transition-colors"
-                placeholder="you@example.com"
-              />
-            </div>
-          </div>
-
-          <div class="grid sm:grid-cols-2 gap-5">
-            <div>
-              <label for="group-size" class="block font-pixel text-[0.9rem] text-gray-400 mb-2">GROUP SIZE</label>
-              <select
-                id="group-size"
-                name="group-size"
-                class="w-full bg-gray-900 border-2 border-gray-700 focus:border-nes-amber px-4 py-3 text-sm text-nes-white outline-none transition-colors"
-              >
-                <option value="">Select...</option>
-                <option value="2-4">2–4 guests</option>
-                <option value="5-8">5–8 guests</option>
-                <option value="9-15">9–15 guests</option>
-                <option value="16+">16+ guests</option>
-              </select>
-            </div>
-            <div>
-              <label for="preferred-date" class="block font-pixel text-[0.9rem] text-gray-400 mb-2">PREFERRED DATE(S)</label>
-              <input
-                type="text"
-                id="preferred-date"
-                name="preferred-date"
-                class="w-full bg-gray-900 border-2 border-gray-700 focus:border-nes-amber px-4 py-3 text-sm text-nes-white outline-none transition-colors"
-                placeholder="e.g. April 10–12"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label for="message" class="block font-pixel text-[0.9rem] text-gray-400 mb-2">WHAT ARE YOU LOOKING FOR?</label>
-            <textarea
-              id="message"
-              name="message"
-              rows="4"
-              class="w-full bg-gray-900 border-2 border-gray-700 focus:border-nes-amber px-4 py-3 text-sm text-nes-white outline-none transition-colors resize-none"
-              placeholder="Tell us about your group and what kind of Kyoto experience you have in mind."
-            ></textarea>
-          </div>
-
-          <button type="submit" class="nes-btn nes-btn-gold w-full">
-            Send Message
-          </button>
-        </form>
+          EMAIL US NOW
+        </a>
+        <p class="font-sans text-xs text-gray-600 text-center mt-4">kyoto.otatrip.guide@gmail.com</p>
       </div>
     </section>
 

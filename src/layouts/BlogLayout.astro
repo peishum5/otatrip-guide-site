@@ -11,13 +11,14 @@ interface Props {
   canonical?: string;
   hero_image?: string;
   category?: string;
+  noIndex?: boolean;
 }
 
-const { title, description, pubDate, last_updated, author = 'Local Guide', canonical, hero_image, category } = Astro.props;
+const { title, description, pubDate, last_updated, author = 'Local Guide', canonical, hero_image, category, noIndex } = Astro.props;
 const displayDate = last_updated || pubDate;
 ---
 
-<BaseLayout title={title} description={description} canonical={canonical} ogImage={hero_image}>
+<BaseLayout title={title} description={description} canonical={canonical} ogImage={hero_image} noIndex={noIndex}>
   <article class="max-w-3xl mx-auto px-4 py-10">
 
     <!-- Breadcrumb -->
