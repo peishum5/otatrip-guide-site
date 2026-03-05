@@ -10,7 +10,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <!-- Header -->
   <section class="scanlines bg-nes-black py-10 text-center">
     <div class="relative z-10 max-w-2xl mx-auto px-4">
-      <p class="font-pixel text-[0.5rem] text-nes-amber mb-2 rpg-prefix">MINI GAME</p>
+      <p class="font-pixel text-[0.7rem] text-nes-amber mb-2 rpg-prefix">MINI GAME</p>
       <h1 class="font-pixel text-nes-white mb-3" style="font-size: clamp(0.8rem, 3vw, 1.5rem);">GION NIGHT RUN</h1>
       <p class="font-sans text-sm text-gray-400">Dodge tourists &amp; rickshaws. Collect sake. Reach the sake bar.</p>
     </div>
@@ -23,18 +23,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       <!-- HUD bar -->
       <div class="flex items-center gap-4 px-4 py-2 border-b-2 border-gray-800">
-        <div class="font-pixel text-[0.5rem] shrink-0">
+        <div class="font-pixel text-[0.7rem] shrink-0">
           <span class="text-nes-cyan">SCORE </span><span class="text-nes-white" id="score-val">0</span>
         </div>
         <!-- Progress bar -->
         <div class="flex-1 flex items-center gap-2 min-w-0">
-          <span class="font-pixel text-[0.42rem] text-nes-amber shrink-0">🍶BAR</span>
+          <span class="font-pixel text-[0.58rem] text-nes-amber shrink-0">🍶BAR</span>
           <div class="stat-bar-track flex-1">
             <div id="progress-fill" class="stat-bar-fill" style="width:0%;transition:width 0.15s;"></div>
           </div>
-          <span class="font-pixel text-[0.42rem] text-gray-500 shrink-0" id="pct-val">0%</span>
+          <span class="font-pixel text-[0.58rem] text-gray-500 shrink-0" id="pct-val">0%</span>
         </div>
-        <div class="font-pixel text-[0.5rem] shrink-0">
+        <div class="font-pixel text-[0.7rem] shrink-0">
           <span class="text-nes-amber">BEST </span><span class="text-nes-white" id="hi-val">0</span>
         </div>
       </div>
@@ -45,7 +45,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
         <!-- Start overlay -->
         <div id="start-overlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/80">
-          <p class="font-pixel text-[0.55rem] text-nes-white pixel-cursor mb-4">PRESS SPACE OR TAP TO START</p>
+          <p class="font-pixel text-[0.75rem] text-nes-white pixel-cursor mb-4">PRESS SPACE OR TAP TO START</p>
           <div class="flex flex-wrap justify-center gap-4 font-sans text-xs text-gray-500">
             <span>🍶 Sake cup = +10 pts</span>
             <span>🚶 Tourist = GAME OVER</span>
@@ -56,8 +56,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <!-- Game over overlay -->
         <div id="over-overlay" style="display:none;" class="absolute inset-0 flex flex-col items-center justify-center bg-black/90">
           <p class="font-pixel text-nes-red mb-4" style="font-size:clamp(0.7rem,2.5vw,1.4rem);">GAME OVER</p>
-          <p class="font-pixel text-[0.5rem] text-nes-white mb-1">SCORE: <span id="over-score">0</span></p>
-          <p class="font-pixel text-[0.5rem] text-nes-amber mb-6">BEST: <span id="over-hi">0</span></p>
+          <p class="font-pixel text-[0.7rem] text-nes-white mb-1">SCORE: <span id="over-score">0</span></p>
+          <p class="font-pixel text-[0.7rem] text-nes-amber mb-6">BEST: <span id="over-hi">0</span></p>
           <div class="flex flex-col sm:flex-row gap-3 items-center">
             <button id="retry-btn" class="nes-btn nes-btn-outline">PLAY AGAIN</button>
             <a href="/tours/gion-sake-walk" class="nes-btn nes-btn-gold">BOOK THE REAL TOUR →</a>
@@ -67,9 +67,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <!-- Win overlay -->
         <div id="win-overlay" style="display:none;" class="absolute inset-0 flex flex-col items-center justify-center bg-black/90">
           <p class="font-pixel text-nes-amber mb-2" style="font-size:clamp(0.6rem,2vw,1.1rem);">★ YOU MADE IT! ★</p>
-          <p class="font-pixel text-[0.5rem] text-nes-green mb-1">ARRIVED AT THE SAKE BAR</p>
-          <p class="font-pixel text-[0.5rem] text-nes-white mt-3 mb-1">SCORE: <span id="win-score">0</span></p>
-          <p class="font-pixel text-[0.5rem] text-nes-amber mb-6">BEST: <span id="win-hi">0</span></p>
+          <p class="font-pixel text-[0.7rem] text-nes-green mb-1">ARRIVED AT THE SAKE BAR</p>
+          <p class="font-pixel text-[0.7rem] text-nes-white mt-3 mb-1">SCORE: <span id="win-score">0</span></p>
+          <p class="font-pixel text-[0.7rem] text-nes-amber mb-6">BEST: <span id="win-hi">0</span></p>
           <div class="flex flex-col sm:flex-row gap-3 items-center">
             <button id="win-retry-btn" class="nes-btn nes-btn-outline">PLAY AGAIN</button>
             <a href="/tours/gion-sake-walk" class="nes-btn nes-btn-gold">BOOK THE REAL TOUR →</a>
@@ -85,7 +85,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     <!-- Back -->
     <div class="text-center mt-10">
-      <a href="/tours" class="font-pixel text-[0.5rem] text-nes-amber hover:text-nes-cyan transition-colors">
+      <a href="/tours" class="font-pixel text-[0.7rem] text-nes-amber hover:text-nes-cyan transition-colors">
         &lt; BACK TO TOURS
       </a>
     </div>

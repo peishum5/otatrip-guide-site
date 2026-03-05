@@ -17,7 +17,7 @@ const categories = {
   <!-- Header -->
   <section class="scanlines bg-nes-black py-16 text-center">
     <div class="relative z-10 max-w-4xl mx-auto px-4">
-      <p class="font-pixel text-[0.5rem] text-nes-amber mb-4 rpg-prefix">LOCAL KNOWLEDGE</p>
+      <p class="font-pixel text-[0.7rem] text-nes-amber mb-4 rpg-prefix">LOCAL KNOWLEDGE</p>
       <h1 class="font-pixel text-nes-white mb-4" style="font-size: clamp(1rem, 4vw, 2rem);">KYOTO TRAVEL GUIDES</h1>
       <p class="font-sans text-gray-400 text-sm max-w-2xl mx-auto">
         Practical, firsthand guides from local experts who know Kyoto's streets, seasons, and secrets.
@@ -29,7 +29,7 @@ const categories = {
     {Object.entries(categories).map(([category, posts]) => posts.length > 0 && (
       <section class="mb-14">
         <div class="flex items-center gap-4 mb-6">
-          <h2 class="font-pixel text-[0.55rem] text-nes-amber">{category.toUpperCase()}</h2>
+          <h2 class="font-pixel text-[0.75rem] text-nes-amber">{category.toUpperCase()}</h2>
           <div class="flex-1 border-t border-gray-800"></div>
           <span class="font-sans text-xs text-gray-600">{posts.length} guides</span>
         </div>
@@ -56,7 +56,7 @@ const categories = {
     {allPosts.filter(p => !p.slug.startsWith('plan/') && !p.slug.startsWith('itineraries/')).length > 0 && (
       <section class="mb-14">
         <div class="flex items-center gap-4 mb-6">
-          <h2 class="font-pixel text-[0.55rem] text-nes-amber">MORE GUIDES</h2>
+          <h2 class="font-pixel text-[0.75rem] text-nes-amber">MORE GUIDES</h2>
           <div class="flex-1 border-t border-gray-800"></div>
         </div>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -47,11 +47,11 @@ const guides = [
   <!-- PLAYER SELECT Header -->
   <section class="scanlines bg-nes-black py-16 text-center">
     <div class="relative z-10 max-w-3xl mx-auto px-4">
-      <p class="font-pixel text-[0.5rem] text-gray-600 mb-4">★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★</p>
-      <p class="font-pixel text-[0.5rem] text-nes-amber mb-6 rpg-prefix">SELECT YOUR GUIDE</p>
+      <p class="font-pixel text-[0.7rem] text-gray-600 mb-4">★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★</p>
+      <p class="font-pixel text-[0.7rem] text-nes-amber mb-6 rpg-prefix">SELECT YOUR GUIDE</p>
       <h1 class="font-pixel text-nes-white mb-6" style="font-size: clamp(1.2rem, 5vw, 2.5rem);">PLAYER SELECT</h1>
-      <p class="font-pixel text-[0.5rem] text-nes-cyan pixel-cursor">CHOOSE YOUR GUIDE</p>
-      <p class="font-pixel text-[0.5rem] text-gray-600 mt-6">★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★</p>
+      <p class="font-pixel text-[0.7rem] text-nes-cyan pixel-cursor">CHOOSE YOUR GUIDE</p>
+      <p class="font-pixel text-[0.7rem] text-gray-600 mt-6">★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★</p>
     </div>
   </section>
 
@@ -76,12 +76,12 @@ const guides = [
               </div>
             )}
             <p class="font-sans text-xs text-nes-cyan mb-2">PLAYER {i + 1}</p>
-            <h2 class="font-pixel text-[0.55rem] text-nes-white mb-1 leading-relaxed">{guide.name}</h2>
+            <h2 class="font-pixel text-[0.75rem] text-nes-white mb-1 leading-relaxed">{guide.name}</h2>
             {guide.realName && (
               <p class="font-sans text-xs text-gray-500 mb-3">{guide.realName}</p>
             )}
             <div class="inline-block border border-nes-cyan px-3 py-1 mb-3">
-              <span class="font-pixel text-[0.5rem] text-nes-cyan">{guide.class}</span>
+              <span class="font-pixel text-[0.7rem] text-nes-cyan">{guide.class}</span>
             </div>
             <p class="font-sans text-xs text-nes-green font-bold">LV. {guide.level}</p>
             {guide.xId && (
@@ -101,7 +101,7 @@ const guides = [
 
           <!-- Stats -->
           <div class="mb-6 border-b border-gray-800 pb-6">
-            <p class="font-pixel text-[0.5rem] text-nes-cyan mb-4">// STATS</p>
+            <p class="font-pixel text-[0.7rem] text-nes-cyan mb-4">// STATS</p>
             <div class="space-y-4">
               {guide.stats.map(stat => (
                 <div>
@@ -121,7 +121,7 @@ const guides = [
 
           <!-- Bio -->
           <div class="mb-6 flex-1">
-            <p class="font-pixel text-[0.5rem] text-nes-cyan mb-4">// BIO</p>
+            <p class="font-pixel text-[0.7rem] text-nes-cyan mb-4">// BIO</p>
             <p class="font-sans text-sm text-gray-300 leading-relaxed">{guide.bio}</p>
           </div>
 
@@ -139,9 +139,9 @@ const guides = [
             ?
           </div>
           <p class="font-sans text-xs text-gray-600 mb-2">PLAYER 3 & BEYOND</p>
-          <h2 class="font-pixel text-[0.55rem] text-gray-500 mb-3 leading-relaxed">STUDENT GUIDES</h2>
+          <h2 class="font-pixel text-[0.75rem] text-gray-500 mb-3 leading-relaxed">STUDENT GUIDES</h2>
           <div class="inline-block border border-gray-700 px-3 py-1">
-            <span class="font-pixel text-[0.5rem] text-gray-600">MANY CLASSES</span>
+            <span class="font-pixel text-[0.7rem] text-gray-600">MANY CLASSES</span>
           </div>
         </div>
 
@@ -164,7 +164,7 @@ const guides = [
 
   <!-- Back link -->
   <div class="text-center pb-16 border-t border-gray-900 pt-8">
-    <a href="/" class="font-pixel text-[0.5rem] text-nes-amber hover:text-nes-cyan transition-colors">
+    <a href="/" class="font-pixel text-[0.7rem] text-nes-amber hover:text-nes-cyan transition-colors">
       &lt; BACK TO QUEST SELECT
     </a>
   </div>
