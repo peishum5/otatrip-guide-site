@@ -5,40 +5,42 @@ import GroupCTA from '../../components/GroupCTA.astro';
 import ReviewsSection from '../../components/ReviewsSection.astro';
 
 const highlights = [
-  'Visit 3 hand-picked sake bars in Gion — places locals actually go',
-  'Learn to distinguish Fushimi-style sake from other regions',
-  'Walk the lantern-lit alleys of Hanamikoji and Shinbashi',
+  'Walk the iconic stone-paved alleys of Gion and Higashiyama',
+  'Stroll Hanamikoji Street — Kyoto\'s most famous geisha district',
+  'Visit Yasui-Konpiragu shrine, Hokan-ji Temple (Yasaka Pagoda), and Yasaka Shrine',
+  'Discover Nene-no-Michi, Sannenzaka, and Sanneizaka at your own pace',
   'Hear stories of geiko, maiko, and the traditional entertainment district',
   'Small groups (max 10 guests) for an intimate, unhurried experience',
-  'Light snacks included at each stop',
 ];
 
 const timeline = [
-  { time: 'START', desc: 'Meet at Shijo Kiyamachi. Your guide is holding an "Otatrip Guide" sign. Brief intro and neighborhood overview.' },
-  { time: '+15\'', desc: 'First sake bar — learn the basics of Fushimi sake style and taste two varieties.' },
-  { time: '+30\'', desc: 'Walk Hanamikoji and Shinbashi — the iconic stone-paved streets of old Gion.' },
-  { time: '+50\'', desc: 'Second sake bar — compare regional sake styles, with local snack pairings.' },
-  { time: '+65\'', desc: 'Hidden alley walk through Gion Shimbashi designated townscape.' },
-  { time: '+75\'', desc: 'Third sake bar — premium junmai selection. Open Q&A with your guide.' },
-  { time: '+90\'', desc: 'Tour ends. Optional: continue exploring Gion on your own.' },
+  { time: 'START', desc: 'Meet at Shijo Kiyamachi. Your guide is holding an "Otatrip Guide" sign. Brief intro and overview.' },
+  { time: '+10\'', desc: 'Stroll along the Kamogawa River and enter the Gion district.' },
+  { time: '+20\'', desc: 'Hanamikoji Street — Kyoto\'s most iconic geisha street, lined with traditional machiya teahouses.' },
+  { time: '+30\'', desc: 'Yasui-Konpiragu — a unique Shinto shrine famous for its Enkiri-Enmusubi stone and relationship rituals.' },
+  { time: '+45\'', desc: 'Hokan-ji Temple — the five-story Yasaka Pagoda, one of Kyoto\'s most recognizable landmarks.' },
+  { time: '+60\'', desc: 'Sannenzaka & Sanneizaka — charming stone-paved lanes lined with traditional shops and cafes.' },
+  { time: '+70\'', desc: 'Nene-no-Michi — a serene stone path connecting Kodaiji Temple to Maruyama Park.' },
+  { time: '+80\'', desc: 'Yasaka Shrine — the spiritual heart of Gion and home of the grand Gion Matsuri festival.' },
+  { time: '+90\'', desc: 'Tour ends. Optional: continue exploring the area on your own.' },
 ];
 
 const faqs = [
   {
-    q: 'Do I need to know anything about sake beforehand?',
-    a: 'No experience needed. The guide explains everything from scratch — what sake is, how it\'s made in Kyoto, and how to taste it. Total beginners are welcome.',
-  },
-  {
-    q: 'Is this suitable for non-drinkers?',
-    a: 'The tour focuses on sake culture and the Gion neighborhood experience. Non-drinkers can participate and sip at their own pace; we always have non-alcoholic options available.',
-  },
-  {
     q: 'How much walking is involved?',
-    a: 'About 2–3 km in total on stone-paved streets. Comfortable flat shoes recommended. The pace is relaxed with frequent stops.',
+    a: 'The tour covers the Gion and Higashiyama area — roughly 2–3 km on stone-paved streets and gentle slopes. The pace is relaxed with stops along the way. Comfortable flat shoes are recommended.',
+  },
+  {
+    q: 'Is admission to the shrines and temples included?',
+    a: 'All stops on this tour are free to enter. No admission tickets are needed.',
   },
   {
     q: 'What if it rains?',
-    a: 'The tour runs rain or shine — Gion is beautiful in the rain. Bring an umbrella or purchase a compact one at a nearby konbini.',
+    a: 'The tour runs rain or shine — Gion is beautiful in the rain. Bring an umbrella or pick up a compact one at a nearby konbini.',
+  },
+  {
+    q: 'What language is the tour in?',
+    a: 'The tour is conducted in English.',
   },
   {
     q: 'Can I book for a private group?',
@@ -90,7 +92,7 @@ const photos = [
       </h1>
       <p class="font-sans text-gray-300 text-base leading-relaxed mb-8 max-w-xl">
         Walk the stone-paved alleys of Kyoto's most iconic neighborhood.
-        Three local sake bars. Stories from a guide who calls Gion home.
+        Gion, Hanamikoji, Yasaka Pagoda, Nene-no-Michi — guided by someone who calls Gion home.
       </p>
       <div class="flex flex-wrap gap-6 font-pixel text-[0.9rem] mb-8">
         {[
