@@ -87,7 +87,7 @@ const photos = [
         Walk the stone-paved alleys of Kyoto's most iconic neighborhood after dark.
         Three local sake bars. Lantern light. Stories from a guide who calls Gion home.
       </p>
-      <div class="flex flex-wrap gap-6 font-sans text-sm mb-8">
+      <div class="flex flex-wrap gap-6 font-pixel text-[0.9rem] mb-8">
         {[
           { label: 'Duration', value: '3 hours' },
           { label: 'Group size', value: 'Max 8' },
@@ -95,8 +95,8 @@ const photos = [
           { label: 'Rating', value: '★ 4.9 / 5' },
         ].map(item => (
           <div>
-            <div class="text-nes-amber font-bold">{item.value}</div>
-            <div class="text-gray-500 text-xs">{item.label}</div>
+            <div class="font-pixel text-[0.9rem] text-nes-amber">{item.value}</div>
+            <div class="font-pixel text-[0.9rem] text-gray-500">{item.label}</div>
           </div>
         ))}
       </div>
@@ -115,7 +115,7 @@ const photos = [
       <div class="grid md:grid-cols-2 gap-3">
         {highlights.map(item => (
           <div class="flex items-start gap-3 bg-gray-900 border border-gray-800 px-4 py-3">
-            <span class="text-nes-green shrink-0 font-sans text-sm">[OK]</span>
+            <span class="font-pixel text-[0.9rem] text-nes-green shrink-0">[OK]</span>
             <span class="font-sans text-gray-300 text-sm leading-relaxed">{item}</span>
           </div>
         ))}
@@ -175,7 +175,7 @@ const photos = [
               Look for your guide holding a small OTAtrip Guide sign. Please arrive 5 minutes early.
             </p>
           </div>
-          <div class="space-y-2 font-sans text-xs">
+          <div class="space-y-2 font-pixel text-[0.9rem]">
             {[
               { k: 'Start time', v: '17:30' },
               { k: 'End time', v: '~20:30' },
@@ -217,7 +217,7 @@ const photos = [
       <div class="space-y-3">
         {faqs.map(faq => (
           <details class="border border-gray-800 bg-gray-900 group">
-            <summary class="flex items-center justify-between px-5 py-4 cursor-pointer font-sans text-sm font-medium text-nes-white hover:text-nes-amber transition-colors">
+            <summary class="flex items-center justify-between px-5 py-4 cursor-pointer font-pixel text-[0.9rem] text-nes-white hover:text-nes-amber transition-colors">
               {faq.q}
               <span class="ml-4 text-gray-600 shrink-0 group-open:rotate-180 transition-transform">▼</span>
             </summary>

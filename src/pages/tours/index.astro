@@ -101,9 +101,9 @@ const tours = [
             <!-- Info -->
             <div class="flex-1">
               <div class="flex flex-wrap items-center gap-3 mb-2">
-                <span class="font-sans text-xs text-nes-cyan font-medium">{tour.time}</span>
+                <span class="font-pixel text-[0.9rem] text-nes-cyan">{tour.time.toUpperCase()}</span>
                 {tour.rating && (
-                  <span class="font-sans text-xs text-nes-amber">★ {tour.rating} ({tour.reviews} reviews)</span>
+                  <span class="font-pixel text-[0.9rem] text-nes-amber">★ {tour.rating} ({tour.reviews} reviews)</span>
                 )}
               </div>
               <h2 class="font-pixel text-[1rem] text-nes-white leading-relaxed mb-2">{tour.name}</h2>
@@ -111,21 +111,21 @@ const tours = [
 
               <ul class="space-y-1 mb-4">
                 {tour.highlights.map(h => (
-                  <li class="font-sans text-xs text-gray-400 flex items-start gap-2">
+                  <li class="font-pixel text-[0.9rem] text-gray-400 flex items-start gap-2">
                     <span class="text-nes-green shrink-0">[OK]</span>{h}
                   </li>
                 ))}
               </ul>
 
-              <div class="flex flex-wrap gap-4 font-sans text-xs text-gray-500 mb-3">
+              <div class="flex flex-wrap gap-4 font-pixel text-[0.9rem] text-gray-500 mb-3">
                 <span>⏱ {tour.duration}</span>
                 <span>👥 {tour.groupSize}</span>
-                <span>🌐 English</span>
+                <span>🌐 EN</span>
               </div>
 
               <div class="flex flex-wrap gap-2">
                 {tour.tags.map(tag => (
-                  <span class="font-sans text-xs border border-gray-800 text-gray-600 px-2 py-0.5">{tag}</span>
+                  <span class="font-pixel text-[0.9rem] border border-gray-800 text-gray-600 px-2 py-0.5">{tag.toUpperCase()}</span>
                 ))}
               </div>
             </div>

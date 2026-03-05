@@ -21,14 +21,14 @@ const displayDate = last_updated || pubDate;
   <article class="max-w-3xl mx-auto px-4 py-10">
 
     <!-- Breadcrumb -->
-    <nav class="font-sans text-xs text-gray-600 mb-8 flex items-center gap-2 flex-wrap" aria-label="Breadcrumb">
-      <a href="/" class="hover:text-nes-amber transition-colors">Home</a>
+    <nav class="font-pixel text-[0.9rem] text-gray-600 mb-8 flex items-center gap-2 flex-wrap" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-nes-amber transition-colors">HOME</a>
       <span class="text-gray-700">/</span>
-      <a href="/blog" class="hover:text-nes-amber transition-colors">Blog</a>
+      <a href="/blog" class="hover:text-nes-amber transition-colors">BLOG</a>
       {category && (
         <>
           <span class="text-gray-700">/</span>
-          <span class="text-gray-500">{category}</span>
+          <span class="text-gray-500">{category.toUpperCase()}</span>
         </>
       )}
     </nav>
@@ -42,12 +42,12 @@ const displayDate = last_updated || pubDate;
 
     <!-- Title + meta -->
     <header class="mb-10 border-b border-gray-800 pb-8">
-      <p class="font-sans text-xs text-nes-cyan font-medium mb-3">{category || 'Kyoto Guide'}</p>
-      <h1 class="font-sans text-2xl md:text-3xl font-bold text-nes-white leading-tight mb-5">{title}</h1>
-      <div class="flex flex-wrap items-center gap-4 font-sans text-xs text-gray-600">
-        <span>By {author}</span>
+      <p class="font-pixel text-[0.9rem] text-nes-cyan mb-3">{(category || 'Kyoto Guide').toUpperCase()}</p>
+      <h1 class="font-pixel text-nes-white leading-relaxed mb-5" style="font-size: clamp(0.75rem, 2.5vw, 1rem);">{title}</h1>
+      <div class="flex flex-wrap items-center gap-4 font-pixel text-[0.9rem] text-gray-600">
+        <span>BY {author.toUpperCase()}</span>
         {displayDate && displayDate !== '' && (
-          <span>Updated: {displayDate}</span>
+          <span>UPDATED: {displayDate}</span>
         )}
       </div>
     </header>
@@ -66,7 +66,7 @@ const displayDate = last_updated || pubDate;
         <span class="font-pixel text-[0.9rem] text-nes-amber">LG</span>
       </div>
       <div>
-        <div class="font-sans text-sm font-semibold text-nes-white mb-1">{author}</div>
+        <div class="font-pixel text-[0.9rem] text-nes-white mb-1">{author.toUpperCase()}</div>
         <p class="font-sans text-sm text-gray-500 leading-relaxed">
           Local guide based in Gion, Kyoto. Leading intimate walking tours and sake experiences since 2018.
           Passionate about connecting travelers with authentic Kyoto culture.
