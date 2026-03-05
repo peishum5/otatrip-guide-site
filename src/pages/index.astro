@@ -21,31 +21,127 @@ const latestPosts = blogPosts.slice(0, 3);
       loading="eager"
     />
     <div class="relative z-10 max-w-6xl mx-auto px-4 py-20 md:py-32">
+
       <!-- Rating badge -->
-      <div class="inline-flex items-center gap-3 border border-nes-amber px-4 py-2 mb-6">
+      <div id="hero-badge" class="hero-reveal inline-flex items-center gap-3 border border-nes-amber px-4 py-2 mb-6" style="--d:0.2s">
         <span class="text-nes-amber text-sm">★★★★★</span>
         <span class="font-pixel text-[0.7rem] text-nes-white">4.9 / 5</span>
         <span class="font-sans text-xs text-gray-400">on TripAdvisor</span>
       </div>
 
-      <h1 class="font-pixel text-nes-amber leading-relaxed mb-6" style="font-size: clamp(0.9rem, 3vw, 1.5rem);">
-        DISCOVER KYOTO<br />
-        <span class="text-nes-white">LIKE A LOCAL</span>
+      <!-- Typewriter h1 -->
+      <h1 id="hero-h1" class="font-pixel text-nes-amber leading-relaxed mb-6" style="font-size: clamp(0.9rem, 3vw, 1.5rem); min-height: 3.5em;">
+        <span id="hero-line1"></span><span id="hero-cursor" class="hero-cursor">█</span><br />
+        <span id="hero-line2" class="text-nes-white"></span>
       </h1>
-      <p class="font-sans text-gray-300 text-lg leading-relaxed mb-8 max-w-xl">
+
+      <!-- Description -->
+      <p id="hero-desc" class="hero-reveal font-sans text-gray-300 text-lg leading-relaxed mb-8 max-w-xl" style="--d:0s; opacity:0">
         Intimate walking tours through Gion's lantern-lit alleys. Sake tastings at bars only locals know.
         Small groups, genuine experiences.
       </p>
-      <div class="flex flex-col sm:flex-row gap-5">
-        <a href="/tours" class="nes-btn nes-btn-gold">
-          SEE ALL TOURS
-        </a>
-        <a href="/blog" class="nes-btn nes-btn-outline">
-          BROWSE TRAVEL GUIDES
-        </a>
+
+      <!-- Buttons -->
+      <div id="hero-btns" class="hero-reveal flex flex-col sm:flex-row gap-5" style="--d:0s; opacity:0">
+        <a href="/tours" class="nes-btn nes-btn-gold">SEE ALL TOURS</a>
+        <a href="/blog" class="nes-btn nes-btn-outline">BROWSE TRAVEL GUIDES</a>
       </div>
     </div>
   </section>
+
+  <style>
+    /* hero element reveal */
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-reveal {
+      opacity: 0;
+      animation: heroFadeUp 0.6s ease forwards;
+      animation-delay: var(--d, 0s);
+    }
+
+    /* blinking block cursor */
+    @keyframes blockBlink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+    .hero-cursor {
+      display: inline-block;
+      animation: blockBlink 0.7s step-end infinite;
+    }
+
+    /* glitch twitch */
+    @keyframes glitchTwitch {
+      0%   { transform: translate(0); }
+      20%  { transform: translate(-3px, 1px); filter: brightness(1.3); }
+      40%  { transform: translate(3px, -1px); }
+      60%  { transform: translate(-2px, 0); }
+      80%  { transform: translate(2px, 1px); filter: brightness(0.9); }
+      100% { transform: translate(0); filter: none; }
+    }
+    #hero-h1.glitch {
+      animation: glitchTwitch 0.15s steps(1) forwards;
+    }
+  </style>
+
+  <script>
+  (() => {
+    const L1 = 'DISCOVER KYOTO';
+    const L2 = 'LIKE A LOCAL';
+    const SPEED = 60; // ms per char
+
+    const el1    = document.getElementById('hero-line1');
+    const el2    = document.getElementById('hero-line2');
+    const cursor = document.getElementById('hero-cursor');
+    const desc   = document.getElementById('hero-desc');
+    const btns   = document.getElementById('hero-btns');
+    const h1     = document.getElementById('hero-h1');
+
+    function typeText(el, text, cb) {
+      let i = 0;
+      const t = setInterval(() => {
+        el.textContent += text[i++];
+        if (i >= text.length) { clearInterval(t); if (cb) cb(); }
+      }, SPEED);
+    }
+
+    // Start after badge fades in
+    setTimeout(() => {
+      typeText(el1, L1, () => {
+        // Move cursor to line2 position
+        setTimeout(() => {
+          el2.appendChild(cursor); // move cursor to line2
+          typeText(el2, L2, () => {
+            // Typing done — reveal desc & buttons
+            desc.style.setProperty('--d', '0.1s');
+            desc.style.removeProperty('opacity');
+            desc.classList.add('hero-reveal');
+
+            setTimeout(() => {
+              btns.style.setProperty('--d', '0.1s');
+              btns.style.removeProperty('opacity');
+              btns.classList.add('hero-reveal');
+            }, 300);
+
+            // Start periodic glitch after a short pause
+            setTimeout(startGlitch, 2000);
+          });
+        }, 220);
+      });
+    }, 600);
+
+    function startGlitch() {
+      function glitch() {
+        h1.classList.add('glitch');
+        setTimeout(() => h1.classList.remove('glitch'), 200);
+        // Schedule next glitch randomly 4–9s later
+        setTimeout(glitch, 4000 + Math.random() * 5000);
+      }
+      glitch();
+    }
+  })();
+  </script>
 
   <!-- Stats Bar -->
   <section class="bg-nes-black border-y-2 border-nes-amber">
