@@ -14,13 +14,13 @@ const highlights = [
 ];
 
 const timeline = [
-  { time: '17:30', desc: 'Meet at Gion-Shijo Station, Exit 6. Brief intro and neighborhood overview.' },
-  { time: '17:45', desc: 'First sake bar — learn the basics of Fushimi sake style and taste two varieties.' },
-  { time: '18:30', desc: 'Walk Hanamikoji and Shinbashi — the iconic lantern-lit streets of old Gion.' },
-  { time: '19:00', desc: 'Second sake bar — compare regional sake styles, with local snack pairings.' },
-  { time: '19:45', desc: 'Hidden alley walk through Gion Shimbashi designated townscape.' },
-  { time: '20:00', desc: 'Third sake bar — premium junmai selection. Open Q&A with your guide.' },
-  { time: '20:30', desc: 'Tour ends near Gion-Shijo Station. Optional: continue exploring on your own.' },
+  { time: 'START', desc: 'Meet at Shijo Kiyamachi. Your guide is holding an "Otatrip Guide" sign. Brief intro and neighborhood overview.' },
+  { time: '+15\'', desc: 'First sake bar — learn the basics of Fushimi sake style and taste two varieties.' },
+  { time: '+30\'', desc: 'Walk Hanamikoji and Shinbashi — the iconic stone-paved streets of old Gion.' },
+  { time: '+50\'', desc: 'Second sake bar — compare regional sake styles, with local snack pairings.' },
+  { time: '+65\'', desc: 'Hidden alley walk through Gion Shimbashi designated townscape.' },
+  { time: '+75\'', desc: 'Third sake bar — premium junmai selection. Open Q&A with your guide.' },
+  { time: '+90\'', desc: 'Tour ends. Optional: continue exploring Gion on your own.' },
 ];
 
 const faqs = [
@@ -65,8 +65,8 @@ const photos = [
 ---
 
 <BaseLayout
-  title="Gion Sake Walking Tour — Kyoto Evening Experience | OTAtrip Guide"
-  description="An intimate 3-hour evening walk through Gion's lantern-lit alleys with sake tastings at 3 local bars. Small groups of max 10 guests. Rated 4.9/5."
+  title="Gion Sake Walking Tour — Kyoto Experience | OTAtrip Guide"
+  description="A 90-minute walk through Gion's iconic stone-paved alleys with sake tastings at 3 local bars. 4 daily slots: 15:30 / 17:30 / 19:30 / 21:30. Small groups, max 10 guests. Rated 4.9/5."
   canonical="/tours/gion-sake-walk"
   ogImage="/images/tours/gion/hero.jpg"
 >
@@ -84,17 +84,17 @@ const photos = [
     />
     <div class="absolute inset-0 bg-gradient-to-t from-nes-black via-nes-black/60 to-transparent"></div>
     <div class="relative z-10 max-w-4xl mx-auto px-4 py-24 md:py-32">
-      <p class="font-pixel text-[0.9rem] text-nes-amber mb-4 rpg-prefix">EVENING TOUR · GION DISTRICT</p>
+      <p class="font-pixel text-[0.9rem] text-nes-amber mb-4 rpg-prefix">WALKING TOUR · GION DISTRICT</p>
       <h1 class="font-sans text-3xl md:text-4xl font-bold text-nes-white leading-tight mb-4">
         Gion Sake Walking Tour
       </h1>
       <p class="font-sans text-gray-300 text-base leading-relaxed mb-8 max-w-xl">
-        Walk the stone-paved alleys of Kyoto's most iconic neighborhood after dark.
-        Three local sake bars. Lantern light. Stories from a guide who calls Gion home.
+        Walk the stone-paved alleys of Kyoto's most iconic neighborhood.
+        Three local sake bars. Stories from a guide who calls Gion home.
       </p>
       <div class="flex flex-wrap gap-6 font-pixel text-[0.9rem] mb-8">
         {[
-          { label: 'Duration', value: '3 hours' },
+          { label: 'Duration', value: '90 min' },
           { label: 'Group size', value: 'Max 10' },
           { label: 'Language', value: 'English' },
           { label: 'Rating', value: '★ 4.9 / 5' },
@@ -171,21 +171,27 @@ const photos = [
         <p class="font-pixel text-[0.9rem] text-nes-cyan mb-4">// MEETING POINT</p>
         <div class="grid md:grid-cols-2 gap-6">
           <div>
-            <p class="font-sans text-nes-white font-semibold text-sm mb-1">Gion-Shijo Station, Exit 6</p>
-            <p class="font-sans text-gray-400 text-xs leading-relaxed">
-              Keihan Line, Gion-Shijo Station<br />
-              Gion-cho, Higashiyama-ku, Kyoto
+            <p class="font-sans text-nes-white font-semibold text-sm mb-1">Shijo Kiyamachi</p>
+            <p class="font-sans text-gray-400 text-xs leading-relaxed mb-3">
+              On Kiyamachi Street, slightly south of Shijo — between McDonald's and the Japanese restaurant Kikunoi Roan.
+              Your guide will be holding a sign that reads <span class="text-nes-white">"Otatrip Guide"</span>.
             </p>
-            <p class="font-sans text-gray-600 text-xs mt-3">
-              Look for your guide holding a small OTAtrip Guide sign. Please arrive 5 minutes early.
+            <p class="font-sans text-gray-600 text-xs mb-3">
+              This is a group tour. Please arrive a few minutes early — late arrivals may cause the tour to start without you.
             </p>
+            <a
+              href="https://maps.app.goo.gl/J7SmSwzVmAfjZJs36"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 font-pixel text-[0.9rem] text-nes-cyan hover:text-nes-amber transition-colors"
+            >
+              ▶ OPEN IN GOOGLE MAPS
+            </a>
           </div>
           <div class="space-y-2 font-pixel text-[0.9rem]">
             {[
-              { k: 'Start time', v: '17:30' },
-              { k: 'End time', v: '~20:30' },
-              { k: 'Dress code', v: 'Casual (comfortable shoes)' },
-              { k: 'Min. age', v: '18+ (alcohol tour)' },
+              { k: 'Start times', v: '15:30 / 17:30 / 19:30 / 21:30' },
+              { k: 'Duration', v: '90 min' },
             ].map(row => (
               <div class="flex justify-between border-b border-gray-800 pb-2">
                 <span class="text-gray-500">{row.k}</span>
@@ -240,7 +246,7 @@ const photos = [
     "@context": "https://schema.org",
     "@type": "TouristAttraction",
     "name": "Gion Sake Walking Tour",
-    "description": "An intimate 3-hour evening walking tour through Gion with sake tastings at 3 local bars. Small groups of max 10 guests.",
+    "description": "A 90-minute walking tour through Gion's stone-paved alleys with sake tastings at 3 local bars. 4 daily slots. Small groups of max 10 guests.",
     "url": "https://otatrip-guide.com/tours/gion-sake-walk",
     "provider": {
       "@type": "TouristInformationCenter",
