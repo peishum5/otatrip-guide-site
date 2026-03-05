@@ -52,7 +52,7 @@ const photos = [
   { src: '/images/tours/gion/yasaka-night.jpg',   alt: 'Yasaka Pagoda lit up at night, Gion' },
   { src: '/images/tours/gion/maiko-pagoda.jpg',   alt: 'Maiko in front of Yasaka Pagoda' },
   { src: '/images/tours/tour-yasaka-gate.jpg',    alt: 'Group at Yasaka Shrine gate at night' },
-  { src: '/images/tours/gion/maiko-alley.jpg',    alt: 'Maiko walking through a Gion alley' },
+  { src: '/images/tours/gion/maiko-alley.jpg',    alt: 'Maiko walking through a Gion alley', tall: true },
   { src: '/images/tours/tour-sake-pour.jpg',      alt: 'Sake being poured at a local bar' },
   { src: '/images/tours/tour-gion-walk.jpg',      alt: 'Walking through Gion under lantern light' },
   { src: '/images/tours/gion/maiko-walk-1.jpg',   alt: 'Maiko walking in Gion' },
@@ -135,13 +135,13 @@ const photos = [
         <h2 class="font-pixel text-[0.9rem] text-nes-amber">TOUR PHOTOS</h2>
         <div class="flex-1 border-t border-gray-800"></div>
       </div>
-      <div class="columns-2 md:columns-3 gap-2 space-y-2">
+      <div class="grid grid-cols-3 gap-2" style="grid-auto-rows: 200px; grid-auto-flow: dense;">
         {photos.map(photo => (
-          <div class="break-inside-avoid overflow-hidden border border-gray-800">
+          <div class={`overflow-hidden border border-gray-800${photo.tall ? ' row-span-2' : ''}`}>
             <img
               src={photo.src}
               alt={photo.alt}
-              class="w-full object-cover"
+              class="w-full h-full object-cover"
               loading="lazy"
             />
           </div>
