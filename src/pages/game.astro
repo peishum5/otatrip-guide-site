@@ -12,22 +12,29 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="relative z-10 max-w-2xl mx-auto px-4">
       <p class="font-pixel text-[0.5rem] text-nes-amber mb-2 rpg-prefix">MINI GAME</p>
       <h1 class="font-pixel text-nes-white mb-3" style="font-size: clamp(0.8rem, 3vw, 1.5rem);">GION NIGHT RUN</h1>
-      <p class="font-sans text-sm text-gray-400">Dodge tourists &amp; rickshaws. Collect sake. Survive the night.</p>
+      <p class="font-sans text-sm text-gray-400">Dodge tourists &amp; rickshaws. Collect sake. Reach the sake bar.</p>
     </div>
   </section>
 
   <div class="max-w-4xl mx-auto px-4 py-8">
 
     <!-- Game frame -->
-    <div class="relative border-4 border-nes-amber bg-nes-black" style="box-shadow: 8px 8px 0 rgba(255,176,0,0.25), -2px -2px 0 rgba(255,176,0,0.1);">
+    <div class="relative border-4 border-nes-amber bg-nes-black" style="box-shadow: 8px 8px 0 rgba(255,176,0,0.25);">
 
       <!-- HUD bar -->
-      <div class="flex justify-between items-center px-4 py-2 border-b-2 border-gray-800">
-        <div class="font-pixel text-[0.5rem]">
+      <div class="flex items-center gap-4 px-4 py-2 border-b-2 border-gray-800">
+        <div class="font-pixel text-[0.5rem] shrink-0">
           <span class="text-nes-cyan">SCORE </span><span class="text-nes-white" id="score-val">0</span>
         </div>
-        <div class="font-pixel text-[0.5rem] text-nes-amber">GION NIGHT RUN</div>
-        <div class="font-pixel text-[0.5rem]">
+        <!-- Progress bar -->
+        <div class="flex-1 flex items-center gap-2 min-w-0">
+          <span class="font-pixel text-[0.42rem] text-nes-amber shrink-0">🍶BAR</span>
+          <div class="stat-bar-track flex-1">
+            <div id="progress-fill" class="stat-bar-fill" style="width:0%;transition:width 0.15s;"></div>
+          </div>
+          <span class="font-pixel text-[0.42rem] text-gray-500 shrink-0" id="pct-val">0%</span>
+        </div>
+        <div class="font-pixel text-[0.5rem] shrink-0">
           <span class="text-nes-amber">BEST </span><span class="text-nes-white" id="hi-val">0</span>
         </div>
       </div>
@@ -39,7 +46,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <!-- Start overlay -->
         <div id="start-overlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/80">
           <p class="font-pixel text-[0.55rem] text-nes-white pixel-cursor mb-4">PRESS SPACE OR TAP TO START</p>
-          <div class="flex gap-8 font-sans text-xs text-gray-500">
+          <div class="flex flex-wrap justify-center gap-4 font-sans text-xs text-gray-500">
             <span>🍶 Sake cup = +10 pts</span>
             <span>🚶 Tourist = GAME OVER</span>
             <span>🛻 Rickshaw = GAME OVER</span>
@@ -53,6 +60,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <p class="font-pixel text-[0.5rem] text-nes-amber mb-6">BEST: <span id="over-hi">0</span></p>
           <div class="flex flex-col sm:flex-row gap-3 items-center">
             <button id="retry-btn" class="nes-btn nes-btn-outline">PLAY AGAIN</button>
+            <a href="/tours/gion-sake-walk" class="nes-btn nes-btn-gold">BOOK THE REAL TOUR →</a>
+          </div>
+        </div>
+
+        <!-- Win overlay -->
+        <div id="win-overlay" style="display:none;" class="absolute inset-0 flex flex-col items-center justify-center bg-black/90">
+          <p class="font-pixel text-nes-amber mb-2" style="font-size:clamp(0.6rem,2vw,1.1rem);">★ YOU MADE IT! ★</p>
+          <p class="font-pixel text-[0.5rem] text-nes-green mb-1">ARRIVED AT THE SAKE BAR</p>
+          <p class="font-pixel text-[0.5rem] text-nes-white mt-3 mb-1">SCORE: <span id="win-score">0</span></p>
+          <p class="font-pixel text-[0.5rem] text-nes-amber mb-6">BEST: <span id="win-hi">0</span></p>
+          <div class="flex flex-col sm:flex-row gap-3 items-center">
+            <button id="win-retry-btn" class="nes-btn nes-btn-outline">PLAY AGAIN</button>
             <a href="/tours/gion-sake-walk" class="nes-btn nes-btn-gold">BOOK THE REAL TOUR →</a>
           </div>
         </div>
@@ -75,16 +94,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <script>
 (() => {
-  const canvas  = document.getElementById('gc');
-  const ctx     = canvas.getContext('2d');
+  const canvas = document.getElementById('gc');
+  const ctx    = canvas.getContext('2d');
   const CW = 800, CH = 220;
   canvas.width  = CW;
   canvas.height = CH;
 
-  const GY = 168;   // top of ground
-  const GR = 0.55;  // gravity
-  const JV = -13;   // jump velocity
-  const PW = 22, PH = 50; // player size
+  const GY     = 168;   // top of ground
+  const GR     = 0.55;  // gravity
+  const JV     = -13;   // jump velocity
+  const PW     = 22, PH = 50; // player hitbox
+  const TARGET = 500;   // score to reach the sake bar
 
   // ── COLORS ──────────────────────────────────────────────
   const C = {
@@ -94,7 +114,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     tourist:'#b0a880', tShirt:'#d0c090', tPants:'#808070',
     rickBody:'#7a3a10', rickDark:'#5a2a08', rickWheel:'#555',
     sake:'#ffb000', sakeLight:'#ffd040',
-    amber:'#ffb000', red:'#ff2222', cyan:'#00e5ff',
+    amber:'#ffb000', red:'#ff2222', cyan:'#00e5ff', green:'#00d800',
   };
 
   // ── STARS ───────────────────────────────────────────────
@@ -121,28 +141,35 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   const tiles = Array.from({length:55}, (_,i) => i*18);
 
   // ── GAME STATE ──────────────────────────────────────────
-  let state = 'waiting';
+  let state = 'waiting'; // 'waiting' | 'playing' | 'gameover' | 'win'
   let score = 0, hi = +(localStorage.getItem('gion-hi')||0);
   let spd = 4, frame = 0;
   let obstacles = [], collectibles = [], particles = [];
   let obstT = 100, collectT = 60;
 
-  const pl = { x:90, y:GY-PH, vy:0, grounded:true, jumps:0, anim:0, squash:1 };
+  // Player — NOTE: w and h are required for collision detection
+  const pl = { x:90, y:GY-PH, vy:0, grounded:true, jumps:0, anim:0, squash:1, w:PW, h:PH };
 
   // ── UI REFS ─────────────────────────────────────────────
-  const scoreEl    = document.getElementById('score-val');
-  const hiEl       = document.getElementById('hi-val');
-  const startEl    = document.getElementById('start-overlay');
-  const overEl     = document.getElementById('over-overlay');
-  const overScoreEl= document.getElementById('over-score');
-  const overHiEl   = document.getElementById('over-hi');
+  const scoreEl      = document.getElementById('score-val');
+  const hiEl         = document.getElementById('hi-val');
+  const pctEl        = document.getElementById('pct-val');
+  const progressEl   = document.getElementById('progress-fill');
+  const startEl      = document.getElementById('start-overlay');
+  const overEl       = document.getElementById('over-overlay');
+  const winEl        = document.getElementById('win-overlay');
+  const overScoreEl  = document.getElementById('over-score');
+  const overHiEl     = document.getElementById('over-hi');
+  const winScoreEl   = document.getElementById('win-score');
+  const winHiEl      = document.getElementById('win-hi');
   document.getElementById('retry-btn').addEventListener('click', startGame);
+  document.getElementById('win-retry-btn').addEventListener('click', startGame);
 
   // ── INPUT ───────────────────────────────────────────────
   function handleInput() {
     if (state==='waiting') startGame();
     else if (state==='playing') doJump();
-    else if (state==='gameover') startGame();
+    else if (state==='gameover'||state==='win') startGame();
   }
   document.addEventListener('keydown', e => {
     if (e.code==='Space'||e.code==='ArrowUp') { e.preventDefault(); handleInput(); }
@@ -162,10 +189,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     score=0; spd=4; frame=0;
     obstacles=[]; collectibles=[]; particles=[];
     obstT=100; collectT=60;
-    Object.assign(pl, {y:GY-PH,vy:0,grounded:true,jumps:0,anim:0,squash:1});
+    Object.assign(pl, {y:GY-PH, vy:0, grounded:true, jumps:0, anim:0, squash:1, w:PW, h:PH});
     state='playing';
     startEl.classList.add('hidden');
     overEl.style.display='none';
+    winEl.style.display='none';
     updateHUD();
   }
 
@@ -177,9 +205,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     overEl.style.display='flex';
   }
 
+  function winGame() {
+    state='win';
+    if (score>hi) { hi=score; localStorage.setItem('gion-hi',hi); }
+    winScoreEl.textContent=score;
+    winHiEl.textContent=hi;
+    winEl.style.display='flex';
+  }
+
   function updateHUD() {
-    scoreEl.textContent=score;
-    hiEl.textContent=Math.max(score,hi);
+    scoreEl.textContent = score;
+    hiEl.textContent    = Math.max(score, hi);
+    const pct = Math.min(Math.round(score / TARGET * 100), 100);
+    progressEl.style.width = pct + '%';
+    pctEl.textContent = pct + '%';
   }
 
   // ── SPAWN ────────────────────────────────────────────────
@@ -195,95 +234,105 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     collectibles.push({x:CW+20, y:GY-yOff-20, w:18, h:20, collected:false, bob:Math.random()*Math.PI*2});
   }
 
-  function hits(a,b,p=4) {
-    return a.x+p<b.x+b.w-p && a.x+a.w-p>b.x+p &&
-           a.y+p<b.y+b.h-p && a.y+a.h-p>b.y+p;
+  // Axis-aligned bounding box collision with optional padding
+  function hits(a, b, p=3) {
+    return (
+      a.x + p       < b.x + b.w - p &&
+      a.x + a.w - p > b.x + p       &&
+      a.y + p       < b.y + b.h - p &&
+      a.y + a.h - p > b.y + p
+    );
   }
 
   // ── UPDATE ──────────────────────────────────────────────
   function update() {
-    if (state!=='playing') return;
+    if (state !== 'playing') return;
     frame++;
-    spd = 4 + Math.min(score/350, 4.5);
+    spd = 4 + Math.min(score / 350, 4.5);
 
-    // Player physics
+    // Physics
     pl.vy += GR;
     pl.y  += pl.vy;
-    if (pl.y >= GY-PH) {
-      if (!pl.grounded && pl.vy>4) pl.squash=0.7;
-      pl.y=GY-PH; pl.vy=0; pl.grounded=true; pl.jumps=0;
+    if (pl.y >= GY - PH) {
+      if (!pl.grounded && pl.vy > 4) pl.squash = 0.7;
+      pl.y = GY - PH; pl.vy = 0; pl.grounded = true; pl.jumps = 0;
     }
-    pl.squash += (1-pl.squash)*0.2;
-    if (pl.grounded && frame%8===0) pl.anim=(pl.anim+1)%4;
+    pl.squash += (1 - pl.squash) * 0.2;
+    if (pl.grounded && frame % 8 === 0) pl.anim = (pl.anim + 1) % 4;
 
-    // Score
-    if (frame%6===0) { score++; updateHUD(); }
+    // Score (time-based)
+    if (frame % 6 === 0) { score++; updateHUD(); }
+
+    // Check win
+    if (score >= TARGET) { winGame(); return; }
 
     // Spawn timers
     obstT -= spd;
-    if (obstT<=0) { spawnObs(); obstT=72+Math.random()*85; }
+    if (obstT <= 0) { spawnObs(); obstT = 72 + Math.random() * 85; }
     collectT -= spd;
-    if (collectT<=0) { spawnCollect(); collectT=58+Math.random()*60; }
+    if (collectT <= 0) { spawnCollect(); collectT = 58 + Math.random() * 60; }
 
-    // Move objects
-    for (const o of obstacles) { o.x-=spd; if(o.af!==undefined&&frame%10===0) o.af^=1; }
-    for (const c of collectibles) { c.x-=spd; c.bob+=0.07; }
-    for (const p of particles) { p.x+=p.vx; p.y+=p.vy; p.vy+=0.15; p.life--; }
+    // Move
+    for (const o of obstacles)    { o.x -= spd; if (o.af !== undefined && frame % 10 === 0) o.af ^= 1; }
+    for (const c of collectibles) { c.x -= spd; c.bob += 0.07; }
+    for (const p of particles)    { p.x += p.vx; p.y += p.vy; p.vy += 0.15; p.life--; }
 
-    obstacles    = obstacles.filter(o=>o.x>-80);
-    collectibles = collectibles.filter(c=>c.x>-30&&!c.collected);
-    particles    = particles.filter(p=>p.life>0);
+    obstacles    = obstacles.filter(o => o.x > -80);
+    collectibles = collectibles.filter(c => c.x > -30 && !c.collected);
+    particles    = particles.filter(p => p.life > 0);
 
     // Scroll bg
-    for (const b of farB)  { b.x-=spd*.25; if(b.x+b.w<-5) b.x+=14*70+Math.random()*30; }
-    for (const b of nearB) { b.x-=spd*.55; if(b.x+b.w<-5) b.x+=9*110+Math.random()*40; }
-    for (let i=0;i<tiles.length;i++) { tiles[i]-=spd; if(tiles[i]<-18) tiles[i]+=55*18; }
+    for (const b of farB)  { b.x -= spd*.25; if (b.x+b.w < -5) b.x += 14*70 + Math.random()*30; }
+    for (const b of nearB) { b.x -= spd*.55; if (b.x+b.w < -5) b.x += 9*110 + Math.random()*40; }
+    for (let i = 0; i < tiles.length; i++) { tiles[i] -= spd; if (tiles[i] < -18) tiles[i] += 55*18; }
 
-    // Collisions
-    for (const o of obstacles) { if(hits(pl,o)){endGame();return;} }
+    // Collisions — obstacles
+    for (const o of obstacles) {
+      if (hits(pl, o)) { endGame(); return; }
+    }
+    // Collisions — collectibles
     for (const c of collectibles) {
-      if (!c.collected && hits(pl,c)) {
-        c.collected=true; score+=10;
-        for(let i=0;i<10;i++) particles.push({
-          x:c.x+9,y:c.y+10,vx:(Math.random()-.5)*4.5,vy:-Math.random()*4.5-1,
-          size:3,color:C.sake,life:22,
+      if (!c.collected && hits(pl, c, 1)) {
+        c.collected = true;
+        score += 10;
+        for (let i = 0; i < 10; i++) particles.push({
+          x:c.x+9, y:c.y+10,
+          vx:(Math.random()-.5)*4.5, vy:-Math.random()*4.5-1,
+          size:3, color:C.sake, life:22,
         });
         updateHUD();
       }
     }
   }
 
-  // ── DRAW HELPERS ────────────────────────────────────────
-  function bx(x,y,w,h,col) { ctx.fillStyle=col; ctx.fillRect(~~x,~~y,w,h); }
+  // ── DRAW ────────────────────────────────────────────────
+  function bx(x, y, w, h, col) { ctx.fillStyle=col; ctx.fillRect(~~x, ~~y, w, h); }
 
   function drawBg() {
-    bx(0,0,CW,GY,C.sky);
-    // Stars
+    bx(0, 0, CW, GY, C.sky);
     for (const s of stars) {
-      const a=(0.6+0.4*Math.sin(s.ph+frame*.015)).toFixed(2);
-      ctx.fillStyle=`rgba(248,248,248,${a})`;
-      ctx.fillRect(~~s.x,~~s.y,s.s,s.s);
+      const a = (0.6 + 0.4*Math.sin(s.ph + frame*.015)).toFixed(2);
+      ctx.fillStyle = `rgba(248,248,248,${a})`;
+      ctx.fillRect(~~s.x, ~~s.y, s.s, s.s);
     }
-    // Far buildings
     for (const b of farB) {
-      bx(b.x,GY-b.h,b.w,b.h,'#0a0a16');
+      bx(b.x, GY-b.h, b.w, b.h, '#0a0a16');
       let idx=0;
-      for (let r=0;r<b.wRows;r++) for (let c=0;c<b.wCols;c++) {
+      for (let r=0; r<b.wRows; r++) for (let c=0; c<b.wCols; c++) {
         const wx=b.x+6+c*16, wy=GY-b.h+8+r*18;
-        if (wx+8<b.x+b.w-4 && b.wins[idx]) bx(wx,wy,8,6,'#ffb00042');
+        if (wx+8 < b.x+b.w-4 && b.wins[idx]) bx(wx, wy, 8, 6, '#ffb00042');
         idx++;
       }
     }
-    // Near buildings
     for (const b of nearB) {
-      bx(b.x,GY-b.h,b.w,b.h,'#0e0c1c');
-      bx(b.x-3,GY-b.h,b.w+6,5,'#0a0818'); // eave shadow
+      bx(b.x, GY-b.h, b.w, b.h, '#0e0c1c');
+      bx(b.x-3, GY-b.h, b.w+6, 5, '#0a0818');
       let idx=0;
-      for (let r=0;r<b.wRows;r++) for (let c=0;c<b.wCols;c++) {
+      for (let r=0; r<b.wRows; r++) for (let c=0; c<b.wCols; c++) {
         const wx=b.x+8+c*18, wy=GY-b.h+12+r*22;
-        if (wx+10<b.x+b.w-6 && b.wins[idx]) {
-          bx(wx,wy,10,8,'#ffb00058');
-          bx(wx+1,wy+1,8,2,'#ffd04030');
+        if (wx+10 < b.x+b.w-6 && b.wins[idx]) {
+          bx(wx, wy, 10, 8, '#ffb00058');
+          bx(wx+1, wy+1, 8, 2, '#ffd04030');
         }
         idx++;
       }
@@ -291,43 +340,35 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   function drawGround() {
-    bx(0,GY,CW,CH-GY,C.ground);
-    bx(0,GY,CW,3,C.groundEdge);
+    bx(0, GY, CW, CH-GY, C.ground);
+    bx(0, GY, CW, 3, C.groundEdge);
     ctx.strokeStyle='#2a2620'; ctx.lineWidth=1;
     for (const tx of tiles) {
-      ctx.strokeRect(~~tx+.5,GY+4.5,16,10);
-      ctx.strokeRect(~~tx+9.5,GY+14.5,16,10);
+      ctx.strokeRect(~~tx+.5, GY+4.5, 16, 10);
+      ctx.strokeRect(~~tx+9.5, GY+14.5, 16, 10);
     }
   }
 
   function drawPlayer() {
-    const px=~~pl.x;
-    const sy=pl.squash;
-    const sh=~~(PH*sy), sw=~~(PW*(2-sy));
-    const sox=~~((PW-sw)/2);
-    const py=~~(pl.y+PH-sh);
-    const af=pl.anim%4;
-    const ox=px+sox;
+    const px = ~~pl.x;
+    const sy = pl.squash;
+    const sh = ~~(PH*sy), sw = ~~(PW*(2-sy));
+    const sox = ~~((PW-sw)/2);
+    const py = ~~(pl.y + PH - sh);
+    const af = pl.anim % 4;
+    const ox = px + sox;
 
-    // Shadow
-    ctx.fillStyle='rgba(0,0,0,0.35)';
-    ctx.beginPath(); ctx.ellipse(px+PW/2,GY+3,PW/2+2,3.5,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = 'rgba(0,0,0,0.35)';
+    ctx.beginPath(); ctx.ellipse(px+PW/2, GY+3, PW/2+2, 3.5, 0, 0, Math.PI*2); ctx.fill();
 
-    // Hair
-    bx(ox+3,py,sw-4,~~(5*sy),C.hair);
-    // Face
-    bx(ox+2,py+~~(4*sy),sw-2,~~(10*sy),C.face);
-    // Eye
-    bx(ox+sw-8,py+~~(6*sy),2,2,'#0a0820');
-    // Shirt
-    bx(ox+1,py+~~(14*sy),sw-1,~~(9*sy),C.shirt);
-    // Pants
-    bx(ox+2,py+~~(23*sy),sw-3,~~(10*sy),C.pants);
+    bx(ox+3, py, sw-4, ~~(5*sy), C.hair);
+    bx(ox+2, py+~~(4*sy), sw-2, ~~(10*sy), C.face);
+    bx(ox+sw-8, py+~~(6*sy), 2, 2, '#0a0820');
+    bx(ox+1, py+~~(14*sy), sw-1, ~~(9*sy), C.shirt);
+    bx(ox+2, py+~~(23*sy), sw-3, ~~(10*sy), C.pants);
 
-    // Legs
-    const lp=[{l:-3,r:3},{l:0,r:0},{l:3,r:-3},{l:0,r:0}][af];
-    const ly=py+~~(33*sy), lh=~~(13*sy), shh=~~(4*sy);
-    const hw=~~(sw/2)-2;
+    const lp = [{l:-3,r:3},{l:0,r:0},{l:3,r:-3},{l:0,r:0}][af];
+    const ly=py+~~(33*sy), lh=~~(13*sy), shh=~~(4*sy), hw=~~(sw/2)-2;
     bx(ox+2+lp.l, ly, hw, lh, C.pants);
     bx(ox+1+lp.l, ly+lh, hw+1, shh, C.shoe);
     bx(ox+~~(sw/2)+1+lp.r, ly, hw, lh, C.pants);
@@ -336,54 +377,47 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   function drawObs() {
     for (const o of obstacles) {
-      const ox=~~o.x;
-      if (o.type==='tourist') {
-        // Hat
-        bx(ox-1,o.y-6,20,4,'#606050');
-        bx(ox+2,o.y-10,14,5,'#606050');
-        bx(ox+1,o.y,16,10,C.tourist);    // head
-        bx(ox+14,o.y+16,9,7,'#505048'); // camera
-        bx(ox+15,o.y+18,5,4,'#333');
-        bx(ox,o.y+10,18,13,C.tShirt);   // shirt
-        bx(ox-5,o.y+10,7,14,'#6a6a5a'); // backpack
-        bx(ox+1,o.y+23,16,13,C.tPants); // pants
-        const laf=o.af||0;
-        bx(ox+2,o.y+36,6,14+(laf?2:0),'#6a6a5a');
-        bx(ox+10,o.y+36,6,14+(laf?0:2),'#6a6a5a');
-        bx(ox+1,o.y+48,8,4,'#333');
-        bx(ox+10,o.y+48,8,4,'#333');
+      const ox = ~~o.x;
+      if (o.type === 'tourist') {
+        bx(ox-1,  o.y-6,  20, 4, '#606050');
+        bx(ox+2,  o.y-10, 14, 5, '#606050');
+        bx(ox+1,  o.y,    16, 10, C.tourist);
+        bx(ox+14, o.y+16,  9,  7, '#505048');
+        bx(ox+15, o.y+18,  5,  4, '#333');
+        bx(ox,    o.y+10, 18, 13, C.tShirt);
+        bx(ox-5,  o.y+10,  7, 14, '#6a6a5a');
+        bx(ox+1,  o.y+23, 16, 13, C.tPants);
+        const laf = o.af || 0;
+        bx(ox+2,  o.y+36,  6, 14+(laf?2:0), '#6a6a5a');
+        bx(ox+10, o.y+36,  6, 14+(laf?0:2), '#6a6a5a');
+        bx(ox+1,  o.y+48,  8,  4, '#333');
+        bx(ox+10, o.y+48,  8,  4, '#333');
       } else {
-        // Wheels
-        for (const wx of [ox+10,ox+48]) {
-          ctx.fillStyle=C.rickWheel;
-          ctx.beginPath(); ctx.arc(wx,o.y+o.h-7,11,0,Math.PI*2); ctx.fill();
-          ctx.fillStyle='#333';
-          ctx.beginPath(); ctx.arc(wx,o.y+o.h-7,4,0,Math.PI*2); ctx.fill();
-          ctx.strokeStyle='#444'; ctx.lineWidth=1;
-          for (let a=0;a<Math.PI*2;a+=Math.PI/3) {
-            ctx.beginPath(); ctx.moveTo(wx,o.y+o.h-7);
-            ctx.lineTo(wx+Math.cos(a)*9,o.y+o.h-7+Math.sin(a)*9); ctx.stroke();
+        for (const wx of [ox+10, ox+48]) {
+          ctx.fillStyle = C.rickWheel;
+          ctx.beginPath(); ctx.arc(wx, o.y+o.h-7, 11, 0, Math.PI*2); ctx.fill();
+          ctx.fillStyle = '#333';
+          ctx.beginPath(); ctx.arc(wx, o.y+o.h-7,  4, 0, Math.PI*2); ctx.fill();
+          ctx.strokeStyle = '#444'; ctx.lineWidth = 1;
+          for (let a=0; a<Math.PI*2; a+=Math.PI/3) {
+            ctx.beginPath(); ctx.moveTo(wx, o.y+o.h-7);
+            ctx.lineTo(wx+Math.cos(a)*9, o.y+o.h-7+Math.sin(a)*9); ctx.stroke();
           }
         }
-        // Shafts
-        bx(ox-14,o.y+30,20,3,C.rickDark);
-        bx(ox-14,o.y+38,20,3,C.rickDark);
-        // Puller
-        bx(ox-18,o.y+22,10,10,'#c8a878');
-        bx(ox-20,o.y+32,14,10,'#a07850');
-        bx(ox-18,o.y+42,6,12,'#806040');
-        bx(ox-12,o.y+42,6,12,'#806040');
-        // Cart
-        bx(ox+4,o.y+6,52,26,C.rickBody);
-        bx(ox+4,o.y+6,52,4,'#a04818');
-        bx(ox+4,o.y+6,3,26,C.rickDark);
-        bx(ox+53,o.y+6,3,26,C.rickDark);
-        // Roof
-        bx(ox+1,o.y+2,58,5,C.rickDark);
-        bx(ox-2,o.y-1,64,4,C.rickBody);
-        // Passenger
-        bx(ox+26,o.y+9,14,11,'#e8d0a0');
-        bx(ox+24,o.y+20,18,9,'#c09050');
+        bx(ox-14, o.y+30, 20,  3, C.rickDark);
+        bx(ox-14, o.y+38, 20,  3, C.rickDark);
+        bx(ox-18, o.y+22, 10, 10, '#c8a878');
+        bx(ox-20, o.y+32, 14, 10, '#a07850');
+        bx(ox-18, o.y+42,  6, 12, '#806040');
+        bx(ox-12, o.y+42,  6, 12, '#806040');
+        bx(ox+4,  o.y+6,  52, 26, C.rickBody);
+        bx(ox+4,  o.y+6,  52,  4, '#a04818');
+        bx(ox+4,  o.y+6,   3, 26, C.rickDark);
+        bx(ox+53, o.y+6,   3, 26, C.rickDark);
+        bx(ox+1,  o.y+2,  58,  5, C.rickDark);
+        bx(ox-2,  o.y-1,  64,  4, C.rickBody);
+        bx(ox+26, o.y+9,  14, 11, '#e8d0a0');
+        bx(ox+24, o.y+20, 18,  9, '#c09050');
       }
     }
   }
@@ -391,40 +425,55 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   function drawCollects() {
     for (const c of collectibles) {
       if (c.collected) continue;
-      const cx=~~c.x, cy=~~(c.y+Math.sin(c.bob)*4);
-      ctx.fillStyle='rgba(255,176,0,0.12)';
-      ctx.beginPath(); ctx.ellipse(cx+9,cy+12,13,13,0,0,Math.PI*2); ctx.fill();
-      bx(cx+3,cy,12,3,C.sakeLight);
-      bx(cx+2,cy+3,14,11,C.sake);
-      bx(cx+3,cy+14,12,3,C.sakeLight);
-      bx(cx+5,cy+17,8,2,'#cc8800');
-      bx(cx+3,cy+3,12,3,'#ffe566');
+      const cx = ~~c.x, cy = ~~(c.y + Math.sin(c.bob)*4);
+      ctx.fillStyle = 'rgba(255,176,0,0.12)';
+      ctx.beginPath(); ctx.ellipse(cx+9, cy+12, 13, 13, 0, 0, Math.PI*2); ctx.fill();
+      bx(cx+3, cy,    12,  3, C.sakeLight);
+      bx(cx+2, cy+3,  14, 11, C.sake);
+      bx(cx+3, cy+14, 12,  3, C.sakeLight);
+      bx(cx+5, cy+17,  8,  2, '#cc8800');
+      bx(cx+3, cy+3,  12,  3, '#ffe566');
     }
   }
 
   function drawParticles() {
     for (const p of particles) {
-      ctx.globalAlpha=Math.max(0,p.life/25);
-      ctx.fillStyle=p.color;
-      ctx.fillRect(~~p.x,~~p.y,p.size,p.size);
+      ctx.globalAlpha = Math.max(0, p.life/25);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(~~p.x, ~~p.y, p.size, p.size);
     }
-    ctx.globalAlpha=1;
+    ctx.globalAlpha = 1;
   }
 
-  // ── LOOP ────────────────────────────────────────────────
+  // Goal lantern that appears near end of run
+  function drawGoalHint() {
+    if (score < TARGET * 0.7) return;
+    const pct = (score - TARGET*0.7) / (TARGET*0.3);
+    const gx = CW - 60 + (1-pct)*100;
+    // Lantern
+    bx(gx, GY-90, 4, 60, '#8b4513');
+    bx(gx-8, GY-88, 20, 28, '#c84820');
+    bx(gx-4, GY-92, 12, 6, '#8b4513');
+    bx(gx+1, GY-66, 6, 6, '#ffb000');
+    ctx.fillStyle = 'rgba(255,100,0,0.15)';
+    ctx.beginPath(); ctx.ellipse(gx+4, GY-74, 22, 22, 0, 0, Math.PI*2); ctx.fill();
+  }
+
+  // ── MAIN LOOP ────────────────────────────────────────────
   function loop() {
     update();
-    ctx.clearRect(0,0,CW,CH);
+    ctx.clearRect(0, 0, CW, CH);
     drawBg();
     drawGround();
     drawCollects();
+    drawGoalHint();
     drawObs();
     drawPlayer();
     drawParticles();
     requestAnimationFrame(loop);
   }
 
-  hiEl.textContent=hi;
+  hiEl.textContent = hi;
   loop();
 })();
 </script>
