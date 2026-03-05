@@ -156,25 +156,25 @@ const latestPosts = blogPosts.slice(0, 3);
         {[
           {
             icon: '🏮',
-            img: null,
+            img: '/images/why/local-expertise.jpg',
             title: 'LOCAL EXPERTISE',
             desc: "Our guides have lived in Kyoto for years. We take you to bars, alleys, and viewpoints that aren't in any guidebook.",
           },
           {
             icon: '🎭',
-            img: null,
+            img: '/images/why/entertainment-pro.png',
             title: 'ENTERTAINMENT PROS',
             desc: 'OTAtrip Guide is produced by Cosmic Magic — a professional entertainment company behind immersive experiences and ARGs.',
           },
           {
             icon: '👥',
-            img: null,
+            img: '/images/why/small-groups.jpg',
             title: 'SMALL GROUPS',
             desc: 'We keep groups small so every guest gets real attention. Ask questions, go off-script, connect with your guide and the city on your own terms.',
           },
         ].map(item => (
           <div class="text-center">
-            <div class="dialogue-box mx-auto mb-5 overflow-hidden" style="width: 200px; height: 200px; padding: 0;">
+            <div class="dialogue-box mb-5 overflow-hidden" style="width: 100%; height: 240px; padding: 0;">
               {item.img ? (
                 <img src={item.img} alt={item.title} class="w-full h-full object-cover" />
               ) : (
