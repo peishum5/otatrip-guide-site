@@ -212,8 +212,8 @@ const latestPosts = blogPosts.slice(0, 3);
           <p class="font-pixel text-[0.95rem] text-nes-white pixel-cursor mb-4">PRESS SPACE OR TAP TO START</p>
           <div class="flex flex-wrap justify-center gap-4 font-sans text-xs text-gray-500">
             <span>🍶 Sake cup = +10 pts</span>
-            <span>🚶 Tourist = GAME OVER</span>
-            <span>🛻 Rickshaw = GAME OVER</span>
+            <span>👘 Geisha = GAME OVER</span>
+            <span>⛩️ Torii / 🏮 Lantern = GAME OVER</span>
           </div>
         </div>
         <div id="over-overlay" style="display:none;" class="absolute inset-0 flex flex-col items-center justify-center bg-black/90">
@@ -485,10 +485,13 @@ const latestPosts = blogPosts.slice(0, 3);
   }
 
   function spawnObs() {
-    if (Math.random()<.65)
-      obstacles.push({x:CW+20, y:GY-50, w:18, h:50, type:'tourist', af:0});
+    const r = Math.random();
+    if (r < 0.55)
+      obstacles.push({x:CW+20, y:GY-52, w:18, h:52, type:'geisha', af:0});
+    else if (r < 0.80)
+      obstacles.push({x:CW+20, y:GY-65, w:56, h:65, type:'torii'});
     else
-      obstacles.push({x:CW+20, y:GY-52, w:62, h:52, type:'rickshaw'});
+      obstacles.push({x:CW+20, y:GY-42, w:28, h:42, type:'lantern'});
   }
 
   function spawnCollect() {
@@ -508,7 +511,7 @@ const latestPosts = blogPosts.slice(0, 3);
   function update() {
     if (state !== 'playing') return;
     frame++;
-    spd = 4 + Math.min(score / 350, 4.5);
+    spd = 3.5 + Math.min(score / 500, 3);
     pl.vy += GR;
     pl.y  += pl.vy;
     if (pl.y >= GY - PH) {
@@ -520,7 +523,7 @@ const latestPosts = blogPosts.slice(0, 3);
     if (frame % 6 === 0) { score++; updateHUD(); }
     if (score >= TARGET) { winGame(); return; }
     obstT -= spd;
-    if (obstT <= 0) { spawnObs(); obstT = 72 + Math.random() * 85; }
+    if (obstT <= 0) { spawnObs(); obstT = 120 + Math.random() * 130; }
     collectT -= spd;
     if (collectT <= 0) { spawnCollect(); collectT = 58 + Math.random() * 60; }
     for (const o of obstacles)    { o.x -= spd; if (o.af !== undefined && frame % 10 === 0) o.af ^= 1; }
@@ -618,46 +621,59 @@ const latestPosts = blogPosts.slice(0, 3);
   function drawObs() {
     for (const o of obstacles) {
       const ox = ~~o.x;
-      if (o.type === 'tourist') {
-        bx(ox-1,  o.y-6,  20, 4, '#606050');
-        bx(ox+2,  o.y-10, 14, 5, '#606050');
-        bx(ox+1,  o.y,    16, 10, C.tourist);
-        bx(ox+14, o.y+16,  9,  7, '#505048');
-        bx(ox+15, o.y+18,  5,  4, '#333');
-        bx(ox,    o.y+10, 18, 13, C.tShirt);
-        bx(ox-5,  o.y+10,  7, 14, '#6a6a5a');
-        bx(ox+1,  o.y+23, 16, 13, C.tPants);
+      const oy = ~~o.y;
+      if (o.type === 'geisha') {
+        // Kanzashi hair ornament
+        bx(ox+6, oy-7, 2, 7, '#ffb000');
+        bx(ox+4, oy-7, 6, 3, '#ff88bb');
+        // Hair
+        bx(ox+2, oy-1, 14, 5, '#110022');
+        bx(ox+3, oy+4, 12, 3, '#221133');
+        // White face
+        bx(ox+2, oy+7, 14, 11, '#f5eee0');
+        bx(ox+5, oy+13, 4, 2, '#cc1133');
+        // Kimono top
+        bx(ox+1, oy+18, 16, 13, '#8b1a3a');
+        // Obi belt
+        bx(ox+3, oy+19, 12, 5, '#ffb000');
+        // Kimono skirt (wider)
+        bx(ox-1, oy+31, 20, 15, '#6b0a2a');
+        // Tabi feet with walk animation
         const laf = o.af || 0;
-        bx(ox+2,  o.y+36,  6, 14+(laf?2:0), '#6a6a5a');
-        bx(ox+10, o.y+36,  6, 14+(laf?0:2), '#6a6a5a');
-        bx(ox+1,  o.y+48,  8,  4, '#333');
-        bx(ox+10, o.y+48,  8,  4, '#333');
+        const lp = [{l:-1,r:2},{l:0,r:0},{l:1,r:-2},{l:0,r:0}][laf % 4];
+        bx(ox+2+lp.l, oy+46, 7, 5, '#f5eee0');
+        bx(ox+9+lp.r, oy+46, 7, 5, '#f5eee0');
+      } else if (o.type === 'torii') {
+        // Left pillar
+        bx(ox+0,  oy+14, 8, 51, '#cc3300');
+        bx(ox+1,  oy+14, 5, 51, '#dd4411');
+        // Right pillar
+        bx(ox+48, oy+14, 8, 51, '#cc3300');
+        bx(ox+49, oy+14, 5, 51, '#dd4411');
+        // Top bar (kasagi)
+        bx(ox-4,  oy+0,  64, 9, '#cc3300');
+        bx(ox-2,  oy+1,  60, 6, '#ee5522');
+        // Second bar (nuki)
+        bx(ox+3,  oy+12, 50, 6, '#cc3300');
+        bx(ox+4,  oy+13, 48, 4, '#dd4411');
+        // Base stones
+        bx(ox-3,  oy+63, 14, 4, '#888878');
+        bx(ox+45, oy+63, 14, 4, '#888878');
       } else {
-        for (const wx of [ox+10, ox+48]) {
-          ctx.fillStyle = C.rickWheel;
-          ctx.beginPath(); ctx.arc(wx, o.y+o.h-7, 11, 0, Math.PI*2); ctx.fill();
-          ctx.fillStyle = '#333';
-          ctx.beginPath(); ctx.arc(wx, o.y+o.h-7,  4, 0, Math.PI*2); ctx.fill();
-          ctx.strokeStyle = '#444'; ctx.lineWidth = 1;
-          for (let a=0; a<Math.PI*2; a+=Math.PI/3) {
-            ctx.beginPath(); ctx.moveTo(wx, o.y+o.h-7);
-            ctx.lineTo(wx+Math.cos(a)*9, o.y+o.h-7+Math.sin(a)*9); ctx.stroke();
-          }
-        }
-        bx(ox-14, o.y+30, 20,  3, C.rickDark);
-        bx(ox-14, o.y+38, 20,  3, C.rickDark);
-        bx(ox-18, o.y+22, 10, 10, '#c8a878');
-        bx(ox-20, o.y+32, 14, 10, '#a07850');
-        bx(ox-18, o.y+42,  6, 12, '#806040');
-        bx(ox-12, o.y+42,  6, 12, '#806040');
-        bx(ox+4,  o.y+6,  52, 26, C.rickBody);
-        bx(ox+4,  o.y+6,  52,  4, '#a04818');
-        bx(ox+4,  o.y+6,   3, 26, C.rickDark);
-        bx(ox+53, o.y+6,   3, 26, C.rickDark);
-        bx(ox+1,  o.y+2,  58,  5, C.rickDark);
-        bx(ox-2,  o.y-1,  64,  4, C.rickBody);
-        bx(ox+26, o.y+9,  14, 11, '#e8d0a0');
-        bx(ox+24, o.y+20, 18,  9, '#c09050');
+        // Stone lantern (ishidoro)
+        // Cap (kasagata)
+        bx(ox+0,  oy+0,  28, 5, '#888878');
+        bx(ox+2,  oy+5,  24, 3, '#777768');
+        // Light box
+        bx(ox+6,  oy+8,  16, 14, '#998868');
+        bx(ox+8,  oy+10, 12, 10, '#ccb038');
+        bx(ox+10, oy+11,  8,  7, '#ffcc44');
+        // Middle ring
+        bx(ox+8,  oy+22, 12,  5, '#888878');
+        // Column
+        bx(ox+10, oy+27,  8, 10, '#777768');
+        // Base
+        bx(ox+2,  oy+37, 24,  5, '#888878');
       }
     }
   }
