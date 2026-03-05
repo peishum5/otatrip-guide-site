@@ -57,8 +57,13 @@ const faqs = [
 
   <!-- Hero -->
   <section class="relative bg-nes-black overflow-hidden">
-    <!-- Hero image placeholder — add src when ready -->
-    <div class="absolute inset-0 bg-gradient-to-t from-nes-black via-nes-black/80 to-nes-black/60"></div>
+    <img
+      src="/images/tours/izakaya/pontocho-alley-night.jpg"
+      alt="Pontocho alley at night with glowing lanterns"
+      class="absolute inset-0 w-full h-full object-cover opacity-60"
+      loading="eager"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-nes-black via-nes-black/60 to-transparent"></div>
     <div class="relative z-10 max-w-4xl mx-auto px-4 py-24 md:py-32">
       <p class="font-pixel text-[0.9rem] text-nes-amber mb-4 rpg-prefix">EVENING TOUR · PONTOCHO & KIYAMACHI</p>
       <h1 class="font-sans text-3xl md:text-4xl font-bold text-nes-white leading-tight mb-4">
@@ -98,6 +103,30 @@ const faqs = [
           <div class="flex items-start gap-3 bg-gray-900 border border-gray-800 px-4 py-3">
             <span class="font-pixel text-[0.9rem] text-nes-green shrink-0">[OK]</span>
             <span class="font-sans text-gray-300 text-sm leading-relaxed">{item}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Photo gallery -->
+    <section class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-pixel text-[0.9rem] text-nes-amber">TOUR PHOTOS</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
+      </div>
+      <div class="columns-2 md:columns-3 gap-2 space-y-2">
+        {[
+          { src: '/images/tours/izakaya/pontocho-alley-night.jpg', alt: 'Pontocho alley lined with izakayas and lanterns at night' },
+          { src: '/images/tours/izakaya/izakaya-guests.jpg',       alt: 'Guests enjoying drinks and food inside a Kyoto izakaya' },
+          { src: '/images/tours/izakaya/pontocho-lanterns.jpg',    alt: 'Red lanterns glowing in a Pontocho alley at night' },
+        ].map(photo => (
+          <div class="break-inside-avoid overflow-hidden border border-gray-800">
+            <img
+              src={photo.src}
+              alt={photo.alt}
+              class="w-full object-cover"
+              loading="lazy"
+            />
           </div>
         ))}
       </div>
