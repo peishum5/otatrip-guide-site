@@ -207,13 +207,18 @@ const faqs = [
         <p class="font-pixel text-[0.9rem] text-nes-cyan mb-4">// MEETING POINT</p>
         <div class="grid md:grid-cols-2 gap-6">
           <div>
-            <p class="font-pixel text-[0.9rem] text-nes-white mb-1">Kamogawa Delta (Demachiyanagi)</p>
-            <p class="font-sans text-gray-400 text-xs leading-relaxed">
-              Near Demachiyanagi Station (Keihan / Eizan Line)<br />
-              Exact meeting spot confirmed upon booking.
+            <p class="font-sans text-nes-white font-semibold text-sm mb-1">Demachiyanagi Station</p>
+            <p class="font-sans text-gray-400 text-xs leading-relaxed mb-3">
+              32-1 Tanaka Kamiyanagichō, Sakyo Ward, Kyoto 606-8205<br />
+              Keihan Line / Eizan Line
             </p>
-            <p class="font-sans text-gray-600 text-xs mt-3">
-              Please arrive 5 minutes early. Your guide will be waiting at the meeting point.
+            <p class="font-sans text-gray-400 text-xs leading-relaxed mb-3">
+              Please look for a guide holding an <span class="text-nes-white">Otatrip board</span>.
+              Details about the guide will be sent via message after your reservation is confirmed.
+            </p>
+            <p class="font-sans text-gray-600 text-xs leading-relaxed">
+              If you do not arrive by the time the tour starts without contacting us, your reservation will be canceled.
+              This activity ends back at the meeting point.
             </p>
           </div>
           <div class="space-y-2 font-pixel text-[0.9rem]">
@@ -221,7 +226,7 @@ const faqs = [
               { k: 'Morning slot', v: '10:00 start' },
               { k: 'Afternoon slot', v: '14:00 start' },
               { k: 'Duration', v: '~2 hours' },
-              { k: 'Shoes', v: 'Comfortable' },
+              { k: 'End point', v: 'Meeting point' },
             ].map(row => (
               <div class="flex justify-between border-b border-gray-800 pb-2">
                 <span class="text-gray-500">{row.k}</span>
