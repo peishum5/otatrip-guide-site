@@ -57,8 +57,13 @@ const faqs = [
 
   <!-- Hero -->
   <section class="relative bg-nes-black overflow-hidden">
-    <!-- Hero image placeholder — add src when ready -->
-    <div class="absolute inset-0 bg-gradient-to-t from-nes-black via-nes-black/80 to-nes-black/60"></div>
+    <img
+      src="/images/tours/shimogamo/photo-bridge.jpg"
+      alt="Guests at Shimogamo Shrine red bridge"
+      class="absolute inset-0 w-full h-full object-cover opacity-60"
+      loading="eager"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-nes-black via-nes-black/60 to-transparent"></div>
     <div class="relative z-10 max-w-4xl mx-auto px-4 py-24 md:py-32">
       <p class="font-pixel text-[0.9rem] text-nes-amber mb-4 rpg-prefix">MORNING TOUR · SHIMOGAMO & KAMOGAWA</p>
       <h1 class="font-sans text-3xl md:text-4xl font-bold text-nes-white leading-tight mb-4">
@@ -98,6 +103,49 @@ const faqs = [
           <div class="flex items-start gap-3 bg-gray-900 border border-gray-800 px-4 py-3">
             <span class="font-pixel text-[0.9rem] text-nes-green shrink-0">[OK]</span>
             <span class="font-sans text-gray-300 text-sm leading-relaxed">{item}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Tour Photos -->
+    <section class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-pixel text-[0.9rem] text-nes-amber">TOUR PHOTOS</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
+      </div>
+      <div class="grid grid-cols-3 gap-2 mb-2">
+        <div class="overflow-hidden border border-gray-800">
+          <img src="/images/tours/shimogamo/photo-bridge.jpg" alt="Guests at Shimogamo Shrine red bridge" class="w-full h-48 object-cover" loading="lazy" />
+        </div>
+        <div class="overflow-hidden border border-gray-800">
+          <img src="/images/tours/shimogamo/photo-delta.jpg" alt="Guests on stepping stones at Kamogawa Delta" class="w-full h-48 object-cover" loading="lazy" />
+        </div>
+        <div class="overflow-hidden border border-gray-800">
+          <img src="/images/tours/shimogamo/photo-shrine.jpg" alt="Guests bowing at Shimogamo Shrine" class="w-full h-48 object-cover" loading="lazy" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Manga Sample -->
+    <section class="mb-12">
+      <div class="flex items-center gap-4 mb-3">
+        <h2 class="font-pixel text-[0.9rem] text-nes-amber">YOUR MANGA SOUVENIR</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
+      </div>
+      <p class="font-sans text-sm text-gray-400 leading-relaxed mb-6">
+        After the walk, we turn your best shots into a manga-style artwork — your Kyoto moment, illustrated.
+        Here are some examples from past tours.
+      </p>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+        {[
+          { src: '/images/tours/shimogamo/manga-1.jpg', alt: 'Manga sample — Shimogamo shrine and river' },
+          { src: '/images/tours/shimogamo/manga-2.jpg', alt: 'Manga sample — forest walk and shrine gate' },
+          { src: '/images/tours/shimogamo/manga-3.jpg', alt: 'Manga sample — shrine interior and water' },
+          { src: '/images/tours/shimogamo/manga-4.jpg', alt: 'Manga sample — Tadasu-no-Mori and delta' },
+        ].map(photo => (
+          <div class="overflow-hidden border border-gray-800">
+            <img src={photo.src} alt={photo.alt} class="w-full object-cover" loading="lazy" />
           </div>
         ))}
       </div>
