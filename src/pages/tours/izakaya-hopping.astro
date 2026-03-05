@@ -1,0 +1,211 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BookingWidget from '../../components/BookingWidget.astro';
+import GroupCTA from '../../components/GroupCTA.astro';
+import ReviewsSection from '../../components/ReviewsSection.astro';
+
+const highlights = [
+  'Visit 2–3 local izakayas in Pontocho & Kiyamachi',
+  'No hidden commissions — you pay the restaurant directly',
+  'Customizable for dietary needs (vegetarian, no seafood, etc.)',
+  'Small groups for a relaxed, genuine izakaya experience',
+  'Learn izakaya etiquette and how to order like a local',
+  'English-speaking guide throughout',
+];
+
+const timeline = [
+  { time: '18:30', desc: 'Meet near Kiyamachi-Sanjo. Brief intro to the neighborhood and izakaya culture.' },
+  { time: '18:45', desc: 'First izakaya — classic Kyoto small-plates and local draft beer or sake.' },
+  { time: '19:30', desc: 'Walk through the narrow lanes of Pontocho alley.' },
+  { time: '19:45', desc: 'Second izakaya — regional specialties, your guide explains each dish.' },
+  { time: '20:45', desc: 'Optional third stop — continuing the night on your own terms.' },
+  { time: '21:00', desc: 'Tour ends. Stay out or head back — the night is yours.' },
+];
+
+const faqs = [
+  {
+    q: 'Do I need to speak Japanese?',
+    a: 'Not at all. Your guide handles all ordering and communication. You just sit back and enjoy.',
+  },
+  {
+    q: 'How much should I budget for food and drinks?',
+    a: 'Typically ¥3,000–5,000 per person for food and drinks across the stops. This is paid directly at each izakaya.',
+  },
+  {
+    q: 'Can the tour accommodate vegetarians or dietary restrictions?',
+    a: 'Yes. Let us know in advance and we will choose izakayas with good options for you.',
+  },
+  {
+    q: 'Is this suitable for solo travelers?',
+    a: 'Absolutely. Solo travelers are very welcome — the small-group format makes it easy to chat and meet people.',
+  },
+  {
+    q: 'Can I book a private version for my group?',
+    a: 'Yes. Private bookings for 2–8 guests available. Contact us via the Groups page.',
+  },
+];
+---
+
+<BaseLayout
+  title="Kyoto Izakaya Hopping — Pontocho & Kiyamachi | OTAtrip Guide"
+  description="An evening bar-hopping tour through Kyoto's most atmospheric backstreets. Visit 2–3 local izakayas in Pontocho and Kiyamachi with a local guide. Small groups."
+  canonical="/tours/izakaya-hopping"
+>
+  <Fragment slot="head">
+    <script is:inline type="text/javascript" src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=f23bdb2c-1b09-450d-bc03-a0a0b23700e9" async></script>
+  </Fragment>
+
+  <!-- Hero -->
+  <section class="relative bg-nes-black overflow-hidden">
+    <!-- Hero image placeholder — add src when ready -->
+    <div class="absolute inset-0 bg-gradient-to-t from-nes-black via-nes-black/80 to-nes-black/60"></div>
+    <div class="relative z-10 max-w-4xl mx-auto px-4 py-24 md:py-32">
+      <p class="font-pixel text-[0.9rem] text-nes-amber mb-4 rpg-prefix">EVENING TOUR · PONTOCHO & KIYAMACHI</p>
+      <h1 class="font-sans text-3xl md:text-4xl font-bold text-nes-white leading-tight mb-4">
+        Kyoto Izakaya Hopping
+      </h1>
+      <p class="font-sans text-gray-300 text-base leading-relaxed mb-8 max-w-xl">
+        Dive into Kyoto's nightlife with a local in the lead.
+        Narrow alleys, cold draft beer, small plates — and the stories behind the city after dark.
+      </p>
+      <div class="flex flex-wrap gap-6 font-pixel text-[0.9rem] mb-8">
+        {[
+          { label: 'Duration', value: '~3 hours' },
+          { label: 'Group size', value: 'Small group' },
+          { label: 'Language', value: 'English' },
+          { label: 'Time', value: 'Evening' },
+        ].map(item => (
+          <div>
+            <div class="font-pixel text-[0.9rem] text-nes-amber">{item.value}</div>
+            <div class="font-pixel text-[0.9rem] text-gray-500">{item.label}</div>
+          </div>
+        ))}
+      </div>
+      <a href="#booking" class="nes-btn nes-btn-gold">BOOK YOUR SPOT</a>
+    </div>
+  </section>
+
+  <div class="max-w-4xl mx-auto px-4 py-12">
+
+    <!-- Highlights -->
+    <section class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-pixel text-[0.9rem] text-nes-amber">WHAT'S INCLUDED</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-3">
+        {highlights.map(item => (
+          <div class="flex items-start gap-3 bg-gray-900 border border-gray-800 px-4 py-3">
+            <span class="font-pixel text-[0.9rem] text-nes-green shrink-0">[OK]</span>
+            <span class="font-sans text-gray-300 text-sm leading-relaxed">{item}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-pixel text-[0.9rem] text-nes-amber">TOUR TIMELINE</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
+      </div>
+      <div class="space-y-5">
+        {timeline.map(item => (
+          <div class="flex items-start gap-5">
+            <span class="font-pixel text-[0.9rem] text-nes-cyan shrink-0 w-12 text-right pt-1">{item.time}</span>
+            <div class="flex-1 border-l border-gray-700 pl-5 pb-3">
+              <p class="font-sans text-sm text-gray-300 leading-relaxed">{item.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Meeting point -->
+    <section class="mb-12">
+      <div class="dialogue-box">
+        <p class="font-pixel text-[0.9rem] text-nes-cyan mb-4">// MEETING POINT</p>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <p class="font-pixel text-[0.9rem] text-nes-white font-semibold mb-1">Kiyamachi-Sanjo area</p>
+            <p class="font-sans text-gray-400 text-xs leading-relaxed">
+              Exact meeting point sent upon booking.<br />
+              Central Kyoto, near Sanjo Bridge.
+            </p>
+            <p class="font-sans text-gray-600 text-xs mt-3">
+              Look for your guide near the meeting spot 5 minutes early.
+            </p>
+          </div>
+          <div class="space-y-2 font-pixel text-[0.9rem]">
+            {[
+              { k: 'Start time', v: '18:30' },
+              { k: 'End time', v: '~21:00' },
+              { k: 'Dress code', v: 'Casual' },
+              { k: 'Min. age', v: '18+ (alcohol tour)' },
+            ].map(row => (
+              <div class="flex justify-between border-b border-gray-800 pb-2">
+                <span class="text-gray-500">{row.k}</span>
+                <span class="text-nes-white">{row.v}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Booking -->
+    <section id="booking" class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-pixel text-[0.9rem] text-nes-amber">BOOK YOUR SPOT</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
+      </div>
+      <p class="font-sans text-gray-500 text-sm mb-6">Spots are limited. Book early to secure your date.</p>
+      <BookingWidget widgetPath="experience-calendar/901506" />
+    </section>
+
+    <!-- Reviews -->
+    <ReviewsSection />
+
+    <!-- Group CTA -->
+    <GroupCTA />
+
+    <!-- FAQ -->
+    <section class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-pixel text-[0.9rem] text-nes-amber">FAQ</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
+      </div>
+      <div class="space-y-3">
+        {faqs.map(faq => (
+          <details class="border border-gray-800 bg-gray-900 group">
+            <summary class="flex items-center justify-between px-5 py-4 cursor-pointer font-pixel text-[0.9rem] text-nes-white hover:text-nes-amber transition-colors">
+              {faq.q}
+              <span class="ml-4 text-gray-600 shrink-0 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-5 pb-4 font-sans text-sm text-gray-400 leading-relaxed border-t border-gray-800 pt-4">
+              {faq.a}
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "TouristAttraction",
+    "name": "Kyoto Izakaya Hopping",
+    "description": "An evening bar-hopping tour through Kyoto's most atmospheric backstreets in Pontocho and Kiyamachi. Small groups.",
+    "url": "https://otatrip-guide.com/tours/izakaya-hopping",
+    "provider": {
+      "@type": "TouristInformationCenter",
+      "name": "OTAtrip Guide",
+      "url": "https://otatrip-guide.com"
+    },
+    "offers": {
+      "@type": "Offer",
+      "availability": "https://schema.org/InStock"
+    }
+  })} />
+</BaseLayout>

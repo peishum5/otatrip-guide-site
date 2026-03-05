@@ -1,0 +1,211 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BookingWidget from '../../components/BookingWidget.astro';
+import GroupCTA from '../../components/GroupCTA.astro';
+import ReviewsSection from '../../components/ReviewsSection.astro';
+
+const highlights = [
+  'Walk ancient Shimogamo Shrine and Tadasu-no-Mori primeval forest',
+  'Finish at the iconic Kamogawa Delta — a Kyoto landmark',
+  'Cinematic photos taken throughout the walk',
+  'One-of-a-kind manga-style print souvenir created from your photos',
+  'High-res digital photos included and sent after the tour',
+  'Small groups for a relaxed, personal experience',
+];
+
+const timeline = [
+  { time: '08:30', desc: 'Meet at Shimogamo Shrine main torii gate. Brief intro to the shrine\'s 2,600-year history.' },
+  { time: '08:45', desc: 'Walk through Tadasu-no-Mori — the ancient forest corridor leading to the shrine.' },
+  { time: '09:15', desc: 'Explore Shimogamo Shrine inner grounds. Photo stops at key locations.' },
+  { time: '09:45', desc: 'Walk south along the Kamo River toward the Delta.' },
+  { time: '10:15', desc: 'Arrive at Kamogawa Delta (Demachiyanagi). Final photo session.' },
+  { time: '10:30', desc: 'Tour ends. Your manga-style print will be created and sent digitally within a few days.' },
+];
+
+const faqs = [
+  {
+    q: 'What is the manga-style print?',
+    a: 'We take cinematic photos of you during the walk, then illustrate selected shots in a manga / anime-inspired style. You receive a high-res digital file — perfect for printing or sharing.',
+  },
+  {
+    q: 'How much walking is involved?',
+    a: 'About 3–4 km in total on mostly flat paths through the forest and along the river. Easy pace with frequent stops.',
+  },
+  {
+    q: 'What time of day is best for photos?',
+    a: 'Morning light in Tadasu-no-Mori is exceptional — soft, filtered through the trees. The tour is timed to make the most of it.',
+  },
+  {
+    q: 'When do I receive my manga print?',
+    a: 'Digital files are sent within a few days after the tour via email or a file-sharing link.',
+  },
+  {
+    q: 'Can I book a private session?',
+    a: 'Yes. Private bookings for 1–4 guests are ideal for couples, families, or solo travelers wanting a personal photo experience.',
+  },
+];
+---
+
+<BaseLayout
+  title="Shimogamo Shrine & Manga Walk — Kyoto Morning Tour | OTAtrip Guide"
+  description="A morning walk through Shimogamo Shrine and Tadasu-no-Mori forest. Cinematic photography throughout, finishing with a custom manga-style print souvenir."
+  canonical="/tours/shimogamo-manga-walk"
+>
+  <Fragment slot="head">
+    <script is:inline type="text/javascript" src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=f23bdb2c-1b09-450d-bc03-a0a0b23700e9" async></script>
+  </Fragment>
+
+  <!-- Hero -->
+  <section class="relative bg-nes-black overflow-hidden">
+    <!-- Hero image placeholder — add src when ready -->
+    <div class="absolute inset-0 bg-gradient-to-t from-nes-black via-nes-black/80 to-nes-black/60"></div>
+    <div class="relative z-10 max-w-4xl mx-auto px-4 py-24 md:py-32">
+      <p class="font-pixel text-[0.9rem] text-nes-amber mb-4 rpg-prefix">MORNING TOUR · SHIMOGAMO & KAMOGAWA</p>
+      <h1 class="font-sans text-3xl md:text-4xl font-bold text-nes-white leading-tight mb-4">
+        Shimogamo Shrine &amp; Manga Walk
+      </h1>
+      <p class="font-sans text-gray-300 text-base leading-relaxed mb-8 max-w-xl">
+        Ancient forest. World Heritage shrine. Soft morning light.
+        Walk it all — and leave with a one-of-a-kind manga portrait of your Kyoto moment.
+      </p>
+      <div class="flex flex-wrap gap-6 font-pixel text-[0.9rem] mb-8">
+        {[
+          { label: 'Duration', value: '~2 hours' },
+          { label: 'Group size', value: 'Small group' },
+          { label: 'Language', value: 'English' },
+          { label: 'Time', value: 'Morning' },
+        ].map(item => (
+          <div>
+            <div class="font-pixel text-[0.9rem] text-nes-amber">{item.value}</div>
+            <div class="font-pixel text-[0.9rem] text-gray-500">{item.label}</div>
+          </div>
+        ))}
+      </div>
+      <a href="#booking" class="nes-btn nes-btn-gold">BOOK YOUR SPOT</a>
+    </div>
+  </section>
+
+  <div class="max-w-4xl mx-auto px-4 py-12">
+
+    <!-- Highlights -->
+    <section class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-pixel text-[0.9rem] text-nes-amber">WHAT'S INCLUDED</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-3">
+        {highlights.map(item => (
+          <div class="flex items-start gap-3 bg-gray-900 border border-gray-800 px-4 py-3">
+            <span class="font-pixel text-[0.9rem] text-nes-green shrink-0">[OK]</span>
+            <span class="font-sans text-gray-300 text-sm leading-relaxed">{item}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-pixel text-[0.9rem] text-nes-amber">TOUR TIMELINE</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
+      </div>
+      <div class="space-y-5">
+        {timeline.map(item => (
+          <div class="flex items-start gap-5">
+            <span class="font-pixel text-[0.9rem] text-nes-cyan shrink-0 w-12 text-right pt-1">{item.time}</span>
+            <div class="flex-1 border-l border-gray-700 pl-5 pb-3">
+              <p class="font-sans text-sm text-gray-300 leading-relaxed">{item.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Meeting point -->
+    <section class="mb-12">
+      <div class="dialogue-box">
+        <p class="font-pixel text-[0.9rem] text-nes-cyan mb-4">// MEETING POINT</p>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <p class="font-pixel text-[0.9rem] text-nes-white font-semibold mb-1">Shimogamo Shrine Main Torii</p>
+            <p class="font-sans text-gray-400 text-xs leading-relaxed">
+              Shimogamo Honmachi, Sakyo-ku, Kyoto<br />
+              10-min walk from Demachiyanagi Station (Eizan/Keihan)
+            </p>
+            <p class="font-sans text-gray-600 text-xs mt-3">
+              Look for your guide at the large stone torii gate. Please arrive 5 minutes early.
+            </p>
+          </div>
+          <div class="space-y-2 font-pixel text-[0.9rem]">
+            {[
+              { k: 'Start time', v: '08:30' },
+              { k: 'End time', v: '~10:30' },
+              { k: 'Dress code', v: 'Comfortable shoes' },
+              { k: 'All ages', v: 'Welcome' },
+            ].map(row => (
+              <div class="flex justify-between border-b border-gray-800 pb-2">
+                <span class="text-gray-500">{row.k}</span>
+                <span class="text-nes-white">{row.v}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Booking -->
+    <section id="booking" class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-pixel text-[0.9rem] text-nes-amber">BOOK YOUR SPOT</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
+      </div>
+      <p class="font-sans text-gray-500 text-sm mb-6">Spots are limited. Book early to secure your date.</p>
+      <BookingWidget widgetPath="experience-calendar/901511" />
+    </section>
+
+    <!-- Reviews -->
+    <ReviewsSection />
+
+    <!-- Group CTA -->
+    <GroupCTA />
+
+    <!-- FAQ -->
+    <section class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-pixel text-[0.9rem] text-nes-amber">FAQ</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
+      </div>
+      <div class="space-y-3">
+        {faqs.map(faq => (
+          <details class="border border-gray-800 bg-gray-900 group">
+            <summary class="flex items-center justify-between px-5 py-4 cursor-pointer font-pixel text-[0.9rem] text-nes-white hover:text-nes-amber transition-colors">
+              {faq.q}
+              <span class="ml-4 text-gray-600 shrink-0 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-5 pb-4 font-sans text-sm text-gray-400 leading-relaxed border-t border-gray-800 pt-4">
+              {faq.a}
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "TouristAttraction",
+    "name": "Shimogamo Shrine & Manga Walk",
+    "description": "A morning walk through Shimogamo Shrine and Tadasu-no-Mori forest with cinematic photography and a custom manga-style print souvenir.",
+    "url": "https://otatrip-guide.com/tours/shimogamo-manga-walk",
+    "provider": {
+      "@type": "TouristInformationCenter",
+      "name": "OTAtrip Guide",
+      "url": "https://otatrip-guide.com"
+    },
+    "offers": {
+      "@type": "Offer",
+      "availability": "https://schema.org/InStock"
+    }
+  })} />
+</BaseLayout>
