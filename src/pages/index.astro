@@ -143,6 +143,45 @@ const latestPosts = blogPosts.slice(0, 3);
   })();
   </script>
 
+  <!-- Why Choose Us -->
+  <section class="bg-nes-black border-y-2 border-gray-800 py-16">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="text-center mb-12">
+        <p class="font-pixel text-[0.9rem] text-nes-cyan mb-4 rpg-prefix">WHY OTAtrip GUIDE</p>
+        <h2 class="font-pixel text-nes-white leading-relaxed" style="font-size: clamp(0.65rem, 2vw, 0.9rem);">
+          KYOTO FROM THE INSIDE
+        </h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8">
+        {[
+          {
+            icon: '🏮',
+            title: 'LOCAL EXPERTISE',
+            desc: "Our guides have lived in Kyoto for years. We take you to bars, alleys, and viewpoints that aren't in any guidebook.",
+          },
+          {
+            icon: '🎭',
+            title: 'ENTERTAINMENT PROS',
+            desc: 'OTAtrip Guide is produced by Cosmic Magic — a professional entertainment company behind immersive experiences and ARGs. Every tour is crafted for drama, pacing, and surprise.',
+          },
+          {
+            icon: '👥',
+            title: 'SMALL GROUPS',
+            desc: 'Max 10 guests means real conversation, flexible pacing, and a genuine experience — not a crowd.',
+          },
+        ].map(item => (
+          <div class="text-center">
+            <div class="dialogue-box inline-block mb-5 px-5 py-4">
+              <span class="text-4xl">{item.icon}</span>
+            </div>
+            <h3 class="font-pixel text-[0.9rem] text-nes-amber mb-3">{item.title}</h3>
+            <p class="font-sans text-gray-400 text-sm leading-relaxed">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <!-- Stats Bar -->
   <section class="bg-nes-black border-y-2 border-nes-amber">
     <div class="max-w-6xl mx-auto px-4 py-8">
@@ -263,42 +302,4 @@ const latestPosts = blogPosts.slice(0, 3);
     )}
   </section>
 
-  <!-- Why Choose Us -->
-  <section class="bg-nes-black border-y-2 border-gray-800 py-16">
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="text-center mb-12">
-        <p class="font-pixel text-[0.9rem] text-nes-cyan mb-4 rpg-prefix">WHY OTAtrip GUIDE</p>
-        <h2 class="font-pixel text-nes-white leading-relaxed" style="font-size: clamp(0.65rem, 2vw, 0.9rem);">
-          KYOTO FROM THE INSIDE
-        </h2>
-      </div>
-      <div class="grid md:grid-cols-3 gap-8">
-        {[
-          {
-            icon: '🏮',
-            title: 'LOCAL EXPERTISE',
-            desc: "Our guides have lived in Gion for years. We take you to bars, alleys, and viewpoints that aren't in any guidebook.",
-          },
-          {
-            icon: '🍶',
-            title: 'AUTHENTIC TASTINGS',
-            desc: 'No tourist-trap sake. We pour what Kyoto residents actually drink, explained in plain English.',
-          },
-          {
-            icon: '👥',
-            title: 'SMALL GROUPS',
-            desc: 'Max 10 guests means real conversation, flexible pacing, and a genuine experience — not a crowd.',
-          },
-        ].map(item => (
-          <div class="text-center">
-            <div class="dialogue-box inline-block mb-5 px-5 py-4">
-              <span class="text-4xl">{item.icon}</span>
-            </div>
-            <h3 class="font-pixel text-[0.9rem] text-nes-amber mb-3">{item.title}</h3>
-            <p class="font-sans text-gray-400 text-sm leading-relaxed">{item.desc}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
 </BaseLayout>
