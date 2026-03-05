@@ -11,12 +11,12 @@ const currentPath = Astro.url.pathname;
 <header class="bg-nes-black border-b-2 border-nes-amber sticky top-0 z-50">
   <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
     <a href="/" class="flex flex-col gap-0.5 group">
-      <span class="font-pixel text-[0.85rem] text-nes-amber pixel-flicker leading-tight">OTAtrip GUIDE</span>
-      <span class="font-pixel text-[0.7rem] text-nes-cyan leading-tight">KYOTO LOCAL EXPERTS</span>
+      <span class="font-pixel text-[1.05rem] text-nes-amber pixel-flicker leading-tight">OTAtrip GUIDE</span>
+      <span class="font-pixel text-[0.9rem] text-nes-cyan leading-tight">KYOTO LOCAL EXPERTS</span>
     </a>
 
     <!-- Mobile menu button -->
-    <button id="mobile-menu-btn" class="md:hidden font-pixel text-[0.7rem] text-nes-amber border border-nes-amber px-3 py-2 hover:bg-nes-amber hover:text-nes-black transition-colors" aria-label="Toggle menu">
+    <button id="mobile-menu-btn" class="md:hidden font-pixel text-[0.9rem] text-nes-amber border border-nes-amber px-3 py-2 hover:bg-nes-amber hover:text-nes-black transition-colors" aria-label="Toggle menu">
       [MENU]
     </button>
 
@@ -25,7 +25,7 @@ const currentPath = Astro.url.pathname;
       {navLinks.map(link => (
         <a
           href={link.href}
-          class={`font-pixel text-[0.7rem] transition-colors hover:text-nes-amber ${currentPath.startsWith(link.href) && link.href !== '/' ? 'text-nes-amber' : 'text-gray-400'}`}
+          class={`font-pixel text-[0.9rem] transition-colors hover:text-nes-amber ${currentPath.startsWith(link.href) && link.href !== '/' ? 'text-nes-amber' : 'text-gray-400'}`}
         >
           {link.label}
         </a>
@@ -41,12 +41,12 @@ const currentPath = Astro.url.pathname;
     {navLinks.map(link => (
       <a
         href={link.href}
-        class="block py-3 font-pixel text-[0.7rem] text-gray-400 hover:text-nes-amber transition-colors border-b border-gray-800"
+        class="block py-3 font-pixel text-[0.9rem] text-gray-400 hover:text-nes-amber transition-colors border-b border-gray-800"
       >
         {link.label}
       </a>
     ))}
-    <a href="/groups" class="block py-3 font-pixel text-[0.7rem] text-nes-amber hover:text-nes-black hover:bg-nes-amber transition-colors">
+    <a href="/groups" class="block py-3 font-pixel text-[0.9rem] text-nes-amber hover:text-nes-black hover:bg-nes-amber transition-colors">
       GROUPS &amp; AGENCIES
     </a>
   </nav>

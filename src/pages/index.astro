@@ -25,7 +25,7 @@ const latestPosts = blogPosts.slice(0, 3);
       <!-- Rating badge -->
       <div id="hero-badge" class="hero-reveal inline-flex items-center gap-3 border border-nes-amber px-4 py-2 mb-6" style="--d:0.2s">
         <span class="text-nes-amber text-sm">★★★★★</span>
-        <span class="font-pixel text-[0.7rem] text-nes-white">4.9 / 5</span>
+        <span class="font-pixel text-[0.9rem] text-nes-white">4.9 / 5</span>
         <span class="font-sans text-xs text-gray-400">on TripAdvisor</span>
       </div>
 
@@ -146,7 +146,7 @@ const latestPosts = blogPosts.slice(0, 3);
   <!-- Stats Bar -->
   <section class="bg-nes-black border-y-2 border-nes-amber">
     <div class="max-w-6xl mx-auto px-4 py-8">
-      <p class="font-pixel text-[0.7rem] text-nes-cyan text-center mb-6">-- PLAYER STATS --</p>
+      <p class="font-pixel text-[0.9rem] text-nes-cyan text-center mb-6">-- PLAYER STATS --</p>
       <div class="grid grid-cols-3 gap-6 text-center">
         {[
           { number: '1000+', label: 'Guests Guided' },
@@ -171,26 +171,26 @@ const latestPosts = blogPosts.slice(0, 3);
   <section class="max-w-6xl mx-auto px-4 pb-16">
     <div class="flex items-end justify-between mb-8">
       <div>
-        <p class="font-pixel text-[0.7rem] text-nes-amber mb-2 rpg-prefix">AVAILABLE QUESTS</p>
+        <p class="font-pixel text-[0.9rem] text-nes-amber mb-2 rpg-prefix">AVAILABLE QUESTS</p>
         <h2 class="font-pixel text-nes-white leading-relaxed" style="font-size: clamp(0.65rem, 2vw, 0.9rem);">
           OUR TOURS
         </h2>
       </div>
-      <a href="/tours" class="font-pixel text-[0.7rem] text-nes-cyan hover:text-nes-amber transition-colors hidden md:block">
+      <a href="/tours" class="font-pixel text-[0.9rem] text-nes-cyan hover:text-nes-amber transition-colors hidden md:block">
         ALL TOURS &gt;
       </a>
     </div>
     <div class="dialogue-box flex flex-col md:flex-row items-center gap-6">
       <div class="text-5xl shrink-0">🏮</div>
       <div class="flex-1">
-        <p class="font-pixel text-[0.7rem] text-nes-cyan mb-2">EVENING TOUR · GION DISTRICT</p>
-        <h3 class="font-pixel text-[0.8rem] text-nes-white leading-relaxed mb-2">GION SAKE WALKING TOUR</h3>
+        <p class="font-pixel text-[0.9rem] text-nes-cyan mb-2">EVENING TOUR · GION DISTRICT</p>
+        <h3 class="font-pixel text-[1rem] text-nes-white leading-relaxed mb-2">GION SAKE WALKING TOUR</h3>
         <p class="font-sans text-sm text-gray-300">3 hours · Max 8 guests · 3 sake bars · English</p>
       </div>
       <a href="/tours/gion-sake-walk" class="nes-btn nes-btn-gold shrink-0">VIEW TOUR</a>
     </div>
     <div class="text-center mt-6 md:hidden">
-      <a href="/tours" class="font-pixel text-[0.7rem] text-nes-cyan hover:text-nes-amber transition-colors">ALL TOURS &gt;</a>
+      <a href="/tours" class="font-pixel text-[0.9rem] text-nes-cyan hover:text-nes-amber transition-colors">ALL TOURS &gt;</a>
     </div>
   </section>
 
@@ -203,12 +203,12 @@ const latestPosts = blogPosts.slice(0, 3);
   <section class="max-w-6xl mx-auto px-4 py-16">
     <div class="flex items-end justify-between mb-8">
       <div>
-        <p class="font-pixel text-[0.7rem] text-nes-amber mb-2 rpg-prefix">TRAVEL GUIDES</p>
+        <p class="font-pixel text-[0.9rem] text-nes-amber mb-2 rpg-prefix">TRAVEL GUIDES</p>
         <h2 class="font-pixel text-nes-white leading-relaxed" style="font-size: clamp(0.65rem, 2vw, 0.9rem);">
           PLAN YOUR KYOTO TRIP
         </h2>
       </div>
-      <a href="/blog" class="font-pixel text-[0.7rem] text-nes-cyan hover:text-nes-amber transition-colors hidden md:block">
+      <a href="/blog" class="font-pixel text-[0.9rem] text-nes-cyan hover:text-nes-amber transition-colors hidden md:block">
         ALL GUIDES &gt;
       </a>
     </div>
@@ -222,7 +222,7 @@ const latestPosts = blogPosts.slice(0, 3);
                 <span class="font-sans text-xs text-nes-amber font-medium">{post.data.category || 'Kyoto Guide'}</span>
               </div>
               <div class="p-5">
-                <h3 class="font-pixel text-[0.7rem] text-nes-white group-hover:text-nes-amber transition-colors leading-relaxed mb-3 line-clamp-2">
+                <h3 class="font-pixel text-[0.9rem] text-nes-white group-hover:text-nes-amber transition-colors leading-relaxed mb-3 line-clamp-2">
                   {post.data.title}
                 </h3>
                 <p class="font-sans text-gray-500 text-sm leading-relaxed line-clamp-3">{post.data.description}</p>
@@ -233,7 +233,7 @@ const latestPosts = blogPosts.slice(0, 3);
         ))}
       </div>
     ) : (
-      <p class="font-pixel text-[0.7rem] text-gray-600 text-center py-12">// BLOG POSTS COMING SOON</p>
+      <p class="font-pixel text-[0.9rem] text-gray-600 text-center py-12">// BLOG POSTS COMING SOON</p>
     )}
   </section>
 
@@ -241,7 +241,7 @@ const latestPosts = blogPosts.slice(0, 3);
   <section class="bg-nes-black border-y-2 border-gray-800 py-16">
     <div class="max-w-6xl mx-auto px-4">
       <div class="text-center mb-12">
-        <p class="font-pixel text-[0.7rem] text-nes-cyan mb-4 rpg-prefix">WHY OTAtrip GUIDE</p>
+        <p class="font-pixel text-[0.9rem] text-nes-cyan mb-4 rpg-prefix">WHY OTAtrip GUIDE</p>
         <h2 class="font-pixel text-nes-white leading-relaxed" style="font-size: clamp(0.65rem, 2vw, 0.9rem);">
           KYOTO FROM THE INSIDE
         </h2>
@@ -268,7 +268,7 @@ const latestPosts = blogPosts.slice(0, 3);
             <div class="dialogue-box inline-block mb-5 px-5 py-4">
               <span class="text-4xl">{item.icon}</span>
             </div>
-            <h3 class="font-pixel text-[0.7rem] text-nes-amber mb-3">{item.title}</h3>
+            <h3 class="font-pixel text-[0.9rem] text-nes-amber mb-3">{item.title}</h3>
             <p class="font-sans text-gray-400 text-sm leading-relaxed">{item.desc}</p>
           </div>
         ))}
