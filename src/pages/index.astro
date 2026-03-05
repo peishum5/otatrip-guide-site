@@ -156,23 +156,32 @@ const latestPosts = blogPosts.slice(0, 3);
         {[
           {
             icon: '🏮',
+            img: null,
             title: 'LOCAL EXPERTISE',
             desc: "Our guides have lived in Kyoto for years. We take you to bars, alleys, and viewpoints that aren't in any guidebook.",
           },
           {
             icon: '🎭',
+            img: null,
             title: 'ENTERTAINMENT PROS',
             desc: 'OTAtrip Guide is produced by Cosmic Magic — a professional entertainment company behind immersive experiences and ARGs.',
           },
           {
             icon: '👥',
+            img: null,
             title: 'SMALL GROUPS',
             desc: 'We keep groups small so every guest gets real attention. Ask questions, go off-script, connect with your guide and the city on your own terms.',
           },
         ].map(item => (
           <div class="text-center">
-            <div class="dialogue-box inline-block mb-5 px-5 py-4">
-              <span class="text-4xl">{item.icon}</span>
+            <div class="dialogue-box mx-auto mb-5 overflow-hidden" style="width: 200px; height: 200px; padding: 0;">
+              {item.img ? (
+                <img src={item.img} alt={item.title} class="w-full h-full object-cover" />
+              ) : (
+                <div class="w-full h-full flex items-center justify-center">
+                  <span class="text-6xl">{item.icon}</span>
+                </div>
+              )}
             </div>
             <h3 class="font-pixel text-[0.9rem] text-nes-amber mb-3">{item.title}</h3>
             <p class="font-sans text-gray-400 text-sm leading-relaxed">{item.desc}</p>
