@@ -6,7 +6,7 @@ import vercel from '@astrojs/vercel';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://otatrip-guide.com',
+  site: 'https://otatrip.guide',
   integrations: [mdx()],
   output: 'static',
   adapter: vercel(),
