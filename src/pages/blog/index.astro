@@ -36,15 +36,27 @@ const categories = {
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {posts.map(post => (
             <article class="border-2 border-gray-700 hover:border-nes-amber transition-colors group bg-nes-black">
-              <a href={`/blog/${post.slug}`} class="block p-6">
-                <p class="font-pixel text-[0.9rem] text-nes-cyan mb-2">{category.toUpperCase()}</p>
-                <h3 class="font-pixel text-[0.9rem] text-nes-white group-hover:text-nes-amber transition-colors leading-relaxed mb-3">
-                  {post.data.title}
-                </h3>
-                <p class="font-sans text-gray-500 text-sm leading-relaxed line-clamp-3 mb-4">{post.data.description}</p>
-                <div class="flex items-center justify-between">
-                  <span class="font-pixel text-[0.9rem] text-gray-600">{post.data.author || 'LOCAL GUIDE'}</span>
-                  <span class="font-pixel text-[0.9rem] text-nes-cyan">READ &rarr;</span>
+              <a href={`/blog/${post.slug}`} class="block">
+                {post.data.hero_image && (
+                  <div class="overflow-hidden border-b-2 border-gray-700">
+                    <img
+                      src={post.data.hero_image}
+                      alt={post.data.title}
+                      class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+                <div class="p-4 md:p-5">
+                  <p class="font-pixel text-[0.9rem] text-nes-cyan mb-2">{category.toUpperCase()}</p>
+                  <h3 class="font-pixel text-[0.9rem] text-nes-white group-hover:text-nes-amber transition-colors leading-relaxed mb-3">
+                    {post.data.title}
+                  </h3>
+                  <p class="font-sans text-gray-500 text-sm leading-relaxed line-clamp-3 mb-4">{post.data.description}</p>
+                  <div class="flex items-center justify-between">
+                    <span class="font-pixel text-[0.9rem] text-gray-600">{post.data.author || 'LOCAL GUIDE'}</span>
+                    <span class="font-pixel text-[0.9rem] text-nes-cyan">READ &rarr;</span>
+                  </div>
                 </div>
               </a>
             </article>
@@ -62,12 +74,24 @@ const categories = {
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {allPosts.filter(p => !p.slug.startsWith('plan/') && !p.slug.startsWith('itineraries/')).map(post => (
             <article class="border-2 border-gray-700 hover:border-nes-amber transition-colors group bg-nes-black">
-              <a href={`/blog/${post.slug}`} class="block p-6">
-                <h3 class="font-pixel text-[0.9rem] text-nes-white group-hover:text-nes-amber transition-colors leading-relaxed mb-3">
-                  {post.data.title}
-                </h3>
-                <p class="font-sans text-gray-500 text-sm leading-relaxed line-clamp-3 mb-4">{post.data.description}</p>
-                <span class="font-pixel text-[0.9rem] text-nes-cyan">READ GUIDE &rarr;</span>
+              <a href={`/blog/${post.slug}`} class="block">
+                {post.data.hero_image && (
+                  <div class="overflow-hidden border-b-2 border-gray-700">
+                    <img
+                      src={post.data.hero_image}
+                      alt={post.data.title}
+                      class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+                <div class="p-4 md:p-5">
+                  <h3 class="font-pixel text-[0.9rem] text-nes-white group-hover:text-nes-amber transition-colors leading-relaxed mb-3">
+                    {post.data.title}
+                  </h3>
+                  <p class="font-sans text-gray-500 text-sm leading-relaxed line-clamp-3 mb-4">{post.data.description}</p>
+                  <span class="font-pixel text-[0.9rem] text-nes-cyan">READ GUIDE &rarr;</span>
+                </div>
               </a>
             </article>
           ))}

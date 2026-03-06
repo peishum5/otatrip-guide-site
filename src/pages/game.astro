@@ -101,10 +101,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   canvas.height = CH;
 
   const GY     = 168;   // top of ground
-  const GR     = 0.55;  // gravity
-  const JV     = -13;   // jump velocity
+  const GR     = 0.47;  // gravity
+  const JV     = -14;   // jump velocity
   const PW     = 22, PH = 50; // player hitbox
   const TARGET = 500;   // score to reach the sake bar
+  const HIT_PAD = 9;    // collision forgiveness (larger = easier)
 
   // ── COLORS ──────────────────────────────────────────────
   const C = {
@@ -143,9 +144,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   // ── GAME STATE ──────────────────────────────────────────
   let state = 'waiting'; // 'waiting' | 'playing' | 'gameover' | 'win'
   let score = 0, hi = +(localStorage.getItem('gion-hi')||0);
-  let spd = 4, frame = 0;
+  let spd = 3.5, frame = 0;
   let obstacles = [], collectibles = [], particles = [];
-  let obstT = 100, collectT = 60;
+  let obstT = 140, collectT = 60;
 
   // Player — NOTE: w and h are required for collision detection
   const pl = { x:90, y:GY-PH, vy:0, grounded:true, jumps:0, anim:0, squash:1, w:PW, h:PH };
@@ -175,6 +176,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     if (e.code==='Space'||e.code==='ArrowUp') { e.preventDefault(); handleInput(); }
   });
   canvas.addEventListener('pointerdown', e => { e.preventDefault(); handleInput(); });
+  startEl.addEventListener('pointerdown', e => { e.preventDefault(); handleInput(); });
 
   function doJump() {
     if (pl.jumps < 2) {
@@ -186,12 +188,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   // ── GAME CONTROL ────────────────────────────────────────
   function startGame() {
-    score=0; spd=4; frame=0;
+    score=0; spd=3.5; frame=0;
     obstacles=[]; collectibles=[]; particles=[];
-    obstT=100; collectT=60;
+    obstT=140; collectT=60;
     Object.assign(pl, {y:GY-PH, vy:0, grounded:true, jumps:0, anim:0, squash:1, w:PW, h:PH});
     state='playing';
-    startEl.classList.add('hidden');
+    startEl.style.display = 'none';
     overEl.style.display='none';
     winEl.style.display='none';
     updateHUD();
@@ -238,7 +240,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   // Axis-aligned bounding box collision with optional padding
-  function hits(a, b, p=3) {
+  function hits(a, b, p=HIT_PAD) {
     return (
       a.x + p       < b.x + b.w - p &&
       a.x + a.w - p > b.x + p       &&
@@ -251,7 +253,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   function update() {
     if (state !== 'playing') return;
     frame++;
-    spd = 3.5 + Math.min(score / 500, 3);
+    spd = 3 + Math.min(score / 900, 2.2);
 
     // Physics
     pl.vy += GR;
@@ -271,12 +273,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     // Spawn timers
     obstT -= spd;
-    if (obstT <= 0) { spawnObs(); obstT = 120 + Math.random() * 130; }
+    if (obstT <= 0) { spawnObs(); obstT = 140 + Math.random() * 140; }
     collectT -= spd;
     if (collectT <= 0) { spawnCollect(); collectT = 58 + Math.random() * 60; }
 
     // Move
-    for (const o of obstacles)    { o.x -= spd; if (o.af !== undefined && frame % 10 === 0) o.af ^= 1; }
+    for (const o of obstacles)    { o.x -= spd; if (o.af !== undefined && frame % 8 === 0) o.af = (o.af + 1) % 4; }
     for (const c of collectibles) { c.x -= spd; c.bob += 0.07; }
     for (const p of particles)    { p.x += p.vx; p.y += p.vy; p.vy += 0.15; p.life--; }
 
@@ -383,26 +385,48 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       const ox = ~~o.x;
       const oy = ~~o.y;
       if (o.type === 'geisha') {
-        // Kanzashi hair ornament
-        bx(ox+6, oy-7, 2, 7, '#ffb000');
-        bx(ox+4, oy-7, 6, 3, '#ff88bb');
-        // Hair
-        bx(ox+2, oy-1, 14, 5, '#110022');
-        bx(ox+3, oy+4, 12, 3, '#221133');
-        // White face
-        bx(ox+2, oy+7, 14, 11, '#f5eee0');
-        bx(ox+5, oy+13, 4, 2, '#cc1133');
-        // Kimono top
-        bx(ox+1, oy+18, 16, 13, '#8b1a3a');
-        // Obi belt
-        bx(ox+3, oy+19, 12, 5, '#ffb000');
-        // Kimono skirt (wider)
-        bx(ox-1, oy+31, 20, 15, '#6b0a2a');
-        // Tabi feet with walk animation
+        // Kanzashi — 2本
+        bx(ox+6,  oy-10, 2,  10, '#c8a020');
+        bx(ox+3,  oy-10, 8,   4, '#ff77bb');
+        bx(ox+4,  oy- 8, 6,   3, '#ffaadd');
+        bx(ox+12, oy- 7, 2,   7, '#c8a020');
+        bx(ox+10, oy- 7, 5,   3, '#ff99cc');
+        // 島田まげ (shimada — 横に広いお団子)
+        bx(ox-1,  oy+ 0, 20,  4, '#0a0015');
+        bx(ox-2,  oy+ 4, 22,  5, '#150020');
+        bx(ox+ 0, oy+ 9, 18,  3, '#0a0015');
+        // 白塗り顔 (oshiroi)
+        bx(ox+ 2, oy+ 7, 14, 10, '#f5ede0');
+        // 目 + 目尻の紅
+        bx(ox+ 3, oy+ 9,  2,  2, '#1a0030');
+        bx(ox+10, oy+ 9,  2,  2, '#1a0030');
+        bx(ox+ 2, oy+ 8,  4,  1, '#cc1133');
+        bx(ox+ 9, oy+ 8,  4,  1, '#cc1133');
+        // 紅 (beni) 唇
+        bx(ox+ 5, oy+14,  6,  2, '#cc1133');
+        bx(ox+ 6, oy+14,  4,  3, '#dd2244');
+        // 白い衿 + 赤い下衿
+        bx(ox+ 3, oy+17,  4, 10, '#f5ede0');
+        bx(ox+11, oy+17,  4, 10, '#f5ede0');
+        bx(ox+ 4, oy+18,  3,  9, '#cc1133');
+        // 振袖 (furisode) 本体
+        bx(ox+ 1, oy+17, 16, 14, '#8b1a3a');
+        bx(ox- 1, oy+20,  4, 10, '#6b0a2a');
+        bx(ox+15, oy+20,  4, 10, '#6b0a2a');
+        bx(ox+ 2, oy+22, 13,  3, '#a02545');
+        // 帯 (obi)
+        bx(ox+ 2, oy+31, 14,  8, '#c89020');
+        bx(ox+ 3, oy+32, 12,  3, '#f0c040');
+        bx(ox+ 3, oy+36, 12,  2, '#a07010');
+        bx(ox+14, oy+29,  5,  6, '#d4a030');
+        // 裾 (skirt)
+        bx(ox+ 0, oy+39, 18, 13, '#6b0a2a');
+        bx(ox+ 1, oy+40, 16,  3, '#7a1035');
+        // 白足袋 + 歩行アニメ
         const laf = o.af || 0;
-        const lp = [{l:-1,r:2},{l:0,r:0},{l:1,r:-2},{l:0,r:0}][laf % 4];
-        bx(ox+2+lp.l, oy+46, 7, 5, '#f5eee0');
-        bx(ox+9+lp.r, oy+46, 7, 5, '#f5eee0');
+        const lp = [{l:-2,r:3},{l:-1,r:1},{l:2,r:-3},{l:1,r:-1}][laf % 4];
+        bx(ox+ 1+lp.l, oy+48,  7, 4, '#f0ece0');
+        bx(ox+ 9+lp.r, oy+48,  7, 4, '#f0ece0');
       } else if (o.type === 'torii') {
         // Left pillar
         bx(ox+0,  oy+14, 8, 51, '#cc3300');

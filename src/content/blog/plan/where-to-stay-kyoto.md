@@ -4,7 +4,7 @@ slug: "/plan/where-to-stay-kyoto"
 description: "Neighborhood‑by‑neighborhood guide to the best areas in Kyoto for first‑time visitors, with pros/cons, price ranges, and practical booking tips."
 author: "Local Guide"
 last_updated: "2026-03-05"
-hero_image: ""
+hero_image: "/images/blog/gion-maiko.jpg"
 canonical: "/blog/plan/where-to-stay-kyoto"
 ---
 
@@ -30,7 +30,7 @@ For most first-time visitors, **Gion and Higashiyama** deliver the quintessentia
 - **Machiya (townhouse) rentals**: sleep 2–8 guests and run ¥20,000–¥60,000 per night for the whole property. A great option for groups or families who want a kitchen and more privacy.
 - **Boutique Western hotels and small inns**: ¥12,000–¥25,000 per room per night, breakfast sometimes optional.
 
-**What you can walk to:** Kiyomizu-dera Temple, Yasaka Shrine, Chion-in, Shoren-in, Maruyama Park, and the entire Higashiyama walking trail are all within 15–20 minutes on foot. For destinations farther afield, buses and taxis are plentiful on Higashiyama-dori.
+**What you can walk to:** [Kiyomizu-dera](https://maps.google.com/?q=Kiyomizudera+Kyoto) Temple, [Yasaka Shrine](https://maps.google.com/?q=Yasaka+Shrine+Kyoto), [Chion-in](https://maps.google.com/?q=Chion-in+Kyoto), [Shoren-in](https://maps.google.com/?q=Shoren-in+Kyoto), [Maruyama Park](https://maps.google.com/?q=Maruyama+Park+Kyoto), and the entire Higashiyama walking trail are all within 15–20 minutes on foot. For destinations farther afield, buses and taxis are plentiful on Higashiyama-dori.
 
 **Things to know:** Tour groups dominate the main lanes from around 10am to 6pm. After 8pm, the streets are quiet and beautiful. If you are a light sleeper and staying near Shijo-dori, street noise on weekends can be significant until midnight. Stone steps and uneven cobblestone paths make wheelchair and stroller navigation difficult in much of this area.
 
@@ -43,25 +43,25 @@ For most first-time visitors, **Gion and Higashiyama** deliver the quintessentia
 - Budget hostels and guesthouses are available from ¥3,000–¥5,000 per night per person.
 - Serviced apartments and larger rooms are available for families.
 
-**What you can walk to:** Nishiki Market (Kyoto's famous covered food market), Teramachi and Shinkyogoku shopping arcades, Pontocho alley (restaurant row along the river), and dozens of independent restaurants and cafes are all within easy walking distance. This area also has excellent access to the Subway Karasuma Line and Keihan Line, making it the best neighborhood for reaching multiple destinations without relying on buses.
+**What you can walk to:** [Nishiki Market](https://maps.google.com/?q=Nishiki+Market+Kyoto) (Kyoto's famous covered food market), Teramachi and Shinkyogoku shopping arcades, [Pontocho](https://maps.google.com/?q=Pontocho+Kyoto) alley (restaurant row along the river), and dozens of independent restaurants and cafes are all within easy walking distance. This area also has excellent access to the Subway Karasuma Line and Keihan Line, making it the best neighborhood for reaching multiple destinations without relying on buses.
 
 **Things to know:** This is Kyoto's busiest commercial zone, so street noise, foot traffic, and the pace of the area are noticeably urban. It suits business travelers, families who need space and convenience, and anyone who wants to maximize their time rather than their atmosphere. Many of Japan's best ramen, izakaya, and kaiseki restaurants are concentrated in this area.
 
 ## Kyoto Station Area
 
-**Kyoto Station** is not glamorous, but it works. The station itself is an architectural landmark — a vast glass-and-steel structure housing department stores (Isetan), two underground shopping malls (The Cube and Porta), dozens of restaurants, and seamless connections to JR Shinkansen, JR local lines, subway, and most major bus routes.
+**[Kyoto Station](https://maps.google.com/?q=Kyoto+Station+Japan)** is not glamorous, but it works. The station itself is an architectural landmark — a vast glass-and-steel structure housing department stores (Isetan), two underground shopping malls (The Cube and Porta), dozens of restaurants, and seamless connections to JR Shinkansen, JR local lines, subway, and most major bus routes.
 
 **Accommodation types and prices:**
 - The widest range of any area in Kyoto: from budget business hotels at ¥6,000 per night to full-service international hotels at ¥25,000+.
 - Multiple hotel towers are clustered within a 5-minute walk of the station, making luggage logistics simple.
 
-**What you can walk to:** The station area itself has Toji Temple (a UNESCO World Heritage site famous for its five-story pagoda) within walking distance, and Fushimi Inari-Taisha is just two stops south by JR. The rest of central Kyoto is 15–20 minutes by bus or 10–15 minutes by subway.
+**What you can walk to:** The station area itself has [Toji Temple](https://maps.google.com/?q=Toji+Temple+Kyoto) (a UNESCO World Heritage site famous for its five-story pagoda) within walking distance, and Fushimi Inari-Taisha is just two stops south by JR. The rest of central Kyoto is 15–20 minutes by bus or 10–15 minutes by subway.
 
-**Things to know:** Luggage forwarding services (takuhaibin, described below) are extremely easy to use at Kyoto Station, making it a smart first or last night if you are arriving from or continuing to another city. The area is best suited to travelers making day trips to Nara (35 min by JR) or Osaka (15 min by Shinkansen, 75 min by JR Rapid), as the station is the launchpad for all regional travel.
+**Things to know:** Luggage forwarding services (takuhaibin, described below) are extremely easy to use at Kyoto Station, making it a smart first or last night if you are arriving from or continuing to another city. The area is best suited to travelers making day trips to [Nara](https://maps.google.com/?q=Nara+Japan) (35 min by JR) or [Osaka](https://maps.google.com/?q=Osaka+Japan) (15 min by Shinkansen, 75 min by JR Rapid), as the station is the launchpad for all regional travel.
 
 ## Arashiyama
 
-**Arashiyama** sits at the western edge of Kyoto where the city meets forested mountains and the broad Oi River. It is home to the famous bamboo grove, Tenryu-ji's garden (a UNESCO World Heritage site), monkey park, and several riverside ryokan with some of the most beautiful views in Japan.
+**Arashiyama** sits at the western edge of Kyoto where the city meets forested mountains and the broad Oi River. It is home to the famous bamboo grove, [Tenryu-ji](https://maps.google.com/?q=Tenryu-ji+Kyoto)'s garden (a UNESCO World Heritage site), monkey park, and several riverside ryokan with some of the most beautiful views in Japan.
 
 **Accommodation types and prices:**
 - This area is dominated by high-end ryokan with river or mountain views: ¥20,000–¥80,000 per person per night, dinner and breakfast included.

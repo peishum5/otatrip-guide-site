@@ -14,7 +14,7 @@ interface Props {
   noIndex?: boolean;
 }
 
-const { title, description, pubDate, last_updated, author = 'Local Guide', canonical, hero_image, category, noIndex } = Astro.props;
+const { title, description, pubDate, last_updated, author = 'OTAtrip Guide', canonical, hero_image, category, noIndex } = Astro.props;
 const displayDate = last_updated || pubDate;
 ---
 
@@ -64,7 +64,7 @@ const displayDate = last_updated || pubDate;
     <!-- Author box -->
     <div class="mt-10 border-t border-gray-800 pt-8 flex items-start gap-4">
       <div class="w-12 h-12 border-2 border-nes-amber bg-nes-black flex items-center justify-center shrink-0">
-        <span class="font-pixel text-[0.9rem] text-nes-amber">LG</span>
+        <span class="font-pixel text-[0.9rem] text-nes-amber">OG</span>
       </div>
       <div>
         <div class="font-pixel text-[0.9rem] text-nes-white mb-1">{author.toUpperCase()}</div>

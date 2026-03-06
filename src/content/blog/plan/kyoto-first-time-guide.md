@@ -4,7 +4,7 @@ slug: "/plan/kyoto-first-time-guide"
 description: "Clear, practical guide for first‑time visitors to Kyoto: when to visit, where to stay, how to get around, budgets, and the perfect 1–3 day itineraries."
 author: "Local Guide"
 last_updated: "2025-03-01"
-hero_image: ""
+hero_image: "/images/blog/higashiyama-pagoda.jpg"
 canonical: "/blog/plan/kyoto-first-time-guide"
 ---
 
@@ -27,7 +27,7 @@ canonical: "/blog/plan/kyoto-first-time-guide"
 
 Kyoto is beautiful year-round, but timing matters a great deal for first-timers.
 
-**Spring (late March–April)** is the most popular season for good reason — cherry blossoms transform the city. The best weeks for sakura are usually the last week of March through the first week of April, though this shifts year to year. Expect dense crowds at Maruyama Park, Philosopher's Path, and the Kamo River. Book accommodation three to six months in advance.
+**Spring (late March–April)** is the most popular season for good reason — cherry blossoms transform the city. The best weeks for sakura are usually the last week of March through the first week of April, though this shifts year to year. Expect dense crowds at [Maruyama Park](https://maps.google.com/?q=Maruyama+Park+Kyoto), [Philosopher's Path](https://maps.google.com/?q=Philosopher%27s+Path+Kyoto), and the Kamo River. Book accommodation three to six months in advance.
 
 **Autumn (mid-October–late November)** is equally stunning, with maple foliage painting temple gardens in gold and red. Peak color usually falls around mid-November. Like spring, prices spike and accommodation fills fast — book early.
 
@@ -43,13 +43,13 @@ See [Best Time to Visit Kyoto](/plan/when-to-visit-kyoto) for monthly weather, f
 
 Where you sleep in Kyoto shapes everything from your morning commute to your evening walks.
 
-**Gion / Higashiyama** puts you inside Kyoto's most atmospheric neighborhood. Boutique ryokan, machiya guesthouses, and small hotels fill the historic lanes. You can walk to Kiyomizu-dera, Yasaka Shrine, and Ninen-zaka without catching a bus. The trade-off is daytime crowds and slightly higher prices. If you want the "old Kyoto" experience, this is the area.
+**Gion / Higashiyama** puts you inside Kyoto's most atmospheric neighborhood. Boutique ryokan, machiya guesthouses, and small hotels fill the historic lanes. You can walk to [Kiyomizu-dera](https://maps.google.com/?q=Kiyomizudera+Kyoto), [Yasaka Shrine](https://maps.google.com/?q=Yasaka+Shrine+Kyoto), and Ninen-zaka without catching a bus. The trade-off is daytime crowds and slightly higher prices. If you want the "old Kyoto" experience, this is the area.
 
-**Downtown (Kawaramachi / Karasuma)** is the practical choice for first-timers who want maximum flexibility. You're within walking distance of Nishiki Market, well-connected to the subway and Keihan line, and surrounded by restaurants at every price point. Modern hotels, capsule hotels, and a few ryokan all cluster here.
+**Downtown (Kawaramachi / Karasuma)** is the practical choice for first-timers who want maximum flexibility. You're within walking distance of [Nishiki Market](https://maps.google.com/?q=Nishiki+Market+Kyoto), well-connected to the subway and Keihan line, and surrounded by restaurants at every price point. Modern hotels, capsule hotels, and a few ryokan all cluster here.
 
 **Kyoto Station area** suits travelers who want to maximize day trips to Nara, Osaka, or Hiroshima. Budget hotels, business hotels, and the city's main transit hub are all within a short walk. It feels less "Kyoto" in character, but the savings and transit convenience are real.
 
-**Arashiyama** is worth considering if bamboo and river scenery are your priority, but it's a longer commute to eastern Kyoto sights.
+**[Arashiyama](https://maps.google.com/?q=Arashiyama+Kyoto)** is worth considering if bamboo and river scenery are your priority, but it's a longer commute to eastern Kyoto sights.
 
 See [Where to Stay in Kyoto](/plan/where-to-stay-kyoto) for neighborhood maps and curated picks at every budget level.
 
@@ -63,7 +63,7 @@ Kyoto is more walkable than visitors expect, but the city is also spread out, so
 
 **Trains** are faster and more predictable than buses. The Karasuma Subway line runs north-south; the Tozai line runs east-west. Keihan line connects central Kyoto with Fushimi Inari and the southern city. JR serves Arashiyama (Sagano line) and Inari.
 
-**Walking** is often your best option. Higashiyama — from Kiyomizu-dera down through Sannenzaka and Ninenzaka to Gion — is best done entirely on foot. Arashiyama's bamboo grove, Tenryu-ji, and the riverside are all within a 20-minute walk of each other.
+**Walking** is often your best option. Higashiyama — from Kiyomizu-dera down through [Sannenzaka](https://maps.google.com/?q=Sannenzaka+Kyoto) and [Ninenzaka](https://maps.google.com/?q=Ninenzaka+Kyoto) to [Gion](https://maps.google.com/?q=Gion+Kyoto) — is best done entirely on foot. Arashiyama's bamboo grove, [Tenryu-ji](https://maps.google.com/?q=Tenryu-ji+Kyoto), and the riverside are all within a 20-minute walk of each other.
 
 **Taxis** are clean, safe, and metered. Convenient for early-morning shrine visits, late-night returns, or moving luggage between hotels. Credit cards accepted in most taxis. Ride-hailing apps work, but street-hailing is easy at major spots.
 
@@ -71,11 +71,11 @@ See [How to Get Around Kyoto](/plan/transport-kyoto) for bus route details, trai
 
 ## Sample Itineraries (1–3 Days)
 
-**1 Day:** Fushimi Inari at dawn (arrive by 6am) → breakfast downtown → Kiyomizu-dera and the Higashiyama walk (Sannenzaka, Ninenzaka, Yasaka Shrine) → lunch in Higashiyama → optional afternoon at Kinkaku-ji → rest → Gion evening stroll.
+**1 Day:** [Fushimi Inari Taisha](https://maps.google.com/?q=Fushimi+Inari+Taisha+Kyoto) at dawn (arrive by 6am) → breakfast downtown → Kiyomizu-dera and the Higashiyama walk (Sannenzaka, Ninenzaka, Yasaka Shrine) → lunch in Higashiyama → optional afternoon at [Kinkaku-ji](https://maps.google.com/?q=Kinkaku-ji+Kyoto) → rest → Gion evening stroll.
 
-**2 Days:** Day 1 as above. Day 2: Arashiyama at sunrise (bamboo grove by 7am before tour groups arrive) → Tenryu-ji garden → monkey park or boat ride → lunch at riverside → afternoon Philosopher's Path → evening Pontocho alley for dinner.
+**2 Days:** Day 1 as above. Day 2: Arashiyama at sunrise (bamboo grove by 7am before tour groups arrive) → Tenryu-ji garden → monkey park or boat ride → lunch at riverside → afternoon Philosopher's Path → evening [Pontocho](https://maps.google.com/?q=Pontocho+Kyoto) alley for dinner.
 
-**3 Days:** Add a northern classics loop (Kinkaku-ji, Ryoan-ji, Ninnaji) on Day 3, or take a day trip to Nara (45 minutes by express train) to see the free-roaming deer and Todai-ji temple.
+**3 Days:** Add a northern classics loop (Kinkaku-ji, [Ryoan-ji](https://maps.google.com/?q=Ryoan-ji+Kyoto), Ninnaji) on Day 3, or take a day trip to [Nara](https://maps.google.com/?q=Nara+Japan) (45 minutes by express train) to see the free-roaming deer and Todai-ji temple.
 
 See the [1-Day Kyoto Itinerary](/itineraries/kyoto-1-day) for a timed route with specific food stops and transit directions.
 
@@ -89,7 +89,7 @@ See the [1-Day Kyoto Itinerary](/itineraries/kyoto-1-day) for a timed route with
 
 **Gion District** — Kyoto's most famous geisha district is best explored on foot in the early morning or after 6pm when day-trippers thin out. Hanamikoji Street and the narrower Shirakawa Canal area are the highlights. On lucky evenings you may spot a geiko or maiko hurrying between appointments.
 
-**Nijo Castle** — Often skipped by first-timers but worth it. The "nightingale floors" squeak with every step (a feudal security measure), and the painted fusuma screens inside are remarkable. Budget 90 minutes.
+**[Nijo Castle](https://maps.google.com/?q=Nijo+Castle+Kyoto)** — Often skipped by first-timers but worth it. The "nightingale floors" squeak with every step (a feudal security measure), and the painted fusuma screens inside are remarkable. Budget 90 minutes.
 
 ## Etiquette Essentials
 

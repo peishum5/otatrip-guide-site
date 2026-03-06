@@ -136,19 +136,43 @@ const photos = [
         <h2 class="font-pixel text-[0.9rem] text-nes-amber">TOUR PHOTOS</h2>
         <div class="flex-1 border-t border-gray-800"></div>
       </div>
-      <div class="grid grid-cols-3 gap-2" style="grid-auto-rows: 200px; grid-auto-flow: dense;">
-        {photos.map(photo => (
-          <div class={`overflow-hidden border border-gray-800${photo.tall ? ' row-span-2' : ''}`}>
+      <div class="gallery-grid grid grid-cols-2 md:grid-cols-3 gap-2">
+        {photos.map((photo, i) => (
+          <button
+            type="button"
+            class={`overflow-hidden border border-gray-800 cursor-zoom-in group${photo.tall ? ' row-span-2' : ''}`}
+            style="touch-action:manipulation"
+            data-lb-index={i}
+            aria-label={`拡大: ${photo.alt}`}
+          >
             <img
               src={photo.src}
               alt={photo.alt}
-              class="w-full h-full object-cover"
+              class="w-full h-full object-cover transition-opacity group-hover:opacity-80"
               loading="lazy"
             />
-          </div>
+          </button>
         ))}
       </div>
     </section>
+
+    <!-- Lightbox -->
+    <div
+      id="lightbox"
+      class="fixed inset-0 z-50 items-center justify-center bg-black/90"
+      style="display:none"
+      role="dialog"
+      aria-modal="true"
+      aria-label="拡大写真"
+    >
+      <button id="lb-close" type="button" class="absolute top-4 right-5 font-pixel text-[0.9rem] text-nes-amber hover:text-nes-white z-10" style="touch-action:manipulation">[ X ]</button>
+      <button id="lb-prev" type="button" class="absolute left-3 font-pixel text-[1.2rem] text-nes-cyan hover:text-nes-white z-10 px-2 py-4" style="touch-action:manipulation">◀</button>
+      <button id="lb-next" type="button" class="absolute right-3 font-pixel text-[1.2rem] text-nes-cyan hover:text-nes-white z-10 px-2 py-4" style="touch-action:manipulation">▶</button>
+      <figure class="flex flex-col items-center max-w-[90vw] max-h-[90vh]">
+        <img id="lb-img" src="" alt="" class="max-w-full max-h-[80vh] object-contain border border-gray-700" />
+        <figcaption id="lb-caption" class="mt-3 font-sans text-xs text-gray-400 text-center"></figcaption>
+      </figure>
+    </div>
 
     <!-- Timeline -->
     <section class="mb-12">
@@ -266,4 +290,51 @@ const photos = [
       "reviewCount": "200"
     }
   })} />
+<style>
+  .gallery-grid {
+    grid-auto-rows: 140px;
+    grid-auto-flow: dense;
+  }
+  @media (min-width: 768px) {
+    .gallery-grid { grid-auto-rows: 200px; }
+  }
+</style>
+
+<script define:vars={{ photos }}>
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lb-img');
+  const lbCaption = document.getElementById('lb-caption');
+  let current = 0;
+
+  function show(index) {
+    current = (index + photos.length) % photos.length;
+    lbImg.src = photos[current].src;
+    lbImg.alt = photos[current].alt;
+    lbCaption.textContent = photos[current].alt;
+    lb.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close() {
+    lb.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('[data-lb-index]').forEach(btn => {
+    btn.addEventListener('click', () => show(Number(btn.dataset.lbIndex)));
+  });
+
+  document.getElementById('lb-close').addEventListener('click', close);
+  document.getElementById('lb-prev').addEventListener('click', () => show(current - 1));
+  document.getElementById('lb-next').addEventListener('click', () => show(current + 1));
+
+  lb.addEventListener('click', e => { if (e.target === lb) close(); });
+
+  document.addEventListener('keydown', e => {
+    if (lb.style.display === 'none') return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') show(current - 1);
+    if (e.key === 'ArrowRight') show(current + 1);
+  });
+</script>
 </BaseLayout>

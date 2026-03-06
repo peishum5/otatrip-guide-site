@@ -4,7 +4,7 @@ slug: "/plan/transport-kyoto"
 description: "Practical transport guide for Kyoto: IC cards, buses vs. trains, taxis, sample routes, and rush‑hour avoidance for first‑timers."
 author: "Local Guide"
 last_updated: "2026-03-05"
-hero_image: ""
+hero_image: "/images/blog/kyoto-bus.jpg"
 canonical: "/blog/plan/transport-kyoto"
 ---
 
@@ -24,7 +24,7 @@ An IC card is a rechargeable smart card that works across all of Kyoto's public 
 
 **Which IC card to get:**
 
-- **ICOCA** — issued by JR West, sold at Kyoto Station and most major JR stations in the Kansai region. This is the most natural choice if you arrive at Kyoto Station.
+- **ICOCA** — issued by JR West, sold at [Kyoto Station](https://maps.google.com/?q=Kyoto+Station+Japan) and most major JR stations in the Kansai region. This is the most natural choice if you arrive at Kyoto Station.
 - **Suica / PASMO** — issued by JR East (Tokyo). These work perfectly fine in Kyoto on all the same networks. If you already have one from a previous trip to Tokyo, bring it — no need to buy a new card.
 
 All three cards are interoperable. Use whichever you have or find most convenient to buy.
@@ -49,8 +49,8 @@ Kyoto's city bus network (市バス, Shibus) reaches nearly every tourist destin
 
 **Key routes for tourists:**
 
-- **Bus 100** (Raku Bus) — Kyoto Station to Gion, Heian Jingu, Nanzenji, and Ginkakuji (Silver Pavilion). A classic tourist loop.
-- **Bus 206** — Kyoto Station east side to Higashiyama, Kiyomizudera, Gion, and Kitaoji. Covers the main Higashiyama corridor.
+- **Bus 100** (Raku Bus) — Kyoto Station to [Gion](https://maps.google.com/?q=Gion+Kyoto), [Heian Jingu](https://maps.google.com/?q=Heian+Shrine+Kyoto), [Nanzenji](https://maps.google.com/?q=Nanzenji+Kyoto), and [Ginkakuji](https://maps.google.com/?q=Ginkakuji+Kyoto) (Silver Pavilion). A classic tourist loop.
+- **Bus 206** — Kyoto Station east side to Higashiyama, [Kiyomizudera](https://maps.google.com/?q=Kiyomizudera+Kyoto), Gion, and Kitaoji. Covers the main Higashiyama corridor.
 - **Bus 11 / 12** — Sanjo to Kiyomizudera area via Gion.
 
 **Fares:** ¥230 flat fare within the central zone (covers most tourist destinations). Pay with your IC card or exact change — drivers do not give change. There is a change machine at the front of the bus for large bills.
@@ -68,11 +68,11 @@ Kyoto's city bus network (市バス, Shibus) reaches nearly every tourist destin
 When you need to cover significant distance across Kyoto, trains are almost always faster than buses. Here are the main lines tourists use:
 
 **Kyoto Municipal Subway:**
-Two lines — the Karasuma Line (north-south, running through central Kyoto) and the Tozai Line (east-west, useful for Higashiyama and Nijo Castle). Kyoto Station is the main hub. Fares start at ¥220; IC card accepted.
+Two lines — the Karasuma Line (north-south, running through central Kyoto) and the Tozai Line (east-west, useful for Higashiyama and [Nijo Castle](https://maps.google.com/?q=Nijo+Castle+Kyoto)). Kyoto Station is the main hub. Fares start at ¥220; IC card accepted.
 
 **JR Lines from Kyoto Station:**
-- **JR Sagano Line (San'in Line)** — to Saga-Arashiyama station (about 15 minutes). The most direct train route to Arashiyama.
-- **JR Nara Line** — to Inari station (2 stops, about 5 minutes). The fastest and cheapest way to reach Fushimi Inari Taisha. IC card works.
+- **JR Sagano Line (San'in Line)** — to Saga-Arashiyama station (about 15 minutes). The most direct train route to [Arashiyama](https://maps.google.com/?q=Arashiyama+Kyoto).
+- **JR Nara Line** — to Inari station (2 stops, about 5 minutes). The fastest and cheapest way to reach [Fushimi Inari Taisha](https://maps.google.com/?q=Fushimi+Inari+Taisha+Kyoto). IC card works.
 
 **Keihan Line:**
 Runs from central Kyoto (Sanjo, Shijo, Gion-Shijo stations) south to Fushimi (Fushimi-Momoyama station for Fushimi Inari area) and into Osaka. Useful if you are staying near the Kamo River corridor. IC card accepted.
@@ -88,7 +88,7 @@ Kyoto taxis are reliable, metered, and widely available. For a group of two to f
 
 **Flagging one down:** Taxis queue at stands outside major stations (Kyoto Station, Shijo Kawaramachi, Arashiyama) and large hotels. You can also hail them on the street — a red light in the front window means the taxi is available.
 
-**Fares:** Starting fare is approximately ¥680 for the first 1.2 km, then metered by distance and waiting time. A ride from Gion to Kinkakuji (about 5 km) typically costs ¥1,500–¥2,000.
+**Fares:** Starting fare is approximately ¥680 for the first 1.2 km, then metered by distance and waiting time. A ride from Gion to [Kinkakuji](https://maps.google.com/?q=Kinkaku-ji+Kyoto) (about 5 km) typically costs ¥1,500–¥2,000.
 
 **Payment:** Most taxis accept IC cards and major credit cards in addition to cash, though it is always worth confirming before you get in.
 
@@ -103,9 +103,9 @@ Kyoto taxis are reliable, metered, and widely available. For a group of two to f
 Several of Kyoto's most famous areas are best explored entirely on foot. Once you are in the right neighborhood, walking lets you discover the side streets and smaller shrines that buses and taxis rush past.
 
 **Best walking districts:**
-- **Higashiyama** — from Kiyomizudera down through Sannenzaka, Ninenzaka, Ishibei-koji, and into Gion is a continuous, mostly flat walking route of about 3 km.
+- **Higashiyama** — from Kiyomizudera down through [Sannenzaka](https://maps.google.com/?q=Sannenzaka+Kyoto), [Ninenzaka](https://maps.google.com/?q=Ninenzaka+Kyoto), [Ishibei-koji](https://maps.google.com/?q=Ishibei-koji+Kyoto), and into Gion is a continuous, mostly flat walking route of about 3 km.
 - **Gion and Shijo** — the geisha district and downtown shopping are adjacent and very walkable.
-- **Nishiki Market** — the covered market arcade is foot traffic only.
+- **[Nishiki Market](https://maps.google.com/?q=Nishiki+Market+Kyoto)** — the covered market arcade is foot traffic only.
 
 Keep left on narrow streets and stepped lanes (not a strict rule, but it keeps flow orderly). Many of Higashiyama's paths are shared with rickshaws — step aside when you hear them approach.
 

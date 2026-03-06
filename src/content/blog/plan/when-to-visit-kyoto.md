@@ -4,7 +4,7 @@ slug: "/plan/when-to-visit-kyoto"
 description: "Month‑by‑month guide to Kyoto's weather, festivals, crowd levels, and what to pack—plus quiet windows for first‑timers."
 author: "Local Guide"
 last_updated: "2026-03-05"
-hero_image: ""
+hero_image: "/images/blog/kyoto-sakura.jpg"
 canonical: "/blog/plan/when-to-visit-kyoto"
 ---
 
@@ -30,11 +30,11 @@ There is no single "best" month to visit Kyoto — it depends on what matters mo
 
 ### January
 
-Cold (2–8°C) with clear, dry skies — ideal for photos without the haze that comes with humid months. New Year's crowds at shrines and temples are intense on January 1–3 but thin out quickly after that. January has the **lowest hotel rates of the year**, making it one of the best-value months for budget-conscious travelers. Mark your calendar for the **Toji Flea Market on January 21**, one of the largest antique markets in Japan, held at the temple's grounds.
+Cold (2–8°C) with clear, dry skies — ideal for photos without the haze that comes with humid months. New Year's crowds at shrines and temples are intense on January 1–3 but thin out quickly after that. January has the **lowest hotel rates of the year**, making it one of the best-value months for budget-conscious travelers. Mark your calendar for the **[Toji Temple](https://maps.google.com/?q=Toji+Temple+Kyoto) Flea Market on January 21**, one of the largest antique markets in Japan, held at the temple's grounds.
 
 ### February
 
-Still cold but starting to hint at spring. The big event is **Setsubun on February 3**, when major shrines and temples like Yoshida Shrine and Heian Jingu hold bean-throwing ceremonies — crowded but festive and free. Later in the month, **plum blossoms (ume) begin opening at Kitano Tenmangu** shrine, typically peaking around February 25. It is quieter than cherry blossom season and far more relaxed.
+Still cold but starting to hint at spring. The big event is **Setsubun on February 3**, when major shrines and temples like [Yoshida Shrine](https://maps.google.com/?q=Yoshida+Shrine+Kyoto) and [Heian Jingu](https://maps.google.com/?q=Heian+Shrine+Kyoto) hold bean-throwing ceremonies — crowded but festive and free. Later in the month, **plum blossoms (ume) begin opening at [Kitano Tenmangu](https://maps.google.com/?q=Kitano+Tenmangu+Kyoto)** shrine, typically peaking around February 25. It is quieter than cherry blossom season and far more relaxed.
 
 ### March
 
@@ -42,15 +42,15 @@ Temperatures gradually warm from around 8°C early in the month to a comfortable
 
 ### April
 
-Peak cherry blossom season, usually in the first one to two weeks of April. **Maruyama Park** and the **Philosopher's Path** are the most famous spots, but expect enormous crowds. Mid-April brings **hanafubuki** ("flower blizzard") — falling cherry petals that are arguably more beautiful than full bloom. The last week of April brings **Golden Week** (Japan's major holiday period), which causes another major crowd and price surge. If you can, finish your Kyoto trip before April 27.
+Peak cherry blossom season, usually in the first one to two weeks of April. **[Maruyama Park](https://maps.google.com/?q=Maruyama+Park+Kyoto)** and the **[Philosopher's Path](https://maps.google.com/?q=Philosopher%27s+Path+Kyoto)** are the most famous spots, but expect enormous crowds. Mid-April brings **hanafubuki** ("flower blizzard") — falling cherry petals that are arguably more beautiful than full bloom. The last week of April brings **Golden Week** (Japan's major holiday period), which causes another major crowd and price surge. If you can, finish your Kyoto trip before April 27.
 
 ### May
 
-One of the most underrated months to visit. **After Golden Week ends (around May 6)**, Kyoto quiets down noticeably. Temperatures are a comfortable 20–25°C, and the city is draped in deep green **aomomi** (fresh summer foliage). The **Aoi Matsuri on May 15** is one of Kyoto's three great festivals — a stately imperial procession from the Imperial Palace to Shimogamo and Kamigamo shrines, free to watch from the roadside.
+One of the most underrated months to visit. **After Golden Week ends (around May 6)**, Kyoto quiets down noticeably. Temperatures are a comfortable 20–25°C, and the city is draped in deep green **aomomi** (fresh summer foliage). The **Aoi Matsuri on May 15** is one of Kyoto's three great festivals — a stately imperial procession from the Imperial Palace to [Shimogamo Shrine](https://maps.google.com/?q=Shimogamo+Shrine+Kyoto) and [Kamigamo Shrine](https://maps.google.com/?q=Kamigamo+Shrine+Kyoto), free to watch from the roadside.
 
 ### June
 
-Rainy season (**tsuyu**) typically begins in mid-June, bringing frequent drizzle and rising humidity. However, crowds drop noticeably and hotel rates dip, making it a smart choice for travelers who do not mind carrying an umbrella. **Mimurotoji Temple** near Uji is famous for its hydrangea garden, blooming throughout June. The city feels greener and more atmospheric in the rain, and popular spots like Fushimi Inari are noticeably less packed.
+Rainy season (**tsuyu**) typically begins in mid-June, bringing frequent drizzle and rising humidity. However, crowds drop noticeably and hotel rates dip, making it a smart choice for travelers who do not mind carrying an umbrella. **[Mimurotoji Temple](https://maps.google.com/?q=Mimurotoji+Temple+Uji)** near Uji is famous for its hydrangea garden, blooming throughout June. The city feels greener and more atmospheric in the rain, and popular spots like Fushimi Inari are noticeably less packed.
 
 ### July
 
@@ -66,11 +66,11 @@ Typhoon season peaks in September, with the occasional storm bringing heavy rain
 
 ### October
 
-One of Kyoto's most pleasant months. Temperatures settle into a crisp 15–22°C, skies are clear, and the foliage at higher elevations begins to turn. By late October, maple trees in spots like Tofuku-ji start showing their first hints of red. The **Jidai Matsuri on October 22** is a grand historical pageant departing from the Imperial Palace — free to watch and very photogenic.
+One of Kyoto's most pleasant months. Temperatures settle into a crisp 15–22°C, skies are clear, and the foliage at higher elevations begins to turn. By late October, maple trees in spots like [Tofuku-ji](https://maps.google.com/?q=Tofukuji+Kyoto) start showing their first hints of red. The **Jidai Matsuri on October 22** is a grand historical pageant departing from the [Kyoto Imperial Palace](https://maps.google.com/?q=Kyoto+Imperial+Palace) — free to watch and very photogenic.
 
 ### November
 
-**Peak autumn foliage (momiji)** typically arrives mid-to-late November, making it one of the most beautiful but crowded months of the year. Tofuku-ji, Eikan-do, and Kiyomizu-dera are the most popular spots, with evening **illuminations** extending viewing hours into the night. Book accommodation three to four months in advance for November stays, as rooms at popular ryokan sell out fast. Prices are at their annual high alongside April.
+**Peak autumn foliage (momiji)** typically arrives mid-to-late November, making it one of the most beautiful but crowded months of the year. Tofuku-ji, [Eikan-do](https://maps.google.com/?q=Eikan-do+Kyoto), and [Kiyomizu-dera](https://maps.google.com/?q=Kiyomizudera+Kyoto) are the most popular spots, with evening **illuminations** extending viewing hours into the night. Book accommodation three to four months in advance for November stays, as rooms at popular ryokan sell out fast. Prices are at their annual high alongside April.
 
 ### December
 
@@ -100,7 +100,7 @@ After the rush of November, Kyoto quiets significantly around December 20. **Yea
 **Winter (December–February)**
 - Warm coat, scarf, hat, and gloves — temple grounds are exposed and wind is sharp
 - Thermal base layer if you plan long outdoor days
-- Waterproof shoes in case of the occasional snow (Kinkaku-ji in snow is spectacular)
+- Waterproof shoes in case of the occasional snow ([Kinkaku-ji](https://maps.google.com/?q=Kinkaku-ji+Kyoto) in snow is spectacular)
 - Hand warmers (kairo) — available cheaply at any convenience store
 
 ## Where to Stay by Season

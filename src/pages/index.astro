@@ -158,13 +158,13 @@ const latestPosts = blogPosts.slice(0, 3);
             icon: '🏮',
             img: '/images/why/local-expertise.jpg',
             title: 'LOCAL EXPERTISE',
-            desc: "Our guides have lived in Kyoto for years. We take you to bars, alleys, and viewpoints that aren't in any guidebook.",
+            desc: "Our guides have lived in Kyoto for years. We take you to bars, alleys, and viewpoints most visitors never find.",
           },
           {
             icon: '🎭',
             img: '/images/why/entertainment-pro.png',
             title: 'ENTERTAINMENT PROS',
-            desc: 'OTAtrip Guide is produced by Cosmic Magic — a professional entertainment company behind immersive experiences and ARGs.',
+            desc: 'OTAtrip Guide is produced by Cosmic Magic — a professional entertainment company behind immersive experiences and Alternate Reality Games (ARGs).',
           },
           {
             icon: '👥',
@@ -365,25 +365,6 @@ const latestPosts = blogPosts.slice(0, 3);
     ) : (
       <p class="font-pixel text-[0.9rem] text-gray-600 text-center py-12">// BLOG POSTS COMING SOON</p>
     )}
-  </section>
-
-  <!-- Stats Bar -->
-  <section class="bg-nes-black border-y-2 border-nes-amber">
-    <div class="max-w-6xl mx-auto px-4 py-8">
-      <p class="font-pixel text-[0.9rem] text-nes-cyan text-center mb-6">-- PLAYER STATS --</p>
-      <div class="grid grid-cols-3 gap-6 text-center">
-        {[
-          { number: '1000+', label: 'Guests Guided' },
-          { number: '4.9★', label: 'TripAdvisor Rating' },
-          { number: '2024', label: 'Year Founded' },
-        ].map(stat => (
-          <div>
-            <div class="nes-number text-2xl md:text-3xl mb-1">{stat.number}</div>
-            <div class="font-pixel text-[0.9rem] text-gray-500 mt-1">{stat.label}</div>
-          </div>
-        ))}
-      </div>
-    </div>
   </section>
 
 </BaseLayout>

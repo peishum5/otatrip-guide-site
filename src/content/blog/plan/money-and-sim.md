@@ -4,7 +4,7 @@ slug: "/plan/money-and-sim"
 description: "Cards vs. cash, reliable ATMs, eSIM/SIM options, and Wi‑Fi tips for first‑time visitors to Kyoto."
 author: "Local Guide"
 last_updated: "2026-03-05"
-hero_image: ""
+hero_image: "/images/blog/kyoto-coin.jpg"
 canonical: "/blog/plan/money-and-sim"
 ---
 
@@ -32,7 +32,7 @@ Japan's reputation as a cash-heavy country is slowly changing, but Kyoto still h
 
 - Small shrine and temple entry fees (many collect cash only at the gate)
 - Local neighborhood restaurants and ramen shops
-- Nishiki Market stalls and street food vendors
+- [Nishiki Market](https://maps.google.com/?q=Nishiki+Market+Kyoto) stalls and street food vendors
 - Some traditional ryokan or guesthouses require full payment in cash on checkout
 - Taxis — though larger fleets are increasingly card-friendly via in-car terminals
 
@@ -55,8 +55,8 @@ Available at post offices and some convenience locations. Very reliable for fore
 **FamilyMart (E-net ATMs)**
 These work well for Visa and Mastercard. FamilyMart stores are plentiful throughout the city and open 24 hours.
 
-**AEON Mall / AEON Bank ATMs**
-If you are near an AEON shopping center (there is one near Kyoto Station), their ATMs have strong foreign-card support and sometimes lower fees than convenience store networks.
+**[AEON Mall](https://maps.google.com/?q=AEON+Mall+Kyoto) / AEON Bank ATMs**
+If you are near an AEON shopping center (there is one near [Kyoto Station](https://maps.google.com/?q=Kyoto+Station+Japan)), their ATMs have strong foreign-card support and sometimes lower fees than convenience store networks.
 
 **Typical fees:** Expect ¥110–¥220 per withdrawal on the Japanese side, plus whatever your home bank charges for international transactions. Withdraw slightly larger amounts to reduce the per-transaction cost — withdrawing ¥20,000 at once is more efficient than two withdrawals of ¥10,000.
 
@@ -91,7 +91,7 @@ If you prefer a physical SIM or your phone does not support eSIM, physical data 
 
 **Airport kiosks:** Available at Kansai International (KIX), Osaka Itami (ITM), and Narita (NRT). Look for IIJ, Docomo, SoftBank, and b-mobile counters in the arrivals hall. These are often the most convenient option since you can insert the SIM before you leave the airport.
 
-**Electronics stores in Kyoto/Osaka:** Yodobashi Camera (near Kyoto Station) and BIC Camera carry a range of prepaid data SIMs. Staff can walk you through setup.
+**Electronics stores in Kyoto/Osaka:** [Yodobashi Camera](https://maps.google.com/?q=Yodobashi+Camera+Kyoto) (near Kyoto Station) and BIC Camera carry a range of prepaid data SIMs. Staff can walk you through setup.
 
 **Typical cost:** ¥2,000–¥4,000 for a 10–30 day data-only SIM with 15–50 GB of data. Voice SIMs are rare on tourist plans — these are data-only.
 
