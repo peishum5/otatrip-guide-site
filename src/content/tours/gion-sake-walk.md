@@ -1,5 +1,5 @@
 ---
-title: "Gion Sake Walking Tour"
+title: "Kyoto Gion Night Walk: Sake, Hidden Gems & Geisha"
 description: "An intimate evening walk through Gion's lantern-lit alleys, guided by a local expert. Taste premium Kyoto sake at curated local spots while learning the neighborhood's hidden stories."
 price: "From ¥8,000 per person"
 duration: "3 hours"
@@ -12,7 +12,7 @@ highlights:
   - "Snacks and sake tasting included"
 ---
 
-# Gion Sake Walking Tour
+# Kyoto Gion Night Walk: Sake, Hidden Gems & Geisha
 
 Experience Kyoto's most atmospheric neighborhood after dark with a local guide who knows every stone-paved alley.
 

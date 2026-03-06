@@ -154,7 +154,7 @@ Mid-range with all optional sights and a decent dinner runs ¥10,000–¥14,000 
 
 ## Book a Local Experience
 
-The best way to end your one day in Kyoto is with someone who actually knows the neighborhood. Our [Gion Sake Walking Tour](/tours/gion-sake-walk) takes small groups through the backstreets and hidden izakaya of the geisha district — places you'd never find from a guidebook or map. You'll taste three to four local sake varieties selected by a knowledgeable guide, hear real stories about the geiko district and its history, and walk away with a genuine understanding of what makes this part of Kyoto special. It runs in the evening, which makes it the natural way to close out a day that started before sunrise at Fushimi Inari.
+The best way to end your one day in Kyoto is with someone who actually knows the neighborhood. Our [Kyoto Gion Night Walk: Sake, Hidden Gems & Geisha](/tours/gion-sake-walk) takes small groups through the backstreets and hidden izakaya of the geisha district — places you'd never find from a guidebook or map. You'll taste three to four local sake varieties selected by a knowledgeable guide, hear real stories about the geiko district and its history, and walk away with a genuine understanding of what makes this part of Kyoto special. It runs in the evening, which makes it the natural way to close out a day that started before sunrise at Fushimi Inari.
 
 ---
 

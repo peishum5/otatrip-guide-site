@@ -125,7 +125,7 @@ See [Money and SIM in Japan](/plan/money-and-sim) for details on ATMs, cash vs. 
 
 ## Book a Local Experience
 
-If you have one evening in Kyoto, spend it in Gion with someone who actually knows it. Our [Gion Sake Walking Tour](/tours/gion-sake-walk) takes small groups through the atmospheric backstreets and hidden izakaya that most visitors never find. You'll taste three or four local sake varieties, learn the real history of the geiko district, and get an honest picture of what Kyoto is like for the people who live here — not just what it looks like from the tourist trail. It's the kind of evening that makes a trip feel real.
+If you have one evening in Kyoto, spend it in Gion with someone who actually knows it. Our [Kyoto Gion Night Walk: Sake, Hidden Gems & Geisha](/tours/gion-sake-walk) takes small groups through the atmospheric backstreets and hidden izakaya that most visitors never find. You'll taste three or four local sake varieties, learn the real history of the geiko district, and get an honest picture of what Kyoto is like for the people who live here — not just what it looks like from the tourist trail. It's the kind of evening that makes a trip feel real.
 
 ## FAQs
 
