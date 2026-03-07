@@ -99,7 +99,7 @@ Gion is best in the evening, when the day-trippers have headed to the station an
 
 **[Shirakawa Canal](https://maps.google.com/?q=Shirakawa+Canal+Kyoto) area:** A 5-minute walk east of Hanamikoji. The narrow canal bordered by cherry trees (spectacular in spring) and traditional buildings is less crowded than Hanamikoji and equally beautiful at night.
 
-**Dinner options:** [Pontocho](https://maps.google.com/?q=Pontocho+Kyoto) — a narrow lantern-lit alley one block from the Kamo River — is one of Kyoto's finest dining streets. Restaurants range from ¥2,000 ramen counters to ¥15,000 kaiseki kaiseki courses. Walk the whole alley first to get a sense of the menus and prices, then choose. Booking ahead for sit-down restaurants is recommended for weekends.
+**Dinner options:** [Pontocho](https://maps.google.com/?q=Pontocho+Kyoto) — a narrow lantern-lit alley one block from the Kamo River — is one of Kyoto's finest dining streets. Restaurants range from ¥2,000 ramen counters to ¥15,000 kaiseki courses. Walk the whole alley first to get a sense of the menus and prices, then choose. Booking ahead for sit-down restaurants is recommended for weekends.
 
 ---
 
