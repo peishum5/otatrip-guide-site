@@ -74,27 +74,6 @@ const visualHighlights = [
     </div>
   </section>
 
-  <section class="bg-nes-black border-y-2 border-gray-800 py-10">
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="flex items-center gap-4 mb-6">
-        <h2 class="font-pixel text-[0.95rem] text-nes-cyan">KYOTO PHOTO HIGHLIGHTS</h2>
-        <div class="flex-1 border-t border-gray-800"></div>
-      </div>
-      <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
-        {visualHighlights.map((item) => (
-          <figure class="overflow-hidden border border-gray-700 bg-black">
-            <img
-              src={item.src}
-              alt={item.alt}
-              class="w-full h-32 md:h-36 object-cover hover:scale-105 transition-transform duration-300"
-              loading="lazy"
-            />
-          </figure>
-        ))}
-      </div>
-    </div>
-  </section>
-
   <div class="max-w-6xl mx-auto px-4 py-12">
     {orderedCategories.map((category) => groupedPosts[category]?.length > 0 && (
       <section class="mb-14">
@@ -139,4 +118,25 @@ const visualHighlights = [
       <p class="font-pixel text-[0.9rem] text-gray-600 text-center py-20">// TRAVEL GUIDES COMING SOON</p>
     )}
   </div>
+
+  <section class="bg-nes-black border-y-2 border-gray-800 py-10">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-pixel text-[0.95rem] text-nes-cyan">KYOTO PHOTO HIGHLIGHTS</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+        {visualHighlights.map((item) => (
+          <figure class="overflow-hidden border border-gray-700 bg-black">
+            <img
+              src={item.src}
+              alt={item.alt}
+              class="w-full h-32 md:h-36 object-cover hover:scale-105 transition-transform duration-300"
+              loading="lazy"
+            />
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
 </BaseLayout>
