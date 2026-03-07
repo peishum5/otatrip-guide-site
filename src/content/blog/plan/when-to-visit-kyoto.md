@@ -107,8 +107,8 @@ After the rush of November, Kyoto quiets significantly around December 20. **Yea
 
 The right neighborhood depends partly on the season.
 
-During **spring and autumn peak periods**, staying within walking distance of your main sightseeing targets is worth paying a premium for. Transit becomes slow and crowded, so a room in Gion or Higashiyama saves you hours of waiting for buses. See the full breakdown in our [Where to Stay in Kyoto](/plan/where-to-stay-kyoto) guide.
+During **spring and autumn peak periods**, staying within walking distance of your main sightseeing targets is worth paying a premium for. Transit becomes slow and crowded, so a room in Gion or Higashiyama saves you hours of waiting for buses. See the full breakdown in our [Where to Stay in Kyoto](/blog/plan/where-to-stay-kyoto) guide.
 
 During **summer and winter**, the calculus shifts: Kyoto Station's proximity to air-conditioned shopping and seamless JR access makes it a practical and often better-value base.
 
-For your full trip framework, see the [Kyoto First-Timer Guide](/plan/kyoto-first-time-guide).
+For your full trip framework, see the [Kyoto First-Timer Guide](/blog/plan/kyoto-first-time-guide).

@@ -19,9 +19,10 @@ const {
   noIndex = false,
 } = Astro.props;
 
-const siteUrl = 'https://otatrip-guide.com';
-const canonicalUrl = canonical ? `${siteUrl}${canonical}` : `${siteUrl}${Astro.url.pathname}`;
-const ogImageUrl = ogImage || `${siteUrl}/images/og-default.jpg`;
+const siteUrl = (Astro.site ?? new URL('https://otatrip.guide')).origin;
+const canonicalPath = canonical || Astro.url.pathname;
+const canonicalUrl = new URL(canonicalPath, siteUrl).toString();
+const ogImageUrl = new URL(ogImage || '/images/og-default.jpg', siteUrl).toString();
 const fullTitle = title.includes('OTA Trip Guide') ? title : `${title} | OTA Trip Guide`;
 ---
 
@@ -48,6 +49,28 @@ const fullTitle = title.includes('OTA Trip Guide') ? title : `${title} | OTA Tri
   <meta name="twitter:title" content={fullTitle} />
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={ogImageUrl} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${siteUrl}/#organization`,
+        "name": "OTAtrip Guide",
+        "url": siteUrl,
+        "logo": `${siteUrl}/favicon.svg`
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
+        "url": siteUrl,
+        "name": "OTAtrip Guide",
+        "publisher": {
+          "@id": `${siteUrl}/#organization`
+        }
+      }
+    ]
+  })} />
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

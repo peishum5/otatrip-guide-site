@@ -115,10 +115,10 @@ A pocket Wi-Fi router creates a personal hotspot that multiple devices can conne
 
 **Download offline maps before you go.** In Google Maps, search for Kyoto, tap the three-dot menu, and select "Download offline map." Maps.me is a good free alternative with detailed walking paths. This is especially useful in areas with weak signal (some temple mountain paths, underground stations).
 
-**IC transit cards are separate from your data plan.** Your Suica or ICOCA card (used for buses and trains) is a completely independent system from your SIM or eSIM. You load money onto it directly at station machines. See the full transport guide for details: [How to Get Around Kyoto](/plan/transport-kyoto).
+**IC transit cards are separate from your data plan.** Your Suica or ICOCA card (used for buses and trains) is a completely independent system from your SIM or eSIM. You load money onto it directly at station machines. See the full transport guide for details: [How to Get Around Kyoto](/blog/plan/transport-kyoto).
 
 **Café Wi-Fi is patchy.** Free Wi-Fi at cafés and convenience stores exists but is often slow and requires registration. Do not rely on it as your primary connection. A SIM or eSIM is always the better choice for navigation and real-time translation.
 
 ---
 
-For a broader overview of planning your Kyoto trip, see [Kyoto First-Timer Guide](/plan/kyoto-first-time-guide).
+For a broader overview of planning your Kyoto trip, see [Kyoto First-Timer Guide](/blog/plan/kyoto-first-time-guide).

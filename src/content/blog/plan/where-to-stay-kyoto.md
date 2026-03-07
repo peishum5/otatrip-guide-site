@@ -81,8 +81,8 @@ For most first-time visitors, **Gion and Higashiyama** deliver the quintessentia
 
 **Use luggage forwarding (takuhaibin).** One of Japan's most convenient services: drop your suitcase at a convenience store or hotel front desk, pay ¥1,000–¥1,500 per bag, and it arrives at your next hotel the following day. This makes multi-destination trips — or staying in a machiya without elevator access — completely manageable.
 
-**For transit logic**, see our [Getting Around Kyoto](/plan/transport-kyoto) guide — it explains which bus routes, subway lines, and IC card options work best from each area.
+**For transit logic**, see our [Getting Around Kyoto](/blog/plan/transport-kyoto) guide — it explains which bus routes, subway lines, and IC card options work best from each area.
 
 ## Read Next
 
-For help planning your days, see the [1-Day Kyoto Itinerary](/itineraries/kyoto-1-day) and the [Kyoto First-Timer Guide](/plan/kyoto-first-time-guide).
+For help planning your days, see the [1-Day Kyoto Itinerary](/blog/itineraries/kyoto-1-day) and the [Kyoto First-Timer Guide](/blog/plan/kyoto-first-time-guide).

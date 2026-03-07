@@ -16,6 +16,10 @@ interface Props {
 
 const { title, description, pubDate, last_updated, author = 'OTAtrip Guide', canonical, hero_image, category, noIndex } = Astro.props;
 const displayDate = last_updated || pubDate;
+const siteUrl = (Astro.site ?? new URL('https://otatrip.guide')).origin;
+const canonicalPath = canonical || Astro.url.pathname;
+const canonicalUrl = new URL(canonicalPath, siteUrl).toString();
+const imageUrl = hero_image ? new URL(hero_image, siteUrl).toString() : new URL('/images/og-default.jpg', siteUrl).toString();
 ---
 
 <BaseLayout title={title} description={description} canonical={canonical} ogImage={hero_image} noIndex={noIndex}>
@@ -76,4 +80,51 @@ const displayDate = last_updated || pubDate;
     </div>
 
   </article>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "headline": title,
+        "description": description,
+        "author": {
+          "@type": "Person",
+          "name": author
+        },
+        "datePublished": pubDate || displayDate,
+        "dateModified": displayDate || pubDate,
+        "mainEntityOfPage": canonicalUrl,
+        "image": [imageUrl],
+        "publisher": {
+          "@type": "Organization",
+          "name": "OTAtrip Guide",
+          "url": siteUrl
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": siteUrl
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Blog",
+            "item": `${siteUrl}/blog`
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": title,
+            "item": canonicalUrl
+          }
+        ]
+      }
+    ]
+  })} />
 </BaseLayout>

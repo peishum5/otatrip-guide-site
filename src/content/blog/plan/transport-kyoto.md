@@ -139,4 +139,4 @@ Cycling is a pleasant way to cover central Kyoto's flat terrain. The city around
 
 ---
 
-For planning your first full day, see [Kyoto 1-Day Itinerary](/itineraries/kyoto-1-day). For an overall trip planning overview including when to visit and where to stay, see [Kyoto First-Timer Guide](/plan/kyoto-first-time-guide). For ATM and SIM card advice, see [Cash, ATMs, SIM & Wi-Fi](/plan/money-and-sim).
+For planning your first full day, see [Kyoto 1-Day Itinerary](/blog/itineraries/kyoto-1-day). For an overall trip planning overview including when to visit and where to stay, see [Kyoto First-Timer Guide](/blog/plan/kyoto-first-time-guide). For ATM and SIM card advice, see [Cash, ATMs, SIM & Wi-Fi](/blog/plan/money-and-sim).

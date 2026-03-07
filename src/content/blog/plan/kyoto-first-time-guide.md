@@ -37,7 +37,7 @@ Kyoto is beautiful year-round, but timing matters a great deal for first-timers.
 
 For first-timers on a budget, the sweet spot is **shoulder weeks**: early April (after peak sakura), late May, or early November before peak foliage. Crowds thin noticeably at dawn and after 7pm regardless of season.
 
-See [Best Time to Visit Kyoto](/plan/when-to-visit-kyoto) for monthly weather, festivals, and crowd patterns.
+See [Best Time to Visit Kyoto](/blog/plan/when-to-visit-kyoto) for monthly weather, festivals, and crowd patterns.
 
 ## Where to Stay
 
@@ -51,7 +51,7 @@ Where you sleep in Kyoto shapes everything from your morning commute to your eve
 
 **[Arashiyama](https://maps.google.com/?q=Arashiyama+Kyoto)** is worth considering if bamboo and river scenery are your priority, but it's a longer commute to eastern Kyoto sights.
 
-See [Where to Stay in Kyoto](/plan/where-to-stay-kyoto) for neighborhood maps and curated picks at every budget level.
+See [Where to Stay in Kyoto](/blog/plan/where-to-stay-kyoto) for neighborhood maps and curated picks at every budget level.
 
 ## Getting Around
 
@@ -67,7 +67,7 @@ Kyoto is more walkable than visitors expect, but the city is also spread out, so
 
 **Taxis** are clean, safe, and metered. Convenient for early-morning shrine visits, late-night returns, or moving luggage between hotels. Credit cards accepted in most taxis. Ride-hailing apps work, but street-hailing is easy at major spots.
 
-See [How to Get Around Kyoto](/plan/transport-kyoto) for bus route details, train maps, and rush-hour tips.
+See [How to Get Around Kyoto](/blog/plan/transport-kyoto) for bus route details, train maps, and rush-hour tips.
 
 ## Sample Itineraries (1–3 Days)
 
@@ -77,7 +77,7 @@ See [How to Get Around Kyoto](/plan/transport-kyoto) for bus route details, trai
 
 **3 Days:** Add a northern classics loop (Kinkaku-ji, [Ryoan-ji](https://maps.google.com/?q=Ryoan-ji+Kyoto), Ninnaji) on Day 3, or take a day trip to [Nara](https://maps.google.com/?q=Nara+Japan) (45 minutes by express train) to see the free-roaming deer and Todai-ji temple.
 
-See the [1-Day Kyoto Itinerary](/itineraries/kyoto-1-day) for a timed route with specific food stops and transit directions.
+See the [1-Day Kyoto Itinerary](/blog/itineraries/kyoto-1-day) for a timed route with specific food stops and transit directions.
 
 ## Must-See Highlights
 
@@ -121,7 +121,7 @@ Build in rest. Many visitors underestimate the physical demands of a day in Kyot
 
 Cards are widely accepted at mid-range and upscale restaurants, convenience stores, and larger shops. Carry at least ¥3,000–¥5,000 in cash for smaller shrines, vending machines, coin lockers, and traditional shops. 7-Eleven and Japan Post ATMs reliably accept foreign cards.
 
-See [Money and SIM in Japan](/plan/money-and-sim) for details on ATMs, cash vs. card, and the best SIM or eSIM options.
+See [Money and SIM in Japan](/blog/plan/money-and-sim) for details on ATMs, cash vs. card, and the best SIM or eSIM options.
 
 ## Book a Local Experience
 
