@@ -348,8 +348,18 @@ const latestPosts = blogPosts.slice(0, 3);
         {latestPosts.map(post => (
           <article class="border-2 border-gray-700 hover:border-nes-amber transition-colors group bg-nes-black">
             <a href={`/blog/${post.slug}`} class="block">
-              <div class="bg-gray-900 border-b border-gray-700 h-36 flex items-end p-4">
-                <span class="font-sans text-xs text-nes-amber font-medium">{post.data.category || 'Kyoto Guide'}</span>
+              <div class="relative border-b border-gray-700 h-36 overflow-hidden bg-gray-900">
+                {post.data.hero_image && (
+                  <img
+                    src={post.data.hero_image}
+                    alt={post.data.title}
+                    class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
+                    loading="lazy"
+                  />
+                )}
+                <span class="absolute bottom-3 left-3 font-sans text-xs text-nes-amber font-medium bg-nes-black/70 px-2 py-0.5">
+                  {post.data.category || 'Kyoto Guide'}
+                </span>
               </div>
               <div class="p-5">
                 <h3 class="font-pixel text-[0.9rem] text-nes-white group-hover:text-nes-amber transition-colors leading-relaxed mb-3 line-clamp-2">
