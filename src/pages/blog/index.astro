@@ -44,6 +44,19 @@ const orderedCategories = [
     .filter((category) => !categoryOrder.includes(category))
     .sort(),
 ];
+
+const visualHighlights = [
+  { src: '/images/blog/kiyomizudera.jpg', alt: 'Kiyomizu-dera temple view in Kyoto' },
+  { src: '/images/blog/gion-maiko.jpg', alt: 'Historic Kyoto street scene in Gion' },
+  { src: '/images/blog/higashiyama-pagoda.jpg', alt: 'Kyoto pagoda and mountainscape' },
+  { src: '/images/blog/kinkakuji.jpg', alt: 'Golden Pavilion in Kyoto' },
+  { src: '/images/blog/arashiyama.jpg', alt: 'Arashiyama riverside and bridge' },
+  { src: '/images/blog/arashiyama-bamboo.jpg', alt: 'Arashiyama bamboo grove path' },
+  { src: '/images/blog/fushimi-inari.jpg', alt: 'Fushimi Inari shrine gates in Kyoto' },
+  { src: '/images/blog/nishiki-market.jpg', alt: 'Nishiki Market food scene' },
+  { src: '/images/blog/tea-ceremony.jpg', alt: 'Traditional tea ceremony setting in Kyoto' },
+  { src: '/images/blog/uji-matcha.jpg', alt: 'Uji matcha culture near Kyoto' },
+];
 ---
 
 <BaseLayout
@@ -58,6 +71,27 @@ const orderedCategories = [
       <p class="font-sans text-gray-400 text-sm max-w-2xl mx-auto leading-relaxed">
         Practical, firsthand guides from local experts who know Kyoto's streets, seasons, and secrets.
       </p>
+    </div>
+  </section>
+
+  <section class="bg-nes-black border-y-2 border-gray-800 py-10">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-pixel text-[0.95rem] text-nes-cyan">KYOTO PHOTO HIGHLIGHTS</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+        {visualHighlights.map((item) => (
+          <figure class="overflow-hidden border border-gray-700 bg-black">
+            <img
+              src={item.src}
+              alt={item.alt}
+              class="w-full h-32 md:h-36 object-cover hover:scale-105 transition-transform duration-300"
+              loading="lazy"
+            />
+          </figure>
+        ))}
+      </div>
     </div>
   </section>
 
