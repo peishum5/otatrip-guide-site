@@ -1,0 +1,113 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getBlogCategory, getBlogSortDate, getCategoryHref, normalizeBlogSlug, slugifyCategory } from '../../../utils/blog';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  const categories = [...new Set(posts.map((post) => getBlogCategory(post)))];
+
+  return categories.map((category) => ({
+    params: { category: slugifyCategory(category) },
+    props: { category },
+  }));
+}
+
+const { category } = Astro.props;
+const posts = (await getCollection('blog'))
+  .filter((post) => !post.data.noIndex && getBlogCategory(post) === category)
+  .sort((a, b) => getBlogSortDate(b) - getBlogSortDate(a));
+
+const canonical = getCategoryHref(category);
+const description = `${category} guides for Kyoto travelers. Practical local advice, curated recommendations, and trip-planning content from OTAtrip Guide.`;
+const siteUrl = (Astro.site ?? new URL('https://otatrip.guide')).origin;
+const canonicalUrl = new URL(canonical, siteUrl).toString();
+---
+
+<BaseLayout
+  title={`${category} Guides in Kyoto`}
+  description={description}
+  canonical={canonical}
+  ogImage={posts[0]?.data.hero_image}
+>
+  <section class="scanlines bg-nes-black py-16 text-center">
+    <div class="relative z-10 max-w-4xl mx-auto px-4">
+      <p class="font-pixel text-[0.9rem] text-nes-cyan mb-4">BLOG CATEGORY</p>
+      <h1 class="font-pixel text-nes-white mb-4" style="font-size: clamp(1rem, 4vw, 2rem);">{category.toUpperCase()}</h1>
+      <p class="font-sans text-gray-400 text-sm max-w-2xl mx-auto leading-relaxed">
+        Local Kyoto guides grouped by topic so search engines and readers can follow the same content cluster.
+      </p>
+    </div>
+  </section>
+
+  <section class="max-w-6xl mx-auto px-4 py-12">
+    <nav class="font-pixel text-[0.9rem] text-gray-600 mb-8 flex items-center gap-2 flex-wrap" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-nes-amber transition-colors">HOME</a>
+      <span class="text-gray-700">/</span>
+      <a href="/blog" class="hover:text-nes-amber transition-colors">BLOG</a>
+      <span class="text-gray-700">/</span>
+      <span class="text-gray-500">{category.toUpperCase()}</span>
+    </nav>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {posts.map((post) => (
+        <article class="border-2 border-gray-700 hover:border-nes-amber transition-colors group bg-nes-black">
+          <a href={`/blog/${normalizeBlogSlug(post.slug)}`} class="block">
+            {post.data.hero_image && (
+              <div class="overflow-hidden border-b-2 border-gray-700">
+                <img
+                  src={post.data.hero_image}
+                  alt={post.data.title}
+                  class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+              </div>
+            )}
+            <div class="p-4 md:p-5">
+              <h2 class="font-pixel text-[0.9rem] text-nes-white group-hover:text-nes-amber transition-colors leading-relaxed mb-3">
+                {post.data.title}
+              </h2>
+              <p class="font-sans text-gray-500 text-sm leading-relaxed line-clamp-3 mb-4">{post.data.description}</p>
+              <span class="font-pixel text-[0.9rem] text-nes-cyan">READ GUIDE &rarr;</span>
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "name": `${category} Guides in Kyoto`,
+        "url": canonicalUrl,
+        "description": description
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": siteUrl
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Blog",
+            "item": `${siteUrl}/blog`
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": category,
+            "item": canonicalUrl
+          }
+        ]
+      }
+    ]
+  })} />
+</BaseLayout>

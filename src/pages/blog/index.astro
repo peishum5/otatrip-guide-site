@@ -1,20 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { getBlogCategory, getBlogSortDate, getCategoryHref, normalizeBlogSlug } from '../../utils/blog';
 
 const allPosts = await getCollection('blog');
-
-const getSortDate = (post: (typeof allPosts)[number]) => {
-  const raw = post.data.last_updated || post.data.pubDate || '1970-01-01';
-  return Number.isNaN(Date.parse(raw)) ? 0 : Date.parse(raw);
-};
-
-const inferCategory = (post: (typeof allPosts)[number]) => {
-  if (post.data.category) return post.data.category;
-  if (post.slug.startsWith('plan/')) return 'Planning Basics';
-  if (post.slug.startsWith('itineraries/')) return 'Itineraries';
-  return 'More Guides';
-};
 
 const categoryOrder = [
   'Planning Basics',
@@ -30,9 +19,9 @@ const categoryOrder = [
 
 const groupedPosts = allPosts
   .slice()
-  .sort((a, b) => getSortDate(b) - getSortDate(a))
+  .sort((a, b) => getBlogSortDate(b) - getBlogSortDate(a))
   .reduce<Record<string, typeof allPosts>>((acc, post) => {
-    const category = inferCategory(post);
+    const category = getBlogCategory(post);
     if (!acc[category]) acc[category] = [];
     acc[category].push(post);
     return acc;
@@ -78,14 +67,16 @@ const visualHighlights = [
     {orderedCategories.map((category) => groupedPosts[category]?.length > 0 && (
       <section class="mb-14">
         <div class="flex items-center gap-4 mb-6">
-          <h2 class="font-pixel text-[0.95rem] text-nes-amber">{category.toUpperCase()}</h2>
+          <h2 class="font-pixel text-[0.95rem] text-nes-amber">
+            <a href={getCategoryHref(category)} class="hover:text-nes-cyan transition-colors">{category.toUpperCase()}</a>
+          </h2>
           <div class="flex-1 border-t border-gray-800"></div>
           <span class="font-pixel text-[0.9rem] text-gray-600">{groupedPosts[category].length} GUIDES</span>
         </div>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {groupedPosts[category].map(post => (
             <article class="border-2 border-gray-700 hover:border-nes-amber transition-colors group bg-nes-black">
-              <a href={`/blog/${post.slug}`} class="block">
+              <a href={`/blog/${normalizeBlogSlug(post.slug)}`} class="block">
                 {post.data.hero_image && (
                   <div class="overflow-hidden border-b-2 border-gray-700">
                     <img
@@ -97,7 +88,9 @@ const visualHighlights = [
                   </div>
                 )}
                 <div class="p-4 md:p-5">
-                  <p class="font-pixel text-[0.9rem] text-nes-cyan mb-2">{category.toUpperCase()}</p>
+                  <p class="font-pixel text-[0.9rem] text-nes-cyan mb-2">
+                    <a href={getCategoryHref(category)} class="hover:text-nes-amber transition-colors">{category.toUpperCase()}</a>
+                  </p>
                   <h3 class="font-pixel text-[0.9rem] text-nes-white group-hover:text-nes-amber transition-colors leading-relaxed mb-3">
                     {post.data.title}
                   </h3>

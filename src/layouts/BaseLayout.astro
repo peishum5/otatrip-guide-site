@@ -8,6 +8,10 @@ interface Props {
   description?: string;
   canonical?: string;
   ogImage?: string;
+  ogType?: string;
+  keywords?: string[];
+  publishedTime?: string;
+  modifiedTime?: string;
   noIndex?: boolean;
 }
 
@@ -16,6 +20,10 @@ const {
   description = 'Explore Kyoto with local expert guides. Book the Kyoto Gion Night Walk or discover our travel guides for first-timers.',
   canonical,
   ogImage,
+  ogType = 'website',
+  keywords = [],
+  publishedTime,
+  modifiedTime,
   noIndex = false,
 } = Astro.props;
 
@@ -33,6 +41,7 @@ const fullTitle = title.includes('OTA Trip Guide') ? title : `${title} | OTA Tri
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{fullTitle}</title>
   <meta name="description" content={description} />
+  {keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
   {noIndex && <meta name="robots" content="noindex,nofollow" />}
   <link rel="canonical" href={canonicalUrl} />
 
@@ -41,8 +50,10 @@ const fullTitle = title.includes('OTA Trip Guide') ? title : `${title} | OTA Tri
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonicalUrl} />
   <meta property="og:image" content={ogImageUrl} />
-  <meta property="og:type" content="website" />
+  <meta property="og:type" content={ogType} />
   <meta property="og:site_name" content="OTA Trip Guide" />
+  {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+  {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />

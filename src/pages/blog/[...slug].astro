@@ -1,17 +1,30 @@
 ---
 import { getCollection } from 'astro:content';
 import BlogLayout from '../../layouts/BlogLayout.astro';
+import { getBlogCategory, getBlogSortDate, getCategoryHref, normalizeBlogSlug } from '../../utils/blog';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
   return posts.map(post => ({
-    params: { slug: post.slug },
+    params: { slug: normalizeBlogSlug(post.slug) },
     props: { post },
   }));
 }
 
 const { post } = Astro.props;
 const { Content } = await post.render();
+const allPosts = await getCollection('blog');
+const currentCategory = getBlogCategory(post);
+const relatedPosts = allPosts
+  .filter((item) => item.id !== post.id && !item.data.noIndex && getBlogCategory(item) === currentCategory)
+  .sort((a, b) => getBlogSortDate(b) - getBlogSortDate(a))
+  .slice(0, 3)
+  .map((item) => ({
+    slug: normalizeBlogSlug(item.slug),
+    title: item.data.title,
+    description: item.data.description,
+    hero_image: item.data.hero_image,
+  }));
 ---
 
 <BlogLayout
@@ -22,7 +35,11 @@ const { Content } = await post.render();
   last_updated={post.data.last_updated}
   canonical={post.data.canonical}
   hero_image={post.data.hero_image}
-  category={post.data.category}
+  category={currentCategory}
+  categoryHref={getCategoryHref(currentCategory)}
+  keywords={post.data.keywords}
+  faq={post.data.faq}
+  relatedPosts={relatedPosts}
   noIndex={post.data.noIndex}
 >
   <Content />

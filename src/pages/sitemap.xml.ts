@@ -1,4 +1,5 @@
 import { getCollection } from 'astro:content';
+import { getBlogCategory, getCategoryHref } from '../utils/blog';
 
 const STATIC_ROUTES = [
   '/',
@@ -16,9 +17,11 @@ const STATIC_ROUTES = [
 export async function GET({ site }: { site: URL | undefined }) {
   const siteUrl = site?.origin || 'https://otatrip.guide';
   const posts = await getCollection('blog');
+  const categoryRoutes = [...new Set(posts.filter((post) => !post.data.noIndex).map((post) => getCategoryHref(getBlogCategory(post))))];
 
   const urls = [
     ...STATIC_ROUTES.map((path) => ({ loc: `${siteUrl}${path}` })),
+    ...categoryRoutes.map((path) => ({ loc: `${siteUrl}${path}` })),
     ...posts
       .filter((post) => !post.data.noIndex)
       .map((post) => ({
