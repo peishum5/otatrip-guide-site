@@ -1,0 +1,170 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const quickFacts = [
+  { label: 'Meet here', value: "Outside Keihan Gion-Shijo Station Exit 2, beside McDonald's" },
+  { label: 'Guide sign', value: 'Your guide will be holding an "OTAtrip Guide" sign' },
+  { label: 'Arrival time', value: 'Please arrive 5 to 10 minutes early' },
+  { label: 'Do not wait', value: "Not inside McDonald's and not inside the station gate" },
+];
+
+const stationSteps = [
+  'Come up to street level at Keihan Gion-Shijo Station Exit 2.',
+  "Face the street and look for the McDonald's sign immediately beside the exit.",
+  'Move to the wall-side sidewalk between the station entrance and McDonald\'s.',
+  'Look for a guide holding an "OTAtrip Guide" sign near that exact spot.',
+];
+
+const missedSteps = [
+  'First, move to the exact sidewalk spot shown in the locator image below.',
+  'Check both the station-exit side and the McDonald\'s side for the guide sign.',
+  'Send us a message in your booking app or email us immediately.',
+  'If you may arrive late, contact us before the tour start time. After the group departs, joining later is usually difficult.',
+];
+---
+
+<BaseLayout
+  title="Meeting Point: Kyoto Gion Night Walk"
+  description="Exact meeting point and backup contact steps for the Kyoto Gion Night Walk."
+  canonical="/guest/gion-night-walk-meeting-point"
+  noIndex={true}
+>
+  <section class="scanlines relative overflow-hidden border-b-2 border-gray-800 bg-nes-black">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,229,255,0.18),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(255,176,0,0.14),transparent_30%)]"></div>
+    <div class="relative z-10 mx-auto max-w-5xl px-4 py-18 md:py-24">
+      <p class="mb-4 font-pixel text-[0.9rem] text-nes-cyan rpg-prefix">GUEST INFO</p>
+      <h1 class="mb-5 max-w-3xl font-sans text-3xl font-bold leading-tight text-nes-white md:text-5xl">
+        Meeting Point for the Kyoto Gion Night Walk
+      </h1>
+      <p class="max-w-2xl font-sans text-base leading-relaxed text-gray-300">
+        This page is only for booked guests. Please use the locator image and the steps below to reach the exact waiting spot quickly.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-4">
+        <a
+          href="https://maps.app.goo.gl/J7SmSwzVmAfjZJs36"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="nes-btn nes-btn-gold"
+        >
+          OPEN GOOGLE MAPS
+        </a>
+        <a
+          href="mailto:kyoto.otatrip.guide@gmail.com?subject=Cannot%20find%20the%20meeting%20point"
+          class="nes-btn nes-btn-outline"
+        >
+          EMAIL US
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-5xl px-4 py-12">
+    <section class="mb-12 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      {quickFacts.map((item) => (
+        <div class="border border-gray-800 bg-gray-900 px-5 py-5">
+          <p class="mb-2 font-pixel text-[0.8rem] text-nes-amber">{item.label}</p>
+          <p class="font-sans text-sm leading-relaxed text-gray-300">{item.value}</p>
+        </div>
+      ))}
+    </section>
+
+    <section class="mb-12">
+      <div class="mb-6 flex items-center gap-4">
+        <h2 class="font-pixel text-[0.9rem] text-nes-amber">REFERENCE VIEW</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
+      </div>
+
+      <div class="grid gap-6 lg:grid-cols-[1.35fr_0.95fr]">
+        <div class="dialogue-box p-4 md:p-5">
+          <img
+            src="/images/meeting-points/gion-night-walk-reference.svg"
+            alt="Locator image showing Keihan Gion-Shijo Station Exit 2, the McDonald's sign, and the exact wall-side sidewalk waiting spot."
+            class="w-full border border-gray-800 bg-black object-cover"
+            loading="eager"
+          />
+          <p class="mt-4 font-sans text-sm leading-relaxed text-gray-400">
+            Use the visible landmarks together: station exit, McDonald&apos;s, and the wall-side sidewalk. The circled area is the correct waiting spot.
+          </p>
+        </div>
+
+        <div class="space-y-6">
+          <div class="dialogue-box">
+            <p class="mb-4 font-pixel text-[0.9rem] text-nes-cyan">// EXACT SPOT</p>
+            <p class="mb-3 font-sans text-sm leading-relaxed text-gray-300">
+              Wait outside on the sidewalk beside the wall, directly between the station entrance and McDonald&apos;s.
+            </p>
+            <p class="font-sans text-sm leading-relaxed text-gray-500">
+              Please do not wait inside the restaurant or inside the station area, because the guide may not be able to see you.
+            </p>
+          </div>
+
+          <div class="dialogue-box">
+            <p class="mb-4 font-pixel text-[0.9rem] text-nes-cyan">// GUIDE CHECK</p>
+            <p class="mb-3 font-sans text-sm leading-relaxed text-gray-300">
+              Your guide will normally be standing close to the wall and holding a sign that says <span class="text-nes-white">"OTAtrip Guide"</span>.
+            </p>
+            <p class="font-sans text-sm leading-relaxed text-gray-500">
+              Please arrive 5 to 10 minutes early so the tour can begin on time.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <div class="mb-6 flex items-center gap-4">
+        <h2 class="font-pixel text-[0.9rem] text-nes-amber">HOW TO FIND US</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
+      </div>
+
+      <div class="space-y-4">
+        {stationSteps.map((step, index) => (
+          <div class="flex items-start gap-4 border border-gray-800 bg-gray-900 px-5 py-4">
+            <span class="mt-0.5 shrink-0 font-pixel text-[0.8rem] text-nes-green">0{index + 1}</span>
+            <p class="font-sans text-sm leading-relaxed text-gray-300">{step}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="mb-12 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+      <div class="dialogue-box">
+        <p class="mb-4 font-pixel text-[0.9rem] text-nes-red">// CAN&apos;T FIND US?</p>
+        <div class="space-y-4">
+          {missedSteps.map((step, index) => (
+            <div class="flex items-start gap-4">
+              <span class="mt-0.5 shrink-0 font-pixel text-[0.8rem] text-nes-amber">{index + 1}</span>
+              <p class="font-sans text-sm leading-relaxed text-gray-300">{step}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="dialogue-box">
+        <p class="mb-4 font-pixel text-[0.9rem] text-nes-cyan">// CONTACT</p>
+        <p class="mb-4 font-sans text-sm leading-relaxed text-gray-300">
+          Fastest option: send us a message through your booking platform. If that is not possible, email us right away.
+        </p>
+        <div class="space-y-3">
+          <a
+            href="mailto:kyoto.otatrip.guide@gmail.com?subject=Cannot%20find%20the%20meeting%20point"
+            class="block border border-nes-amber px-4 py-4 font-pixel text-[0.8rem] text-nes-amber transition-colors hover:bg-nes-amber hover:text-nes-black"
+          >
+            kyoto.otatrip.guide@gmail.com
+          </a>
+          <a
+            href="https://maps.app.goo.gl/J7SmSwzVmAfjZJs36"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="block border border-gray-700 px-4 py-4 font-pixel text-[0.8rem] text-gray-300 transition-colors hover:border-nes-cyan hover:text-nes-cyan"
+          >
+            OPEN THE PIN AGAIN
+          </a>
+        </div>
+        <p class="mt-4 font-sans text-xs leading-relaxed text-gray-600">
+          If you know you will be late, contact us before the tour start time.
+        </p>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
