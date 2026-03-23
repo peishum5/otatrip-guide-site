@@ -14,7 +14,7 @@ canonical: "/blog/itineraries/kyoto-1-day"
 
 One day in Kyoto is tight, but absolutely doable if you start early and route smartly. This itinerary covers the three areas that matter most for a first visit: Fushimi Inari at dawn, the Higashiyama walking district in the morning, and Gion in the evening. Expect around 15,000–18,000 steps. Use trains and taxis for transitions — avoid city buses during peak hours (9am–5pm on weekends and holidays).
 
-This route works year-round. In cherry blossom season (late March–early April), start 30 minutes earlier everywhere to beat tour groups.
+This route works year-round. In cherry blossom season (late March–early April), start 30 minutes earlier everywhere to beat tour groups. If you are shaping the day around sakura specifically, pair this with [Kyoto Cherry Blossom Spots: 10 Best Sakura Places](/blog/seasonal/kyoto-cherry-blossom-spots).
 
 ---
 

@@ -52,9 +52,9 @@ const canonicalUrl = new URL(canonical, siteUrl).toString();
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
       {posts.map((post) => (
         <article class="border-2 border-gray-700 hover:border-nes-amber transition-colors group bg-nes-black">
-          <a href={`/blog/${normalizeBlogSlug(post.slug)}`} class="block">
-            {post.data.hero_image && (
-              <div class="overflow-hidden border-b-2 border-gray-700">
+          {post.data.hero_image && (
+            <a href={`/blog/${normalizeBlogSlug(post.slug)}`} class="block overflow-hidden border-b-2 border-gray-700">
+              <div>
                 <img
                   src={post.data.hero_image}
                   alt={post.data.title}
@@ -62,15 +62,23 @@ const canonicalUrl = new URL(canonical, siteUrl).toString();
                   loading="lazy"
                 />
               </div>
-            )}
-            <div class="p-4 md:p-5">
-              <h2 class="font-pixel text-[0.9rem] text-nes-white group-hover:text-nes-amber transition-colors leading-relaxed mb-3">
+            </a>
+          )}
+          <div class="p-4 md:p-5">
+            <h2 class="font-pixel text-[0.9rem] text-nes-white group-hover:text-nes-amber transition-colors leading-relaxed mb-3">
+              <a href={`/blog/${normalizeBlogSlug(post.slug)}`} class="hover:text-nes-amber transition-colors">
                 {post.data.title}
-              </h2>
-              <p class="font-sans text-gray-500 text-sm leading-relaxed line-clamp-3 mb-4">{post.data.description}</p>
-              <span class="font-pixel text-[0.9rem] text-nes-cyan">READ GUIDE &rarr;</span>
-            </div>
-          </a>
+              </a>
+            </h2>
+            <p class="font-sans text-gray-500 text-sm leading-relaxed line-clamp-3 mb-4">{post.data.description}</p>
+            <a
+              href={`/blog/${normalizeBlogSlug(post.slug)}`}
+              class="nes-btn nes-btn-outline inline-block"
+              style="font-size: 0.45rem; padding: 0.5rem 0.8rem;"
+            >
+              READ GUIDE
+            </a>
+          </div>
         </article>
       ))}
     </div>

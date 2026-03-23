@@ -27,7 +27,7 @@ canonical: "/blog/plan/kyoto-first-time-guide"
 
 Kyoto is beautiful year-round, but timing matters a great deal for first-timers.
 
-**Spring (late March–April)** is the most popular season for good reason — cherry blossoms transform the city. The best weeks for sakura are usually the last week of March through the first week of April, though this shifts year to year. Expect dense crowds at [Maruyama Park](https://maps.google.com/?q=Maruyama+Park+Kyoto), [Philosopher's Path](https://maps.google.com/?q=Philosopher%27s+Path+Kyoto), and the Kamo River. Book accommodation three to six months in advance.
+**Spring (late March–April)** is the most popular season for good reason — cherry blossoms transform the city. The best weeks for sakura are usually the last week of March through the first week of April, though this shifts year to year. Expect dense crowds at [Maruyama Park](https://maps.google.com/?q=Maruyama+Park+Kyoto), [Philosopher's Path](https://maps.google.com/?q=Philosopher%27s+Path+Kyoto), and the Kamo River. Book accommodation three to six months in advance. For spot-by-spot planning, read [Kyoto Cherry Blossom Spots: 10 Best Sakura Places](/blog/seasonal/kyoto-cherry-blossom-spots).
 
 **Autumn (mid-October–late November)** is equally stunning, with maple foliage painting temple gardens in gold and red. Peak color usually falls around mid-November. Like spring, prices spike and accommodation fills fast — book early.
 

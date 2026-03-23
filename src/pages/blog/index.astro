@@ -76,9 +76,9 @@ const visualHighlights = [
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {groupedPosts[category].map(post => (
             <article class="border-2 border-gray-700 hover:border-nes-amber transition-colors group bg-nes-black">
-              <a href={`/blog/${normalizeBlogSlug(post.slug)}`} class="block">
-                {post.data.hero_image && (
-                  <div class="overflow-hidden border-b-2 border-gray-700">
+              {post.data.hero_image && (
+                <a href={`/blog/${normalizeBlogSlug(post.slug)}`} class="block overflow-hidden border-b-2 border-gray-700">
+                  <div>
                     <img
                       src={post.data.hero_image}
                       alt={post.data.title}
@@ -86,21 +86,29 @@ const visualHighlights = [
                       loading="lazy"
                     />
                   </div>
-                )}
-                <div class="p-4 md:p-5">
-                  <p class="font-pixel text-[0.9rem] text-nes-cyan mb-2">
-                    <a href={getCategoryHref(category)} class="hover:text-nes-amber transition-colors">{category.toUpperCase()}</a>
-                  </p>
-                  <h3 class="font-pixel text-[0.9rem] text-nes-white group-hover:text-nes-amber transition-colors leading-relaxed mb-3">
+                </a>
+              )}
+              <div class="p-4 md:p-5">
+                <p class="font-pixel text-[0.9rem] text-nes-cyan mb-2">
+                  <a href={getCategoryHref(category)} class="hover:text-nes-amber transition-colors">{category.toUpperCase()}</a>
+                </p>
+                <h3 class="font-pixel text-[0.9rem] text-nes-white group-hover:text-nes-amber transition-colors leading-relaxed mb-3">
+                  <a href={`/blog/${normalizeBlogSlug(post.slug)}`} class="hover:text-nes-amber transition-colors">
                     {post.data.title}
-                  </h3>
-                  <p class="font-sans text-gray-500 text-sm leading-relaxed line-clamp-3 mb-4">{post.data.description}</p>
-                  <div class="flex items-center justify-between">
-                    <span class="font-pixel text-[0.9rem] text-gray-600">{post.data.author || 'LOCAL GUIDE'}</span>
-                    <span class="font-pixel text-[0.9rem] text-nes-cyan">READ &rarr;</span>
-                  </div>
+                  </a>
+                </h3>
+                <p class="font-sans text-gray-500 text-sm leading-relaxed line-clamp-3 mb-4">{post.data.description}</p>
+                <div class="flex items-center justify-between gap-4">
+                  <span class="font-pixel text-[0.9rem] text-gray-600">{post.data.author || 'LOCAL GUIDE'}</span>
+                  <a
+                    href={`/blog/${normalizeBlogSlug(post.slug)}`}
+                    class="nes-btn nes-btn-outline shrink-0"
+                    style="font-size: 0.45rem; padding: 0.5rem 0.8rem;"
+                  >
+                    READ
+                  </a>
                 </div>
-              </a>
+              </div>
             </article>
           ))}
         </div>

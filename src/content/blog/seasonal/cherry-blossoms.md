@@ -46,6 +46,8 @@ The full peak period is roughly 7–14 days. Peak timing in Kyoto has ranged fro
 
 ## Best Cherry Blossom Spots
 
+If you want a location-first breakdown with maps and route ideas, read [Kyoto Cherry Blossom Spots: 10 Best Sakura Places](/blog/seasonal/kyoto-cherry-blossom-spots).
+
 ### Maruyama Park (Free)
 The most popular hanami destination in Kyoto — a large park surrounding a 70-year-old weeping cherry (*shidare-zakura*) that is lit dramatically at night. The park fills with picnic tarps from morning during peak week. Free to enter. Evening viewing (the tree illuminated against the dark sky) is the signature Kyoto sakura image.
 
@@ -91,7 +93,6 @@ Night viewing events are extremely popular — arrive early or queue.
 
 ---
 
-**Plan your trip:** [2-Day Kyoto Itinerary](/blog/itineraries/kyoto-2-days) and [3-Day Kyoto Itinerary](/blog/itineraries/kyoto-3-days) can be adapted for sakura season. The [Kyoto First-Timer Guide](/blog/plan/kyoto-first-time-guide) covers seasonal planning in detail.
+**Plan your trip:** [Kyoto Cherry Blossom Spots: 10 Best Sakura Places](/blog/seasonal/kyoto-cherry-blossom-spots), [2-Day Kyoto Itinerary](/blog/itineraries/kyoto-2-days), and [3-Day Kyoto Itinerary](/blog/itineraries/kyoto-3-days) can be adapted for sakura season. The [Kyoto First-Timer Guide](/blog/plan/kyoto-first-time-guide) covers seasonal planning in detail.
 
 **Evening walk:** Our [Gion Sake Walk](/tours/gion-sake-walk) is particularly atmospheric during cherry blossom season — join us for an evening through Gion with blossoms and lanterns.
-

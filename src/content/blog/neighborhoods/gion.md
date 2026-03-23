@@ -80,4 +80,6 @@ Gion has excellent dining options at every price point. A few recommendations:
 
 **Continue to:** [Maiko & Geisha: What to Know](/blog/culture/maiko-geisha) for background on the culture. The [Higashiyama Walking Guide](/blog/neighborhoods/higashiyama) connects directly with Gion.
 
+**Looking for evening entertainment:** [Where to See a Magic Show in Kyoto](/blog/culture/magic-shows-kyoto) covers the strongest current magic venues in and around Gion and Kawaramachi.
+
 **Join us for an evening walk:** Our [Gion Sake Walk](/tours/gion-sake-walk) explores Gion after dark with a local guide, including stops at neighborhood bars the tourist map doesn't show.
