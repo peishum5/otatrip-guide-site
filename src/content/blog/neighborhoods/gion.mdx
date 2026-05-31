@@ -19,18 +19,21 @@ faq:
     a: "The ochaya (teahouses) themselves are private and require an introduction to enter. Photography on Hanamikoji is permitted but photographing people without permission is not. Some residential alleys have signs asking visitors not to enter."
 ---
 
+import TipBox from '../../../components/TipBox.astro'
+import FastFacts from '../../../components/FastFacts.astro'
+import CrowdMeter from '../../../components/CrowdMeter.astro'
+import ImageCaption from '../../../components/ImageCaption.astro'
+
 # Gion District Guide: Geisha, Evening Walks & Hidden Spots
 
-## Fast Facts
-
-| Item | Details |
-|------|---------|
-| Best time | Weekday evenings, 5pm–8pm |
-| Main streets | Hanamikoji, Shimbashi, Nene-no-michi |
-| Nearest station | Gion-Shijo (Keihan), Kawaramachi (Hankyu) |
-| Entry | Free (public streets) |
-| Maiko sightings | Most likely: Hanamikoji, 5–7pm weekdays |
-| Photography rules | Ask before photographing; no blocking paths |
+<FastFacts items={[
+  { label: "Best Time", value: "Weekday evenings, 5pm–8pm", highlight: true },
+  { label: "Main Streets", value: "Hanamikoji, Shimbashi, Nene-no-michi" },
+  { label: "Nearest Station", value: "Gion-Shijo (Keihan), Kawaramachi (Hankyu)" },
+  { label: "Entry", value: "Free — public streets" },
+  { label: "Maiko Sightings", value: "Hanamikoji, 5–7pm on weekdays", highlight: true },
+  { label: "Photography", value: "Ask before photographing people; no blocking paths" },
+]} />
 
 ## What Gion Is
 
@@ -43,6 +46,13 @@ The district has two main sub-areas with distinct characters:
 **Gion Higashi** (smaller, to the north): Quieter, fewer tourists, and the neighborhood that supplied dancers for Yasaka Shrine. The streets around Shimbashi and the Shirakawa canal are among the most beautiful in Kyoto.
 
 ## The Key Streets
+
+<ImageCaption
+  src="/images/blog/inline/gion-maiko-street.jpg"
+  alt="Traditional Gion lantern-lit street at twilight, wooden teahouse facades glowing warmly"
+  badge="HANAMIKOJI · EVENING"
+  caption="Hanamikoji at dusk — the ochaya teahouses begin their evening service around 6pm, and the lanterns come on shortly before."
+/>
 
 ### Hanamikoji Street
 The long street running north from Shijo through old Gion. The southern half (north of Shijo) is lined with ochaya — private tea houses where geisha entertain clients at exclusive banquets. The wooden lattice facades and hanging lanterns have remained essentially unchanged for two centuries. This is where maiko and geisha hurry to evening engagements.
@@ -58,13 +68,33 @@ One of Kyoto's most atmospheric streets — a short, narrow lane paved with flat
 ### Nene-no-michi
 A stone path running behind Kodaiji Temple toward Higashiyama, named for the wife of Toyotomi Hideyoshi. Connects Gion to the Higashiyama walking district.
 
+<ImageCaption
+  src="/images/blog/inline/gion-shimbashi.jpg"
+  alt="Shimbashi canal in Gion with weeping willows and traditional buildings reflected in water"
+  badge="SHIMBASHI CANAL"
+  caption="Shimbashi canal — less photographed than Hanamikoji but arguably the most beautiful street in Kyoto."
+/>
+
 ## When to Visit
 
 **Evening (5pm–9pm)** is when Gion comes alive. The lanterns glow, the crowds from midday tours clear, and the district takes on the atmospheric quality it's known for.
 
+<div class="my-2">
+  <CrowdMeter label="Midday (11am–4pm)" level={4} note="Tour groups at peak — busy and photo-difficult" />
+  <CrowdMeter label="Late afternoon (4–6pm)" level={2} note="Crowds thinning, lanterns starting to glow" />
+  <CrowdMeter label="Evening (6–9pm)" level={2} note="Best atmosphere — locals, diners, occasional maiko" />
+  <CrowdMeter label="Weekends evenings" level={3} note="Busier than weekdays but still pleasant" />
+</div>
+
 **Maiko sightings:** The window is roughly 5pm–7pm on weekdays near Hanamikoji. Maiko are typically apprentice geisha aged 15–20, recognizable by elaborate kimono and hairstyles. Geisha (fully qualified) wear simpler, darker kimono. Both move quickly and purposefully to evening appointments.
 
-**What to avoid:** Approaching or following geisha or maiko. Blocking their path for photographs. This is both disrespectful and prohibited by district rules. Observe from a respectful distance.
+<TipBox type="warning" title="GEISHA ETIQUETTE — READ THIS">
+Do not approach, follow, or block the path of maiko or geisha. Do not call out to them or attempt to photograph them without clear consent. These are working professionals moving to client appointments — harassment, even well-meaning, is a serious issue in Gion. Observe from a respectful distance. This is not optional courtesy — it's what allows the district to remain a functioning neighborhood.
+</TipBox>
+
+<TipBox type="local" title="MAIKO SIGHTING STRATEGY">
+Position yourself on Hanamikoji between 5:30pm and 6:30pm on a weekday. Stand against the building wall (not in the middle of the lane), stay quiet, and wait. If you see someone, step back and let them pass. A sighting is never guaranteed — some evenings produce three in an hour, others none.
+</TipBox>
 
 **Gion Matsuri (July):** The district is the center of Kyoto's largest festival — the streets fill with evening celebrations throughout the month. See the [Gion Matsuri Guide](/blog/seasonal/gion-matsuri).
 
@@ -76,10 +106,12 @@ Gion has excellent dining options at every price point. A few recommendations:
 - **Izakayas near Gion-Shijo station:** More accessible, lively, and perfect for sake with grilled food.
 - **Nishiki Market:** 10-minute walk west — an excellent daytime food destination.
 
+<TipBox type="tip" title="PONTOCHO FOR DINNER">
+One block from Gion, the narrow Pontocho alley running parallel to the Kamo River has some of Kyoto's finest dining at every price point. Walk the full alley first to read menus, then choose. Weekend reservations for sit-down restaurants are strongly recommended.
+</TipBox>
+
 ---
 
 **Continue to:** [Maiko & Geisha: What to Know](/blog/culture/maiko-geisha) for background on the culture. The [Higashiyama Walking Guide](/blog/neighborhoods/higashiyama) connects directly with Gion.
-
-**Looking for evening entertainment:** [Where to See a Magic Show in Kyoto](/blog/culture/magic-shows-kyoto) covers the strongest current magic venues in and around Gion and Kawaramachi.
 
 **Join us for an evening walk:** Our [Gion Sake Walk](/tours/gion-sake-walk) explores Gion after dark with a local guide, including stops at neighborhood bars the tourist map doesn't show.

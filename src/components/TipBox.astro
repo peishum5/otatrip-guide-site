@@ -1,0 +1,49 @@
+---
+interface Props {
+  type?: 'tip' | 'warning' | 'local' | 'budget';
+  title?: string;
+}
+
+const { type = 'tip', title } = Astro.props;
+
+const config = {
+  tip:     { label: title ?? 'TIP',        icon: '[i]', color: 'text-nes-cyan',  stripe: '#00e5ff', glow: 'rgba(0,229,255,0.15)' },
+  warning: { label: title ?? 'WARNING',    icon: '[!]', color: 'text-nes-red',   stripe: '#ff2222', glow: 'rgba(255,34,34,0.15)' },
+  local:   { label: title ?? 'LOCAL TIP',  icon: '[★]', color: 'text-nes-amber', stripe: '#ffb000', glow: 'rgba(255,176,0,0.15)' },
+  budget:  { label: title ?? 'BUDGET TIP', icon: '[¥]', color: 'text-nes-green', stripe: '#00d800', glow: 'rgba(0,216,0,0.15)' },
+}[type];
+---
+
+<div class="tipbox my-6 flex overflow-hidden" style={`border: 1px solid ${config.stripe}33; background: #0d0d0d; box-shadow: 0 0 20px ${config.glow};`}>
+  <!-- Left stripe -->
+  <div class="shrink-0 w-1" style={`background: ${config.stripe};`}></div>
+
+  <div class="flex-1 p-4">
+    <!-- Label -->
+    <div class={`font-pixel mb-2 flex items-center gap-2 ${config.color}`} style="font-size: 0.45rem; letter-spacing: 0.08em;">
+      <span>{config.icon}</span>
+      <span>{config.label}</span>
+    </div>
+    <!-- Body -->
+    <div class="font-sans text-sm text-gray-300 leading-relaxed tipbox-body">
+      <slot />
+    </div>
+  </div>
+</div>
+
+<style>
+  .tipbox-body :global(p) {
+    margin: 0;
+  }
+  .tipbox-body :global(p + p) {
+    margin-top: 0.5rem;
+  }
+  .tipbox-body :global(ul) {
+    margin: 0.25rem 0 0;
+    padding-left: 1.25rem;
+  }
+  .tipbox-body :global(li) {
+    margin: 0.2rem 0;
+    line-height: 1.6;
+  }
+</style>

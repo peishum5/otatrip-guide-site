@@ -19,18 +19,21 @@ faq:
     a: "Take the JR Nara Line to Inari Station (5 minutes, ¥150). The shrine entrance is directly across from the station. The Keihan Fushimi-Inari Station is also a 5-minute walk away."
 ---
 
+import TipBox from '../../../components/TipBox.astro'
+import FastFacts from '../../../components/FastFacts.astro'
+import CrowdMeter from '../../../components/CrowdMeter.astro'
+import ImageCaption from '../../../components/ImageCaption.astro'
+
 # Fushimi Inari Taisha: Complete Visitor Guide
 
-## Fast Facts
-
-| Item | Details |
-|------|---------|
-| Entry | Free, open 24 hours |
-| Location | 68 Fukakusa Yabunouchicho, Fushimi-ku |
-| Nearest station | JR Inari Station (5 min from Kyoto Station) |
-| Trail to summit | 4 km round-trip, ~2–3 hours |
-| Best time | Before 8am or after 5pm |
-| Crowds | Busiest: weekends, holidays, 9am–4pm |
+<FastFacts items={[
+  { label: "Entry", value: "Free, open 24 hours", highlight: true },
+  { label: "Location", value: "68 Fukakusa Yabunouchicho, Fushimi-ku" },
+  { label: "Nearest Station", value: "JR Inari Station (5 min from Kyoto Station)" },
+  { label: "Trail to Summit", value: "4 km round-trip, ~2–3 hours" },
+  { label: "Best Time", value: "Before 8am or after 5pm", highlight: true },
+  { label: "Crowds", value: "Busiest: weekends & holidays 9am–4pm" },
+]} />
 
 ## What Fushimi Inari Actually Is
 
@@ -50,7 +53,18 @@ Inari is the Shinto deity of rice, agriculture, and commerce. Fox (kitsune) stat
 
 Avoid taking the bus — it stops far from the shrine and runs less frequently than trains.
 
+<TipBox type="local" title="DAWN TIMING">
+The first JR departure from Kyoto Station toward Nara leaves around 5:20am. Arriving at 6am means near-empty tunnels and soft pre-dawn light. Arriving at 9am means shoulder-to-shoulder crowds in the lower gates. The alarm is worth it.
+</TipBox>
+
 ## The Hiking Route
+
+<ImageCaption
+  src="/images/blog/inline/fushimi-dawn.jpg"
+  alt="Empty Fushimi Inari torii tunnel at dawn, orange vermilion gates glowing in soft morning light"
+  badge="FUSHIMI INARI · 06:15"
+  caption="The lower gate tunnels before 7am — the image most people come to Kyoto for, available only to early risers."
+/>
 
 ### Lower Gates (0–20 minutes)
 The iconic photographs of torii tunnels are all within the first 15–20 minutes of walking. The dense orange-red gates begin immediately past the main shrine building. The trail splits into two parallel tunnels here — take either direction; they rejoin further up.
@@ -61,30 +75,48 @@ This is the first major clearing with panoramic views over southern Kyoto and Os
 ### Upper Mountain (1.5–3 hours)
 Beyond Yotsutsuji, the trail continues through quieter wooded terrain past dozens of smaller sub-shrines. The crowds thin significantly above this point. The summit (Ichinomine, 233m) has a small shrine but limited views due to tree cover. The real reward of the full hike is the atmospheric forest and solitude.
 
+<ImageCaption
+  src="/images/blog/inline/fushimi-summit.jpg"
+  alt="View from Fushimi Inari mountain looking over Kyoto cityscape through tree canopy"
+  badge="YOTSUTSUJI · 30 MIN UP"
+  caption="The first clearing at Yotsutsuji junction offers panoramic views over southern Kyoto — the natural stopping point for most visitors."
+/>
+
 ## Timing and Crowds
 
-**Best times to visit:**
-- **Before 8am** — gates nearly empty, soft light for photography
-- **After 5pm** — crowds drop sharply; some areas are lit at night
-- **Weekday mornings** — significantly quieter than weekends
+<div class="my-2">
+  <CrowdMeter label="Before 8am weekdays" level={1} note="Dawn — near-empty gates, soft low light ideal for photography" />
+  <CrowdMeter label="8am–11am weekdays" level={2} note="Manageable, some tour groups arriving by 9am" />
+  <CrowdMeter label="11am–4pm weekdays" level={4} note="Dense crowds in lower tunnels — difficult to photograph without strangers" />
+  <CrowdMeter label="Weekends & holidays 9am–4pm" level={5} note="Expect shoulder-to-shoulder in lower gates — plan around it or arrive before 8am" />
+  <CrowdMeter label="After 5pm daily" level={2} note="Crowds drop sharply; some areas lit at night for atmospheric evening visits" />
+</div>
 
-**Worst times:**
-- Weekends and holidays, 9am–3pm — expect dense crowds in the lower tunnels
-- Golden Week (late April–early May) and New Year holidays
-
-The famous torii gate tunnels can become uncomfortably crowded at peak times. Managing this is about timing, not luck.
+**Golden Week (late April–early May)** and **New Year holidays** are the absolute busiest periods. If visiting during these windows, arrive at or before sunrise — no exceptions.
 
 ## Practical Tips
 
-- Wear comfortable walking shoes — the path to the summit involves uneven stone steps.
-- There are no entry fees at any point on the mountain.
-- Toilets are available at the main shrine building and at Yotsutsuji junction.
-- The lower stalls sell matcha soft serve and kitsune-themed snacks — worth trying on the way down.
-- Photography: No tripods in the tunnels during busy hours. The gates face southeast, so morning light illuminates them from the front; afternoon light comes from behind.
+<TipBox type="tip">
+Wear comfortable walking shoes — the path to the summit involves uneven stone steps for 4 km. There are no entry fees at any point on the mountain. Toilets are available at the main shrine building and at Yotsutsuji junction.
+</TipBox>
+
+<TipBox type="warning" title="PHOTOGRAPHY RULES">
+No tripods in the gate tunnels during busy hours. The gates face southeast — morning light illuminates them from the front; afternoon light comes from behind. If you want the classic front-lit shot, morning is the only option.
+</TipBox>
+
+<TipBox type="budget" title="KITSUNE SNACKS">
+The lower stalls sell matcha soft serve and kitsune-themed fox snacks — worth stopping for on the way down (stalls open around 9am). The inari sushi sold near the entrance is also famously good here.
+</TipBox>
+
+<ImageCaption
+  src="/images/blog/inline/fushimi-crowded.jpg"
+  alt="Dense crowds walking through Fushimi Inari torii gates at midday"
+  badge="MIDDAY · AVOID"
+  caption="The same tunnels at midday on a weekend — arriving two hours earlier makes the entire difference."
+/>
 
 ---
 
 **Visiting central Kyoto?** Read the [Higashiyama Walking Guide](/blog/neighborhoods/higashiyama) and [1-Day Kyoto Itinerary](/blog/itineraries/kyoto-1-day) for how to combine Fushimi Inari with the rest of the city.
 
 **Want a guided evening walk?** Our [Gion Evening Walk](/tours/gion-sake-walk) departs nightly from Gion and includes local sake stops — a natural pairing with a morning at Fushimi Inari.
-

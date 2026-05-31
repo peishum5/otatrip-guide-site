@@ -1,0 +1,52 @@
+---
+interface Props {
+  time: string;
+  location: string;
+  duration?: string;
+  transport?: string;
+  cost?: string;
+}
+
+const { time, location, duration, transport, cost } = Astro.props;
+---
+
+<div class="timeline-stop relative mb-8">
+  <!-- Node dot -->
+  <div class="timeline-node absolute" style="left: -2.65rem; top: 0.25rem; width: 12px; height: 12px; background: #ffb000; box-shadow: 0 0 10px rgba(255,176,0,0.7);"></div>
+
+  <!-- Time badge -->
+  <div class="inline-block font-pixel text-nes-black bg-nes-amber mb-2 px-2 py-1" style="font-size: 0.42rem; letter-spacing: 0.05em; box-shadow: 2px 2px 0 #7a5500;">
+    {time}
+  </div>
+
+  <!-- Location -->
+  <div class="font-pixel text-nes-white mb-2 leading-relaxed" style="font-size: 0.55rem;">{location}</div>
+
+  <!-- Meta -->
+  {(duration || transport || cost) && (
+    <div class="flex flex-wrap gap-x-4 gap-y-1 mb-3">
+      {duration  && <span class="font-pixel text-gray-500 rpg-prefix" style="font-size: 0.4rem;">{duration}</span>}
+      {transport && <span class="font-pixel text-gray-500 rpg-prefix" style="font-size: 0.4rem;">{transport}</span>}
+      {cost      && <span class="font-pixel text-nes-green rpg-prefix" style="font-size: 0.4rem;">{cost}</span>}
+    </div>
+  )}
+
+  <!-- Body content -->
+  <div class="font-sans text-sm text-gray-400 leading-relaxed timeline-body">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .timeline-body :global(p) {
+    margin: 0 0 0.5rem;
+  }
+  .timeline-body :global(ul) {
+    margin: 0.25rem 0;
+    padding-left: 1.25rem;
+  }
+  .timeline-body :global(li) {
+    margin: 0.2rem 0;
+    line-height: 1.6;
+  }
+</style>

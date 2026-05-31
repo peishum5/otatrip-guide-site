@@ -1,0 +1,35 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+  badge?: string;
+  side?: 'full' | 'left' | 'right';
+}
+
+const { src, alt, caption, badge, side = 'full' } = Astro.props;
+
+const floatClass = side === 'left'
+  ? 'float-left mr-6 mb-4 w-48 md:w-64'
+  : side === 'right'
+  ? 'float-right ml-6 mb-4 w-48 md:w-64'
+  : 'w-full my-7 clear-both';
+---
+
+<figure class={`image-caption ${floatClass}`}>
+  <div class="scanlines relative overflow-hidden" style="border: 1px solid rgba(255,176,0,0.2); box-shadow: 4px 4px 0 rgba(255,176,0,0.12);">
+    <img
+      src={src}
+      alt={alt}
+      class="w-full block object-cover"
+      style={side === 'full' ? 'max-height: 480px;' : ''}
+      loading="lazy"
+    />
+    {badge && <span class="img-badge">{badge}</span>}
+  </div>
+  {caption && (
+    <figcaption class="font-pixel text-gray-600 mt-2 leading-relaxed" style="font-size: 0.38rem; letter-spacing: 0.04em;">
+      ▲ {caption}
+    </figcaption>
+  )}
+</figure>

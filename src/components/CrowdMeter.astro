@@ -1,0 +1,24 @@
+---
+interface Props {
+  label: string;
+  level: 1 | 2 | 3 | 4 | 5;
+  note?: string;
+}
+
+const { label, level, note } = Astro.props;
+
+const pct = level * 20;
+const color = level <= 2 ? '#00d800' : level === 3 ? '#ffb000' : '#ff2222';
+const text  = ['QUIET', 'LOW', 'MODERATE', 'BUSY', 'AVOID'][level - 1];
+---
+
+<div class="crowd-meter my-3">
+  <div class="flex items-center justify-between mb-1">
+    <span class="font-pixel text-gray-500 rpg-prefix" style="font-size: 0.42rem; letter-spacing: 0.05em;">{label}</span>
+    <span class="font-pixel" style={`font-size: 0.38rem; color: ${color};`}>{text}</span>
+  </div>
+  <div class="stat-bar-track">
+    <div class="stat-bar-fill" style={`width: ${pct}%; background: ${color}; box-shadow: 0 0 6px ${color}66;`}></div>
+  </div>
+  {note && <p class="font-sans text-xs text-gray-600 mt-1">{note}</p>}
+</div>
