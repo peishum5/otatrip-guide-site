@@ -375,4 +375,100 @@
   details summary::-webkit-details-marker {
     display: none;
   }
+
+  /* === Blog Card === */
+  .blog-card {
+    background: #0d0d0d;
+    border: 1px solid #1e1e1e;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    overflow: hidden;
+  }
+  .blog-card:hover {
+    border-color: rgba(255, 176, 0, 0.55);
+    box-shadow: 0 0 28px rgba(255, 176, 0, 0.08), 0 8px 28px rgba(0, 0, 0, 0.45);
+    transform: translateY(-2px);
+  }
+
+  /* === Category Filter Pills === */
+  .cat-pill {
+    font-family: var(--font-pixel);
+    font-size: 0.45rem;
+    padding: 0.45rem 0.9rem;
+    border: 1px solid #2a2a2a;
+    color: #555;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    letter-spacing: 0.05em;
+    line-height: 1.5;
+  }
+  .cat-pill:hover {
+    border-color: rgba(255, 176, 0, 0.45);
+    color: rgba(255, 176, 0, 0.8);
+    background: rgba(255, 176, 0, 0.04);
+  }
+  .cat-pill.active {
+    border-color: var(--color-nes-amber);
+    color: var(--color-nes-amber);
+    background: rgba(255, 176, 0, 0.07);
+    box-shadow: 0 0 12px rgba(255, 176, 0, 0.15);
+  }
+
+  /* === Neon Glow Text === */
+  .text-glow-amber {
+    text-shadow: 0 0 16px rgba(255, 176, 0, 0.55), 0 0 32px rgba(255, 176, 0, 0.2);
+  }
+  .text-glow-cyan {
+    text-shadow: 0 0 16px rgba(0, 229, 255, 0.55), 0 0 32px rgba(0, 229, 255, 0.2);
+  }
+
+  /* === Featured Post === */
+  .featured-gradient {
+    background: linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.1) 100%);
+  }
+
+  /* === Dot Grid Background === */
+  .dot-grid-bg {
+    background-image: radial-gradient(circle, rgba(255,176,0,0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* === Section Divider Line === */
+  .pixel-divider {
+    height: 2px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--color-nes-amber) 0px,
+      var(--color-nes-amber) 6px,
+      transparent 6px,
+      transparent 10px
+    );
+    opacity: 0.35;
+  }
+
+  /* === Image overlay badge === */
+  .img-badge {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 0.75rem;
+    font-family: var(--font-pixel);
+    font-size: 0.45rem;
+    color: var(--color-nes-amber);
+    background: rgba(0,0,0,0.82);
+    padding: 0.3rem 0.6rem;
+    letter-spacing: 0.05em;
+    border: 1px solid rgba(255,176,0,0.3);
+    backdrop-filter: blur(4px);
+  }
+
+  /* === Smooth scroll section === */
+  .scroll-x-smooth {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scroll-x-smooth::-webkit-scrollbar {
+    display: none;
+  }
 }

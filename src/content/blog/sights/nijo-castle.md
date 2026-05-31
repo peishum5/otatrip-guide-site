@@ -4,7 +4,7 @@ description: "Visitor guide to Nijo Castle: entry fees, opening hours, the night
 author: "Local Guide"
 pubDate: "2026-03-07"
 last_updated: "2026-03-07"
-hero_image: "/images/blog/higashiyama-pagoda.jpg"
+hero_image: "/images/blog/nijo-castle.jpg"
 canonical: "/blog/sights/nijo-castle"
 category: "Sights"
 keywords: ["nijo castle kyoto", "nijojo kyoto", "nijo castle tickets", "nightingale floor kyoto"]

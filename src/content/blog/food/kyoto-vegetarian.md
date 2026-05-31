@@ -1,6 +1,6 @@
 ---
 title: "Vegetarian & Vegan Kyoto: Where to Eat & What to Order"
-hero_image: "/images/blog/nishiki-market.jpg"
+hero_image: "/images/blog/kyoto-vegetarian.jpg"
 description: "A practical guide to eating vegetarian and vegan in Kyoto: Buddhist shojin ryori, the best plant-based restaurants, how to navigate menus, and useful phrases."
 author: "Local Guide"
 pubDate: "2026-03-07"

@@ -4,7 +4,7 @@ description: "A practical guide to Kyoto's best cherry blossom spots, from iconi
 author: "Local Guide"
 pubDate: "2026-03-23"
 last_updated: "2026-03-23"
-hero_image: "/images/blog/kyoto-sakura.jpg"
+hero_image: "/images/blog/maruyama-sakura.jpg"
 canonical: "/blog/seasonal/kyoto-cherry-blossom-spots"
 category: "Seasonal"
 keywords: ["kyoto cherry blossom spots", "best sakura places kyoto", "kyoto hanami spots", "where to see cherry blossoms in kyoto"]

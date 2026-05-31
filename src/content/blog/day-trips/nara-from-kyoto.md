@@ -4,7 +4,7 @@ description: "How to do a Nara day trip from Kyoto: the best route, travel time 
 author: "Local Guide"
 pubDate: "2026-03-07"
 last_updated: "2026-03-07"
-hero_image: "/images/blog/fushimi-inari.jpg"
+hero_image: "/images/blog/nara-deer.jpg"
 canonical: "/blog/day-trips/nara-from-kyoto"
 category: "Day Trips"
 keywords: ["nara day trip from kyoto", "kyoto to nara", "nara deer", "todaiji nara", "nara from kyoto how to get"]

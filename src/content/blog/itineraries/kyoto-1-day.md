@@ -4,7 +4,7 @@ slug: "/itineraries/kyoto-1-day"
 description: "A realistic one‑day route hitting Kyoto's essentials: Fushimi Inari, Higashiyama, Gion—timed to beat crowds with transit tips and food stops."
 author: "Local Guide"
 last_updated: "2025-03-01"
-hero_image: "/images/blog/fushimi-inari.jpg"
+hero_image: "/images/blog/kyoto-1day-hero.jpg"
 canonical: "/blog/itineraries/kyoto-1-day"
 ---
 

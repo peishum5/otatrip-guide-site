@@ -1,6 +1,6 @@
 ---
 title: "Kimono Rental in Kyoto: Best Shops & What It Costs"
-hero_image: "/images/blog/gion-maiko.jpg"
+hero_image: "/images/blog/kimono-rental.jpg"
 description: "How to rent a kimono in Kyoto: prices, what's included, the best rental shops near Higashiyama and Gion, what to expect during dressing, and practical tips for wearing one all day."
 author: "Local Guide"
 pubDate: "2026-03-07"

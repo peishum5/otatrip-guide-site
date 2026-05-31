@@ -4,7 +4,7 @@ description: "The ideal 3-day Kyoto itinerary for first-time visitors: day-by-da
 author: "Local Guide"
 pubDate: "2026-03-07"
 last_updated: "2026-03-07"
-hero_image: "/images/blog/kyoto-coin.jpg"
+hero_image: "/images/blog/kyoto-3days-hero.jpg"
 canonical: "/blog/itineraries/kyoto-3-days"
 category: "Itineraries"
 keywords: ["3 days in kyoto", "kyoto 3 day itinerary", "kyoto first timer", "kyoto itinerary"]

@@ -4,7 +4,7 @@ description: "Everything for an Osaka day trip from Kyoto: how to get there, the
 author: "Local Guide"
 pubDate: "2026-03-07"
 last_updated: "2026-03-07"
-hero_image: "/images/blog/kyoto-bus.jpg"
+hero_image: "/images/blog/osaka-dotonbori.jpg"
 canonical: "/blog/day-trips/osaka-from-kyoto"
 category: "Day Trips"
 keywords: ["osaka day trip from kyoto", "kyoto to osaka", "osaka from kyoto how to get", "osaka dotonbori"]

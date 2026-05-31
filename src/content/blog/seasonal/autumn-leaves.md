@@ -1,6 +1,6 @@
 ---
 title: "Kyoto Autumn Leaves: Best Spots & When to Go"
-hero_image: "/images/blog/higashiyama-pagoda.jpg"
+hero_image: "/images/blog/autumn-kyoto.jpg"
 description: "Plan your Kyoto koyo trip: the best autumn foliage spots, when peak color hits in 2026, how to avoid crowds at the top spots, and the hidden gems most visitors miss."
 author: "Local Guide"
 pubDate: "2026-03-07"

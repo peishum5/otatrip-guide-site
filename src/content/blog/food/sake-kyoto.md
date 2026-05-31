@@ -4,7 +4,7 @@ description: "How to explore sake in Kyoto: the Fushimi brewery district, best i
 author: "Local Guide"
 pubDate: "2026-03-07"
 last_updated: "2026-03-07"
-hero_image: "/images/blog/gion-maiko.jpg"
+hero_image: "/images/blog/sake-kyoto.jpg"
 canonical: "/blog/food/sake-kyoto"
 category: "Food & Drink"
 keywords: ["sake kyoto", "fushimi sake", "kyoto sake bars", "nihonshu kyoto", "fushimi breweries"]

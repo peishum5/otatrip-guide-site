@@ -4,7 +4,7 @@ slug: "/plan/where-to-stay-kyoto"
 description: "Neighborhood‑by‑neighborhood guide to the best areas in Kyoto for first‑time visitors, with pros/cons, price ranges, and practical booking tips."
 author: "Local Guide"
 last_updated: "2026-03-05"
-hero_image: "/images/blog/gion-maiko.jpg"
+hero_image: "/images/blog/ryokan-kyoto.jpg"
 canonical: "/blog/plan/where-to-stay-kyoto"
 ---
 

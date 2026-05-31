@@ -4,7 +4,7 @@ slug: "/plan/kyoto-first-time-guide"
 description: "Clear, practical guide for first‑time visitors to Kyoto: when to visit, where to stay, how to get around, budgets, and the perfect 1–3 day itineraries."
 author: "Local Guide"
 last_updated: "2025-03-01"
-hero_image: "/images/blog/higashiyama-pagoda.jpg"
+hero_image: "/images/blog/kyoto-intro-hero.jpg"
 canonical: "/blog/plan/kyoto-first-time-guide"
 ---
 

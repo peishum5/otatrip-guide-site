@@ -4,7 +4,7 @@ description: "A realistic 2-day Kyoto itinerary that covers the highlights witho
 author: "Local Guide"
 pubDate: "2026-03-07"
 last_updated: "2026-03-07"
-hero_image: "/images/blog/fushimi-inari.jpg"
+hero_image: "/images/blog/philosophers-path.jpg"
 canonical: "/blog/itineraries/kyoto-2-days"
 category: "Itineraries"
 keywords: ["2 days in kyoto", "kyoto weekend itinerary", "kyoto 2 day itinerary", "48 hours kyoto"]

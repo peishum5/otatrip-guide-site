@@ -4,7 +4,7 @@ slug: "/plan/when-to-visit-kyoto"
 description: "Month‑by‑month guide to Kyoto's weather, festivals, crowd levels, and what to pack—plus quiet windows for first‑timers."
 author: "Local Guide"
 last_updated: "2026-03-05"
-hero_image: "/images/blog/kyoto-sakura.jpg"
+hero_image: "/images/blog/kyoto-seasons.jpg"
 canonical: "/blog/plan/when-to-visit-kyoto"
 ---
 

@@ -4,7 +4,7 @@ description: "Navigate Gion like a local: where to spot maiko, which streets to 
 author: "Local Guide"
 pubDate: "2026-03-07"
 last_updated: "2026-03-07"
-hero_image: "/images/blog/gion-maiko.jpg"
+hero_image: "/images/blog/gion-street.jpg"
 canonical: "/blog/neighborhoods/gion"
 category: "Neighborhoods"
 keywords: ["gion kyoto", "gion district", "geisha kyoto", "gion walk", "hanamachi kyoto"]

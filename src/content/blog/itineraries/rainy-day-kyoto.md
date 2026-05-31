@@ -4,7 +4,7 @@ description: "Kyoto in the rain doesn't have to be a disappointment. Here are th
 author: "Local Guide"
 pubDate: "2026-03-07"
 last_updated: "2026-03-07"
-hero_image: "/images/blog/kyoto-sakura.jpg"
+hero_image: "/images/blog/kyoto-rain.jpg"
 canonical: "/blog/itineraries/rainy-day-kyoto"
 category: "Itineraries"
 keywords: ["rainy day kyoto", "kyoto indoors", "kyoto rain tips", "kyoto bad weather", "what to do kyoto rain"]

@@ -4,7 +4,7 @@ description: "Do you tip in Japan, and is it rude? The honest answer: it is not 
 author: "Local Guide"
 pubDate: "2026-03-17"
 last_updated: "2026-03-17"
-hero_image: "/images/blog/kyoto-coin.jpg"
+hero_image: "/images/blog/japan-tipping.jpg"
 canonical: "/blog/culture/tipping-in-japan"
 category: "Culture"
 keywords: ["tipping in japan", "is tipping rude in japan", "do you tip in japan", "japan tipping etiquette", "kyoto tour guide tip"]

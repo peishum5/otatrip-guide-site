@@ -4,7 +4,7 @@ description: "Everything you need for Gion Matsuri: the full July event calendar
 author: "Local Guide"
 pubDate: "2026-03-07"
 last_updated: "2026-03-07"
-hero_image: "/images/blog/gion-maiko.jpg"
+hero_image: "/images/blog/gion-matsuri.jpg"
 canonical: "/blog/seasonal/gion-matsuri"
 category: "Seasonal"
 keywords: ["gion matsuri", "gion festival kyoto", "gion matsuri dates", "kyoto summer festival", "yamaboko procession"]

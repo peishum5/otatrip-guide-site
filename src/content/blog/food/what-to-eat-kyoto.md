@@ -1,6 +1,6 @@
 ---
 title: "What to Eat in Kyoto: 15 Must-Try Dishes"
-hero_image: "/images/blog/nishiki-market.jpg"
+hero_image: "/images/blog/kyoto-food-hero.jpg"
 description: "The essential Kyoto food guide: 15 dishes and drinks to try, where to find the best versions, and what makes Kyoto's cuisine distinct from the rest of Japan."
 author: "Local Guide"
 pubDate: "2026-03-07"
