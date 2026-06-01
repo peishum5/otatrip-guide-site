@@ -1,43 +1,67 @@
-# Astro Starter Kit: Minimal
+# OTA Trip Guide Site
+
+## Commands
+
+All commands run from this directory.
+
+| Command | Action |
+| :--- | :--- |
+| `npm run dev` | Start the Astro dev server |
+| `npm run build` | Build the production site |
+| `npm run preview` | Preview the built site |
+| `npm run ga4:daily` | Analyze the last 14 complete days |
+| `npm run ga4:weekly` | Analyze the last 8 complete weeks |
+| `npm run ga4:monthly` | Analyze the last 6 complete months |
+| `npm run ga4:overview` | Generate day, week, and month reports together |
+
+## GA4 Analysis CLI
+
+The GA4 CLI is implemented in `scripts/ga4/analyze.mjs`. It talks to the Google Analytics Data API directly, so no extra npm package is required.
+
+### 1. Prepare credentials
+
+1. Create a Google service account.
+2. Add that service account as at least `Viewer` on the GA4 property.
+3. Save the JSON key locally, for example at `./secrets/ga4-service-account.json`.
+
+### 2. Add local config
+
+Copy `ga4.config.example.json` to `ga4.config.json` and set:
+
+- `propertyId`
+- `timezone`
+- `conversionEvents`
+- `focusPages`
+- threshold values if the defaults are too sensitive
+
+Copy `.env.example` to `.env` and set:
+
+- `GA4_PROPERTY_ID`
+- `GA4_SERVICE_ACCOUNT_KEY_PATH`
+
+### 3. Validate locally
 
 ```sh
-npm create astro@latest -- --template minimal
+node scripts/ga4/analyze.mjs --dry-run --granularity day,week,month
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+That prints the exact current and previous windows the CLI will compare.
 
-## 🚀 Project Structure
+### 4. Generate a report
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```sh
+npm run ga4:overview
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Output files are written to `.ga4-reports/` as both JSON and Markdown.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+### Useful flags
 
-Any static assets, like images, can be placed in the `public/` directory.
+```sh
+node scripts/ga4/analyze.mjs --stdout
+node scripts/ga4/analyze.mjs --granularity week --periods 12
+node scripts/ga4/analyze.mjs --conversion-events generate_lead,purchase
+node scripts/ga4/analyze.mjs --fail-on-alert
+```
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+`--fail-on-alert` exits with code `2` when a high-severity alert is detected, which is useful in cron or GitHub Actions.

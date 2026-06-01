@@ -3,5 +3,6 @@ dist/
 .vercel/
 .astro/
 .env
+.ga4-reports/
 .DS_Store
 .vercel

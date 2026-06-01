@@ -6,7 +6,12 @@
     "dev": "astro dev",
     "build": "astro build --force",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "ga4:analyze": "node scripts/ga4/analyze.mjs",
+    "ga4:daily": "node scripts/ga4/analyze.mjs --granularity day --periods 14",
+    "ga4:weekly": "node scripts/ga4/analyze.mjs --granularity week --periods 8",
+    "ga4:monthly": "node scripts/ga4/analyze.mjs --granularity month --periods 6",
+    "ga4:overview": "node scripts/ga4/analyze.mjs --granularity day,week,month"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",

@@ -1,0 +1,33 @@
+{
+  "siteName": "OTA Trip Guide",
+  "propertyId": "123456789",
+  "timezone": "Asia/Tokyo",
+  "conversionEvents": [
+    "generate_lead",
+    "purchase"
+  ],
+  "defaultPeriods": {
+    "day": 14,
+    "week": 8,
+    "month": 6
+  },
+  "reportLimits": {
+    "channels": 8,
+    "landingPages": 12,
+    "devices": 4
+  },
+  "focusPages": [
+    "/",
+    "/contact",
+    "/tours/gion-sake-walk"
+  ],
+  "thresholds": {
+    "sessionsDropRatio": 0.2,
+    "conversionRateDropRatio": 0.15,
+    "engagementRateDropPoints": 0.08,
+    "mobileVsDesktopRateRatio": 0.7,
+    "minChannelSessionShare": 0.1,
+    "minLandingPageSessions": 30,
+    "landingPageRateGapRatio": 0.3
+  }
+}
