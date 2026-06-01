@@ -11,6 +11,11 @@ interface Props {
 }
 
 const { items, title = 'FAST FACTS' } = Astro.props;
+
+const gridCols = items.length === 2 ? 'grid-cols-2'
+  : items.length === 4               ? 'grid-cols-2 sm:grid-cols-4'
+  : items.length % 3 === 0          ? 'grid-cols-2 md:grid-cols-3'
+  :                                    'grid-cols-2 md:grid-cols-3';
 ---
 
 <div class="my-8">
@@ -21,7 +26,7 @@ const { items, title = 'FAST FACTS' } = Astro.props;
   </div>
 
   <!-- Grid -->
-  <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+  <div class={`grid ${gridCols} gap-3`}>
     {items.map(item => (
       <div class="fact-card border-t-2 border-nes-amber p-3">
         <div class="font-pixel text-gray-600 mb-1" style="font-size: 0.38rem; letter-spacing: 0.08em; text-transform: uppercase;">
