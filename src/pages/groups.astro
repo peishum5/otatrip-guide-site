@@ -10,8 +10,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <!-- Header -->
   <section class="scanlines bg-nes-black py-16 text-center">
     <div class="relative z-10 max-w-3xl mx-auto px-4">
-      <p class="font-pixel text-[0.9rem] text-nes-amber mb-4 rpg-prefix">PARTY MODE</p>
-      <h1 class="font-pixel text-nes-white mb-4" style="font-size: clamp(1rem, 4vw, 2rem);">GROUP QUESTS</h1>
+      <p class="kicker text-nes-amber mb-4 rpg-prefix">PARTY MODE</p>
+      <h1 class="section-title mb-4">Group quests</h1>
       <p class="font-sans text-gray-400 text-sm max-w-xl mx-auto">
         Bringing a group to Kyoto? We're happy to figure something out together.
       </p>
@@ -23,7 +23,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <!-- What we do -->
     <section class="mb-12">
       <div class="dialogue-box">
-        <p class="font-pixel text-[0.9rem] text-nes-cyan mb-4">// ABOUT</p>
+        <p class="kicker text-nes-cyan mb-4">ABOUT</p>
         <p class="font-sans text-gray-300 text-sm leading-relaxed mb-4">
           We're not a travel agency — we're local guides who love showing people around Kyoto.
           Our home turf is the <span class="text-nes-amber font-medium">Gion, Higashiyama, and Kiyomizu</span> area,
@@ -39,7 +39,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <!-- What's flexible -->
     <section class="mb-12">
       <div class="flex items-center gap-4 mb-6">
-        <h2 class="font-pixel text-[0.9rem] text-nes-amber">WHAT WE CAN WORK WITH</h2>
+        <h2 class="kicker text-nes-amber">WHAT WE CAN WORK WITH</h2>
         <div class="flex-1 border-t border-gray-800"></div>
       </div>
       <div class="grid sm:grid-cols-2 gap-4">
@@ -52,7 +52,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <div class="dialogue-box flex gap-4 items-start">
             <span class="text-2xl shrink-0">{item.icon}</span>
             <div>
-              <p class="font-pixel text-[0.9rem] text-nes-white mb-1">{item.title.toUpperCase()}</p>
+              <p class="card-title mb-1">{item.title}</p>
               <p class="font-sans text-xs text-gray-400 leading-relaxed">{item.desc}</p>
             </div>
           </div>
@@ -63,7 +63,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <!-- How it works -->
     <section class="mb-12">
       <div class="flex items-center gap-4 mb-6">
-        <h2 class="font-pixel text-[0.9rem] text-nes-amber">HOW IT WORKS</h2>
+        <h2 class="kicker text-nes-amber">HOW IT WORKS</h2>
         <div class="flex-1 border-t border-gray-800"></div>
       </div>
       <div class="space-y-4">
@@ -85,7 +85,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <!-- Email CTA -->
     <section id="contact-form" class="mb-12">
       <div class="dialogue-box">
-        <p class="font-pixel text-[0.9rem] text-nes-cyan mb-4">// SEND US AN EMAIL</p>
+        <p class="kicker text-nes-cyan mb-4">SEND US AN EMAIL</p>
         <p class="font-sans text-sm text-gray-300 leading-relaxed mb-6">
           Drop us an email with your <span class="text-nes-amber">group size</span>,
           <span class="text-nes-amber">preferred dates</span>, and
@@ -98,13 +98,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         >
           EMAIL US NOW
         </a>
-        <p class="font-sans text-xs text-gray-600 text-center mt-4">kyoto.otatrip.guide@gmail.com</p>
+        <p class="font-sans text-xs text-gray-400 text-center mt-4">kyoto.otatrip.guide@gmail.com</p>
       </div>
     </section>
 
     <!-- Back link -->
     <div class="text-center">
-      <a href="/" class="font-pixel text-[0.9rem] text-nes-amber hover:text-nes-cyan transition-colors">
+      <a href="/" class="font-sans text-xs uppercase tracking-wider text-nes-amber hover:text-nes-cyan transition-colors">
         &lt; BACK TO QUEST SELECT
       </a>
     </div>

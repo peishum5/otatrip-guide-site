@@ -131,7 +131,7 @@ if (faq.length > 0) {
   <article class="max-w-4xl mx-auto px-4 py-10">
 
     <!-- Breadcrumb -->
-    <nav class="font-pixel text-gray-700 mb-8 flex items-center gap-2 flex-wrap" style="font-size: 0.45rem; letter-spacing: 0.06em;" aria-label="Breadcrumb">
+    <nav class="font-sans text-xs uppercase tracking-wider text-gray-400 mb-8 flex items-center gap-2 flex-wrap" aria-label="Breadcrumb">
       <a href="/" class="hover:text-nes-amber transition-colors">HOME</a>
       <span class="text-gray-800">/</span>
       <a href="/blog" class="hover:text-nes-amber transition-colors">GUIDES</a>
@@ -141,7 +141,7 @@ if (faq.length > 0) {
           {categoryHref ? (
             <a href={categoryHref} class="hover:text-nes-amber transition-colors">{category.toUpperCase()}</a>
           ) : (
-            <span class="text-gray-700">{category.toUpperCase()}</span>
+            <span class="text-gray-400">{category.toUpperCase()}</span>
           )}
         </>
       )}
@@ -149,9 +149,9 @@ if (faq.length > 0) {
 
     <!-- Title + meta -->
     <header class="mb-10 pb-8 border-b border-gray-800/60">
-      <p class="font-pixel text-nes-cyan mb-4" style="font-size: 0.5rem; letter-spacing: 0.1em;">{(category || 'Kyoto Guide').toUpperCase()}</p>
-      <h1 class="font-pixel text-nes-white leading-relaxed mb-6" style="font-size: clamp(0.75rem, 2.5vw, 1rem);">{title}</h1>
-      <div class="flex flex-wrap items-center gap-4 text-gray-600 font-pixel" style="font-size: 0.45rem; letter-spacing: 0.06em;">
+      <p class="kicker text-nes-cyan mb-4">{(category || 'Kyoto Guide').toUpperCase()}</p>
+      <h1 class="font-sans font-bold text-nes-white leading-tight mb-6" style="font-size: clamp(1.75rem, 4vw, 2.75rem);">{title}</h1>
+      <div class="flex flex-wrap items-center gap-4 text-gray-400 font-sans text-xs uppercase tracking-wider">
         <span>BY {author.toUpperCase()}</span>
         {displayDate && displayDate !== '' && (
           <span class="text-gray-700">·</span>
@@ -173,13 +173,13 @@ if (faq.length > 0) {
     {faq.length > 0 && (
       <section class="mt-12 border-t border-gray-800/60 pt-10">
         <div class="flex items-center gap-4 mb-6">
-          <h2 class="font-pixel text-nes-amber" style="font-size: 0.6rem;">FAQ</h2>
+          <h2 class="kicker text-nes-amber">FAQ</h2>
           <div class="flex-1 pixel-divider"></div>
         </div>
         <div class="space-y-2">
           {faq.map((item) => (
             <details class="border border-gray-800 blog-card group">
-              <summary class="flex items-center justify-between px-5 py-4 cursor-pointer font-pixel text-nes-white hover:text-nes-amber transition-colors" style="font-size: 0.55rem; line-height: 1.6;">
+              <summary class="flex items-center justify-between px-5 py-4 cursor-pointer font-sans text-sm text-nes-white hover:text-nes-amber transition-colors leading-relaxed">
                 {item.q}
                 <span class="ml-4 text-gray-700 shrink-0 group-open:rotate-180 transition-transform">▼</span>
               </summary>
@@ -195,7 +195,7 @@ if (faq.length > 0) {
     {relatedPosts.length > 0 && (
       <section class="mt-12 border-t border-gray-800/60 pt-10">
         <div class="flex items-center gap-4 mb-6">
-          <h2 class="font-pixel text-nes-cyan" style="font-size: 0.6rem;">RELATED GUIDES</h2>
+          <h2 class="kicker text-nes-cyan">RELATED GUIDES</h2>
           <div class="flex-1 pixel-divider"></div>
         </div>
         <div class="grid md:grid-cols-3 gap-4">
@@ -211,8 +211,8 @@ if (faq.length > 0) {
                   <div class="bg-gray-900" style="height: 80px;"></div>
                 )}
                 <div class="p-4">
-                  <h3 class="font-pixel text-nes-white group-hover:text-nes-amber transition-colors leading-relaxed mb-2" style="font-size: 0.5rem;">{item.title}</h3>
-                  <p class="font-sans text-xs text-gray-600 leading-relaxed line-clamp-2">{item.description}</p>
+                  <h3 class="card-title group-hover:text-nes-amber transition-colors mb-2 line-clamp-2">{item.title}</h3>
+                  <p class="font-sans text-xs text-gray-400 leading-relaxed line-clamp-2">{item.description}</p>
                 </div>
               </a>
             </article>
@@ -227,7 +227,7 @@ if (faq.length > 0) {
         <span class="font-pixel text-nes-amber" style="font-size: 0.5rem;">OG</span>
       </div>
       <div>
-        <div class="font-pixel text-nes-white mb-2" style="font-size: 0.55rem;">{author.toUpperCase()}</div>
+        <div class="font-sans font-semibold text-sm uppercase tracking-wider text-nes-white mb-2">{author.toUpperCase()}</div>
         <p class="font-sans text-sm text-gray-500 leading-relaxed">
           Local guide based in Gion, Kyoto. Leading intimate walking tours and sake experiences since 2018.
           Passionate about connecting travelers with authentic Kyoto culture.

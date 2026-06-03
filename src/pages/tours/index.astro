@@ -78,8 +78,8 @@ const tours = [
   <!-- Header -->
   <section class="scanlines bg-nes-black py-16 text-center">
     <div class="relative z-10 max-w-3xl mx-auto px-4">
-      <p class="font-pixel text-[0.9rem] text-nes-amber mb-4 rpg-prefix">AVAILABLE QUESTS</p>
-      <h1 class="font-pixel text-nes-white mb-4" style="font-size: clamp(1rem, 4vw, 2rem);">SELECT A TOUR</h1>
+      <p class="kicker text-nes-amber mb-4 rpg-prefix">AVAILABLE QUESTS</p>
+      <h1 class="section-title mb-4">Select a tour</h1>
       <p class="font-sans text-gray-400 text-sm">Small-group, English-language experiences led by local Kyoto experts.</p>
     </div>
   </section>
@@ -100,38 +100,38 @@ const tours = [
               <div class="w-16 h-16 bg-gray-900 border-2 border-nes-amber flex items-center justify-center text-4xl">
                 {tour.icon}
               </div>
-              <span class="font-sans text-xs text-gray-600">QUEST {String(i + 1).padStart(2, '0')}</span>
+              <span class="font-sans text-xs text-gray-500">QUEST {String(i + 1).padStart(2, '0')}</span>
             </div>
 
             <!-- Info -->
             <div class="flex-1">
               <div class="flex flex-wrap items-center gap-3 mb-2">
-                <span class="font-pixel text-[0.9rem] text-nes-cyan">{tour.time.toUpperCase()}</span>
+                <span class="kicker text-nes-cyan">{tour.time.toUpperCase()}</span>
                 {tour.rating && (
-                  <span class="font-pixel text-[0.9rem] text-nes-amber">★ {tour.rating} ({tour.reviews} reviews)</span>
+                  <span class="kicker text-nes-amber">★ {tour.rating} ({tour.reviews} reviews)</span>
                 )}
               </div>
-              <h2 class="font-pixel text-[1rem] text-nes-white leading-relaxed mb-2">{tour.name}</h2>
+              <h2 class="card-title text-lg mb-2">{tour.name}</h2>
               <p class="font-sans text-sm text-gray-300 leading-relaxed mb-4">{tour.description}</p>
 
               <ul class="space-y-1 mb-4">
                 {tour.highlights.map(h => (
-                  <li class="font-pixel text-[0.9rem] text-gray-400 flex items-start gap-2">
+                  <li class="font-sans text-sm text-gray-400 flex items-start gap-2">
                     <span class="text-nes-green shrink-0">[OK]</span>{h}
                   </li>
                 ))}
               </ul>
 
-              <div class="flex flex-wrap gap-4 font-pixel text-[0.9rem] text-gray-500 mb-3">
+              <div class="flex flex-wrap gap-4 font-sans text-sm text-gray-400 mb-3">
                 <span>⏱ {tour.duration}</span>
                 <span>👥 {tour.groupSize}</span>
                 <span>🌐 EN</span>
-                {tour.price && <span class="text-nes-amber">{tour.price}</span>}
+                {tour.price && <span class="text-nes-amber font-semibold">{tour.price}</span>}
               </div>
 
               <div class="flex flex-wrap gap-2">
                 {tour.tags.map(tag => (
-                  <span class="font-pixel text-[0.9rem] border border-gray-800 text-gray-600 px-2 py-0.5">{tag.toUpperCase()}</span>
+                  <span class="font-sans text-xs uppercase tracking-wider border border-gray-800 text-gray-400 px-2 py-0.5">{tag.toUpperCase()}</span>
                 ))}
               </div>
             </div>
@@ -149,16 +149,16 @@ const tours = [
 
     <!-- Mini game CTA -->
     <div class="border border-gray-800 text-center mt-12 py-8 px-6">
-      <p class="font-pixel text-[0.9rem] text-nes-green mb-3">// MINI GAME</p>
-      <h3 class="font-pixel text-[0.95rem] text-nes-white leading-relaxed mb-3">WANNA FEEL THE VIBE FIRST?</h3>
+      <p class="kicker text-nes-green mb-3">// MINI GAME</p>
+      <h3 class="card-title text-lg mb-3">Wanna feel the vibe first?</h3>
       <p class="font-sans text-sm text-gray-400 mb-5">Dodge tourists. Collect sake cups. Survive the night.</p>
       <a href="/game" class="nes-btn nes-btn-outline">🎮 PLAY GION NIGHT RUN</a>
     </div>
 
     <!-- Group CTA -->
     <div class="dialogue-box text-center mt-8">
-      <p class="font-pixel text-[0.9rem] text-nes-cyan mb-3">// FOR AGENCIES & GROUPS</p>
-      <h3 class="font-pixel text-[1rem] text-nes-white leading-relaxed mb-4">NEED A CUSTOM TOUR?</h3>
+      <p class="kicker text-nes-cyan mb-3">// FOR AGENCIES & GROUPS</p>
+      <h3 class="card-title text-lg mb-4">Need a custom tour?</h3>
       <p class="font-sans text-sm text-gray-300 mb-6 max-w-md mx-auto">Private bookings, custom routes, and group pricing available for travel agencies and corporate groups.</p>
       <a href="/groups" class="nes-btn nes-btn-gold">VIEW GROUP OPTIONS</a>
     </div>

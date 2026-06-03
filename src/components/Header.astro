@@ -15,18 +15,17 @@ const currentPath = Astro.url.pathname;
 
   <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
     <a href="/" class="flex items-center gap-3 group">
-      <div class="flex flex-col gap-0.5">
-        <span class="font-pixel leading-tight text-nes-amber pixel-flicker" style="font-size: 0.9rem;">OTAtrip GUIDE</span>
-        <span class="font-pixel leading-tight text-gray-600" style="font-size: 0.55rem; letter-spacing: 0.1em;">KYOTO LOCAL EXPERTS</span>
+      <div class="flex flex-col gap-1">
+        <span class="font-pixel leading-tight text-nes-amber" style="font-size: 0.9rem;">OTAtrip GUIDE</span>
+        <span class="font-sans leading-tight text-gray-400 uppercase" style="font-size: 0.65rem; letter-spacing: 0.18em;">Kyoto Local Experts</span>
       </div>
     </a>
 
     <!-- Mobile menu button -->
     <button id="mobile-menu-btn"
-      class="md:hidden font-pixel text-nes-amber border border-gray-700 px-3 py-2 hover:border-nes-amber hover:bg-nes-amber/10 transition-all"
-      style="font-size: 0.5rem;"
+      class="md:hidden font-sans uppercase tracking-widest text-xs text-nes-amber border border-gray-700 px-3 py-2 hover:border-nes-amber hover:bg-nes-amber/10 transition-all"
       aria-label="Toggle menu">
-      [MENU]
+      Menu
     </button>
 
     <!-- Desktop nav -->
@@ -34,12 +33,11 @@ const currentPath = Astro.url.pathname;
       {navLinks.map(link => (
         <a
           href={link.href}
-          class={`relative font-pixel px-4 py-2 transition-colors hover:text-nes-amber ${
+          class={`relative font-sans text-sm uppercase tracking-wider px-4 py-2 transition-colors hover:text-nes-amber ${
             currentPath.startsWith(link.href) && link.href !== '/'
               ? 'text-nes-amber'
-              : 'text-gray-500'
+              : 'text-gray-400'
           }`}
-          style="font-size: 0.5rem; letter-spacing: 0.08em;"
         >
           {link.label}
           {currentPath.startsWith(link.href) && link.href !== '/' && (
@@ -48,7 +46,7 @@ const currentPath = Astro.url.pathname;
         </a>
       ))}
       <a href="/tours" class="ml-3 font-pixel bg-nes-amber text-nes-black border border-nes-amber hover:bg-transparent hover:text-nes-amber transition-all"
-        style="font-size: 0.45rem; padding: 0.55rem 1rem; letter-spacing: 0.06em; box-shadow: 3px 3px 0 rgba(255,176,0,0.3);">
+        style="font-size: 0.55rem; padding: 0.6rem 1rem; letter-spacing: 0.06em; box-shadow: 3px 3px 0 rgba(255,176,0,0.3);">
         BOOK TOUR
       </a>
     </nav>
@@ -59,18 +57,17 @@ const currentPath = Astro.url.pathname;
     {navLinks.map(link => (
       <a
         href={link.href}
-        class={`flex items-center justify-between py-3 font-pixel border-b border-gray-900 transition-colors hover:text-nes-amber ${
-          currentPath.startsWith(link.href) && link.href !== '/' ? 'text-nes-amber' : 'text-gray-500'
+        class={`flex items-center justify-between py-3 font-sans text-sm uppercase tracking-wider border-b border-gray-800 transition-colors hover:text-nes-amber ${
+          currentPath.startsWith(link.href) && link.href !== '/' ? 'text-nes-amber' : 'text-gray-300'
         }`}
-        style="font-size: 0.5rem;"
       >
         {link.label}
-        <span class="text-gray-700">&rsaquo;</span>
+        <span class="text-gray-600">&rsaquo;</span>
       </a>
     ))}
     <a href="/tours"
-      class="block mt-3 font-pixel text-center bg-nes-amber text-nes-black py-3 hover:bg-transparent hover:text-nes-amber border border-nes-amber transition-all"
-      style="font-size: 0.5rem;">
+      class="block mt-4 font-pixel text-center bg-nes-amber text-nes-black py-3 hover:bg-transparent hover:text-nes-amber border border-nes-amber transition-all"
+      style="font-size: 0.55rem;">
       BOOK A TOUR
     </a>
   </nav>

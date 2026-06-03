@@ -9,28 +9,28 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
       <!-- Brand -->
       <div class="md:col-span-2">
-        <h3 class="font-pixel text-nes-amber pixel-flicker mb-3" style="font-size: 0.85rem;">OTAtrip GUIDE</h3>
-        <p class="font-pixel text-gray-700 mb-4" style="font-size: 0.45rem; letter-spacing: 0.08em;">KYOTO LOCAL EXPERTS</p>
-        <p class="font-sans text-sm text-gray-500 leading-relaxed max-w-xs">
+        <h3 class="font-pixel text-nes-amber mb-3" style="font-size: 0.85rem;">OTAtrip GUIDE</h3>
+        <p class="font-sans text-gray-400 uppercase mb-4" style="font-size: 0.7rem; letter-spacing: 0.18em;">Kyoto Local Experts</p>
+        <p class="font-sans text-sm text-gray-400 leading-relaxed max-w-xs">
           Local experts guiding you through Kyoto's best sake bars, hidden alleys, and cultural gems.
           Based in Gion since 2024.
         </p>
         <div class="flex items-center gap-4 mt-5">
           <a href="https://x.com/otatrip_guide" target="_blank" rel="noopener"
-            class="font-pixel text-gray-600 hover:text-nes-amber transition-colors" style="font-size: 0.45rem;">
-            X / TWITTER
+            class="font-sans text-xs uppercase tracking-wider text-gray-400 hover:text-nes-amber transition-colors">
+            X / Twitter
           </a>
-          <span class="text-gray-800">·</span>
+          <span class="text-gray-600">·</span>
           <a href="https://instagram.com/otatrip_guide" target="_blank" rel="noopener"
-            class="font-pixel text-gray-600 hover:text-nes-amber transition-colors" style="font-size: 0.45rem;">
-            INSTAGRAM
+            class="font-sans text-xs uppercase tracking-wider text-gray-400 hover:text-nes-amber transition-colors">
+            Instagram
           </a>
         </div>
       </div>
 
       <!-- Links -->
       <div>
-        <h4 class="font-pixel text-nes-cyan mb-5" style="font-size: 0.5rem; letter-spacing: 0.1em;">// EXPLORE</h4>
+        <h4 class="kicker text-nes-cyan mb-5">// EXPLORE</h4>
         <ul class="space-y-3">
           {[
             { href: '/tours', label: 'All Tours' },
@@ -40,8 +40,8 @@
             { href: '/contact', label: 'Contact Us' },
           ].map(link => (
             <li>
-              <a href={link.href} class="font-pixel text-gray-600 hover:text-nes-amber transition-colors flex items-center gap-2" style="font-size: 0.45rem;">
-                <span class="text-nes-amber opacity-40">&rsaquo;</span>
+              <a href={link.href} class="font-sans text-sm text-gray-400 hover:text-nes-amber transition-colors flex items-center gap-2">
+                <span class="text-nes-amber opacity-50">&rsaquo;</span>
                 {link.label}
               </a>
             </li>
@@ -51,19 +51,19 @@
 
       <!-- Contact -->
       <div>
-        <h4 class="font-pixel text-nes-cyan mb-5" style="font-size: 0.5rem; letter-spacing: 0.1em;">// CONTACT</h4>
+        <h4 class="kicker text-nes-cyan mb-5">// CONTACT</h4>
         <ul class="space-y-3">
-          <li class="font-pixel text-gray-700 flex items-center gap-2" style="font-size: 0.45rem;">
-            <span class="text-nes-amber opacity-40">&rsaquo;</span> Based in Kyoto, Japan
+          <li class="font-sans text-sm text-gray-400 flex items-center gap-2">
+            <span class="text-nes-amber opacity-50">&rsaquo;</span> Based in Kyoto, Japan
           </li>
           <li>
             <a href="mailto:kyoto.otatrip.guide@gmail.com"
-              class="font-pixel text-gray-600 hover:text-nes-amber transition-colors flex items-center gap-2" style="font-size: 0.45rem;">
-              <span class="text-nes-amber opacity-40">&rsaquo;</span> kyoto.otatrip.guide@gmail.com
+              class="font-sans text-sm text-gray-400 hover:text-nes-amber transition-colors flex items-center gap-2 break-all">
+              <span class="text-nes-amber opacity-50">&rsaquo;</span> kyoto.otatrip.guide@gmail.com
             </a>
           </li>
           <li class="pt-2">
-            <a href="/groups" class="font-pixel text-nes-amber hover:text-nes-white transition-colors flex items-center gap-2" style="font-size: 0.45rem;">
+            <a href="/groups" class="font-sans text-sm text-nes-amber hover:text-nes-white transition-colors flex items-center gap-2">
               <span>&rsaquo;</span> Group inquiries &amp; bookings
             </a>
           </li>
@@ -74,15 +74,15 @@
     <div class="pixel-divider mb-6 opacity-20"></div>
 
     <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-      <p class="font-pixel text-gray-700" style="font-size: 0.4rem;">&copy; {new Date().getFullYear()} OTAtrip Guide. All rights reserved.</p>
-      <div class="flex items-center gap-4 font-pixel text-gray-700" style="font-size: 0.4rem;">
-        <a href="/tours" class="hover:text-nes-amber transition-colors">TOURS</a>
-        <span class="text-gray-800">·</span>
-        <a href="/blog" class="hover:text-nes-amber transition-colors">GUIDES</a>
-        <span class="text-gray-800">·</span>
-        <a href="/guide" class="hover:text-nes-amber transition-colors">GUIDE</a>
-        <span class="text-gray-800">·</span>
-        <a href="/contact" class="hover:text-nes-amber transition-colors">CONTACT</a>
+      <p class="font-sans text-xs text-gray-500">&copy; {new Date().getFullYear()} OTAtrip Guide. All rights reserved.</p>
+      <div class="flex items-center gap-4 font-sans text-xs uppercase tracking-wider text-gray-400">
+        <a href="/tours" class="hover:text-nes-amber transition-colors">Tours</a>
+        <span class="text-gray-600">·</span>
+        <a href="/blog" class="hover:text-nes-amber transition-colors">Guides</a>
+        <span class="text-gray-600">·</span>
+        <a href="/guide" class="hover:text-nes-amber transition-colors">Guide</a>
+        <span class="text-gray-600">·</span>
+        <a href="/contact" class="hover:text-nes-amber transition-colors">Contact</a>
       </div>
     </div>
   </div>

@@ -26,6 +26,47 @@
     scroll-behavior: smooth;
   }
 
+  /* === Focus visibility (keyboard + a11y) === */
+  :focus-visible {
+    outline: 2px solid var(--color-nes-cyan);
+    outline-offset: 2px;
+  }
+
+  /* === Type scale helpers ===
+     Pixel font is reserved for signature moments only:
+     the logo, hero H1, short kicker/eyebrow labels, buttons,
+     the mini-game HUD and stat numbers. Everything functional
+     (headings, body, meta, nav) uses Inter via .section-title /
+     font-sans for legibility and trust. */
+
+  /* Short ALL-CAPS eyebrow label above a section title. Stays pixel
+     because it is short and decorative — but legible-sized. */
+  .kicker {
+    font-family: var(--font-pixel);
+    font-size: 0.65rem;
+    line-height: 1.7;
+    letter-spacing: 0.1em;
+  }
+
+  /* Readable section / page heading. Inter, not pixel. */
+  .section-title {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--color-nes-white);
+  }
+
+  /* Readable card / sub heading. */
+  .card-title {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1.0625rem;
+    line-height: 1.4;
+    color: var(--color-nes-white);
+  }
+
   /* === NES Animations === */
   @keyframes blink {
     0%, 49% { opacity: 1; }

@@ -15,19 +15,19 @@ const { time, location, duration, transport, cost } = Astro.props;
   <div class="timeline-node absolute" style="left: -2.65rem; top: 0.25rem; width: 12px; height: 12px; background: var(--color-nes-amber); box-shadow: 0 0 10px color-mix(in srgb, var(--color-nes-amber) 70%, transparent);"></div>
 
   <!-- Time badge -->
-  <div class="inline-block font-pixel text-nes-black bg-nes-amber mb-2 px-2 py-1" style="font-size: 0.42rem; letter-spacing: 0.05em; box-shadow: 2px 2px 0 #7a5500;">
+  <div class="inline-block font-sans text-xs font-bold uppercase tracking-wider text-nes-black bg-nes-amber mb-2 px-2 py-1" style="box-shadow: 2px 2px 0 #7a5500;">
     {time}
   </div>
 
   <!-- Location -->
-  <div class="font-pixel text-nes-white mb-2 leading-relaxed" style="font-size: 0.55rem;">{location}</div>
+  <div class="card-title mb-2">{location}</div>
 
   <!-- Meta -->
   {(duration || transport || cost) && (
     <div class="flex flex-wrap gap-x-4 gap-y-1 mb-3">
-      {duration  && <span class="font-pixel text-gray-500 rpg-prefix" style="font-size: 0.4rem;">{duration}</span>}
-      {transport && <span class="font-pixel text-gray-500 rpg-prefix" style="font-size: 0.4rem;">{transport}</span>}
-      {cost      && <span class="font-pixel text-nes-green rpg-prefix" style="font-size: 0.4rem;">{cost}</span>}
+      {duration  && <span class="font-sans text-xs text-gray-500 rpg-prefix">{duration}</span>}
+      {transport && <span class="font-sans text-xs text-gray-500 rpg-prefix">{transport}</span>}
+      {cost      && <span class="font-sans text-xs text-nes-green rpg-prefix">{cost}</span>}
     </div>
   )}
 
