@@ -86,7 +86,7 @@ const photos = [
     />
     <div class="absolute inset-0 bg-gradient-to-t from-nes-black via-nes-black/60 to-transparent"></div>
     <div class="relative z-10 max-w-4xl mx-auto px-4 py-24 md:py-32">
-      <p class="font-pixel text-[0.9rem] text-nes-amber mb-4 rpg-prefix">WALKING TOUR · GION DISTRICT</p>
+      <p class="kicker text-nes-amber mb-4 rpg-prefix">WALKING TOUR · GION DISTRICT</p>
       <h1 class="font-sans text-3xl md:text-4xl font-bold text-nes-white leading-tight mb-4">
         Kyoto Gion Night Walk: Sake, Hidden Gems & Geisha
       </h1>
@@ -94,7 +94,7 @@ const photos = [
         Walk the stone-paved alleys of Kyoto's most iconic neighborhood.
         Gion, Hanamikoji, Yasaka Pagoda, Nene-no-Michi — guided by someone who calls Gion home.
       </p>
-      <div class="flex flex-wrap gap-6 font-pixel text-[0.9rem] mb-8">
+      <div class="flex flex-wrap gap-6 mb-8">
         {[
           { label: 'Duration', value: '90 min' },
           { label: 'Group size', value: 'Max 10' },
@@ -103,8 +103,8 @@ const photos = [
           { label: 'Price', value: 'from ¥5,600' },
         ].map(item => (
           <div>
-            <div class="font-pixel text-[0.9rem] text-nes-amber">{item.value}</div>
-            <div class="font-pixel text-[0.9rem] text-gray-500">{item.label}</div>
+            <div class="font-sans text-base font-semibold text-nes-amber">{item.value}</div>
+            <div class="font-sans text-xs uppercase tracking-wider text-gray-400">{item.label}</div>
           </div>
         ))}
       </div>
@@ -117,13 +117,13 @@ const photos = [
     <!-- Highlights -->
     <section class="mb-12">
       <div class="flex items-center gap-4 mb-6">
-        <h2 class="font-pixel text-[0.9rem] text-nes-amber">WHAT'S INCLUDED</h2>
+        <h2 class="kicker text-nes-amber">WHAT'S INCLUDED</h2>
         <div class="flex-1 border-t border-gray-800"></div>
       </div>
       <div class="grid md:grid-cols-2 gap-3">
         {highlights.map(item => (
           <div class="flex items-start gap-3 bg-gray-900 border border-gray-800 px-4 py-3">
-            <span class="font-pixel text-[0.9rem] text-nes-green shrink-0">[OK]</span>
+            <span class="font-sans text-sm font-semibold text-nes-green shrink-0">[OK]</span>
             <span class="font-sans text-gray-300 text-sm leading-relaxed">{item}</span>
           </div>
         ))}
@@ -133,7 +133,7 @@ const photos = [
     <!-- Photo gallery -->
     <section class="mb-12">
       <div class="flex items-center gap-4 mb-6">
-        <h2 class="font-pixel text-[0.9rem] text-nes-amber">TOUR PHOTOS</h2>
+        <h2 class="kicker text-nes-amber">TOUR PHOTOS</h2>
         <div class="flex-1 border-t border-gray-800"></div>
       </div>
       <div class="gallery-grid grid grid-cols-2 md:grid-cols-3 gap-2">
@@ -177,13 +177,13 @@ const photos = [
     <!-- Timeline -->
     <section class="mb-12">
       <div class="flex items-center gap-4 mb-6">
-        <h2 class="font-pixel text-[0.9rem] text-nes-amber">TOUR TIMELINE</h2>
+        <h2 class="kicker text-nes-amber">TOUR TIMELINE</h2>
         <div class="flex-1 border-t border-gray-800"></div>
       </div>
       <div class="space-y-5">
         {timeline.map(item => (
           <div class="flex items-start gap-5">
-            <span class="font-pixel text-[0.9rem] text-nes-cyan shrink-0 w-12 text-right pt-1">{item.time}</span>
+            <span class="font-sans text-sm font-semibold text-nes-cyan shrink-0 w-12 text-right pt-1">{item.time}</span>
             <div class="flex-1 border-l border-gray-700 pl-5 pb-3">
               <p class="font-sans text-sm text-gray-300 leading-relaxed">{item.desc}</p>
             </div>
@@ -195,7 +195,7 @@ const photos = [
     <!-- Meeting point -->
     <section class="mb-12">
       <div class="dialogue-box">
-        <p class="font-pixel text-[0.9rem] text-nes-cyan mb-4">// MEETING POINT</p>
+        <p class="kicker text-nes-cyan mb-4">// MEETING POINT</p>
         <div class="grid md:grid-cols-2 gap-6">
           <div>
             <p class="font-sans text-nes-white font-semibold text-sm mb-1">Shijo Kiyamachi</p>
@@ -203,19 +203,19 @@ const photos = [
               On Kiyamachi Street, slightly south of Shijo — between McDonald's and the Japanese restaurant Kikunoi Roan.
               Your guide will be holding a sign that reads <span class="text-nes-white">"Otatrip Guide"</span>.
             </p>
-            <p class="font-sans text-gray-600 text-xs mb-3">
+            <p class="font-sans text-gray-400 text-xs mb-3">
               This is a group tour. Please arrive a few minutes early — late arrivals may cause the tour to start without you.
             </p>
             <a
               href="https://maps.app.goo.gl/J7SmSwzVmAfjZJs36"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 font-pixel text-[0.9rem] text-nes-cyan hover:text-nes-amber transition-colors"
+              class="inline-flex items-center gap-2 font-sans text-sm uppercase tracking-wider text-nes-cyan hover:text-nes-amber transition-colors"
             >
               ▶ OPEN IN GOOGLE MAPS
             </a>
           </div>
-          <div class="space-y-2 font-pixel text-[0.9rem]">
+          <div class="space-y-2 font-sans text-sm">
             {[
               { k: 'Start times', v: '15:30 / 17:30 / 19:30 / 21:30' },
               { k: 'Duration', v: '90 min' },
@@ -233,10 +233,10 @@ const photos = [
     <!-- Booking -->
     <section id="booking" class="mb-12">
       <div class="flex items-center gap-4 mb-6">
-        <h2 class="font-pixel text-[0.9rem] text-nes-amber">BOOK YOUR SPOT</h2>
+        <h2 class="kicker text-nes-amber">BOOK YOUR SPOT</h2>
         <div class="flex-1 border-t border-gray-800"></div>
       </div>
-      <p class="font-sans text-gray-500 text-sm mb-6">Book early to take advantage of early-bird pricing.</p>
+      <p class="font-sans text-gray-400 text-sm mb-6">Book early to take advantage of early-bird pricing.</p>
       <BookingWidget widgetPath="experience-calendar/901507" />
     </section>
 
@@ -249,15 +249,15 @@ const photos = [
     <!-- FAQ -->
     <section class="mb-12">
       <div class="flex items-center gap-4 mb-6">
-        <h2 class="font-pixel text-[0.9rem] text-nes-amber">FAQ</h2>
+        <h2 class="kicker text-nes-amber">FAQ</h2>
         <div class="flex-1 border-t border-gray-800"></div>
       </div>
       <div class="space-y-3">
         {faqs.map(faq => (
           <details class="border border-gray-800 bg-gray-900 group">
-            <summary class="flex items-center justify-between px-5 py-4 cursor-pointer font-pixel text-[0.9rem] text-nes-white hover:text-nes-amber transition-colors">
+            <summary class="flex items-center justify-between px-5 py-4 cursor-pointer font-sans text-sm font-semibold text-nes-white hover:text-nes-amber transition-colors">
               {faq.q}
-              <span class="ml-4 text-gray-600 shrink-0 group-open:rotate-180 transition-transform">▼</span>
+              <span class="ml-4 text-gray-500 shrink-0 group-open:rotate-180 transition-transform">▼</span>
             </summary>
             <div class="px-5 pb-4 font-sans text-sm text-gray-400 leading-relaxed border-t border-gray-800 pt-4">
               {faq.a}

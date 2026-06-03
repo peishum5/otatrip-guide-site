@@ -15,10 +15,10 @@ const text  = ['QUIET', 'LOW', 'MODERATE', 'BUSY', 'AVOID'][level - 1];
 <div class="crowd-meter my-3">
   <div class="flex items-center justify-between mb-1">
     <span class="font-sans text-xs text-gray-400">{label}</span>
-    <span class="font-pixel" style={`font-size: 0.5rem; color: ${color};`}>{text}</span>
+    <span class="font-sans text-xs uppercase tracking-wider font-semibold" style={`color: ${color};`}>{text}</span>
   </div>
   <div class="stat-bar-track">
     <div class="stat-bar-fill" style={`width: ${pct}%; background: ${color}; box-shadow: 0 0 6px ${color}66;`}></div>
   </div>
-  {note && <p class="font-sans text-xs text-gray-600 mt-1">{note}</p>}
+  {note && <p class="font-sans text-xs text-gray-400 mt-1">{note}</p>}
 </div>

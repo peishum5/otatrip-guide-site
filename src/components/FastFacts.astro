@@ -21,7 +21,7 @@ const gridCols = items.length === 2 ? 'grid-cols-2'
 <div class="my-8">
   <!-- Title -->
   <div class="flex items-center gap-3 mb-4">
-    <span class="font-pixel text-nes-amber text-glow-amber" style="font-size: 0.55rem; letter-spacing: 0.1em;">{title}</span>
+    <span class="kicker text-nes-amber text-glow-amber">{title}</span>
     <div class="flex-1 pixel-divider"></div>
   </div>
 
@@ -29,11 +29,11 @@ const gridCols = items.length === 2 ? 'grid-cols-2'
   <div class={`grid ${gridCols} gap-3`}>
     {items.map(item => (
       <div class="fact-card border-t-2 border-nes-amber p-3">
-        <div class="font-pixel text-gray-600 mb-1" style="font-size: 0.38rem; letter-spacing: 0.08em; text-transform: uppercase;">
+        <div class="font-sans text-xs uppercase tracking-wider text-gray-400 mb-1">
           {item.label}
         </div>
         {item.highlight ? (
-          <div class="font-pixel text-nes-amber leading-snug" style="font-size: 0.5rem;">{item.value}</div>
+          <div class="font-sans text-sm font-semibold text-nes-amber leading-snug">{item.value}</div>
         ) : (
           <div class="font-sans text-sm text-gray-200 leading-snug">{item.value}</div>
         )}

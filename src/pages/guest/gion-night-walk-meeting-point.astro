@@ -37,7 +37,7 @@ const missedSteps = [
 >
   <section class="border-b border-gray-800 bg-nes-black">
     <div class="mx-auto max-w-3xl px-4 py-14 md:py-18">
-      <p class="mb-3 font-pixel text-[0.85rem] text-nes-cyan">GUEST INFO</p>
+      <p class="kicker text-nes-cyan mb-3">GUEST INFO</p>
       <h1 class="mb-4 font-sans text-3xl font-bold leading-tight text-nes-white md:text-4xl">
         Meeting Point
       </h1>
@@ -49,7 +49,7 @@ const missedSteps = [
 
   <div class="mx-auto max-w-3xl px-4 py-10 md:py-12">
     <section class="mb-10 border border-nes-amber bg-[#111111] p-5">
-      <p class="mb-2 font-pixel text-[0.8rem] text-nes-amber">MEET HERE</p>
+      <p class="kicker text-nes-amber mb-2">MEET HERE</p>
       <p class="font-sans text-base font-semibold leading-relaxed text-nes-white">
         Outside Hankyu Kyoto-Kawaramachi Station Exit 1B, beside McDonald&apos;s
       </p>
@@ -75,7 +75,7 @@ const missedSteps = [
     </section>
 
     <section class="mb-12">
-      <p class="mb-4 font-pixel text-[0.8rem] text-nes-amber">PHOTO REFERENCE</p>
+      <p class="kicker text-nes-amber mb-4">PHOTO REFERENCE</p>
       <img
         src="/images/meeting-points/gion-night-walk-photo.jpg"
         alt="Night view outside Hankyu Kyoto-Kawaramachi Station next to McDonald's, with a red circle marking the sidewalk waiting spot beside the wall."
@@ -93,7 +93,7 @@ const missedSteps = [
     </section>
 
     <section class="mb-12">
-      <p class="mb-5 font-pixel text-[0.8rem] text-nes-amber">FOLLOW THIS ORDER</p>
+      <p class="kicker text-nes-amber mb-5">FOLLOW THIS ORDER</p>
       <div class="space-y-4">
         {flowSteps.map((step) => (
           <div class="border border-gray-800 bg-[#111111] px-5 py-5">
@@ -108,7 +108,7 @@ const missedSteps = [
     </section>
 
     <section class="mb-12 border border-gray-800 bg-[#111111] px-5 py-6">
-      <p class="mb-4 font-pixel text-[0.8rem] text-nes-red">IF YOU CAN&apos;T FIND US</p>
+      <p class="kicker text-nes-red mb-4">IF YOU CAN&apos;T FIND US</p>
       <div class="space-y-3">
         {missedSteps.map((step, index) => (
           <div class="flex items-start gap-3">
@@ -123,7 +123,7 @@ const missedSteps = [
         </p>
         <a
           href="mailto:kyoto.otatrip.guide@gmail.com?subject=Cannot%20find%20the%20meeting%20point"
-          class="mt-4 block border border-nes-amber px-4 py-4 font-pixel text-[0.8rem] text-nes-amber transition-colors hover:bg-nes-amber hover:text-nes-black"
+          class="mt-4 block border border-nes-amber px-4 py-4 font-sans text-sm text-nes-amber transition-colors hover:bg-nes-amber hover:text-nes-black"
         >
           kyoto.otatrip.guide@gmail.com
         </a>
