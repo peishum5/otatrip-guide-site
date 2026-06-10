@@ -1,0 +1,1035 @@
+---
+// GION NIGHT QUEST — a top-down mini RPG set in pixel-art Gion at night.
+// Walk the streets, talk to locals, collect the 3 travel stamps.
+// Self-contained: markup + styles + game script. Used on / and /game.
+---
+
+<div class="gq-root">
+  <div class="relative border-4 border-nes-amber bg-nes-black" style="box-shadow: 8px 8px 0 rgba(255,176,0,0.25);">
+
+    <!-- HUD -->
+    <div class="flex items-center gap-3 px-3 py-2 border-b-2 border-gray-800 flex-wrap">
+      <div class="font-pixel text-[0.7rem] shrink-0 flex items-center gap-2">
+        <span class="text-nes-cyan" style="font-size:0.55rem;">STAMPS</span>
+        <span class="gq-stamp" data-k="shrine" title="Shrine stamp">⛩️</span>
+        <span class="gq-stamp" data-k="geiko" title="Hanamikoji stamp">🏮</span>
+        <span class="gq-stamp" data-k="sake" title="Sake bar stamp">🍶</span>
+      </div>
+      <div class="flex-1"></div>
+      <div class="font-pixel shrink-0" style="font-size:0.55rem;">
+        <span class="text-nes-amber">TIME </span><span class="text-nes-white gq-time">0:00</span>
+      </div>
+      <div class="font-pixel shrink-0 text-gray-500" style="font-size:0.55rem;">
+        <span>BEST </span><span class="gq-best">--:--</span>
+      </div>
+      <button class="gq-mute font-pixel text-gray-400 hover:text-nes-amber border border-gray-700 px-2 py-1 transition-colors" style="font-size:0.55rem;" aria-label="Toggle sound">♪ ON</button>
+    </div>
+
+    <!-- Canvas + overlays -->
+    <div class="gq-wrap scanlines relative" tabindex="0" style="outline:none;">
+      <canvas class="gq-canvas" width="400" height="240" style="width:100%;display:block;image-rendering:pixelated;aspect-ratio:5/3;cursor:pointer;touch-action:none;"></canvas>
+
+      <!-- Title screen -->
+      <div class="gq-title absolute inset-0 z-40 flex flex-col items-center justify-center gap-4 bg-black/85 px-4 text-center">
+        <p class="font-pixel text-nes-cyan" style="font-size:0.5rem;letter-spacing:0.15em;">OTAtrip GUIDE PRESENTS</p>
+        <p class="font-pixel text-nes-amber text-glow-amber leading-relaxed" style="font-size:clamp(0.8rem,3vw,1.3rem);">GION NIGHT QUEST</p>
+        <p class="font-sans text-xs text-gray-400">A tiny open-world Gion. Three locals hold travel stamps — find them all.</p>
+        <div class="flex gap-5 font-pixel" style="font-size:0.8rem;">
+          <span>⛩️</span><span>🏮</span><span>🍶</span>
+        </div>
+        <button class="gq-start nes-btn nes-btn-gold mt-2">PRESS START</button>
+        <p class="font-pixel text-gray-600 gq-title-best" style="font-size:0.45rem;"></p>
+        <p class="font-sans text-[0.7rem] text-gray-600">ARROWS / WASD move · SPACE talk · touch: D-pad + A</p>
+      </div>
+
+      <!-- Quest complete -->
+      <div class="gq-done absolute inset-0 z-40 flex-col items-center justify-center gap-3 bg-black/90 px-4 text-center">
+        <p class="font-pixel text-nes-amber text-glow-amber" style="font-size:clamp(0.7rem,2.5vw,1.1rem);">★ QUEST COMPLETE! ★</p>
+        <p class="font-pixel text-nes-white" style="font-size:0.6rem;">YOU EXPLORED GION IN <span class="gq-done-time text-nes-cyan">0:00</span></p>
+        <p class="gq-done-record font-pixel text-nes-green" style="font-size:0.55rem;display:none;">NEW RECORD!</p>
+        <p class="font-sans text-xs text-gray-400 max-w-sm">The real Gion at night is even better — lanterns, alleys, and sake bars only locals know.</p>
+        <div class="flex flex-col sm:flex-row gap-3 items-center mt-1">
+          <button class="gq-retry nes-btn nes-btn-outline">PLAY AGAIN</button>
+          <a href="/tours/gion-sake-walk" class="nes-btn nes-btn-gold">BOOK THE REAL TOUR →</a>
+        </div>
+        <button class="gq-continue font-pixel text-gray-500 hover:text-nes-cyan transition-colors mt-1" style="font-size:0.5rem;">CONTINUE WALKING ›</button>
+      </div>
+
+      <!-- Stamp toast -->
+      <div class="gq-toast font-pixel text-nes-amber" style="font-size:0.75rem;"></div>
+
+      <!-- Dialogue box -->
+      <div class="gq-dialog" role="dialog">
+        <p class="gq-name font-pixel text-nes-cyan" style="font-size:0.5rem;"></p>
+        <p class="gq-text font-pixel text-nes-white" style="font-size:0.55rem;line-height:1.9;"></p>
+        <span class="gq-next font-pixel text-nes-amber" style="font-size:0.5rem;">▼</span>
+      </div>
+
+      <!-- Touch controls -->
+      <div class="gq-dpad" aria-hidden="true">
+        <span></span><button data-d="up">▲</button><span></span>
+        <button data-d="left">◀</button><span></span><button data-d="right">▶</button>
+        <span></span><button data-d="down">▼</button><span></span>
+      </div>
+      <button class="gq-abtn font-pixel" aria-label="Talk / confirm">A</button>
+    </div>
+  </div>
+
+  <p class="font-sans text-xs text-gray-600 text-center mt-3">
+    ARROWS / WASD to walk · SPACE / ENTER to talk · find all 3 stamps
+  </p>
+</div>
+
+<style>
+  .gq-stamp {
+    font-size: 0.85rem;
+    filter: grayscale(1);
+    opacity: 0.3;
+    transition: filter 0.3s, opacity 0.3s;
+  }
+  .gq-stamp.lit {
+    filter: none;
+    opacity: 1;
+    animation: gq-pop 0.45s ease;
+    text-shadow: 0 0 10px rgba(255, 176, 0, 0.8);
+  }
+  @keyframes gq-pop {
+    0% { transform: scale(0.3); }
+    60% { transform: scale(1.4); }
+    100% { transform: scale(1); }
+  }
+
+  .gq-dialog {
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    z-index: 30;
+    display: none;
+    background: rgba(5, 5, 12, 0.94);
+    border: 3px solid var(--color-nes-amber);
+    box-shadow: 4px 4px 0 rgba(255, 176, 0, 0.3);
+    padding: 10px 14px 12px;
+    min-height: 62px;
+    cursor: pointer;
+  }
+  .gq-name { margin-bottom: 5px; letter-spacing: 0.08em; }
+  .gq-name:empty { display: none; }
+  .gq-next {
+    position: absolute;
+    right: 10px;
+    bottom: 6px;
+    animation: gq-blink 0.8s step-end infinite;
+  }
+  @keyframes gq-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
+  .gq-toast {
+    position: absolute;
+    top: 38%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.4);
+    z-index: 35;
+    display: none;
+    background: rgba(5, 5, 12, 0.92);
+    border: 3px solid var(--color-nes-amber);
+    box-shadow: 0 0 24px rgba(255, 176, 0, 0.45);
+    padding: 12px 18px;
+    white-space: nowrap;
+  }
+  .gq-toast.show {
+    display: block;
+    animation: gq-toast-pop 0.4s ease forwards;
+  }
+  @keyframes gq-toast-pop {
+    0% { transform: translate(-50%, -50%) scale(0.4); opacity: 0; }
+    70% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  }
+
+  .gq-done { display: none; }
+  .gq-done.show { display: flex; }
+
+  .gq-wrap:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--color-nes-cyan);
+  }
+
+  .gq-dpad {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    z-index: 25;
+    display: none;
+    grid-template-columns: repeat(3, 42px);
+    grid-template-rows: repeat(3, 42px);
+    gap: 2px;
+    opacity: 0.8;
+  }
+  .gq-dpad button {
+    background: rgba(0, 0, 0, 0.55);
+    border: 2px solid rgba(255, 176, 0, 0.55);
+    color: var(--color-nes-amber);
+    font-size: 0.8rem;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .gq-dpad button:active { background: rgba(255, 176, 0, 0.35); }
+  .gq-abtn {
+    position: absolute;
+    bottom: 30px;
+    right: 16px;
+    z-index: 25;
+    display: none;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.55);
+    border: 3px solid rgba(255, 176, 0, 0.7);
+    color: var(--color-nes-amber);
+    font-size: 0.9rem;
+    align-items: center;
+    justify-content: center;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    opacity: 0.85;
+  }
+  .gq-abtn:active { background: rgba(255, 176, 0, 0.35); }
+  @media (pointer: coarse) {
+    .gq-dpad { display: grid; }
+    .gq-abtn { display: flex; }
+  }
+</style>
+
+<script>
+  // ════════════════════════════════════════════════════════════
+  //  GION NIGHT QUEST — top-down mini RPG
+  // ════════════════════════════════════════════════════════════
+  document.querySelectorAll('.gq-root').forEach(initQuest);
+
+  function initQuest(root) {
+    const canvas = root.querySelector('.gq-canvas');
+    const ctx = canvas.getContext('2d');
+    const VW = 400, VH = 240, TILE = 16;
+
+    // ── Map ──────────────────────────────────────────────────
+    const MW = 48, MH = 34;
+    const T = { G: 0, S: 1, W: 2, B: 3, TR: 4, RF: 5, WL: 6, DR: 7, PV: 8, FN: 9, BS: 10 };
+    const SOLID = new Set([T.W, T.TR, T.RF, T.WL, T.DR, T.FN, T.BS]);
+    const map = new Uint8Array(MW * MH);
+    const at = (x, y) => (x < 0 || y < 0 || x >= MW || y >= MH) ? T.TR : map[y * MW + x];
+    const setT = (x, y, t) => { if (x >= 0 && y >= 0 && x < MW && y < MH) map[y * MW + x] = t; };
+    const fillR = (x, y, w, h, t) => { for (let j = y; j < y + h; j++) for (let i = x; i < x + w; i++) setT(i, j, t); };
+
+    // border forest
+    fillR(0, 0, MW, 1, T.TR); fillR(0, MH - 1, MW, 1, T.TR);
+    fillR(0, 0, 1, MH, T.TR); fillR(MW - 1, 0, 1, MH, T.TR);
+    // streets
+    fillR(4, 6, 40, 2, T.S);        // top street
+    fillR(4, 26, 40, 2, T.S);       // bottom street
+    fillR(10, 8, 3, 18, T.S);       // Hanamikoji (west vertical)
+    fillR(30, 8, 3, 18, T.S);       // shrine approach (east vertical)
+    // shrine plaza
+    fillR(27, 2, 11, 4, T.PV);
+    // Shirakawa canal + bridges
+    fillR(1, 15, 46, 3, T.W);
+    fillR(10, 15, 3, 3, T.B);
+    fillR(30, 15, 3, 3, T.B);
+    // machiya buildings: roof rows + wall row with a door
+    const doors = [];
+    function bld(x, y, w, h) {
+      fillR(x, y, w, h - 1, T.RF);
+      fillR(x, y + h - 1, w, 1, T.WL);
+      const dx = x + (w >> 1);
+      setT(dx, y + h - 1, T.DR);
+      doors.push([dx, y + h - 1]);
+    }
+    bld(4, 2, 5, 4); bld(14, 2, 5, 4); bld(20, 2, 5, 4); bld(39, 2, 5, 4);   // north of top street
+    bld(4, 9, 4, 4); bld(15, 9, 4, 4); bld(21, 9, 4, 4);                       // mid band
+    bld(5, 22, 4, 4); bld(14, 22, 4, 4); bld(19, 22, 5, 4); bld(41, 22, 5, 4); // south band
+    bld(34, 22, 6, 4);                                                          // ← the sake bar
+    const BAR_DOOR_X = 37;
+    // fences, bushes, scattered trees
+    fillR(6, 31, 8, 1, T.FN);
+    [[3, 8], [25, 8], [44, 8], [2, 20], [45, 20], [24, 24], [28, 24]].forEach(([x, y]) => setT(x, y, T.BS));
+    [[35, 9], [38, 10], [42, 9], [36, 13], [41, 13], [44, 11], [3, 13], [2, 21], [45, 21],
+     [3, 29], [16, 30], [44, 30], [24, 30], [27, 12], [2, 12]].forEach(([x, y]) => setT(x, y, T.TR));
+
+    const WORLD_W = MW * TILE, WORLD_H = MH * TILE;
+
+    // ── Static props (y-sorted sprites + collision) ─────────
+    const hash = (x, y) => ((x * 73 + y * 131) ^ (x * 37)) & 255;
+    const lamps = [[6, 8], [18, 8], [26, 8], [40, 8], [8, 13], [20, 13], [28, 19], [34, 19],
+                   [9, 19], [13, 21], [9, 23], [6, 28], [20, 28], [40, 28]]
+      .map(([x, y]) => ({ x: x * TILE, y: y * TILE }));
+    const stoneLamps = [[28, 4], [36, 4]].map(([x, y]) => ({ x: x * TILE, y: y * TILE }));
+
+    const SHRINE = { x: 29 * TILE, y: 2 * TILE, w: 7 * TILE, h: 2 * TILE };  // collision body
+    const TORII = { px1: 472, px2: 532, top: 58, baseY: 110 };
+
+    const staticSolids = [
+      [SHRINE.x, SHRINE.y, SHRINE.w, SHRINE.h],
+      [TORII.px1, 102, 8, 8], [TORII.px2, 102, 8, 8],          // torii pillar feet
+      [452, 70, 8, 8], [580, 70, 8, 8],                          // stone lanterns
+      ...lamps.map(l => [l.x + 5, l.y + 10, 6, 5]),
+    ];
+
+    // signs: [tileX, tileY, dialogue key]
+    const signs = [
+      { x: 6 * TILE, y: 29 * TILE, key: 'signStart' },
+      { x: 13 * TILE, y: 14 * TILE, key: 'signCanal' },
+      { x: 34 * TILE, y: 5 * TILE, key: 'signShrine' },
+    ];
+    signs.forEach(s => staticSolids.push([s.x + 2, s.y + 8, 12, 7]));
+
+    // ── Dialogue data ───────────────────────────────────────
+    const D = {
+      intro: [
+        { n: 'GUIDE', t: 'Welcome to GION NIGHT QUEST! Tonight, three locals hold special travel stamps.' },
+        { n: 'GUIDE', t: 'Find the MIKO at the shrine ⛩️ the GEIKO on Hanamikoji 🏮 and the MASTER at the sake bar 🍶' },
+        { n: 'GUIDE', t: 'Explore, talk to everyone, and follow the lanterns. Good luck, traveler!' },
+      ],
+      miko: [
+        { n: 'MIKO', t: 'Welcome to the night shrine. You passed under the torii — the spirits noticed.' },
+        { n: 'MIKO', t: 'Locals stop here for luck before a night out in Gion. Now it is your turn.' },
+        { n: 'MIKO', t: 'Here — the SHRINE STAMP, for a safe journey. ⛩️' },
+      ],
+      mikoAfter: [{ n: 'MIKO', t: 'May the lanterns light your way home.' }],
+      geiko: [
+        { n: 'GEIKO', t: 'Konbanwa... You found Hanamikoji after dark. Most visitors never see it this quiet.' },
+        { n: 'GEIKO', t: 'If you hear wooden geta clicking on the stones — stop and listen. That is the true Gion.' },
+        { n: 'GEIKO', t: 'Take the LANTERN STAMP. Tell no one where you found me. 🏮' },
+      ],
+      geikoAfter: [{ n: 'GEIKO', t: 'The night is long. Walk it slowly.' }],
+      master: [
+        { n: 'MASTER', t: 'Irasshai! A traveler! You look thirsty.' },
+        { n: 'MASTER', t: 'This junmai comes from Fushimi — soft water makes soft sake. One cup, on the house!' },
+        { n: 'MASTER', t: 'And the SAKE STAMP, for your collection. Kanpai! 🍶' },
+      ],
+      masterAfter: [{ n: 'MASTER', t: 'Kanpai!! Come back with friends — the real tour ends at a bar like mine.' }],
+      tourist1: [
+        { n: 'TOURIST', t: "We've passed this bridge three times... Is the shrine north or south of here?" },
+        { n: 'TOURIST', t: '(Psst — it is NORTH. Through the big red gate.)' },
+      ],
+      tourist2: [{ n: 'TOURIST', t: 'My guidebook is 400 pages and I am still lost. Next time I book a local guide...' }],
+      obaachan: [
+        { n: 'OBAACHAN', t: 'In my day this street had twice the lanterns and half the phones.' },
+        { n: 'OBAACHAN', t: 'You want good sake? Find the master south of the canal. Tell him Obaachan sent you.' },
+      ],
+      shiba: [{ n: 'SHIBA', t: 'Wan! Wan!' }, { n: '', t: '(The shiba approves of your quest.)' }],
+      cat: [{ n: 'CAT', t: '...nya.' }, { n: '', t: '(It blinks slowly. You feel deeply honored.)' }],
+      signStart: [{ n: 'SIGN', t: 'GION NIGHT QUEST — Collect 3 stamps: ⛩️ shrine · 🏮 Hanamikoji · 🍶 sake bar. Talk to everyone!' }],
+      signCanal: [{ n: 'SIGN', t: 'SHIRAKAWA CANAL — In spring, cherry petals drift here like pixel confetti.' }],
+      signShrine: [{ n: 'SIGN', t: 'NIGHT SHRINE — Guardian of Gion. Bow twice, clap twice, bow once.' }],
+    };
+
+    // ── NPCs ─────────────────────────────────────────────────
+    function npc(kind, x, y, opt = {}) {
+      return Object.assign({
+        kind, x, y, sx: x, sy: y, w: 10, h: 6, dir: 0, frame: 0, moving: false,
+        talking: false, wt: 60 + ((x * 7) % 90), vx: 0, vy: 0,
+      }, opt);
+    }
+    const npcs = [
+      npc('miko',     507,  74, { idle: true }),
+      npc('geiko',    179, 336, { patrol: { axis: 'y', min: 304, max: 384, spd: 0.35 }, dir: 0 }),
+      npc('master',   595, 418, { idle: true }),
+      npc('tourist1', 240, 304, { wander: [208, 288, 328, 336] }),
+      npc('tourist2', 272, 312, { wander: [208, 288, 328, 336] }),
+      npc('obaachan', 355, 104, { idle: true }),
+      npc('shiba',    608, 176, { wander: [560, 144, 688, 224], spd: 0.5 }),
+      npc('cat',      178, 486, { idle: true }),
+    ];
+
+    // ── State ────────────────────────────────────────────────
+    const player = { x: 128, y: 468, w: 10, h: 7, dir: 1, frame: 0, moving: false };
+    let state = 'title';   // title | play | dialog | done
+    let frames = 0, playFrames = 0, questDone = false;
+    let introSeen = false;
+    const stamps = { shrine: false, geiko: false, sake: false };
+    let best = +(localStorage.getItem('gq-best') || 0);
+    let muted = localStorage.getItem('gq-mute') === '1';
+
+    // ── DOM refs ─────────────────────────────────────────────
+    const $ = sel => root.querySelector(sel);
+    const wrap = $('.gq-wrap');
+    const elTime = $('.gq-time'), elBest = $('.gq-best');
+    const elTitle = $('.gq-title'), elTitleBest = $('.gq-title-best');
+    const elDone = $('.gq-done'), elDoneTime = $('.gq-done-time'), elDoneRec = $('.gq-done-record');
+    const elToast = $('.gq-toast');
+    const elDialog = $('.gq-dialog'), elName = $('.gq-name'), elText = $('.gq-text'), elNext = $('.gq-next');
+    const elMute = $('.gq-mute');
+
+    const fmt = s => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+    function refreshBest() {
+      elBest.textContent = best ? fmt(best) : '--:--';
+      elTitleBest.textContent = best ? `BEST TIME ${fmt(best)}` : '';
+    }
+    refreshBest();
+    elMute.textContent = muted ? '♪ OFF' : '♪ ON';
+
+    // ── Audio (tiny WebAudio chiptune sfx) ───────────────────
+    let AC = null;
+    function audio() {
+      if (!AC) try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch { /* no audio */ }
+      return AC;
+    }
+    function beep(freq, dur = 0.08, delay = 0, vol = 0.12, type = 'square') {
+      if (muted) return;
+      const ac = audio();
+      if (!ac) return;
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = type; o.frequency.value = freq;
+      const t0 = ac.currentTime + delay;
+      g.gain.setValueAtTime(vol, t0);
+      g.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
+      o.connect(g).connect(ac.destination);
+      o.start(t0); o.stop(t0 + dur + 0.02);
+    }
+    const sfx = {
+      talk: () => beep(660, 0.05, 0, 0.08),
+      stamp: () => [523, 659, 784, 1047].forEach((f, i) => beep(f, 0.1, i * 0.09)),
+      fanfare: () => [392, 523, 659, 784, 659, 1047].forEach((f, i) => beep(f, i === 5 ? 0.4 : 0.11, i * 0.13, 0.13)),
+    };
+    elMute.addEventListener('click', () => {
+      muted = !muted;
+      localStorage.setItem('gq-mute', muted ? '1' : '0');
+      elMute.textContent = muted ? '♪ OFF' : '♪ ON';
+    });
+
+    // ── Dialogue system ──────────────────────────────────────
+    let dlg = null; // {lines, i, chars, onClose}
+    function openDialog(lines, onClose) {
+      dlg = { lines, i: 0, chars: 0, onClose };
+      state = 'dialog';
+      elDialog.style.display = 'block';
+      renderDialog();
+    }
+    function renderDialog() {
+      const L = dlg.lines[dlg.i];
+      elName.textContent = L.n;
+      elText.textContent = L.t.slice(0, dlg.chars);
+      elNext.style.visibility = dlg.chars >= L.t.length ? 'visible' : 'hidden';
+    }
+    function advanceDialog() {
+      const L = dlg.lines[dlg.i];
+      if (dlg.chars < L.t.length) { dlg.chars = L.t.length; renderDialog(); return; }
+      sfx.talk();
+      dlg.i++;
+      if (dlg.i >= dlg.lines.length) {
+        elDialog.style.display = 'none';
+        const cb = dlg.onClose;
+        dlg = null;
+        state = 'play';
+        npcs.forEach(n => n.talking = false);
+        if (cb) cb();
+      } else {
+        dlg.chars = 0;
+        renderDialog();
+      }
+    }
+    elDialog.addEventListener('pointerdown', e => { e.preventDefault(); if (state === 'dialog') advanceDialog(); });
+
+    // ── Quest / stamps ───────────────────────────────────────
+    const TOAST_LABEL = { shrine: '⛩️ SHRINE STAMP GET!', geiko: '🏮 LANTERN STAMP GET!', sake: '🍶 SAKE STAMP GET!' };
+    let toastTimer = 0;
+    function giveStamp(key) {
+      if (stamps[key]) return;
+      stamps[key] = true;
+      const el = root.querySelector(`.gq-stamp[data-k="${key}"]`);
+      if (el) el.classList.add('lit');
+      elToast.textContent = TOAST_LABEL[key];
+      elToast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => elToast.classList.remove('show'), 1900);
+      sfx.stamp();
+      if (stamps.shrine && stamps.geiko && stamps.sake)
+        setTimeout(() => { if (!questDone) finishQuest(); }, 1700);
+    }
+    function finishQuest() {
+      questDone = true;
+      state = 'done';
+      const secs = Math.max(1, Math.floor(playFrames / 60));
+      elDoneTime.textContent = fmt(secs);
+      const isRecord = !best || secs < best;
+      if (isRecord) { best = secs; localStorage.setItem('gq-best', String(best)); refreshBest(); }
+      elDoneRec.style.display = isRecord ? 'block' : 'none';
+      elDone.classList.add('show');
+      sfx.fanfare();
+    }
+
+    // ── Interaction targets ──────────────────────────────────
+    const NPC_DIALOG = {
+      miko:     () => stamps.shrine ? [D.mikoAfter, null] : [D.miko, () => giveStamp('shrine')],
+      geiko:    () => stamps.geiko ? [D.geikoAfter, null] : [D.geiko, () => giveStamp('geiko')],
+      master:   () => stamps.sake ? [D.masterAfter, null] : [D.master, () => giveStamp('sake')],
+      tourist1: () => [D.tourist1, null],
+      tourist2: () => [D.tourist2, null],
+      obaachan: () => [D.obaachan, null],
+      shiba:    () => [D.shiba, null],
+      cat:      () => [D.cat, null],
+    };
+    function nearestTarget() {
+      const pcx = player.x + player.w / 2, pcy = player.y + player.h / 2;
+      let bestD = 26, found = null;
+      for (const n of npcs) {
+        const d = Math.hypot(n.x + n.w / 2 - pcx, n.y + n.h / 2 - pcy);
+        if (d < bestD) { bestD = d; found = { type: 'npc', ref: n }; }
+      }
+      for (const s of signs) {
+        const d = Math.hypot(s.x + 8 - pcx, s.y + 10 - pcy);
+        if (d < bestD) { bestD = d; found = { type: 'sign', ref: s }; }
+      }
+      return found;
+    }
+    function interact() {
+      const t = nearestTarget();
+      if (!t) return;
+      sfx.talk();
+      if (t.type === 'sign') { openDialog(D[t.ref.key]); return; }
+      const n = t.ref;
+      n.talking = true;
+      // face the player
+      const dx = player.x - n.x, dy = player.y - n.y;
+      n.dir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 3 : 2) : (dy > 0 ? 0 : 1);
+      const [lines, cb] = NPC_DIALOG[n.kind]();
+      openDialog(lines, cb);
+    }
+
+    // ── Input ────────────────────────────────────────────────
+    const keys = { up: false, down: false, left: false, right: false };
+    const KEYMAP = {
+      ArrowUp: 'up', KeyW: 'up', ArrowDown: 'down', KeyS: 'down',
+      ArrowLeft: 'left', KeyA: 'left', ArrowRight: 'right', KeyD: 'right',
+    };
+    const ACT_KEYS = new Set(['Space', 'Enter', 'KeyE', 'KeyZ']);
+    function pressAct() {
+      if (state === 'title') startGame();
+      else if (state === 'dialog') advanceDialog();
+      else if (state === 'play') interact();
+    }
+    wrap.addEventListener('keydown', e => {
+      if (KEYMAP[e.code]) { keys[KEYMAP[e.code]] = true; e.preventDefault(); }
+      else if (ACT_KEYS.has(e.code)) { if (!e.repeat) pressAct(); e.preventDefault(); }
+    });
+    wrap.addEventListener('keyup', e => { if (KEYMAP[e.code]) { keys[KEYMAP[e.code]] = false; e.preventDefault(); } });
+    window.addEventListener('blur', () => { keys.up = keys.down = keys.left = keys.right = false; });
+    canvas.addEventListener('pointerdown', e => {
+      e.preventDefault();
+      wrap.focus();
+      if (state === 'title') startGame();
+      else if (state === 'dialog') advanceDialog();
+      else if (state === 'play') interact();
+    });
+    // touch d-pad
+    root.querySelectorAll('.gq-dpad button').forEach(btn => {
+      const d = btn.dataset.d;
+      const on = e => { e.preventDefault(); keys[d] = true; };
+      const off = e => { e.preventDefault(); keys[d] = false; };
+      btn.addEventListener('pointerdown', on);
+      btn.addEventListener('pointerup', off);
+      btn.addEventListener('pointerleave', off);
+      btn.addEventListener('pointercancel', off);
+    });
+    $('.gq-abtn').addEventListener('pointerdown', e => { e.preventDefault(); pressAct(); });
+
+    $('.gq-start').addEventListener('click', () => startGame());
+    $('.gq-retry').addEventListener('click', () => resetGame());
+    $('.gq-continue').addEventListener('click', () => { elDone.classList.remove('show'); state = 'play'; wrap.focus(); });
+
+    function startGame() {
+      audio();
+      elTitle.style.display = 'none';
+      wrap.focus();
+      state = 'play';
+      if (!introSeen) { introSeen = true; openDialog(D.intro); }
+    }
+    function resetGame() {
+      Object.assign(player, { x: 128, y: 468, dir: 1, moving: false });
+      npcs.forEach(n => Object.assign(n, { x: n.sx, y: n.sy, talking: false }));
+      stamps.shrine = stamps.geiko = stamps.sake = false;
+      root.querySelectorAll('.gq-stamp').forEach(el => el.classList.remove('lit'));
+      questDone = false; playFrames = 0;
+      elTime.textContent = '0:00';
+      elDone.classList.remove('show');
+      elDialog.style.display = 'none';
+      dlg = null;
+      state = 'play';
+      wrap.focus();
+    }
+
+    // ── Collision ────────────────────────────────────────────
+    function blocked(x, y, w, h, self) {
+      // tiles
+      const x0 = Math.floor(x / TILE), x1 = Math.floor((x + w - 1) / TILE);
+      const y0 = Math.floor(y / TILE), y1 = Math.floor((y + h - 1) / TILE);
+      for (let ty = y0; ty <= y1; ty++)
+        for (let tx = x0; tx <= x1; tx++)
+          if (SOLID.has(at(tx, ty))) return true;
+      // static props
+      for (const [rx, ry, rw, rh] of staticSolids)
+        if (x < rx + rw && x + w > rx && y < ry + rh && y + h > ry) return true;
+      // npcs + player
+      for (const n of npcs) {
+        if (n === self) continue;
+        if (x < n.x + n.w && x + w > n.x && y < n.y + n.h && y + h > n.y) return true;
+      }
+      if (self !== player &&
+          x < player.x + player.w && x + w > player.x &&
+          y < player.y + player.h && y + h > player.y) return true;
+      return false;
+    }
+    function move(e, dx, dy) {
+      if (dx && !blocked(e.x + dx, e.y, e.w, e.h, e)) e.x += dx;
+      if (dy && !blocked(e.x, e.y + dy, e.w, e.h, e)) e.y += dy;
+      e.x = Math.max(TILE, Math.min(WORLD_W - TILE - e.w, e.x));
+      e.y = Math.max(TILE, Math.min(WORLD_H - TILE - e.h, e.y));
+    }
+
+    // ── Update ───────────────────────────────────────────────
+    function update() {
+      frames++;
+      if ((state === 'play' || state === 'dialog') && !questDone) playFrames++;
+      if (frames % 60 === 0) elTime.textContent = fmt(Math.floor(playFrames / 60));
+
+      // typewriter
+      if (state === 'dialog' && dlg) {
+        const L = dlg.lines[dlg.i];
+        if (dlg.chars < L.t.length && frames % 2 === 0) { dlg.chars++; renderDialog(); }
+      }
+
+      // player
+      if (state === 'play') {
+        let dx = (keys.right ? 1 : 0) - (keys.left ? 1 : 0);
+        let dy = (keys.down ? 1 : 0) - (keys.up ? 1 : 0);
+        player.moving = !!(dx || dy);
+        if (player.moving) {
+          const spd = dx && dy ? 1.1 : 1.5;
+          if (dx) player.dir = dx > 0 ? 3 : 2;
+          if (dy && !dx) player.dir = dy > 0 ? 0 : 1;
+          move(player, dx * spd, dy * spd);
+          player.frame++;
+        }
+      }
+
+      // npcs
+      if (state !== 'title') {
+        for (const n of npcs) {
+          if (n.talking || n.idle) {
+            if (n.idle && !n.talking && frames % 240 === (n.sx % 240)) n.dir = (n.dir + 1 + (hash(n.sx, frames) % 3)) % 4;
+            continue;
+          }
+          if (n.patrol) {
+            const p = n.patrol;
+            if (n.y <= p.min) n.dir = 0;
+            if (n.y >= p.max) n.dir = 1;
+            const dy = n.dir === 0 ? p.spd : -p.spd;
+            if (blocked(n.x, n.y + dy, n.w, n.h, n)) { n.dir = n.dir === 0 ? 1 : 0; }
+            else n.y += dy;
+            n.frame++;
+          } else if (n.wander) {
+            n.wt--;
+            if (n.wt <= 0) {
+              n.wt = 60 + Math.random() * 120;
+              n.dir = Math.floor(Math.random() * 4);
+              n.moving = Math.random() > 0.35;
+            }
+            if (n.moving) {
+              const s = n.spd || 0.4;
+              const dx = n.dir === 2 ? -s : n.dir === 3 ? s : 0;
+              const dy = n.dir === 0 ? s : n.dir === 1 ? -s : 0;
+              const [wx0, wy0, wx1, wy1] = n.wander;
+              const nx = n.x + dx, ny = n.y + dy;
+              if (nx < wx0 || nx > wx1 || ny < wy0 || ny > wy1 || blocked(nx, ny, n.w, n.h, n)) n.moving = false;
+              else { n.x = nx; n.y = ny; n.frame++; }
+            }
+          }
+        }
+      }
+    }
+
+    // ── Drawing helpers ──────────────────────────────────────
+    let camX = 0, camY = 0;
+    const R = (x, y, w, h, c) => { ctx.fillStyle = c; ctx.fillRect(Math.round(x), Math.round(y), w, h); };
+    function shadow(cx, cy, rw = 6) {
+      ctx.fillStyle = 'rgba(0,0,0,0.35)';
+      ctx.beginPath(); ctx.ellipse(cx, cy, rw, 2.5, 0, 0, Math.PI * 2); ctx.fill();
+    }
+
+    // ── Tiles ────────────────────────────────────────────────
+    function drawTile(t, sx, sy, tx, ty) {
+      const h = hash(tx, ty);
+      switch (t) {
+        case T.G:
+          R(sx, sy, 16, 16, (tx + ty) & 1 ? '#0e1a13' : '#0d1711');
+          if (h % 5 === 0) { R(sx + (h % 11), sy + (h % 9), 2, 2, '#152418'); }
+          if (h % 31 === 0) R(sx + (h % 12), sy + ((h >> 3) % 12), 2, 2, '#5a4a7a');
+          break;
+        case T.S:
+          R(sx, sy, 16, 16, (tx + ty) & 1 ? '#252219' : '#221f19');
+          if (h % 4 === 0) R(sx + (h % 12), sy + ((h >> 2) % 12), 2, 1, '#2b2820');
+          break;
+        case T.PV:
+          R(sx, sy, 16, 16, (tx + ty) & 1 ? '#2d2922' : '#2a261f');
+          R(sx, sy, 16, 1, '#241f19'); R(sx, sy, 1, 16, '#241f19');
+          break;
+        case T.W: {
+          R(sx, sy, 16, 16, '#0a1c2c');
+          const off = (Math.floor(frames / 10) + tx * 5 + ty * 9) % 16;
+          R(sx + off % 12, sy + 4, 5, 1, '#15425c');
+          R(sx + (off + 7) % 12, sy + 11, 4, 1, '#102e44');
+          break;
+        }
+        case T.B: {
+          R(sx, sy, 16, 16, '#4a3115');
+          R(sx, sy + 3, 16, 1, '#3a2710'); R(sx, sy + 8, 16, 1, '#3a2710'); R(sx, sy + 13, 16, 1, '#3a2710');
+          if (at(tx - 1, ty) === T.W) { R(sx, sy, 2, 16, '#5c3d1a'); R(sx, sy, 2, 3, '#6b4a22'); }
+          if (at(tx + 1, ty) === T.W) { R(sx + 14, sy, 2, 16, '#5c3d1a'); R(sx + 14, sy, 2, 3, '#6b4a22'); }
+          break;
+        }
+        case T.TR:
+          R(sx, sy, 16, 16, '#0c1410');
+          R(sx + 6, sy + 11, 4, 5, '#2a1c10');
+          R(sx + 1, sy, 14, 12, '#0e2415');
+          R(sx + 3, sy + 1, 7, 4, '#143420');
+          R(sx + 2, sy + 9, 12, 3, '#0a1a0e');
+          break;
+        case T.BS:
+          R(sx, sy, 16, 16, (tx + ty) & 1 ? '#0e1a13' : '#0d1711');
+          R(sx + 2, sy + 7, 12, 7, '#10231a');
+          R(sx + 4, sy + 4, 8, 5, '#143022');
+          R(sx + 3, sy + 12, 10, 2, '#0a1810');
+          break;
+        case T.RF: {
+          R(sx, sy, 16, 16, '#1b2030');
+          R(sx, sy + 5, 16, 1, '#141927'); R(sx, sy + 11, 16, 1, '#141927');
+          if (at(tx, ty - 1) !== T.RF) { R(sx, sy, 16, 3, '#2a3148'); R(sx, sy + 3, 16, 1, '#11141f'); }
+          if (h % 7 === 0) R(sx + 4, sy + 7, 4, 3, '#222840');
+          break;
+        }
+        case T.WL: {
+          R(sx, sy, 16, 16, '#2c2014');
+          R(sx + 3, sy, 1, 16, '#241a10'); R(sx + 8, sy, 1, 16, '#241a10'); R(sx + 13, sy, 1, 16, '#241a10');
+          R(sx, sy + 14, 16, 2, '#1c140c');
+          if (h % 4 === 0) {  // lit lattice window
+            R(sx + 3, sy + 3, 10, 8, '#1a1208');
+            R(sx + 4, sy + 4, 8, 6, '#e8a040');
+            R(sx + 7, sy + 4, 1, 6, '#1a1208');
+            R(sx + 4, sy + 6, 8, 1, '#1a1208');
+          }
+          break;
+        }
+        case T.DR:
+          R(sx, sy, 16, 16, '#241a10');
+          R(sx + 3, sy + 2, 10, 14, '#16100a');
+          R(sx + 7, sy + 3, 2, 12, '#ffb866');
+          R(sx + 2, sy + 1, 12, 2, '#3a2c1a');
+          break;
+        case T.FN:
+          R(sx, sy, 16, 16, (tx + ty) & 1 ? '#0e1a13' : '#0d1711');
+          R(sx + 1, sy + 4, 2, 11, '#3a2a16'); R(sx + 13, sy + 4, 2, 11, '#3a2a16');
+          R(sx, sy + 6, 16, 2, '#46341c'); R(sx, sy + 11, 16, 2, '#46341c');
+          break;
+      }
+    }
+
+    // ── Character sprites ────────────────────────────────────
+    function drawHuman(wx, wy, dir, f, P) {
+      const px = Math.round(wx - camX - 1), py = Math.round(wy - camY - 12);
+      shadow(px + 6, py + 17);
+      const st = (f >> 3) & 1;
+      const lc = P.legs || P.bottom;
+      if (P.skirt) {
+        R(px + 2, py + 11, 8, 4, P.bottom);
+        R(px + 1, py + 14, 10, 2, P.bottom);
+        R(px + 3 + (st ? 3 : 0), py + 16, 3, 1, '#f0e8d8');
+      } else if (dir >= 2) {
+        R(px + 3 + (st ? 2 : 0), py + 12, 3, 4, lc);
+        R(px + 6 - (st ? 2 : 0), py + 12, 3, 4, lc);
+      } else {
+        R(px + 3, py + 12, 3, st ? 3 : 4, lc);
+        R(px + 7, py + 12, 3, st ? 4 : 3, lc);
+      }
+      R(px + 2, py + 7, 8, 5, P.top);
+      if (dir === 2) R(px + 1, py + 8, 2, 3, P.top);
+      else if (dir === 3) R(px + 9, py + 8, 2, 3, P.top);
+      else { R(px + 1, py + 8, 1, 3, P.top); R(px + 10, py + 8, 1, 3, P.top); }
+      if (P.apron) R(px + 3, py + 8, 6, 4, P.apron);
+      // head
+      R(px + 3, py + 1, 7, 3, P.hair);
+      if (dir === 1) R(px + 3, py + 3, 7, 4, P.hair);
+      else {
+        R(px + 3, py + 3, 7, 4, P.skin);
+        const e = '#100c08';
+        if (dir === 0) { R(px + 4, py + 4, 1, 2, e); R(px + 8, py + 4, 1, 2, e); }
+        else if (dir === 2) R(px + 4, py + 4, 1, 2, e);
+        else R(px + 8, py + 4, 1, 2, e);
+      }
+      if (P.cap) { R(px + 2, py, 8, 3, P.cap); if (dir === 0) R(px + 2, py + 3, 8, 1, P.capDark || P.cap); }
+      if (P.band) R(px + 3, py + 1, 7, 1, P.band);
+      if (P.straw) { R(px + 1, py + 1, 10, 2, '#c8a050'); R(px + 3, py - 1, 6, 2, '#d8b060'); }
+      if (P.camera && dir === 0) { R(px + 4, py + 9, 4, 3, '#1a1a1a'); R(px + 5, py + 10, 2, 1, '#00e5ff'); }
+    }
+    function drawGeiko(wx, wy, dir, f) {
+      const px = Math.round(wx - camX - 1), py = Math.round(wy - camY - 13);
+      shadow(px + 6, py + 18);
+      const st = (f >> 4) & 1;
+      R(px + 1, py + 13, 10, 4, '#6b0a2a');          // hem
+      R(px + 2, py + 7, 8, 7, '#8b1a3a');            // kimono
+      R(px + 2, py + 9, 8, 2, '#ffb000');            // obi
+      R(px + 5, py + 7, 2, 2, '#f0e8d8');            // collar
+      R(px + 4 + (st ? 2 : 0), py + 17, 3, 1, '#f0e8d8'); // tabi
+      // shimada hair + white face
+      R(px + 1, py + 1, 10, 2, '#140a1e');
+      R(px + 2, py, 8, 2, '#1c1028');
+      if (dir === 1) R(px + 3, py + 3, 7, 4, '#140a1e');
+      else {
+        R(px + 3, py + 3, 6, 4, '#f5ede0');
+        R(px + 4, py + 4, 1, 1, '#1a0030'); R(px + 7, py + 4, 1, 1, '#1a0030');
+        R(px + 5, py + 6, 2, 1, '#cc2244');
+      }
+      R(px, py, 3, 2, '#ff88aa'); R(px + 1, py + 2, 1, 2, '#ffb000'); // kanzashi
+    }
+    function drawShiba(wx, wy, dir, f) {
+      const px = Math.round(wx - camX - 2), py = Math.round(wy - camY - 5);
+      shadow(px + 7, py + 10, 7);
+      const flip = dir === 2;
+      const st = (f >> 3) & 1;
+      R(px + 2, py + 2, 10, 4, '#d8923a');
+      R(px + (flip ? 2 : 10), py + 4, 2, 2, '#f4e0c0');
+      const hx = flip ? px : px + 9;
+      R(hx, py, 5, 4, '#d8923a');
+      R(hx + (flip ? 0 : 3), py + 2, 2, 2, '#f4e0c0');
+      R(hx + (flip ? 0 : 4), py - 1, 1, 2, '#c07828'); R(hx + (flip ? 3 : 1), py - 1, 1, 2, '#c07828');
+      R(hx + (flip ? 1 : 3), py + 1, 1, 1, '#100c08');
+      R(flip ? px + 11 : px + 1, py, 2, 2, '#e8a850'); // curled tail
+      R(px + 3, py + 6, 1, 3 - st, '#c07828'); R(px + 6, py + 6, 1, 2 + st, '#c07828');
+      R(px + 9, py + 6, 1, 3 - st, '#c07828'); R(px + 11, py + 6, 1, 2 + st, '#c07828');
+    }
+    function drawCat(wx, wy, dir, f) {
+      const px = Math.round(wx - camX), py = Math.round(wy - camY - 3);
+      const sw = (f >> 4) & 1;
+      R(px + 1, py + 2, 8, 5, '#1a1a22');
+      R(px + 1, py, 2, 2, '#1a1a22'); R(px + 5, py, 2, 2, '#1a1a22');
+      R(px + 2, py + 3, 1, 1, '#ffb000'); R(px + 5, py + 3, 1, 1, '#ffb000');
+      R(px + 9, py + (sw ? 1 : 3), 2, 3, '#1a1a22');
+      R(px + 3, py + 6, 4, 1, '#f0f0f0');
+    }
+    const PAL = {
+      player:   { hair: '#241608', skin: '#f0c8a0', top: '#00b8cc', bottom: '#1a2440', cap: '#ffb000', capDark: '#c88800' },
+      miko:     { hair: '#16101e', skin: '#f0d8c0', top: '#f0ece2', bottom: '#c22030', skirt: true },
+      master:   { hair: '#2a2018', skin: '#e0b890', top: '#2a3a6a', bottom: '#222838', band: '#f0f0f0', apron: '#cfc6b0' },
+      tourist1: { hair: '#3a2a18', skin: '#e8c0a0', top: '#3a7a4a', bottom: '#3a3a44', cap: '#2a5a3a', camera: true },
+      tourist2: { hair: '#5a3a20', skin: '#f0cca8', top: '#c46a8a', bottom: '#4a4054', straw: true },
+      obaachan: { hair: '#b8b8c0', skin: '#e8c8a8', top: '#7a6a8a', bottom: '#4a4258' },
+    };
+    function drawNpc(n) {
+      const f = n.moving || n.patrol ? n.frame : 0;
+      if (n.kind === 'geiko') drawGeiko(n.x, n.y, n.dir, n.frame);
+      else if (n.kind === 'shiba') drawShiba(n.x, n.y, n.dir === 2 ? 2 : 3, f);
+      else if (n.kind === 'cat') drawCat(n.x, n.y, n.dir, frames);
+      else drawHuman(n.x, n.y, n.dir, f, PAL[n.kind]);
+    }
+
+    // ── Prop sprites ─────────────────────────────────────────
+    function drawLamp(l) {
+      const px = Math.round(l.x - camX), py = Math.round(l.y - camY);
+      R(px + 7, py - 4, 2, 18, '#241a10');
+      R(px + 4, py - 12, 8, 9, '#ffb000');
+      R(px + 4, py - 12, 8, 1, '#caa84a'); R(px + 4, py - 4, 8, 1, '#caa84a');
+      R(px + 6, py - 10, 4, 5, '#ffd866');
+      R(px + 5, py + 13, 6, 2, '#1c140c');
+    }
+    function drawStoneLamp(l) {
+      const px = Math.round(l.x - camX), py = Math.round(l.y - camY);
+      R(px + 3, py - 6, 10, 3, '#6a6a5e');
+      R(px + 5, py - 3, 6, 5, '#5a5a50');
+      R(px + 6, py - 2, 4, 3, '#ffcc44');
+      R(px + 6, py + 2, 4, 7, '#5a5a50');
+      R(px + 3, py + 9, 10, 3, '#6a6a5e');
+    }
+    function drawSign(s) {
+      const px = Math.round(s.x - camX), py = Math.round(s.y - camY);
+      R(px + 6, py + 4, 3, 10, '#4a3318');
+      R(px + 1, py - 4, 13, 8, '#5c4422');
+      R(px + 1, py - 4, 13, 1, '#6e5430'); R(px + 1, py + 3, 13, 1, '#3e2c14');
+      R(px + 3, py - 2, 9, 1, '#2a1e0e'); R(px + 3, py, 7, 1, '#2a1e0e');
+    }
+    function drawShrine() {
+      const px = Math.round(SHRINE.x - camX), py = Math.round(SHRINE.y - camY);
+      // stone steps
+      R(px + 40, py + 30, 32, 4, '#55554c');
+      // pillars + wall
+      R(px + 4, py + 14, 104, 18, '#3a2418');
+      R(px + 8, py + 16, 96, 12, '#efe6d6');
+      [12, 36, 62, 88].forEach(o => R(px + o, py + 14, 5, 18, '#b03020'));
+      // entrance
+      R(px + 46, py + 16, 20, 14, '#1a1208');
+      R(px + 53, py + 17, 6, 12, '#ffc060');
+      // hanging rope + shide
+      R(px + 40, py + 13, 32, 2, '#caa84a');
+      R(px + 46, py + 15, 2, 4, '#f0f0f0'); R(px + 64, py + 15, 2, 4, '#f0f0f0');
+      // tiered roof
+      R(px - 6, py + 8, 124, 6, '#1c2438');
+      R(px + 2, py + 3, 108, 6, '#222c44');
+      R(px + 12, py - 2, 88, 6, '#283450');
+      R(px + 48, py - 6, 16, 5, '#caa84a');
+    }
+    function drawTorii() {
+      const px = Math.round(-camX), py = Math.round(-camY);
+      R(px + 460, py + 58, 104, 4, '#16100a');
+      R(px + 458, py + 62, 108, 6, '#c23018');
+      R(px + 470, py + 74, 84, 5, '#c23018');
+      R(px + 472, py + 68, 8, 42, '#a82812');
+      R(px + 532, py + 68, 8, 42, '#a82812');
+      R(px + 473, py + 68, 3, 42, '#d44424');
+      R(px + 533, py + 68, 3, 42, '#d44424');
+      R(px + 470, py + 108, 12, 4, '#6a6a5e');
+      R(px + 530, py + 108, 12, 4, '#6a6a5e');
+    }
+    function drawBarFront() {
+      // noren + chochin on the sake bar wall (row 25, cols 34-39)
+      const px = Math.round(34 * TILE - camX), py = Math.round(25 * TILE - camY);
+      R(px + 34, py + 1, 28, 8, '#22304a');
+      R(px + 38, py + 7, 2, 3, '#22304a'); R(px + 46, py + 7, 2, 3, '#22304a'); R(px + 54, py + 7, 2, 3, '#22304a');
+      R(px + 44, py + 3, 8, 4, '#f0e8d8');
+      // chochin pair
+      for (const ox of [10, 78]) {
+        R(px + ox + 3, py - 4, 2, 3, '#3a2c1a');
+        R(px + ox, py - 1, 8, 10, '#d83820');
+        R(px + ox + 2, py + 1, 4, 6, '#ff7050');
+        R(px + ox, py - 1, 8, 1, '#8a1c10'); R(px + ox, py + 8, 8, 1, '#8a1c10');
+      }
+    }
+    function drawPlayer() {
+      drawHuman(player.x, player.y, player.dir, player.moving ? player.frame : 0, PAL.player);
+    }
+
+    // ── Lights & fireflies ───────────────────────────────────
+    function mulberry(seed) {
+      return () => {
+        seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+        let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+    const rnd = mulberry(7);
+    const fireflies = Array.from({ length: 16 }, () => ({
+      x: 32 + rnd() * (WORLD_W - 64), y: 130 + rnd() * 280,
+      ph: rnd() * Math.PI * 2, sp: 0.5 + rnd(),
+    }));
+    const lights = [
+      ...lamps.map(l => ({ x: l.x + 8, y: l.y - 8, r: 36, c: '255,176,0', a: 0.16 })),
+      ...stoneLamps.map(l => ({ x: l.x + 8, y: l.y, r: 22, c: '255,200,80', a: 0.13 })),
+      ...doors.map(([dx, dy]) => ({ x: dx * 16 + 8, y: dy * 16 + 9, r: 14, c: '255,180,100', a: 0.09 })),
+      { x: SHRINE.x + 56, y: SHRINE.y + 23, r: 34, c: '255,190,90', a: 0.16 },
+      { x: 34 * 16 + 14, y: 25 * 16 + 4, r: 26, c: '255,70,40', a: 0.17 },
+      { x: 34 * 16 + 82, y: 25 * 16 + 4, r: 26, c: '255,70,40', a: 0.17 },
+    ];
+    function drawGlow() {
+      ctx.globalCompositeOperation = 'lighter';
+      for (let i = 0; i < lights.length; i++) {
+        const L = lights[i];
+        const sx = L.x - camX, sy = L.y - camY;
+        if (sx < -60 || sx > VW + 60 || sy < -60 || sy > VH + 60) continue;
+        const fl = L.a * (0.9 + 0.12 * Math.sin(frames * 0.18 + i * 2.3));
+        const g = ctx.createRadialGradient(sx, sy, 2, sx, sy, L.r);
+        g.addColorStop(0, `rgba(${L.c},${fl})`);
+        g.addColorStop(1, `rgba(${L.c},0)`);
+        ctx.fillStyle = g;
+        ctx.fillRect(sx - L.r, sy - L.r, L.r * 2, L.r * 2);
+      }
+      // player lantern
+      {
+        const sx = player.x + 5 - camX, sy = player.y - camY;
+        const g = ctx.createRadialGradient(sx, sy, 2, sx, sy, 30);
+        g.addColorStop(0, 'rgba(255,200,120,0.08)');
+        g.addColorStop(1, 'rgba(255,200,120,0)');
+        ctx.fillStyle = g;
+        ctx.fillRect(sx - 30, sy - 30, 60, 60);
+      }
+      // fireflies
+      for (const f of fireflies) {
+        const fx = f.x + Math.sin(frames * 0.01 * f.sp + f.ph) * 14 - camX;
+        const fy = f.y + Math.cos(frames * 0.008 * f.sp + f.ph * 2) * 9 - camY;
+        if (fx < -10 || fx > VW + 10 || fy < -10 || fy > VH + 10) continue;
+        const blink = 0.4 + 0.6 * Math.abs(Math.sin(frames * 0.03 * f.sp + f.ph));
+        const g = ctx.createRadialGradient(fx, fy, 0, fx, fy, 7);
+        g.addColorStop(0, `rgba(190,255,120,${0.5 * blink})`);
+        g.addColorStop(1, 'rgba(190,255,120,0)');
+        ctx.fillStyle = g;
+        ctx.fillRect(fx - 7, fy - 7, 14, 14);
+        ctx.fillStyle = `rgba(230,255,180,${blink})`;
+        ctx.fillRect(fx - 1, fy - 1, 2, 2);
+      }
+      ctx.globalCompositeOperation = 'source-over';
+    }
+
+    // ── Render ───────────────────────────────────────────────
+    function render() {
+      const pcx = player.x + player.w / 2, pcy = player.y + player.h / 2;
+      camX = Math.max(0, Math.min(WORLD_W - VW, Math.round(pcx - VW / 2)));
+      camY = Math.max(0, Math.min(WORLD_H - VH, Math.round(pcy - VH / 2)));
+
+      const x0 = Math.floor(camX / TILE), y0 = Math.floor(camY / TILE);
+      const x1 = Math.min(MW - 1, x0 + Math.ceil(VW / TILE)), y1 = Math.min(MH - 1, y0 + Math.ceil(VH / TILE));
+      for (let ty = y0; ty <= y1; ty++)
+        for (let tx = x0; tx <= x1; tx++)
+          drawTile(at(tx, ty), tx * TILE - camX, ty * TILE - camY, tx, ty);
+
+      // y-sorted entities
+      const ents = [];
+      ents.push({ y: SHRINE.y + SHRINE.h + 2, d: drawShrine });
+      ents.push({ y: TORII.baseY + 4, d: drawTorii });
+      ents.push({ y: 25 * TILE + 16, d: drawBarFront });
+      for (const l of lamps) ents.push({ y: l.y + 15, d: () => drawLamp(l) });
+      for (const l of stoneLamps) ents.push({ y: l.y + 12, d: () => drawStoneLamp(l) });
+      for (const s of signs) ents.push({ y: s.y + 15, d: () => drawSign(s) });
+      for (const n of npcs) ents.push({ y: n.y + n.h, d: () => drawNpc(n) });
+      ents.push({ y: player.y + player.h, d: drawPlayer });
+      ents.sort((a, b) => a.y - b.y);
+      for (const e of ents) e.d();
+
+      // night tint then warm glow
+      ctx.fillStyle = 'rgba(8,12,34,0.28)';
+      ctx.fillRect(0, 0, VW, VH);
+      drawGlow();
+
+      // interaction hint
+      if (state === 'play') {
+        const t = nearestTarget();
+        if (t) {
+          const r = t.ref;
+          const hx = Math.round(r.x + (r.w ? r.w / 2 : 8) - camX) - 4;
+          const hy = Math.round(r.y - camY) - 24 + Math.round(Math.sin(frames * 0.12) * 2);
+          R(hx, hy, 9, 9, '#f8f8f8');
+          R(hx + 4, hy + 1, 1, 4, '#0a0a0a');
+          R(hx + 4, hy + 6, 1, 1, '#0a0a0a');
+        }
+      }
+    }
+
+    // ── Main loop (fixed 60Hz timestep, independent of display refresh) ──
+    const STEP = 1000 / 60;
+    let last = performance.now(), acc = 0;
+    function loop(now) {
+      acc += Math.min(100, now - last);
+      last = now;
+      while (acc >= STEP) { update(); acc -= STEP; }
+      ctx.clearRect(0, 0, VW, VH);
+      render();
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(t => { last = t; loop(t); });
+
+    // debug handle (used for QA, harmless in prod)
+    window.__GQ = {
+      warp: (x, y) => { player.x = x; player.y = y; },
+      state: () => state,
+      stamps,
+      start: startGame,
+      player,
+    };
+  }
+</script>

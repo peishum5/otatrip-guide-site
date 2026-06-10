@@ -1,519 +1,56 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import GionQuest from '../components/GionQuest.astro';
 ---
 
 <BaseLayout
-  title="Gion Night Run | OTAtrip Guide"
-  description="A mini browser game set in Kyoto's Gion district. Dodge tourists, collect sake cups, survive the night."
+  title="Gion Night Quest | OTAtrip Guide"
+  description="A tiny open-world RPG set in pixel-art Gion at night. Walk the lantern-lit streets, talk to locals, and collect all three travel stamps."
   canonical="/game"
 >
   <!-- Header -->
   <section class="scanlines bg-nes-black py-10 text-center">
     <div class="relative z-10 max-w-2xl mx-auto px-4">
       <p class="font-pixel text-[0.9rem] text-nes-amber mb-2 rpg-prefix">MINI GAME</p>
-      <h1 class="font-pixel text-nes-white mb-3" style="font-size: clamp(0.8rem, 3vw, 1.5rem);">GION NIGHT RUN</h1>
-      <p class="font-sans text-sm text-gray-400">Dodge tourists &amp; rickshaws. Collect sake. Reach the sake bar.</p>
+      <h1 class="font-pixel text-nes-white mb-3" style="font-size: clamp(0.8rem, 3vw, 1.5rem);">GION NIGHT QUEST</h1>
+      <p class="font-sans text-sm text-gray-400">A tiny open-world Gion. Three locals hold travel stamps — find them all.</p>
     </div>
   </section>
 
   <div class="max-w-4xl mx-auto px-4 py-8">
+    <GionQuest />
 
-    <!-- Game frame -->
-    <div class="relative border-4 border-nes-amber bg-nes-black" style="box-shadow: 8px 8px 0 rgba(255,176,0,0.25);">
+    <!-- Field guide -->
+    <div class="grid sm:grid-cols-3 gap-4 mt-10">
+      {[
+        { icon: '⛩️', title: 'THE MIKO', desc: 'Keeps the night shrine north of the torii gate. Bow politely and she may stamp your book.' },
+        { icon: '🏮', title: 'THE GEIKO', desc: 'Walks Hanamikoji after dark, when the stone street falls quiet. Listen for wooden geta.' },
+        { icon: '🍶', title: 'THE MASTER', desc: 'Pours Fushimi junmai at a tiny bar south of the canal. First cup is on the house.' },
+      ].map(item => (
+        <div class="dialogue-box text-center" style="padding: 1.25rem;">
+          <div class="text-2xl mb-3">{item.icon}</div>
+          <h3 class="font-pixel text-[0.9rem] text-nes-amber mb-3" style="font-size: 0.55rem;">{item.title}</h3>
+          <p class="font-sans text-xs text-gray-400 leading-relaxed">{item.desc}</p>
+        </div>
+      ))}
+    </div>
 
-      <!-- HUD bar -->
-      <div class="flex items-center gap-4 px-4 py-2 border-b-2 border-gray-800">
-        <div class="font-pixel text-[0.9rem] shrink-0">
-          <span class="text-nes-cyan">SCORE </span><span class="text-nes-white" id="score-val">0</span>
-        </div>
-        <!-- Progress bar -->
-        <div class="flex-1 flex items-center gap-2 min-w-0">
-          <span class="font-pixel text-[0.95rem] text-nes-amber shrink-0">🍶BAR</span>
-          <div class="stat-bar-track flex-1">
-            <div id="progress-fill" class="stat-bar-fill" style="width:0%;transition:width 0.15s;"></div>
-          </div>
-          <span class="font-pixel text-[0.95rem] text-gray-500 shrink-0" id="pct-val">0%</span>
-        </div>
-        <div class="font-pixel text-[0.9rem] shrink-0">
-          <span class="text-nes-amber">BEST </span><span class="text-nes-white" id="hi-val">0</span>
-        </div>
-      </div>
-
-      <!-- Canvas -->
-      <div class="relative">
-        <canvas id="gc" style="width:100%;display:block;image-rendering:pixelated;cursor:pointer;touch-action:none;"></canvas>
-
-        <!-- Start overlay -->
-        <div id="start-overlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/80">
-          <p class="font-pixel text-[0.95rem] text-nes-white pixel-cursor mb-4">PRESS SPACE OR TAP TO START</p>
-          <div class="flex flex-wrap justify-center gap-4 font-sans text-xs text-gray-500">
-            <span>🍶 Sake cup = +10 pts</span>
-            <span>👘 Geisha = GAME OVER</span>
-            <span>⛩️ Torii / 🏮 Lantern = GAME OVER</span>
-          </div>
-        </div>
-
-        <!-- Game over overlay -->
-        <div id="over-overlay" style="display:none;" class="absolute inset-0 flex flex-col items-center justify-center bg-black/90">
-          <p class="font-pixel text-nes-red mb-4" style="font-size:clamp(0.7rem,2.5vw,1.4rem);">GAME OVER</p>
-          <p class="font-pixel text-[0.9rem] text-nes-white mb-1">SCORE: <span id="over-score">0</span></p>
-          <p class="font-pixel text-[0.9rem] text-nes-amber mb-6">BEST: <span id="over-hi">0</span></p>
-          <div class="flex flex-col sm:flex-row gap-3 items-center">
-            <button id="retry-btn" class="nes-btn nes-btn-outline">PLAY AGAIN</button>
-            <a href="/tours/gion-sake-walk" class="nes-btn nes-btn-gold">BOOK THE REAL TOUR →</a>
-          </div>
-        </div>
-
-        <!-- Win overlay -->
-        <div id="win-overlay" style="display:none;" class="absolute inset-0 flex flex-col items-center justify-center bg-black/90">
-          <p class="font-pixel text-nes-amber mb-2" style="font-size:clamp(0.6rem,2vw,1.1rem);">★ YOU MADE IT! ★</p>
-          <p class="font-pixel text-[0.9rem] text-nes-green mb-1">ARRIVED AT THE SAKE BAR</p>
-          <p class="font-pixel text-[0.9rem] text-nes-white mt-3 mb-1">SCORE: <span id="win-score">0</span></p>
-          <p class="font-pixel text-[0.9rem] text-nes-amber mb-6">BEST: <span id="win-hi">0</span></p>
-          <div class="flex flex-col sm:flex-row gap-3 items-center">
-            <button id="win-retry-btn" class="nes-btn nes-btn-outline">PLAY AGAIN</button>
-            <a href="/tours/gion-sake-walk" class="nes-btn nes-btn-gold">BOOK THE REAL TOUR →</a>
-          </div>
-        </div>
+    <!-- Real tour CTA -->
+    <div class="text-center mt-12">
+      <p class="font-sans text-sm text-gray-400 mb-5">
+        Beat the quest? The real Gion night walk has actual sake — and zero respawns.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <a href="/tours/gion-sake-walk" class="nes-btn nes-btn-gold">BOOK THE REAL TOUR →</a>
+        <a href="/tours" class="nes-btn nes-btn-outline">SEE ALL TOURS</a>
       </div>
     </div>
 
-    <!-- Controls -->
-    <p class="font-sans text-xs text-gray-600 text-center mt-3">
-      SPACE · ↑ · TAP to jump &nbsp;|&nbsp; Double jump available
-    </p>
-
     <!-- Back -->
     <div class="text-center mt-10">
-      <a href="/tours" class="font-pixel text-[0.9rem] text-nes-amber hover:text-nes-cyan transition-colors">
-        &lt; BACK TO TOURS
+      <a href="/" class="font-pixel text-[0.9rem] text-nes-amber hover:text-nes-cyan transition-colors">
+        &lt; BACK TO TOP
       </a>
     </div>
   </div>
 </BaseLayout>
-
-<script>
-(() => {
-  const canvas = document.getElementById('gc');
-  const ctx    = canvas.getContext('2d');
-  const CW = 800, CH = 220;
-  canvas.width  = CW;
-  canvas.height = CH;
-
-  const GY     = 168;   // top of ground
-  const GR     = 0.47;  // gravity
-  const JV     = -14;   // jump velocity
-  const PW     = 22, PH = 50; // player hitbox
-  const TARGET = 500;   // score to reach the sake bar
-  const HIT_PAD = 9;    // collision forgiveness (larger = easier)
-
-  // ── COLORS ──────────────────────────────────────────────
-  const C = {
-    sky:'#05050e', ground:'#181510', groundEdge:'#252018',
-    face:'#00e5ff', hair:'#1a0800', shirt:'#f0f0f0',
-    pants:'#192040', shoe:'#0a0808',
-    tourist:'#b0a880', tShirt:'#d0c090', tPants:'#808070',
-    rickBody:'#7a3a10', rickDark:'#5a2a08', rickWheel:'#555',
-    sake:'#ffb000', sakeLight:'#ffd040',
-    amber:'#ffb000', red:'#ff2222', cyan:'#00e5ff', green:'#00d800',
-  };
-
-  // ── STARS ───────────────────────────────────────────────
-  const stars = Array.from({length:55}, () => ({
-    x: Math.random()*CW, y: Math.random()*(GY-50),
-    s: Math.random()>.75?2:1, ph: Math.random()*Math.PI*2,
-  }));
-
-  // ── BUILDINGS ───────────────────────────────────────────
-  function makeBuildings(n, xSpan, minW, maxW, minH, maxH) {
-    return Array.from({length:n}, (_,i) => {
-      const w = minW + Math.random()*(maxW-minW);
-      const h = minH + Math.random()*(maxH-minH);
-      const wRows = Math.max(1, Math.floor((h-15)/20));
-      const wCols = Math.max(1, Math.floor((w-12)/18));
-      return {
-        x: i*xSpan + Math.random()*30, w, h, wRows, wCols,
-        wins: Array.from({length:wRows*wCols}, ()=>Math.random()>.4),
-      };
-    });
-  }
-  const farB  = makeBuildings(14, 70,  35, 70,  28, 55);
-  const nearB = makeBuildings( 9, 110, 60, 100, 55, 90);
-  const tiles = Array.from({length:55}, (_,i) => i*18);
-
-  // ── GAME STATE ──────────────────────────────────────────
-  let state = 'waiting'; // 'waiting' | 'playing' | 'gameover' | 'win'
-  let score = 0, hi = +(localStorage.getItem('gion-hi')||0);
-  let spd = 3.5, frame = 0;
-  let obstacles = [], collectibles = [], particles = [];
-  let obstT = 140, collectT = 60;
-
-  // Player — NOTE: w and h are required for collision detection
-  const pl = { x:90, y:GY-PH, vy:0, grounded:true, jumps:0, anim:0, squash:1, w:PW, h:PH };
-
-  // ── UI REFS ─────────────────────────────────────────────
-  const scoreEl      = document.getElementById('score-val');
-  const hiEl         = document.getElementById('hi-val');
-  const pctEl        = document.getElementById('pct-val');
-  const progressEl   = document.getElementById('progress-fill');
-  const startEl      = document.getElementById('start-overlay');
-  const overEl       = document.getElementById('over-overlay');
-  const winEl        = document.getElementById('win-overlay');
-  const overScoreEl  = document.getElementById('over-score');
-  const overHiEl     = document.getElementById('over-hi');
-  const winScoreEl   = document.getElementById('win-score');
-  const winHiEl      = document.getElementById('win-hi');
-  document.getElementById('retry-btn').addEventListener('click', startGame);
-  document.getElementById('win-retry-btn').addEventListener('click', startGame);
-
-  // ── INPUT ───────────────────────────────────────────────
-  function handleInput() {
-    if (state==='waiting') startGame();
-    else if (state==='playing') doJump();
-    else if (state==='gameover'||state==='win') startGame();
-  }
-  document.addEventListener('keydown', e => {
-    if (e.code==='Space'||e.code==='ArrowUp') { e.preventDefault(); handleInput(); }
-  });
-  canvas.addEventListener('pointerdown', e => { e.preventDefault(); handleInput(); });
-  startEl.addEventListener('pointerdown', e => { e.preventDefault(); handleInput(); });
-
-  function doJump() {
-    if (pl.jumps < 2) {
-      pl.vy = JV * (pl.jumps===1 ? 0.82 : 1);
-      pl.grounded = false;
-      pl.jumps++;
-    }
-  }
-
-  // ── GAME CONTROL ────────────────────────────────────────
-  function startGame() {
-    score=0; spd=3.5; frame=0;
-    obstacles=[]; collectibles=[]; particles=[];
-    obstT=140; collectT=60;
-    Object.assign(pl, {y:GY-PH, vy:0, grounded:true, jumps:0, anim:0, squash:1, w:PW, h:PH});
-    state='playing';
-    startEl.style.display = 'none';
-    overEl.style.display='none';
-    winEl.style.display='none';
-    updateHUD();
-  }
-
-  function endGame() {
-    state='gameover';
-    if (score>hi) { hi=score; localStorage.setItem('gion-hi',hi); }
-    overScoreEl.textContent=score;
-    overHiEl.textContent=hi;
-    overEl.style.display='flex';
-  }
-
-  function winGame() {
-    state='win';
-    if (score>hi) { hi=score; localStorage.setItem('gion-hi',hi); }
-    winScoreEl.textContent=score;
-    winHiEl.textContent=hi;
-    winEl.style.display='flex';
-  }
-
-  function updateHUD() {
-    scoreEl.textContent = score;
-    hiEl.textContent    = Math.max(score, hi);
-    const pct = Math.min(Math.round(score / TARGET * 100), 100);
-    progressEl.style.width = pct + '%';
-    pctEl.textContent = pct + '%';
-  }
-
-  // ── SPAWN ────────────────────────────────────────────────
-  function spawnObs() {
-    const r = Math.random();
-    if (r < 0.55)
-      obstacles.push({x:CW+20, y:GY-52, w:18, h:52, type:'geisha', af:0});
-    else if (r < 0.80)
-      obstacles.push({x:CW+20, y:GY-65, w:56, h:65, type:'torii'});
-    else
-      obstacles.push({x:CW+20, y:GY-42, w:28, h:42, type:'lantern'});
-  }
-
-  function spawnCollect() {
-    const yOff = 38 + Math.random()*50;
-    collectibles.push({x:CW+20, y:GY-yOff-20, w:18, h:20, collected:false, bob:Math.random()*Math.PI*2});
-  }
-
-  // Axis-aligned bounding box collision with optional padding
-  function hits(a, b, p=HIT_PAD) {
-    return (
-      a.x + p       < b.x + b.w - p &&
-      a.x + a.w - p > b.x + p       &&
-      a.y + p       < b.y + b.h - p &&
-      a.y + a.h - p > b.y + p
-    );
-  }
-
-  // ── UPDATE ──────────────────────────────────────────────
-  function update() {
-    if (state !== 'playing') return;
-    frame++;
-    spd = 3 + Math.min(score / 900, 2.2);
-
-    // Physics
-    pl.vy += GR;
-    pl.y  += pl.vy;
-    if (pl.y >= GY - PH) {
-      if (!pl.grounded && pl.vy > 4) pl.squash = 0.7;
-      pl.y = GY - PH; pl.vy = 0; pl.grounded = true; pl.jumps = 0;
-    }
-    pl.squash += (1 - pl.squash) * 0.2;
-    if (pl.grounded && frame % 8 === 0) pl.anim = (pl.anim + 1) % 4;
-
-    // Score (time-based)
-    if (frame % 6 === 0) { score++; updateHUD(); }
-
-    // Check win
-    if (score >= TARGET) { winGame(); return; }
-
-    // Spawn timers
-    obstT -= spd;
-    if (obstT <= 0) { spawnObs(); obstT = 140 + Math.random() * 140; }
-    collectT -= spd;
-    if (collectT <= 0) { spawnCollect(); collectT = 58 + Math.random() * 60; }
-
-    // Move
-    for (const o of obstacles)    { o.x -= spd; if (o.af !== undefined && frame % 8 === 0) o.af = (o.af + 1) % 4; }
-    for (const c of collectibles) { c.x -= spd; c.bob += 0.07; }
-    for (const p of particles)    { p.x += p.vx; p.y += p.vy; p.vy += 0.15; p.life--; }
-
-    obstacles    = obstacles.filter(o => o.x > -80);
-    collectibles = collectibles.filter(c => c.x > -30 && !c.collected);
-    particles    = particles.filter(p => p.life > 0);
-
-    // Scroll bg
-    for (const b of farB)  { b.x -= spd*.25; if (b.x+b.w < -5) b.x += 14*70 + Math.random()*30; }
-    for (const b of nearB) { b.x -= spd*.55; if (b.x+b.w < -5) b.x += 9*110 + Math.random()*40; }
-    for (let i = 0; i < tiles.length; i++) { tiles[i] -= spd; if (tiles[i] < -18) tiles[i] += 55*18; }
-
-    // Collisions — obstacles
-    for (const o of obstacles) {
-      if (hits(pl, o)) { endGame(); return; }
-    }
-    // Collisions — collectibles
-    for (const c of collectibles) {
-      if (!c.collected && hits(pl, c, 1)) {
-        c.collected = true;
-        score += 10;
-        for (let i = 0; i < 10; i++) particles.push({
-          x:c.x+9, y:c.y+10,
-          vx:(Math.random()-.5)*4.5, vy:-Math.random()*4.5-1,
-          size:3, color:C.sake, life:22,
-        });
-        updateHUD();
-      }
-    }
-  }
-
-  // ── DRAW ────────────────────────────────────────────────
-  function bx(x, y, w, h, col) { ctx.fillStyle=col; ctx.fillRect(~~x, ~~y, w, h); }
-
-  function drawBg() {
-    bx(0, 0, CW, GY, C.sky);
-    for (const s of stars) {
-      const a = (0.6 + 0.4*Math.sin(s.ph + frame*.015)).toFixed(2);
-      ctx.fillStyle = `rgba(248,248,248,${a})`;
-      ctx.fillRect(~~s.x, ~~s.y, s.s, s.s);
-    }
-    for (const b of farB) {
-      bx(b.x, GY-b.h, b.w, b.h, '#0a0a16');
-      let idx=0;
-      for (let r=0; r<b.wRows; r++) for (let c=0; c<b.wCols; c++) {
-        const wx=b.x+6+c*16, wy=GY-b.h+8+r*18;
-        if (wx+8 < b.x+b.w-4 && b.wins[idx]) bx(wx, wy, 8, 6, '#ffb00042');
-        idx++;
-      }
-    }
-    for (const b of nearB) {
-      bx(b.x, GY-b.h, b.w, b.h, '#0e0c1c');
-      bx(b.x-3, GY-b.h, b.w+6, 5, '#0a0818');
-      let idx=0;
-      for (let r=0; r<b.wRows; r++) for (let c=0; c<b.wCols; c++) {
-        const wx=b.x+8+c*18, wy=GY-b.h+12+r*22;
-        if (wx+10 < b.x+b.w-6 && b.wins[idx]) {
-          bx(wx, wy, 10, 8, '#ffb00058');
-          bx(wx+1, wy+1, 8, 2, '#ffd04030');
-        }
-        idx++;
-      }
-    }
-  }
-
-  function drawGround() {
-    bx(0, GY, CW, CH-GY, C.ground);
-    bx(0, GY, CW, 3, C.groundEdge);
-    ctx.strokeStyle='#2a2620'; ctx.lineWidth=1;
-    for (const tx of tiles) {
-      ctx.strokeRect(~~tx+.5, GY+4.5, 16, 10);
-      ctx.strokeRect(~~tx+9.5, GY+14.5, 16, 10);
-    }
-  }
-
-  function drawPlayer() {
-    const px = ~~pl.x;
-    const sy = pl.squash;
-    const sh = ~~(PH*sy), sw = ~~(PW*(2-sy));
-    const sox = ~~((PW-sw)/2);
-    const py = ~~(pl.y + PH - sh);
-    const af = pl.anim % 4;
-    const ox = px + sox;
-
-    ctx.fillStyle = 'rgba(0,0,0,0.35)';
-    ctx.beginPath(); ctx.ellipse(px+PW/2, GY+3, PW/2+2, 3.5, 0, 0, Math.PI*2); ctx.fill();
-
-    bx(ox+3, py, sw-4, ~~(5*sy), C.hair);
-    bx(ox+2, py+~~(4*sy), sw-2, ~~(10*sy), C.face);
-    bx(ox+sw-8, py+~~(6*sy), 2, 2, '#0a0820');
-    bx(ox+1, py+~~(14*sy), sw-1, ~~(9*sy), C.shirt);
-    bx(ox+2, py+~~(23*sy), sw-3, ~~(10*sy), C.pants);
-
-    const lp = [{l:-3,r:3},{l:0,r:0},{l:3,r:-3},{l:0,r:0}][af];
-    const ly=py+~~(33*sy), lh=~~(13*sy), shh=~~(4*sy), hw=~~(sw/2)-2;
-    bx(ox+2+lp.l, ly, hw, lh, C.pants);
-    bx(ox+1+lp.l, ly+lh, hw+1, shh, C.shoe);
-    bx(ox+~~(sw/2)+1+lp.r, ly, hw, lh, C.pants);
-    bx(ox+~~(sw/2)+lp.r,   ly+lh, hw+1, shh, C.shoe);
-  }
-
-  function drawObs() {
-    for (const o of obstacles) {
-      const ox = ~~o.x;
-      const oy = ~~o.y;
-      if (o.type === 'geisha') {
-        // Kanzashi — 2本
-        bx(ox+6,  oy-10, 2,  10, '#c8a020');
-        bx(ox+3,  oy-10, 8,   4, '#ff77bb');
-        bx(ox+4,  oy- 8, 6,   3, '#ffaadd');
-        bx(ox+12, oy- 7, 2,   7, '#c8a020');
-        bx(ox+10, oy- 7, 5,   3, '#ff99cc');
-        // 島田まげ (shimada — 横に広いお団子)
-        bx(ox-1,  oy+ 0, 20,  4, '#0a0015');
-        bx(ox-2,  oy+ 4, 22,  5, '#150020');
-        bx(ox+ 0, oy+ 9, 18,  3, '#0a0015');
-        // 白塗り顔 (oshiroi)
-        bx(ox+ 2, oy+ 7, 14, 10, '#f5ede0');
-        // 目 + 目尻の紅
-        bx(ox+ 3, oy+ 9,  2,  2, '#1a0030');
-        bx(ox+10, oy+ 9,  2,  2, '#1a0030');
-        bx(ox+ 2, oy+ 8,  4,  1, '#cc1133');
-        bx(ox+ 9, oy+ 8,  4,  1, '#cc1133');
-        // 紅 (beni) 唇
-        bx(ox+ 5, oy+14,  6,  2, '#cc1133');
-        bx(ox+ 6, oy+14,  4,  3, '#dd2244');
-        // 白い衿 + 赤い下衿
-        bx(ox+ 3, oy+17,  4, 10, '#f5ede0');
-        bx(ox+11, oy+17,  4, 10, '#f5ede0');
-        bx(ox+ 4, oy+18,  3,  9, '#cc1133');
-        // 振袖 (furisode) 本体
-        bx(ox+ 1, oy+17, 16, 14, '#8b1a3a');
-        bx(ox- 1, oy+20,  4, 10, '#6b0a2a');
-        bx(ox+15, oy+20,  4, 10, '#6b0a2a');
-        bx(ox+ 2, oy+22, 13,  3, '#a02545');
-        // 帯 (obi)
-        bx(ox+ 2, oy+31, 14,  8, '#c89020');
-        bx(ox+ 3, oy+32, 12,  3, '#f0c040');
-        bx(ox+ 3, oy+36, 12,  2, '#a07010');
-        bx(ox+14, oy+29,  5,  6, '#d4a030');
-        // 裾 (skirt)
-        bx(ox+ 0, oy+39, 18, 13, '#6b0a2a');
-        bx(ox+ 1, oy+40, 16,  3, '#7a1035');
-        // 白足袋 + 歩行アニメ
-        const laf = o.af || 0;
-        const lp = [{l:-2,r:3},{l:-1,r:1},{l:2,r:-3},{l:1,r:-1}][laf % 4];
-        bx(ox+ 1+lp.l, oy+48,  7, 4, '#f0ece0');
-        bx(ox+ 9+lp.r, oy+48,  7, 4, '#f0ece0');
-      } else if (o.type === 'torii') {
-        // Left pillar
-        bx(ox+0,  oy+14, 8, 51, '#cc3300');
-        bx(ox+1,  oy+14, 5, 51, '#dd4411');
-        // Right pillar
-        bx(ox+48, oy+14, 8, 51, '#cc3300');
-        bx(ox+49, oy+14, 5, 51, '#dd4411');
-        // Top bar (kasagi)
-        bx(ox-4,  oy+0,  64, 9, '#cc3300');
-        bx(ox-2,  oy+1,  60, 6, '#ee5522');
-        // Second bar (nuki)
-        bx(ox+3,  oy+12, 50, 6, '#cc3300');
-        bx(ox+4,  oy+13, 48, 4, '#dd4411');
-        // Base stones
-        bx(ox-3,  oy+63, 14, 4, '#888878');
-        bx(ox+45, oy+63, 14, 4, '#888878');
-      } else {
-        // Stone lantern (ishidoro)
-        // Cap (kasagata)
-        bx(ox+0,  oy+0,  28, 5, '#888878');
-        bx(ox+2,  oy+5,  24, 3, '#777768');
-        // Light box
-        bx(ox+6,  oy+8,  16, 14, '#998868');
-        bx(ox+8,  oy+10, 12, 10, '#ccb038');
-        bx(ox+10, oy+11,  8,  7, '#ffcc44');
-        // Middle ring
-        bx(ox+8,  oy+22, 12,  5, '#888878');
-        // Column
-        bx(ox+10, oy+27,  8, 10, '#777768');
-        // Base
-        bx(ox+2,  oy+37, 24,  5, '#888878');
-      }
-    }
-  }
-
-  function drawCollects() {
-    for (const c of collectibles) {
-      if (c.collected) continue;
-      const cx = ~~c.x, cy = ~~(c.y + Math.sin(c.bob)*4);
-      ctx.fillStyle = 'rgba(255,176,0,0.12)';
-      ctx.beginPath(); ctx.ellipse(cx+9, cy+12, 13, 13, 0, 0, Math.PI*2); ctx.fill();
-      bx(cx+3, cy,    12,  3, C.sakeLight);
-      bx(cx+2, cy+3,  14, 11, C.sake);
-      bx(cx+3, cy+14, 12,  3, C.sakeLight);
-      bx(cx+5, cy+17,  8,  2, '#cc8800');
-      bx(cx+3, cy+3,  12,  3, '#ffe566');
-    }
-  }
-
-  function drawParticles() {
-    for (const p of particles) {
-      ctx.globalAlpha = Math.max(0, p.life/25);
-      ctx.fillStyle = p.color;
-      ctx.fillRect(~~p.x, ~~p.y, p.size, p.size);
-    }
-    ctx.globalAlpha = 1;
-  }
-
-  // Goal lantern that appears near end of run
-  function drawGoalHint() {
-    if (score < TARGET * 0.7) return;
-    const pct = (score - TARGET*0.7) / (TARGET*0.3);
-    const gx = CW - 60 + (1-pct)*100;
-    // Lantern
-    bx(gx, GY-90, 4, 60, '#8b4513');
-    bx(gx-8, GY-88, 20, 28, '#c84820');
-    bx(gx-4, GY-92, 12, 6, '#8b4513');
-    bx(gx+1, GY-66, 6, 6, '#ffb000');
-    ctx.fillStyle = 'rgba(255,100,0,0.15)';
-    ctx.beginPath(); ctx.ellipse(gx+4, GY-74, 22, 22, 0, 0, Math.PI*2); ctx.fill();
-  }
-
-  // ── MAIN LOOP ────────────────────────────────────────────
-  function loop() {
-    update();
-    ctx.clearRect(0, 0, CW, CH);
-    drawBg();
-    drawGround();
-    drawCollects();
-    drawGoalHint();
-    drawObs();
-    drawPlayer();
-    drawParticles();
-    requestAnimationFrame(loop);
-  }
-
-  hiEl.textContent = hi;
-  loop();
-})();
-</script>
