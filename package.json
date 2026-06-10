@@ -6,6 +6,7 @@
     "dev": "astro dev",
     "build": "astro build --force",
     "preview": "astro preview",
+    "check": "astro check",
     "astro": "astro",
     "ga4:analyze": "node scripts/ga4/analyze.mjs",
     "ga4:daily": "node scripts/ga4/analyze.mjs --granularity day --periods 14",
@@ -15,9 +16,14 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
-"@astrojs/vercel": "^9.0.4",
+    "@astrojs/vercel": "^9.0.4",
     "@tailwindcss/vite": "^4.2.1",
     "astro": "^5.17.1",
     "tailwindcss": "^4.2.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "sharp": "^0.34.5",
+    "typescript": "^5.9.3"
   }
 }
