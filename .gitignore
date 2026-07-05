@@ -6,3 +6,4 @@ dist/
 .ga4-reports/
 .DS_Store
 .vercel
+.claude/
