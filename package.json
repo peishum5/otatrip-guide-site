@@ -12,7 +12,8 @@
     "ga4:daily": "node scripts/ga4/analyze.mjs --granularity day --periods 14",
     "ga4:weekly": "node scripts/ga4/analyze.mjs --granularity week --periods 8",
     "ga4:monthly": "node scripts/ga4/analyze.mjs --granularity month --periods 6",
-    "ga4:overview": "node scripts/ga4/analyze.mjs --granularity day,week,month"
+    "ga4:overview": "node scripts/ga4/analyze.mjs --granularity day,week,month",
+    "ga4:report": "node scripts/ga4/weekly-report.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
