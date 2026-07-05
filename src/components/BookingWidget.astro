@@ -1,12 +1,13 @@
 ---
+import { BOKUN_CHANNEL_UUID } from '../config/site';
+
 interface Props {
   /** e.g. "experience/901507" or "experience-calendar/1115233" */
   widgetPath: string;
 }
 const { widgetPath } = Astro.props;
 
-const channelUUID = 'f23bdb2c-1b09-450d-bc03-a0a0b23700e9';
-const widgetSrc = `https://widgets.bokun.io/online-sales/${channelUUID}/${widgetPath}`;
+const widgetSrc = `https://widgets.bokun.io/online-sales/${BOKUN_CHANNEL_UUID}/${widgetPath}`;
 ---
 
 <div class="booking-widget my-8">

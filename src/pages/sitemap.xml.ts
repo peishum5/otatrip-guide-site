@@ -1,6 +1,9 @@
 import { getCollection } from 'astro:content';
 import { getBlogCategory, getCategoryHref } from '../utils/blog';
 
+// NOTE: When adding a new top-level page under src/pages, add its route here
+// so it is included in the sitemap. Blog posts and category pages are derived
+// automatically below from the content collection.
 const STATIC_ROUTES = [
   '/',
   '/tours',

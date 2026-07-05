@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import BookingWidget from '../../components/BookingWidget.astro';
 import GroupCTA from '../../components/GroupCTA.astro';
 import ReviewsSection from '../../components/ReviewsSection.astro';
+import { BOKUN_LOADER_SRC } from '../../config/site';
 
 const highlights = [
   'Visit 2–3 local izakayas in Pontocho & Kiyamachi',
@@ -52,7 +53,7 @@ const faqs = [
   canonical="/tours/izakaya-hopping"
 >
   <Fragment slot="head">
-    <script is:inline type="text/javascript" src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=f23bdb2c-1b09-450d-bc03-a0a0b23700e9" async></script>
+    <script is:inline type="text/javascript" src={BOKUN_LOADER_SRC} async></script>
   </Fragment>
 
   <!-- Hero -->

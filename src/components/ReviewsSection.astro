@@ -1,4 +1,6 @@
 ---
+import { TRIPADVISOR_URL } from '../config/site';
+
 const reviews = [
   {
     name: 'Kyoko O.',
@@ -77,7 +79,7 @@ const reviews = [
   <!-- TA link -->
   <div class="text-center mt-8">
     <a
-      href="https://www.tripadvisor.com/Attraction_Review-g298564-d27525194-Reviews-OTAtrip_Guide-Kyoto_Kyoto_Prefecture_Kinki.html"
+      href={TRIPADVISOR_URL}
       target="_blank"
       rel="noopener noreferrer"
       class="nes-btn nes-btn-outline"
