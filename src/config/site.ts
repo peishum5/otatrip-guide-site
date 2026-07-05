@@ -17,6 +17,9 @@ export const BOKUN_CHANNEL_UUID = 'f23bdb2c-1b09-450d-bc03-a0a0b23700e9';
 export const BOKUN_LOADER_SRC =
   `https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=${BOKUN_CHANNEL_UUID}`;
 
+/** GA4 measurement ID. Referenced by Analytics.astro. Do not change. */
+export const GA4_MEASUREMENT_ID = 'G-7NL28Z41JD';
+
 /** TripAdvisor review page. */
 export const TRIPADVISOR_URL =
   'https://www.tripadvisor.com/Attraction_Review-g298564-d27525194-Reviews-OTAtrip_Guide-Kyoto_Kyoto_Prefecture_Kinki.html';

@@ -1,0 +1,55 @@
+---
+/**
+ * GA4 tag + site-wide behavior tracking.
+ *
+ * - The gtag snippet only loads in production builds (same behavior as before).
+ * - `window.track(name, params)` is the single helper every component uses;
+ *   in dev builds it logs to the console instead of sending to GA4.
+ * - One delegated click listener covers mailto links, outbound links, and any
+ *   element carrying a `data-track-label` attribute — new pages get tracking
+ *   for free without per-page wiring.
+ */
+import { GA4_MEASUREMENT_ID } from '../config/site';
+
+const isProd = import.meta.env.PROD;
+---
+
+{isProd && (
+  <>
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA4_MEASUREMENT_ID}`} is:inline></script>
+    <script is:inline define:vars={{ GA4_MEASUREMENT_ID }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', GA4_MEASUREMENT_ID);
+    </script>
+  </>
+)}
+
+<script is:inline define:vars={{ debug: !isProd }}>
+  window.track = function (name, params) {
+    if (debug) console.debug('[track]', name, params || {});
+    if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+  };
+
+  // Capture phase so events fire before link navigation starts.
+  document.addEventListener('click', function (event) {
+    var target = event.target instanceof Element ? event.target : null;
+    if (!target) return;
+
+    var labeled = target.closest('[data-track-label]');
+    if (labeled) {
+      window.track('cta_click', { link_label: labeled.getAttribute('data-track-label') });
+    }
+
+    var link = target.closest('a[href]');
+    if (!link) return;
+    var href = link.getAttribute('href') || '';
+    if (href.indexOf('mailto:') === 0) {
+      window.track('contact_click', { link_location: location.pathname });
+    } else if (/^https?:/.test(link.href) && link.hostname && link.hostname !== location.hostname) {
+      window.track('outbound_click', { link_domain: link.hostname });
+    }
+  }, true);
+</script>
