@@ -1,4 +1,5 @@
 ---
+import { CONTACT_EMAIL } from '../config/site';
 ---
 
 <footer class="bg-nes-black border-t border-gray-800 mt-16">
@@ -58,9 +59,9 @@
             <span class="text-nes-amber opacity-40">&rsaquo;</span> Based in Kyoto, Japan
           </li>
           <li>
-            <a href="mailto:kyoto.otatrip.guide@gmail.com"
+            <a href={`mailto:${CONTACT_EMAIL}`}
               class="font-pixel text-gray-600 hover:text-nes-amber transition-colors flex items-center gap-2" style="font-size: 0.45rem;">
-              <span class="text-nes-amber opacity-40">&rsaquo;</span> kyoto.otatrip.guide@gmail.com
+              <span class="text-nes-amber opacity-40">&rsaquo;</span> {CONTACT_EMAIL}
             </a>
           </li>
           <li class="pt-2">

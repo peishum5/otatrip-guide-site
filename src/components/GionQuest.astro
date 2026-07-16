@@ -50,7 +50,7 @@
         <p class="font-sans text-xs text-gray-400 max-w-sm">The real Gion at night is even better — lanterns, alleys, and sake bars only locals know.</p>
         <div class="flex flex-col sm:flex-row gap-3 items-center mt-1">
           <button class="gq-retry nes-btn nes-btn-outline">PLAY AGAIN</button>
-          <a href="/tours/gion-sake-walk" class="nes-btn nes-btn-gold">BOOK THE REAL TOUR →</a>
+          <a href="/tours/gion-sake-walk" class="nes-btn nes-btn-gold" data-track-label="game_book_tour">BOOK THE REAL TOUR →</a>
         </div>
         <button class="gq-continue font-pixel text-gray-500 hover:text-nes-cyan transition-colors mt-1" style="font-size:0.5rem;">CONTINUE WALKING ›</button>
       </div>
@@ -450,6 +450,7 @@
       questDone = true;
       state = 'done';
       const secs = Math.max(1, Math.floor(playFrames / 60));
+      window.track?.('game_complete', { time_seconds: secs });
       elDoneTime.textContent = fmt(secs);
       const isRecord = !best || secs < best;
       if (isRecord) { best = secs; localStorage.setItem('gq-best', String(best)); refreshBest(); }
@@ -538,6 +539,7 @@
     $('.gq-continue').addEventListener('click', () => { elDone.classList.remove('show'); state = 'play'; wrap.focus(); });
 
     function startGame() {
+      window.track?.('game_start');
       audio();
       elTitle.style.display = 'none';
       wrap.focus();

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { CONTACT_EMAIL } from '../config/site';
 ---
 
 <BaseLayout
@@ -93,12 +94,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           We'll get back to you within 24 hours.
         </p>
         <a
-          href="mailto:kyoto.otatrip.guide@gmail.com?subject=Group%20Tour%20Inquiry"
+          href={`mailto:${CONTACT_EMAIL}?subject=Group%20Tour%20Inquiry`}
           class="nes-btn nes-btn-gold w-full text-center block"
         >
           EMAIL US NOW
         </a>
-        <p class="font-sans text-xs text-gray-600 text-center mt-4">kyoto.otatrip.guide@gmail.com</p>
+        <p class="font-sans text-xs text-gray-600 text-center mt-4">{CONTACT_EMAIL}</p>
       </div>
     </section>
 

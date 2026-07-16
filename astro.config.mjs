@@ -9,7 +9,9 @@ export default defineConfig({
   site: 'https://otatrip.guide',
   integrations: [mdx()],
   output: 'static',
-  adapter: vercel(),
+  adapter: vercel({
+    webAnalytics: { enabled: true },
+  }),
   vite: {
     plugins: [tailwindcss()],
   },

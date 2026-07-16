@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Analytics from '../components/Analytics.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -90,18 +91,8 @@ const fullTitle = title.includes('OTA Trip Guide') ? title : `${title} | OTA Tri
   <!-- Page-specific head injections (e.g. Bokun widget script) -->
   <slot name="head" />
 
-  <!-- Google Analytics 4 -->
-  {import.meta.env.PROD && (
-    <>
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-7NL28Z41JD" is:inline></script>
-      <script is:inline>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-7NL28Z41JD');
-      </script>
-    </>
-  )}
+  <!-- Google Analytics 4 + behavior tracking -->
+  <Analytics />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />

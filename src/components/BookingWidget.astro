@@ -1,17 +1,61 @@
 ---
+import { BOKUN_CHANNEL_UUID } from '../config/site';
+
 interface Props {
   /** e.g. "experience/901507" or "experience-calendar/1115233" */
   widgetPath: string;
 }
 const { widgetPath } = Astro.props;
 
-const channelUUID = 'f23bdb2c-1b09-450d-bc03-a0a0b23700e9';
-const widgetSrc = `https://widgets.bokun.io/online-sales/${channelUUID}/${widgetPath}`;
+const widgetSrc = `https://widgets.bokun.io/online-sales/${BOKUN_CHANNEL_UUID}/${widgetPath}`;
 ---
 
-<div class="booking-widget my-8">
+<div class="booking-widget my-8" data-widget-path={widgetPath}>
   <div class="bokunWidget" data-src={widgetSrc}></div>
   <noscript>
     <p class="font-pixel text-[1rem] text-nes-red p-4">Please enable javascript in your browser to book</p>
   </noscript>
 </div>
+
+<script>
+  // Booking happens inside Bokun's iframe, so from our side we measure:
+  // - booking_widget_view: the widget scrolled into view (once per page)
+  // - booking_widget_engage: the visitor clicked/focused into the widget (once per page)
+  const widgets = document.querySelectorAll<HTMLElement>('.booking-widget');
+
+  const io = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      io.unobserve(entry.target);
+      window.track?.('booking_widget_view', {
+        widget_path: (entry.target as HTMLElement).dataset.widgetPath,
+      });
+    }
+  }, { threshold: 0.25 });
+  widgets.forEach((widget) => io.observe(widget));
+
+  let engaged = false;
+  const engage = (widget: HTMLElement, method: string) => {
+    if (engaged) return;
+    engaged = true;
+    window.track?.('booking_widget_engage', {
+      widget_path: widget.dataset.widgetPath,
+      method,
+    });
+  };
+
+  // Clicking into a cross-origin iframe fires no click event; instead the
+  // window loses focus and the iframe becomes the active element.
+  window.addEventListener('blur', () => {
+    const active = document.activeElement;
+    if (active instanceof HTMLIFrameElement) {
+      const widget = active.closest<HTMLElement>('.booking-widget');
+      if (widget) engage(widget, 'iframe_focus');
+    }
+  });
+
+  // Fallback for clicks on widget UI rendered outside the iframe.
+  widgets.forEach((widget) => {
+    widget.addEventListener('click', () => engage(widget, 'click'), true);
+  });
+</script>

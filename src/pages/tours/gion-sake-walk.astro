@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import BookingWidget from '../../components/BookingWidget.astro';
 import GroupCTA from '../../components/GroupCTA.astro';
 import ReviewsSection from '../../components/ReviewsSection.astro';
+import { BOKUN_LOADER_SRC } from '../../config/site';
 
 const highlights = [
   'Walk the iconic stone-paved alleys of Gion and Higashiyama',
@@ -73,7 +74,7 @@ const photos = [
   ogImage="/images/tours/gion/hero.jpg"
 >
   <Fragment slot="head">
-    <script is:inline type="text/javascript" src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=f23bdb2c-1b09-450d-bc03-a0a0b23700e9" async></script>
+    <script is:inline type="text/javascript" src={BOKUN_LOADER_SRC} async></script>
   </Fragment>
 
   <!-- Hero -->
@@ -143,7 +144,7 @@ const photos = [
             class={`overflow-hidden border border-gray-800 cursor-zoom-in group${photo.tall ? ' row-span-2' : ''}`}
             style="touch-action:manipulation"
             data-lb-index={i}
-            aria-label={`拡大: ${photo.alt}`}
+            aria-label={`Enlarge: ${photo.alt}`}
           >
             <img
               src={photo.src}
@@ -163,7 +164,7 @@ const photos = [
       style="display:none"
       role="dialog"
       aria-modal="true"
-      aria-label="拡大写真"
+      aria-label="Enlarged photo"
     >
       <button id="lb-close" type="button" class="absolute top-4 right-5 font-pixel text-[0.9rem] text-nes-amber hover:text-nes-white z-10" style="touch-action:manipulation">[ X ]</button>
       <button id="lb-prev" type="button" class="absolute left-3 font-pixel text-[1.2rem] text-nes-cyan hover:text-nes-white z-10 px-2 py-4" style="touch-action:manipulation">◀</button>
