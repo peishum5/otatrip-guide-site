@@ -5,15 +5,15 @@ import GionQuest from '../components/GionQuest.astro';
 
 <BaseLayout
   title="Gion Night Quest | OTAtrip Guide"
-  description="A tiny open-world RPG set in pixel-art Gion at night. Walk the lantern-lit streets, talk to locals, and collect all three travel stamps."
+  description="A tiny retro mini-game set in pixel-art Gion at night. Walk the lantern-lit streets, talk to locals, and collect all three travel stamps."
   canonical="/game"
 >
   <!-- Header -->
-  <section class="scanlines bg-nes-black py-10 text-center">
+  <section class="scanlines bg-washi border-b border-washi-edge py-10 text-center">
     <div class="relative z-10 max-w-2xl mx-auto px-4">
-      <p class="font-pixel text-[0.9rem] text-nes-amber mb-2 rpg-prefix">MINI GAME</p>
-      <h1 class="font-pixel text-nes-white mb-3" style="font-size: clamp(0.8rem, 3vw, 1.5rem);">GION NIGHT QUEST</h1>
-      <p class="font-sans text-sm text-gray-400">A tiny open-world Gion. Three locals hold travel stamps — find them all.</p>
+      <p class="font-display text-sm text-ai tracking-widest mb-2 rpg-prefix">Mini Game</p>
+      <h1 class="font-display text-3xl md:text-4xl font-bold text-sumi mb-3">Gion Night Quest</h1>
+      <p class="font-sans text-sm text-sumi-soft">Our 8-bit love letter to Gion. Three locals hold travel stamps — find them all.</p>
     </div>
   </section>
 
@@ -23,33 +23,33 @@ import GionQuest from '../components/GionQuest.astro';
     <!-- Field guide -->
     <div class="grid sm:grid-cols-3 gap-4 mt-10">
       {[
-        { icon: '⛩️', title: 'THE MIKO', desc: 'Keeps the night shrine north of the torii gate. Bow politely and she may stamp your book.' },
-        { icon: '🏮', title: 'THE GEIKO', desc: 'Walks Hanamikoji after dark, when the stone street falls quiet. Listen for wooden geta.' },
-        { icon: '🍶', title: 'THE MASTER', desc: 'Pours Fushimi junmai at a tiny bar south of the canal. First cup is on the house.' },
+        { icon: '⛩️', title: 'The Miko', desc: 'Keeps the night shrine north of the torii gate. Bow politely and she may stamp your book.' },
+        { icon: '🏮', title: 'The Geiko', desc: 'Walks Hanamikoji after dark, when the stone street falls quiet. Listen for wooden geta.' },
+        { icon: '🍶', title: 'The Master', desc: 'Pours Fushimi junmai at a tiny bar south of the canal. First cup is on the house.' },
       ].map(item => (
-        <div class="dialogue-box text-center" style="padding: 1.25rem;">
+        <div class="dialogue-box text-center">
           <div class="text-2xl mb-3">{item.icon}</div>
-          <h3 class="font-pixel text-[0.9rem] text-nes-amber mb-3" style="font-size: 0.55rem;">{item.title}</h3>
-          <p class="font-sans text-xs text-gray-400 leading-relaxed">{item.desc}</p>
+          <h3 class="font-display text-base font-bold text-sumi mb-3">{item.title}</h3>
+          <p class="font-sans text-xs text-sumi-soft leading-relaxed">{item.desc}</p>
         </div>
       ))}
     </div>
 
     <!-- Real tour CTA -->
     <div class="text-center mt-12">
-      <p class="font-sans text-sm text-gray-400 mb-5">
+      <p class="font-sans text-sm text-sumi-soft mb-5">
         Beat the quest? The real Gion night walk has actual sake — and zero respawns.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <a href="/tours/gion-sake-walk" class="nes-btn nes-btn-gold">BOOK THE REAL TOUR →</a>
-        <a href="/tours" class="nes-btn nes-btn-outline">SEE ALL TOURS</a>
+        <a href="/tours/gion-sake-walk" class="nes-btn nes-btn-gold">Book the Real Tour →</a>
+        <a href="/tours" class="nes-btn nes-btn-outline">See All Tours</a>
       </div>
     </div>
 
     <!-- Back -->
     <div class="text-center mt-10">
-      <a href="/" class="font-pixel text-[0.9rem] text-nes-amber hover:text-nes-cyan transition-colors">
-        &lt; BACK TO TOP
+      <a href="/" class="font-display text-sm text-ai hover:text-shu transition-colors">
+        &larr; Back to Top
       </a>
     </div>
   </div>

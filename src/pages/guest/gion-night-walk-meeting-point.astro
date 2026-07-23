@@ -36,25 +36,25 @@ const missedSteps = [
   canonical="/guest/gion-night-walk-meeting-point"
   noIndex={true}
 >
-  <section class="border-b border-gray-800 bg-nes-black">
+  <section class="border-b border-washi-edge bg-washi-deep">
     <div class="mx-auto max-w-3xl px-4 py-14 md:py-18">
-      <p class="mb-3 font-pixel text-[0.85rem] text-nes-cyan">GUEST INFO</p>
-      <h1 class="mb-4 font-sans text-3xl font-bold leading-tight text-nes-white md:text-4xl">
+      <p class="mb-3 font-display text-sm tracking-[0.15em] text-ai">Guest Info</p>
+      <h1 class="mb-4 font-display text-3xl font-bold leading-tight text-sumi md:text-4xl">
         Meeting Point
       </h1>
-      <p class="font-sans text-base leading-relaxed text-gray-300">
+      <p class="font-sans text-base leading-relaxed text-sumi-soft">
         Please follow the instructions from top to bottom. If you use the photo first, the meeting point should be easy to recognize.
       </p>
     </div>
   </section>
 
   <div class="mx-auto max-w-3xl px-4 py-10 md:py-12">
-    <section class="mb-10 border border-nes-amber bg-[#111111] p-5">
-      <p class="mb-2 font-pixel text-[0.8rem] text-nes-amber">MEET HERE</p>
-      <p class="font-sans text-base font-semibold leading-relaxed text-nes-white">
+    <section class="mb-10 dialogue-box">
+      <p class="mb-2 font-display text-sm tracking-[0.15em] text-shu">Meet Here</p>
+      <p class="font-sans text-base font-semibold leading-relaxed text-sumi">
         Outside Hankyu Kyoto-Kawaramachi Station Exit 1B, beside McDonald&apos;s
       </p>
-      <p class="mt-3 font-sans text-sm leading-relaxed text-gray-400">
+      <p class="mt-3 font-sans text-sm leading-relaxed text-sumi-soft">
         Do not wait inside McDonald&apos;s or inside the station gate. Please wait outside on the sidewalk.
       </p>
       <div class="mt-5 flex flex-col gap-3 sm:flex-row">
@@ -64,75 +64,75 @@ const missedSteps = [
           rel="noopener noreferrer"
           class="nes-btn nes-btn-gold text-center"
         >
-          OPEN GOOGLE MAPS
+          Open Google Maps
         </a>
         <a
           href={`mailto:${CONTACT_EMAIL}?subject=Cannot%20find%20the%20meeting%20point`}
           class="nes-btn nes-btn-outline text-center"
         >
-          EMAIL US
+          Email Us
         </a>
       </div>
     </section>
 
     <section class="mb-12">
-      <p class="mb-4 font-pixel text-[0.8rem] text-nes-amber">PHOTO REFERENCE</p>
+      <p class="mb-4 font-display text-sm tracking-[0.15em] text-shu">Photo Reference</p>
       <img
         src="/images/meeting-points/gion-night-walk-photo.jpg"
         alt="Night view outside Hankyu Kyoto-Kawaramachi Station next to McDonald's, with a red circle marking the sidewalk waiting spot beside the wall."
-        class="w-full border border-gray-800 bg-black"
+        class="w-full border border-washi-edge bg-washi-deep"
         loading="eager"
       />
-      <div class="border-x border-b border-gray-800 bg-[#101010] px-5 py-4">
-        <p class="font-sans text-sm leading-relaxed text-gray-300">
+      <div class="border-x border-b border-washi-edge bg-washi-deep px-5 py-4">
+        <p class="font-sans text-sm leading-relaxed text-sumi">
           The red circle marks the correct waiting spot.
         </p>
-        <p class="mt-2 font-sans text-sm leading-relaxed text-gray-500">
+        <p class="mt-2 font-sans text-sm leading-relaxed text-sumi-soft">
           Landmark order: station exit, McDonald&apos;s sign, dark wall, sidewalk waiting area.
         </p>
       </div>
     </section>
 
     <section class="mb-12">
-      <p class="mb-5 font-pixel text-[0.8rem] text-nes-amber">FOLLOW THIS ORDER</p>
+      <p class="mb-5 font-display text-sm tracking-[0.15em] text-shu">Follow This Order</p>
       <div class="space-y-4">
         {flowSteps.map((step) => (
-          <div class="border border-gray-800 bg-[#111111] px-5 py-5">
+          <div class="washi-card px-5 py-5">
             <div class="mb-3 flex items-center gap-3">
-              <span class="font-pixel text-[0.8rem] text-nes-green">{step.number}</span>
-              <h2 class="font-sans text-lg font-semibold leading-tight text-nes-white">{step.title}</h2>
+              <span class="font-display text-sm font-bold text-matsu">{step.number}</span>
+              <h2 class="font-display text-lg font-semibold leading-tight text-sumi">{step.title}</h2>
             </div>
-            <p class="font-sans text-sm leading-relaxed text-gray-300">{step.body}</p>
+            <p class="font-sans text-sm leading-relaxed text-sumi-soft">{step.body}</p>
           </div>
         ))}
       </div>
     </section>
 
-    <section class="mb-12 border border-gray-800 bg-[#111111] px-5 py-6">
-      <p class="mb-4 font-pixel text-[0.8rem] text-nes-red">IF YOU CAN&apos;T FIND US</p>
+    <section class="mb-12 dialogue-box">
+      <p class="mb-4 font-display text-sm font-semibold tracking-[0.15em] text-shu">If You Can&apos;t Find Us</p>
       <div class="space-y-3">
         {missedSteps.map((step, index) => (
           <div class="flex items-start gap-3">
-            <span class="mt-0.5 shrink-0 font-pixel text-[0.8rem] text-nes-amber">{index + 1}</span>
-            <p class="font-sans text-sm leading-relaxed text-gray-300">{step}</p>
+            <span class="mt-0.5 shrink-0 font-display text-sm font-bold text-shu">{index + 1}</span>
+            <p class="font-sans text-sm leading-relaxed text-sumi-soft">{step}</p>
           </div>
         ))}
       </div>
-      <div class="mt-6 border-t border-gray-800 pt-5">
-        <p class="font-sans text-sm leading-relaxed text-gray-400">
+      <div class="mt-6 border-t border-washi-edge pt-5">
+        <p class="font-sans text-sm leading-relaxed text-sumi-soft">
           Fastest backup contact: message us in your booking platform. If that is not possible, use the email below.
         </p>
         <a
           href={`mailto:${CONTACT_EMAIL}?subject=Cannot%20find%20the%20meeting%20point`}
-          class="mt-4 block border border-nes-amber px-4 py-4 font-pixel text-[0.8rem] text-nes-amber transition-colors hover:bg-nes-amber hover:text-nes-black"
+          class="mt-4 block border border-shu px-4 py-4 font-display text-sm text-shu transition-colors hover:bg-shu hover:text-washi"
         >
           {CONTACT_EMAIL}
         </a>
-        <p class="mt-4 font-sans text-sm leading-relaxed text-gray-400">
-          <strong class="text-nes-white">We are a small team.</strong> <strong class="text-nes-amber">If the guide is already leading the tour, we may not be able to respond immediately</strong> by email or phone while guiding guests.
+        <p class="mt-4 font-sans text-sm leading-relaxed text-sumi-soft">
+          <strong class="text-sumi">We are a small team.</strong> <strong class="text-shu-dark">If the guide is already leading the tour, we may not be able to respond immediately</strong> by email or phone while guiding guests.
         </p>
-        <p class="mt-3 font-sans text-sm leading-relaxed text-gray-400">
-          <strong class="text-nes-white">If the problem was caused by us,</strong> we will offer either a <strong class="text-nes-amber">free change to another tour/date</strong> or a <strong class="text-nes-amber">full refund</strong>.
+        <p class="mt-3 font-sans text-sm leading-relaxed text-sumi-soft">
+          <strong class="text-sumi">If the problem was caused by us,</strong> we will offer either a <strong class="text-shu-dark">free change to another tour/date</strong> or a <strong class="text-shu-dark">full refund</strong>.
         </p>
       </div>
     </section>

@@ -1,33 +1,33 @@
 ---
 const navLinks = [
-  { href: '/tours', label: 'TOURS' },
-  { href: '/blog', label: 'GUIDES' },
-  { href: '/groups', label: 'GROUPS' },
-  { href: '/guide', label: 'OUR GUIDE' },
-  { href: '/game', label: 'PLAY' },
-  { href: '/contact', label: 'CONTACT' },
+  { href: '/tours', label: 'Tours' },
+  { href: '/blog', label: 'Guides' },
+  { href: '/groups', label: 'Groups' },
+  { href: '/guide', label: 'Our Guide' },
+  { href: '/game', label: 'Game' },
+  { href: '/contact', label: 'Contact' },
 ];
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="bg-nes-black border-b border-gray-800 sticky top-0 z-50">
-  <!-- Top amber accent line -->
-  <div class="h-[2px] w-full bg-gradient-to-r from-transparent via-nes-amber to-transparent opacity-70"></div>
+<header class="bg-washi border-b border-washi-edge sticky top-0 z-50">
+  <!-- Top vermillion accent line -->
+  <div class="h-[3px] w-full bg-gradient-to-r from-transparent via-shu to-transparent opacity-80"></div>
 
   <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
     <a href="/" class="flex items-center gap-3 group">
+      <span class="hanko text-lg" aria-hidden="true">旅</span>
       <div class="flex flex-col gap-0.5">
-        <span class="font-pixel leading-tight text-nes-amber pixel-flicker" style="font-size: 0.9rem;">OTAtrip GUIDE</span>
-        <span class="font-pixel leading-tight text-gray-600" style="font-size: 0.55rem; letter-spacing: 0.1em;">KYOTO LOCAL EXPERTS</span>
+        <span class="font-display font-bold leading-tight text-sumi text-lg tracking-wide">OTAtrip Guide</span>
+        <span class="font-sans leading-tight text-sumi-soft text-[0.65rem] tracking-[0.2em] uppercase">Kyoto Local Experts</span>
       </div>
     </a>
 
     <!-- Mobile menu button -->
     <button id="mobile-menu-btn"
-      class="md:hidden font-pixel text-nes-amber border border-gray-700 px-3 py-2 hover:border-nes-amber hover:bg-nes-amber/10 transition-all"
-      style="font-size: 0.5rem;"
+      class="md:hidden font-display text-sm text-sumi border border-washi-edge px-3 py-2 hover:border-shu hover:text-shu transition-all"
       aria-label="Toggle menu">
-      [MENU]
+      Menu
     </button>
 
     <!-- Desktop nav -->
@@ -35,44 +35,41 @@ const currentPath = Astro.url.pathname;
       {navLinks.map(link => (
         <a
           href={link.href}
-          class={`relative font-pixel px-4 py-2 transition-colors hover:text-nes-amber ${
+          class={`relative font-display text-sm px-3 py-2 tracking-wide transition-colors hover:text-shu ${
             currentPath.startsWith(link.href) && link.href !== '/'
-              ? 'text-nes-amber'
-              : 'text-gray-500'
+              ? 'text-shu'
+              : 'text-sumi-soft'
           }`}
-          style="font-size: 0.5rem; letter-spacing: 0.08em;"
         >
           {link.label}
           {currentPath.startsWith(link.href) && link.href !== '/' && (
-            <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-nes-amber shadow-[0_0_6px_rgba(255,176,0,0.8)]"></span>
+            <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-shu"></span>
           )}
         </a>
       ))}
-      <a href="/tours" class="ml-3 font-pixel bg-nes-amber text-nes-black border border-nes-amber hover:bg-transparent hover:text-nes-amber transition-all"
-        style="font-size: 0.45rem; padding: 0.55rem 1rem; letter-spacing: 0.06em; box-shadow: 3px 3px 0 rgba(255,176,0,0.3);">
-        BOOK TOUR
+      <a href="/tours" class="ml-3 font-display text-sm font-semibold bg-shu text-washi border-2 border-sumi rounded-[2px] hover:bg-shu-dark transition-all px-4 py-2 tracking-wide"
+        style="box-shadow: 3px 3px 0 rgba(33,29,25,0.2);">
+        Book a Tour
       </a>
     </nav>
   </div>
 
   <!-- Mobile nav -->
-  <nav id="mobile-menu" class="hidden md:hidden bg-nes-black border-t border-gray-800 px-4 pb-4">
+  <nav id="mobile-menu" class="hidden md:hidden bg-washi border-t border-washi-edge px-4 pb-4">
     {navLinks.map(link => (
       <a
         href={link.href}
-        class={`flex items-center justify-between py-3 font-pixel border-b border-gray-900 transition-colors hover:text-nes-amber ${
-          currentPath.startsWith(link.href) && link.href !== '/' ? 'text-nes-amber' : 'text-gray-500'
+        class={`flex items-center justify-between py-3 font-display text-sm border-b border-washi-edge/60 transition-colors hover:text-shu ${
+          currentPath.startsWith(link.href) && link.href !== '/' ? 'text-shu' : 'text-sumi-soft'
         }`}
-        style="font-size: 0.5rem;"
       >
         {link.label}
-        <span class="text-gray-700">&rsaquo;</span>
+        <span class="text-washi-edge">&rsaquo;</span>
       </a>
     ))}
     <a href="/tours"
-      class="block mt-3 font-pixel text-center bg-nes-amber text-nes-black py-3 hover:bg-transparent hover:text-nes-amber border border-nes-amber transition-all"
-      style="font-size: 0.5rem;">
-      BOOK A TOUR
+      class="block mt-3 font-display text-sm font-semibold text-center bg-shu text-washi py-3 border-2 border-sumi rounded-[2px] hover:bg-shu-dark transition-all">
+      Book a Tour
     </a>
   </nav>
 </header>

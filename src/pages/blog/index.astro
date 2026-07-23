@@ -42,31 +42,31 @@ const featuredPost = sortedAll.find(p => p.data.hero_image) ?? sortedAll[0];
 >
 
   <!-- Header -->
-  <section class="relative bg-nes-black overflow-hidden">
+  <section class="relative bg-washi overflow-hidden">
     <div class="dot-grid-bg absolute inset-0 opacity-60"></div>
-    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-nes-black pointer-events-none"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-washi pointer-events-none"></div>
     <div class="relative z-10 max-w-5xl mx-auto px-4 py-16 text-center">
-      <p class="font-pixel text-[0.9rem] text-nes-cyan mb-4 rpg-prefix">LOCAL KNOWLEDGE</p>
-      <h1 class="font-pixel text-glow-amber mb-5" style="font-size: clamp(1rem, 4vw, 1.8rem); color: var(--color-nes-amber);">
-        KYOTO TRAVEL GUIDES
+      <p class="font-display text-sm tracking-[0.2em] text-ai mb-4 rpg-prefix">Local Knowledge</p>
+      <h1 class="font-display font-bold text-sumi text-3xl md:text-5xl mb-5">
+        Kyoto Travel Guides
       </h1>
-      <p class="font-sans text-gray-400 text-base max-w-xl mx-auto leading-relaxed mb-8">
+      <p class="font-sans text-sumi-soft text-base max-w-xl mx-auto leading-relaxed mb-8">
         Practical, firsthand guides from local experts who know Kyoto's streets, seasons, and secrets.
       </p>
       <div class="flex items-center justify-center gap-8">
         <div class="text-center">
-          <div class="font-pixel text-[0.9rem] text-nes-amber text-glow-amber">{allPosts.length}</div>
-          <div class="font-pixel text-[0.9rem] text-gray-600 mt-1">GUIDES</div>
+          <div class="font-display font-bold text-xl text-shu">{allPosts.length}</div>
+          <div class="font-display text-xs text-sumi-soft mt-1">Guides</div>
         </div>
-        <div class="w-px h-8 bg-gray-800"></div>
+        <div class="w-px h-8 bg-washi-edge"></div>
         <div class="text-center">
-          <div class="font-pixel text-[0.9rem] text-nes-amber text-glow-amber">{orderedCategories.length}</div>
-          <div class="font-pixel text-[0.9rem] text-gray-600 mt-1">TOPICS</div>
+          <div class="font-display font-bold text-xl text-shu">{orderedCategories.length}</div>
+          <div class="font-display text-xs text-sumi-soft mt-1">Topics</div>
         </div>
-        <div class="w-px h-8 bg-gray-800"></div>
+        <div class="w-px h-8 bg-washi-edge"></div>
         <div class="text-center">
-          <div class="font-pixel text-[0.9rem] text-nes-amber text-glow-amber">FREE</div>
-          <div class="font-pixel text-[0.9rem] text-gray-600 mt-1">ALWAYS</div>
+          <div class="font-display font-bold text-xl text-shu">Free</div>
+          <div class="font-display text-xs text-sumi-soft mt-1">Always</div>
         </div>
       </div>
     </div>
@@ -76,7 +76,7 @@ const featuredPost = sortedAll.find(p => p.data.hero_image) ?? sortedAll[0];
   {featuredPost && (
     <section class="max-w-6xl mx-auto px-4 pt-10 pb-6">
       <div class="flex items-center gap-4 mb-5">
-        <span class="font-pixel text-[0.9rem] text-nes-amber rpg-prefix">FEATURED GUIDE</span>
+        <span class="font-display text-sm tracking-wide text-shu rpg-prefix">Featured Guide</span>
         <div class="flex-1 pixel-divider"></div>
       </div>
       <a href={`/blog/${normalizeBlogSlug(featuredPost.slug)}`} class="group block relative overflow-hidden blog-card">
@@ -89,24 +89,23 @@ const featuredPost = sortedAll.find(p => p.data.hero_image) ?? sortedAll[0];
               loading="eager"
             />
           ) : (
-            <div class="w-full h-full bg-gray-900 flex items-center justify-center">
-              <span class="font-pixel text-[0.9rem] text-gray-700">NO IMAGE</span>
+            <div class="w-full h-full bg-washi-deep flex items-center justify-center">
+              <span class="font-display text-sm text-sumi-soft">No Image</span>
             </div>
           )}
           <div class="featured-gradient absolute inset-0"></div>
           <div class="absolute inset-0 flex flex-col justify-end p-6 md:p-10">
-            <span class="font-pixel text-[0.9rem] text-nes-cyan mb-3">
-              {getBlogCategory(featuredPost).toUpperCase()}
+            <span class="font-display text-sm tracking-[0.15em] text-gray-200 mb-3">
+              {getBlogCategory(featuredPost)}
             </span>
-            <h2 class="font-pixel text-nes-white group-hover:text-nes-amber transition-colors leading-relaxed mb-3"
-              style="font-size: clamp(0.7rem, 2.5vw, 1.1rem);">
+            <h2 class="font-display font-bold text-white text-xl md:text-2xl transition-colors leading-snug mb-3">
               {featuredPost.data.title}
             </h2>
-            <p class="font-sans text-gray-300 text-sm leading-relaxed max-w-2xl mb-4 line-clamp-2">
+            <p class="font-sans text-gray-200 text-sm leading-relaxed max-w-2xl mb-4 line-clamp-2">
               {featuredPost.data.description}
             </p>
-            <div class="inline-flex items-center gap-2 font-pixel text-[0.9rem] text-nes-amber group-hover:text-nes-white transition-colors">
-              READ GUIDE <span class="group-hover:translate-x-1 transition-transform inline-block">&rarr;</span>
+            <div class="inline-flex items-center gap-2 font-display text-sm text-white transition-colors">
+              Read Guide <span class="group-hover:translate-x-1 transition-transform inline-block">&rarr;</span>
             </div>
           </div>
         </div>
@@ -115,12 +114,12 @@ const featuredPost = sortedAll.find(p => p.data.hero_image) ?? sortedAll[0];
   )}
 
   <!-- Category Filter Bar -->
-  <div class="sticky top-[56px] z-40 bg-nes-black border-b border-gray-800/60 shadow-[0_4px_20px_rgba(0,0,0,0.6)]">
+  <div class="sticky top-[56px] z-40 bg-washi border-b border-washi-edge shadow-[0_4px_20px_rgba(33,29,25,0.08)]">
     <div class="max-w-6xl mx-auto px-4">
       <div id="cat-filters" class="scroll-x-smooth flex gap-2 py-3 min-w-0">
-        <button class="cat-pill active shrink-0" data-cat="all">ALL GUIDES</button>
+        <button class="cat-pill active shrink-0" data-cat="all">All Guides</button>
         {orderedCategories.map(cat => (
-          <button class="cat-pill shrink-0" data-cat={cat}>{cat.toUpperCase()}</button>
+          <button class="cat-pill shrink-0" data-cat={cat}>{cat}</button>
         ))}
       </div>
     </div>
@@ -134,11 +133,11 @@ const featuredPost = sortedAll.find(p => p.data.hero_image) ?? sortedAll[0];
         <div class="flex items-center gap-4 mb-6">
           <div class="shrink-0">
             <a href={getCategoryHref(category)} class="group flex items-center gap-3 hover:opacity-80 transition-opacity">
-              <span class="font-pixel text-[0.9rem] text-nes-amber leading-none">{category.toUpperCase()}</span>
+              <span class="font-display font-bold text-lg text-sumi leading-none">{category}</span>
             </a>
           </div>
           <div class="flex-1 pixel-divider"></div>
-          <span class="font-pixel text-[0.9rem] text-gray-700 shrink-0">{groupedPosts[category].length} GUIDES</span>
+          <span class="font-display text-xs text-sumi-soft shrink-0">{groupedPosts[category].length} Guides</span>
         </div>
 
         <!-- Cards grid -->
@@ -156,26 +155,26 @@ const featuredPost = sortedAll.find(p => p.data.hero_image) ?? sortedAll[0];
                       loading="lazy"
                     />
                   ) : (
-                    <div class="w-full h-full bg-gray-900 flex items-center justify-center">
-                      <span class="font-pixel text-[0.9rem] text-gray-700">KYOTO</span>
+                    <div class="w-full h-full bg-washi-deep flex items-center justify-center">
+                      <span class="font-display text-sm text-sumi-soft">Kyoto</span>
                     </div>
                   )}
                   <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                  <span class="img-badge">{getBlogCategory(post).toUpperCase()}</span>
+                  <span class="img-badge">{getBlogCategory(post)}</span>
                 </div>
 
                 <!-- Body -->
                 <div class="p-5">
-                  <h3 class="font-pixel text-[0.9rem] text-nes-white group-hover:text-nes-amber transition-colors leading-relaxed mb-3 line-clamp-2">
+                  <h3 class="font-display font-semibold text-base text-sumi group-hover:text-shu transition-colors leading-relaxed mb-3 line-clamp-2">
                     {post.data.title}
                   </h3>
-                  <p class="font-sans text-gray-500 text-sm leading-relaxed line-clamp-3 mb-5">
+                  <p class="font-sans text-sumi-soft text-sm leading-relaxed line-clamp-3 mb-5">
                     {post.data.description}
                   </p>
                   <div class="flex items-center justify-between">
-                    <span class="font-sans text-xs text-gray-700">{post.data.author || 'OTAtrip Guide'}</span>
-                    <span class="font-pixel text-[0.9rem] text-nes-cyan group-hover:text-nes-amber transition-colors">
-                      READ &rarr;
+                    <span class="font-sans text-xs text-sumi-soft">{post.data.author || 'OTAtrip Guide'}</span>
+                    <span class="font-display text-xs text-ai group-hover:text-shu transition-colors">
+                      Read &rarr;
                     </span>
                   </div>
                 </div>
@@ -187,23 +186,23 @@ const featuredPost = sortedAll.find(p => p.data.hero_image) ?? sortedAll[0];
     ))}
 
     {allPosts.length === 0 && (
-      <p class="font-pixel text-[0.9rem] text-gray-700 text-center py-20">// TRAVEL GUIDES COMING SOON</p>
+      <p class="font-display text-sm text-sumi-soft text-center py-20">Travel guides coming soon</p>
     )}
   </div>
 
   <!-- CTA Banner -->
-  <section class="bg-nes-black border-y border-gray-800 py-12 mt-4">
+  <section class="bg-washi-deep border-y border-washi-edge py-12 mt-4">
     <div class="max-w-4xl mx-auto px-4 text-center">
-      <p class="font-pixel text-[0.9rem] text-nes-cyan mb-3 rpg-prefix">READY TO EXPLORE?</p>
-      <h2 class="font-pixel text-nes-white mb-5 leading-relaxed" style="font-size: clamp(0.7rem, 2vw, 0.95rem);">
-        EXPERIENCE KYOTO IN PERSON
+      <p class="font-display text-sm tracking-wide text-ai mb-3 rpg-prefix">Ready to Explore?</p>
+      <h2 class="font-display font-bold text-sumi text-xl md:text-2xl mb-5 leading-relaxed">
+        Experience Kyoto in Person
       </h2>
-      <p class="font-sans text-gray-400 text-sm leading-relaxed mb-8 max-w-md mx-auto">
+      <p class="font-sans text-sumi-soft text-sm leading-relaxed mb-8 max-w-md mx-auto">
         Our local guides bring these stories to life. Small groups, hidden bars, and genuine Kyoto moments.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="/tours" class="nes-btn nes-btn-gold">SEE ALL TOURS</a>
-        <a href="/contact" class="nes-btn nes-btn-outline">ASK A QUESTION</a>
+        <a href="/tours" class="nes-btn nes-btn-gold">See All Tours</a>
+        <a href="/contact" class="nes-btn nes-btn-outline">Ask a Question</a>
       </div>
     </div>
   </section>

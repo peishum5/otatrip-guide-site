@@ -1,11 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" fill="#0a0a0a"/>
-  <!-- Kasagi (top beam) -->
-  <rect x="2" y="8" width="28" height="4" fill="#ffb000"/>
-  <!-- Left pillar -->
-  <rect x="9" y="12" width="4" height="18" fill="#ffb000"/>
-  <!-- Right pillar -->
-  <rect x="19" y="12" width="4" height="18" fill="#ffb000"/>
-  <!-- Nuki (second crossbeam) -->
-  <rect x="8" y="19" width="16" height="3" fill="#ffb000"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="8" fill="#f5efdf"/>
+  <rect x="1.5" y="1.5" width="61" height="61" rx="7" fill="none" stroke="#211d19" stroke-width="3"/>
+  <!-- Torii gate in vermillion with sumi outline -->
+  <g stroke="#211d19" stroke-width="2" stroke-linejoin="round">
+    <!-- top lintel (kasagi) with curve -->
+    <path d="M8 16 Q32 10 56 16 L56 22 Q32 16 8 22 Z" fill="#c3272b"/>
+    <!-- second beam (nuki) -->
+    <rect x="13" y="28" width="38" height="6" fill="#c3272b"/>
+    <!-- center strut -->
+    <rect x="29.5" y="20" width="5" height="8" fill="#c3272b"/>
+    <!-- pillars -->
+    <path d="M14 21 L20 21 L21.5 56 L12.5 56 Z" fill="#c3272b"/>
+    <path d="M44 21 L50 21 L51.5 56 L42.5 56 Z" fill="#c3272b"/>
+  </g>
 </svg>
