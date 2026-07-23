@@ -1,6 +1,20 @@
 @import "tailwindcss";
 
 @theme {
+  /* === Ukiyo-e palette (traditional Japanese pigments) === */
+  --color-washi: #f5efdf;        /* 和紙 — page background */
+  --color-washi-deep: #ece3cc;   /* deeper washi — cards / alternating sections */
+  --color-washi-edge: #d9cba8;   /* hairline borders */
+  --color-sumi: #211d19;         /* 墨 — primary text, woodblock outlines */
+  --color-sumi-soft: #5c5245;    /* secondary text */
+  --color-shu: #c3272b;          /* 朱 — vermillion accent, CTAs, hanko */
+  --color-shu-dark: #9e1f23;     /* pressed / hover vermillion */
+  --color-ai: #165e83;           /* 藍 — indigo, links */
+  --color-ai-deep: #0f4666;      /* dark indigo bands */
+  --color-kin: #c9a84c;          /* 金 — gold, decorative only */
+  --color-matsu: #4d6b44;        /* 松葉 — pine green, gauges */
+
+  /* Legacy tokens kept for compatibility */
   --color-navy: #1a2744;
   --color-navy-light: #2a3a6a;
   --color-navy-dark: #0f1829;
@@ -8,17 +22,20 @@
   --color-gold-light: #e0c06b;
   --color-gold-dark: #a07830;
 
-  /* NES/Famicom palette */
-  --color-nes-black:  #0a0a0a;
-  --color-nes-cyan:   #00e5ff;
-  --color-nes-red:    #ff2222;
-  --color-nes-amber:  #ffb000;
-  --color-nes-green:  #00d800;
-  --color-nes-white:  #f8f8f8;
+  /* Legacy NES aliases — old utility names now resolve to the ukiyo-e palette.
+     Do NOT use in new code; inside .gq-root these are re-scoped back to NES values. */
+  --color-nes-black:  #f5efdf;
+  --color-nes-cyan:   #165e83;
+  --color-nes-red:    #9e1f23;
+  --color-nes-amber:  #c3272b;
+  --color-nes-green:  #4d6b44;
+  --color-nes-white:  #211d19;
 
-  --font-sans: Inter, system-ui, sans-serif;
-  --font-serif: Georgia, serif;
-  --font-pixel: 'Press Start 2P', monospace;
+  --font-sans: 'Zen Kaku Gothic New', Inter, system-ui, sans-serif;
+  --font-serif: 'Shippori Mincho', Georgia, serif;
+  --font-display: 'Shippori Mincho', 'Hiragino Mincho ProN', serif;
+  --font-brush: 'Yuji Syuku', serif;
+  --font-pixel: 'Shippori Mincho', serif; /* legacy alias; restored inside .gq-root */
 }
 
 @layer base {
@@ -26,35 +43,43 @@
     scroll-behavior: smooth;
   }
 
-  /* === NES Animations === */
-  @keyframes blink {
-    0%, 49% { opacity: 1; }
-    50%, 100% { opacity: 0; }
+  /* === Animations === */
+  @keyframes hero-reveal {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
-  @keyframes pixel-flicker {
-    0%, 93%, 100% { opacity: 1; }
-    94% { opacity: 0.85; }
-    96% { opacity: 1; }
-    98% { opacity: 0.9; }
+  .hero-reveal {
+    animation: hero-reveal 0.7s ease both;
+    animation-delay: var(--d, 0s);
   }
 
-  /* === NES Utility Classes === */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-reveal { animation: none; opacity: 1; }
+  }
+
+  /* === Legacy utility classes, restyled === */
   .font-pixel {
     font-family: var(--font-pixel);
   }
 
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-brush {
+    font-family: var(--font-brush);
+  }
+
   .pixel-cursor::after {
-    content: '_';
-    animation: blink 1s step-end infinite;
-    color: var(--color-nes-cyan);
-    margin-left: 2px;
+    content: '';
   }
 
   .pixel-flicker {
-    animation: pixel-flicker 5s ease-in-out infinite;
+    animation: none;
   }
 
+  /* Washi paper grain overlay (was CRT scanlines) */
   .scanlines {
     position: relative;
     overflow: hidden;
@@ -64,87 +89,154 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: repeating-linear-gradient(
-      to bottom,
-      transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.10) 2px,
-      rgba(0, 0, 0, 0.10) 4px
-    );
+    background: url('/images/theme/washi-texture.webp') repeat;
+    background-size: 512px 512px;
+    opacity: 0.35;
+    mix-blend-mode: multiply;
     pointer-events: none;
     z-index: 10;
   }
 
+  /* Woodblock print frame (was RPG dialogue box) */
   .dialogue-box {
-    border: 3px solid var(--color-nes-amber);
-    box-shadow: 6px 6px 0 rgba(255, 176, 0, 0.35);
+    border: 3px solid var(--color-sumi);
+    outline: 1px solid var(--color-kin);
+    outline-offset: -7px;
+    box-shadow: none;
     border-radius: 0;
-    background: #0d0d0d;
+    background: var(--color-washi-deep);
     padding: 1.5rem;
   }
 
   .stat-bar-track {
-    background: #2a2a2a;
+    background: #e0d5b8;
     height: 10px;
     width: 100%;
-    border: 1px solid #444;
+    border: 1px solid var(--color-sumi);
   }
 
   .stat-bar-fill {
-    background: var(--color-nes-green);
-    height: 10px;
+    background: linear-gradient(90deg, var(--color-matsu), #5f7f54);
+    height: 8px;
   }
 
   .nes-number {
-    font-family: var(--font-pixel);
-    color: var(--color-nes-amber);
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-shu);
   }
 
   .rpg-prefix::before {
-    content: '> ';
-    color: var(--color-nes-amber);
+    content: '';
+    display: inline-block;
+    width: 0.55em;
+    height: 0.55em;
+    margin-right: 0.5em;
+    background: var(--color-shu);
+    vertical-align: baseline;
   }
 
   .nes-btn {
     display: inline-block;
     min-height: 44px;
-    background: var(--color-nes-amber);
-    color: #0a0a0a;
-    font-family: var(--font-pixel);
-    font-size: 0.5rem;
+    background: var(--color-shu);
+    color: #f5efdf;
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 600;
     line-height: 1.4;
-    padding: 0.75rem 1.5rem;
-    border: 2px solid var(--color-nes-amber);
-    box-shadow: 4px 4px 0 #7a5500;
+    padding: 0.7rem 1.6rem;
+    border: 2px solid var(--color-sumi);
+    border-radius: 2px;
+    box-shadow: 3px 3px 0 rgba(33, 29, 25, 0.25);
     cursor: pointer;
     text-decoration: none;
-    transition: transform 0.08s, box-shadow 0.08s;
-    letter-spacing: 0.05em;
+    transition: transform 0.08s, box-shadow 0.08s, background-color 0.15s;
+    letter-spacing: 0.08em;
     white-space: nowrap;
   }
 
   .nes-btn:hover {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0 #7a5500;
+    background: var(--color-shu-dark);
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0 rgba(33, 29, 25, 0.25);
   }
 
   .nes-btn-gold {
-    background: var(--color-nes-amber);
-    color: #0a0a0a;
-    border-color: var(--color-nes-amber);
-    box-shadow: 4px 4px 0 #7a5500;
+    background: var(--color-shu);
+    color: #f5efdf;
+    border-color: var(--color-sumi);
+    box-shadow: 3px 3px 0 rgba(33, 29, 25, 0.25);
   }
 
   .nes-btn-outline {
     background: transparent;
-    color: var(--color-nes-amber);
-    border: 2px solid var(--color-nes-amber);
-    box-shadow: 4px 4px 0 rgba(255, 176, 0, 0.3);
+    color: var(--color-ai);
+    border: 2px solid var(--color-ai);
+    box-shadow: 3px 3px 0 rgba(22, 94, 131, 0.18);
   }
 
   .nes-btn-outline:hover {
-    background: var(--color-nes-amber);
-    color: #0a0a0a;
+    background: var(--color-ai);
+    color: #f5efdf;
+  }
+
+  /* === New ukiyo-e helpers === */
+
+  /* Vermillion hanko seal chip */
+  .hanko {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.9em;
+    height: 1.9em;
+    background: var(--color-shu);
+    color: #f5efdf;
+    font-family: var(--font-brush);
+    font-size: 0.9em;
+    line-height: 1;
+    border-radius: 3px;
+    box-shadow: inset 0 0 0 1px rgba(245, 239, 223, 0.35);
+  }
+
+  /* Thick sumi frame with inner gold hairline */
+  .frame-woodblock {
+    border: 3px solid var(--color-sumi);
+    outline: 1px solid var(--color-kin);
+    outline-offset: -7px;
+  }
+
+  /* Light washi card */
+  .washi-card {
+    background: #faf6ea;
+    border: 1px solid var(--color-washi-edge);
+  }
+
+  /* Hanging-scroll indigo bands */
+  .kakejiku-band {
+    border-block: 8px solid var(--color-ai-deep);
+  }
+
+  /* Seigaiha wave pattern */
+  .seigaiha-bg {
+    background-image: radial-gradient(circle at 50% 100%, transparent 9px, rgba(22, 94, 131, 0.10) 9px 10px, transparent 10px);
+    background-size: 24px 12px;
+  }
+
+  /* Asanoha-inspired lattice */
+  .asanoha-bg {
+    background-image:
+      linear-gradient(30deg, rgba(33, 29, 25, 0.05) 1px, transparent 1px),
+      linear-gradient(150deg, rgba(33, 29, 25, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(33, 29, 25, 0.05) 1px, transparent 1px);
+    background-size: 28px 48px, 28px 48px, 28px 48px;
+  }
+
+  /* Vertical Japanese decorative text */
+  .vertical-jp {
+    writing-mode: vertical-rl;
+    font-family: var(--font-brush);
+    letter-spacing: 0.35em;
   }
 
   /* === Line Clamp === */
@@ -162,14 +254,15 @@
     overflow: hidden;
   }
 
-  /* === Prose Dark Background === */
+  /* === Prose (light washi background) === */
   .prose {
-    color: #d1d5db;
+    color: #3a332c;
     max-width: 65ch;
   }
 
   .prose h1, .prose h2, .prose h3, .prose h4 {
-    color: #f8f8f8;
+    color: var(--color-sumi);
+    font-family: var(--font-display);
     font-weight: 700;
   }
 
@@ -177,6 +270,8 @@
     font-size: 1.5rem;
     margin-top: 2.5rem;
     margin-bottom: 1rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--color-washi-edge);
   }
 
   .prose h3 {
@@ -192,17 +287,20 @@
   }
 
   .prose a {
-    color: var(--color-nes-cyan);
-    text-decoration: none;
+    color: var(--color-ai);
+    text-decoration: underline;
+    text-decoration-color: rgba(22, 94, 131, 0.35);
+    text-underline-offset: 3px;
   }
 
   .prose a:hover {
-    color: var(--color-nes-amber);
+    color: var(--color-shu);
+    text-decoration-color: rgba(195, 39, 43, 0.45);
   }
 
   .prose a[href*="maps.google.com"],
   .prose a[href*="maps.app.goo.gl"] {
-    color: var(--color-nes-cyan);
+    color: var(--color-ai);
   }
 
   .prose p > a[href*="maps.google.com"]:only-child,
@@ -213,12 +311,10 @@
     gap: 1rem;
     margin: 1.25rem 0;
     padding: 1rem;
-    border: 1px solid rgba(0, 229, 255, 0.28);
-    background:
-      linear-gradient(135deg, rgba(0, 229, 255, 0.08), rgba(255, 176, 0, 0.12)),
-      #111827;
-    color: #f8f8f8;
-    box-shadow: 0 0 0 1px rgba(255, 176, 0, 0.08);
+    border: 2px solid var(--color-sumi);
+    background: var(--color-washi-deep);
+    color: var(--color-sumi);
+    box-shadow: 3px 3px 0 rgba(33, 29, 25, 0.12);
     text-decoration: none;
     position: relative;
     overflow: hidden;
@@ -230,15 +326,14 @@
     display: block;
     width: 100%;
     min-height: 88px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--color-washi-edge);
     background:
-      radial-gradient(circle at 65% 35%, rgba(255, 176, 0, 0.9) 0 4px, transparent 5px),
-      linear-gradient(0deg, rgba(255,255,255,0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px),
-      linear-gradient(135deg, rgba(0, 229, 255, 0.18), rgba(255, 176, 0, 0.08)),
-      #0f172a;
+      radial-gradient(circle at 65% 35%, rgba(195, 39, 43, 0.95) 0 4px, transparent 5px),
+      linear-gradient(0deg, rgba(33, 29, 25, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(33, 29, 25, 0.07) 1px, transparent 1px),
+      linear-gradient(135deg, rgba(22, 94, 131, 0.14), rgba(201, 168, 76, 0.10)),
+      #ece3cc;
     background-size: auto, 18px 18px, 18px 18px, auto, auto;
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
   }
 
   .prose p > a[href*="maps.google.com"]:only-child::after,
@@ -250,13 +345,12 @@
     font-size: 0.78rem;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--color-nes-amber);
+    color: var(--color-shu);
   }
 
   .prose p > a[href*="maps.google.com"]:only-child:hover,
   .prose p > a[href*="maps.app.goo.gl"]:only-child:hover {
-    color: #f8f8f8;
-    border-color: rgba(255, 176, 0, 0.5);
+    border-color: var(--color-shu);
     transform: translateY(-1px);
   }
 
@@ -270,10 +364,11 @@
     align-items: center;
     gap: 0.35rem;
     padding: 0.18rem 0.5rem;
-    border: 1px solid rgba(0, 229, 255, 0.25);
-    background: rgba(0, 229, 255, 0.08);
-    color: var(--color-nes-cyan);
+    border: 1px solid rgba(22, 94, 131, 0.3);
+    background: rgba(22, 94, 131, 0.06);
+    color: var(--color-ai);
     line-height: 1.4;
+    text-decoration: none;
   }
 
   .prose p > strong > a[href*="maps.google.com"]::before,
@@ -283,7 +378,7 @@
   .prose p a[href*="maps.google.com"]:not(:only-child)::before,
   .prose p a[href*="maps.app.goo.gl"]:not(:only-child)::before {
     content: '▣';
-    color: var(--color-nes-amber);
+    color: var(--color-shu);
     font-size: 0.8em;
   }
 
@@ -305,13 +400,13 @@
   }
 
   .prose strong {
-    color: #f8f8f8;
+    color: var(--color-sumi);
     font-weight: 600;
   }
 
   .prose code {
-    background: #1a1a1a;
-    color: var(--color-nes-cyan);
+    background: #efe6d0;
+    color: var(--color-sumi);
     padding: 0.125rem 0.25rem;
     border-radius: 0.25rem;
     font-size: 0.875em;
@@ -339,35 +434,36 @@
   }
 
   .prose th {
-    background-color: #1a1a1a;
-    color: var(--color-nes-amber);
+    background-color: var(--color-washi-deep);
+    color: var(--color-sumi);
+    font-family: var(--font-display);
     text-align: left;
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
-    font-weight: 500;
-    border: 1px solid #333;
+    font-weight: 600;
+    border: 1px solid var(--color-washi-edge);
   }
 
   .prose td {
-    border: 1px solid #333;
+    border: 1px solid var(--color-washi-edge);
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
-    color: #d1d5db;
+    color: #3a332c;
   }
 
   .prose tr:nth-child(even) td {
-    background-color: #111;
+    background-color: #f0e9d6;
   }
 
   /* Blockquote styling */
   .prose blockquote {
-    background: #111;
-    border-left: 4px solid var(--color-nes-amber);
+    background: var(--color-washi-deep);
+    border-left: 4px solid var(--color-shu);
     padding-left: 1rem;
     padding-right: 1rem;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
-    color: #9ca3af;
+    color: var(--color-sumi-soft);
     font-style: normal;
   }
 
@@ -378,49 +474,50 @@
 
   /* === Blog Card === */
   .blog-card {
-    background: #0d0d0d;
-    border: 1px solid #1e1e1e;
+    background: #faf6ea;
+    border: 1px solid var(--color-washi-edge);
     transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
     overflow: hidden;
   }
   .blog-card:hover {
-    border-color: rgba(255, 176, 0, 0.55);
-    box-shadow: 0 0 28px rgba(255, 176, 0, 0.08), 0 8px 28px rgba(0, 0, 0, 0.45);
+    border-color: rgba(195, 39, 43, 0.6);
+    box-shadow: 4px 4px 0 rgba(195, 39, 43, 0.12);
     transform: translateY(-2px);
   }
 
   /* === Category Filter Pills === */
   .cat-pill {
-    font-family: var(--font-pixel);
-    font-size: 0.45rem;
-    padding: 0.45rem 0.9rem;
-    border: 1px solid #2a2a2a;
-    color: #555;
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--color-washi-edge);
+    border-radius: 999px;
+    color: var(--color-sumi-soft);
     background: transparent;
     cursor: pointer;
     transition: all 0.15s ease;
     white-space: nowrap;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
     line-height: 1.5;
   }
   .cat-pill:hover {
-    border-color: rgba(255, 176, 0, 0.45);
-    color: rgba(255, 176, 0, 0.8);
-    background: rgba(255, 176, 0, 0.04);
+    border-color: rgba(195, 39, 43, 0.5);
+    color: var(--color-shu);
+    background: rgba(195, 39, 43, 0.04);
   }
   .cat-pill.active {
-    border-color: var(--color-nes-amber);
-    color: var(--color-nes-amber);
-    background: rgba(255, 176, 0, 0.07);
-    box-shadow: 0 0 12px rgba(255, 176, 0, 0.15);
+    border-color: var(--color-shu);
+    color: var(--color-shu);
+    background: rgba(195, 39, 43, 0.07);
   }
 
-  /* === Neon Glow Text === */
+  /* === Glow classes (legacy names, now subtle ink accents) === */
   .text-glow-amber {
-    text-shadow: 0 0 16px rgba(255, 176, 0, 0.55), 0 0 32px rgba(255, 176, 0, 0.2);
+    text-shadow: 0 1px 0 rgba(201, 168, 76, 0.35);
   }
   .text-glow-cyan {
-    text-shadow: 0 0 16px rgba(0, 229, 255, 0.55), 0 0 32px rgba(0, 229, 255, 0.2);
+    text-shadow: 0 1px 0 rgba(22, 94, 131, 0.25);
   }
 
   /* === Featured Post === */
@@ -428,23 +525,18 @@
     background: linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.1) 100%);
   }
 
-  /* === Dot Grid Background === */
+  /* === Seigaiha background (legacy name) === */
   .dot-grid-bg {
-    background-image: radial-gradient(circle, rgba(255,176,0,0.08) 1px, transparent 1px);
-    background-size: 24px 24px;
+    background-image: radial-gradient(circle at 50% 100%, transparent 9px, rgba(22, 94, 131, 0.10) 9px 10px, transparent 10px);
+    background-size: 24px 12px;
   }
 
   /* === Section Divider Line === */
   .pixel-divider {
-    height: 2px;
-    background: repeating-linear-gradient(
-      90deg,
-      var(--color-nes-amber) 0px,
-      var(--color-nes-amber) 6px,
-      transparent 6px,
-      transparent 10px
-    );
-    opacity: 0.35;
+    height: 6px;
+    background-image: radial-gradient(circle at 50% 100%, transparent 4px, rgba(22, 94, 131, 0.45) 4px 5px, transparent 5px);
+    background-size: 12px 6px;
+    opacity: 0.6;
   }
 
   /* === Image overlay badge === */
@@ -452,13 +544,14 @@
     position: absolute;
     bottom: 0.75rem;
     left: 0.75rem;
-    font-family: var(--font-pixel);
-    font-size: 0.45rem;
-    color: var(--color-nes-amber);
-    background: rgba(0,0,0,0.82);
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--color-sumi);
+    background: rgba(245, 239, 223, 0.92);
     padding: 0.3rem 0.6rem;
     letter-spacing: 0.05em;
-    border: 1px solid rgba(255,176,0,0.3);
+    border-left: 3px solid var(--color-shu);
     backdrop-filter: blur(4px);
   }
 
@@ -470,5 +563,68 @@
   }
   .scroll-x-smooth::-webkit-scrollbar {
     display: none;
+  }
+
+  /* ============================================================
+     GION NIGHT QUEST — the mini-game is intentionally retro.
+     Re-scope the legacy NES tokens inside .gq-root so the game
+     keeps its original 8-bit look on the ukiyo-e site.
+     ============================================================ */
+  .gq-root {
+    --color-nes-black:  #0a0a0a;
+    --color-nes-cyan:   #00e5ff;
+    --color-nes-red:    #ff2222;
+    --color-nes-amber:  #ffb000;
+    --color-nes-green:  #00d800;
+    --color-nes-white:  #f8f8f8;
+    --font-pixel: 'Press Start 2P', monospace;
+  }
+
+  .gq-root .scanlines::after {
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.10) 2px,
+      rgba(0, 0, 0, 0.10) 4px
+    );
+    background-size: auto;
+    opacity: 1;
+    mix-blend-mode: normal;
+  }
+
+  .gq-root .text-glow-amber {
+    text-shadow: 0 0 16px rgba(255, 176, 0, 0.55), 0 0 32px rgba(255, 176, 0, 0.2);
+  }
+
+  .gq-root .nes-btn {
+    background: var(--color-nes-amber);
+    color: #0a0a0a;
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    font-weight: 400;
+    border: 2px solid var(--color-nes-amber);
+    border-radius: 0;
+    box-shadow: 4px 4px 0 #7a5500;
+    letter-spacing: 0.05em;
+    padding: 0.75rem 1.5rem;
+  }
+
+  .gq-root .nes-btn:hover {
+    background: var(--color-nes-amber);
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 #7a5500;
+  }
+
+  .gq-root .nes-btn-outline {
+    background: transparent;
+    color: var(--color-nes-amber);
+    border: 2px solid var(--color-nes-amber);
+    box-shadow: 4px 4px 0 rgba(255, 176, 0, 0.3);
+  }
+
+  .gq-root .nes-btn-outline:hover {
+    background: var(--color-nes-amber);
+    color: #0a0a0a;
   }
 }
