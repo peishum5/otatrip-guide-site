@@ -7,32 +7,44 @@ interface Props {
 const { type = 'tip', title } = Astro.props;
 
 const configs = {
-  tip:     { label: title ?? 'TIP',        icon: '[i]', color: 'text-nes-cyan',  stripe: '#00e5ff', glow: 'rgba(0,229,255,0.15)' },
-  warning: { label: title ?? 'WARNING',    icon: '[!]', color: 'text-nes-red',   stripe: '#ff2222', glow: 'rgba(255,34,34,0.15)' },
-  local:   { label: title ?? 'LOCAL TIP',  icon: '[★]', color: 'text-nes-amber', stripe: '#ffb000', glow: 'rgba(255,176,0,0.15)' },
-  budget:  { label: title ?? 'BUDGET TIP', icon: '[¥]', color: 'text-nes-green', stripe: '#00d800', glow: 'rgba(0,216,0,0.15)' },
+  tip:     { label: title ?? 'Tip',        kanji: '豆', color: 'text-ai',    stripe: '#165e83' },
+  warning: { label: title ?? 'Caution',    kanji: '注', color: 'text-shu',   stripe: '#9e1f23' },
+  local:   { label: title ?? 'Local Tip',  kanji: '奨', color: 'text-shu',   stripe: '#c3272b' },
+  budget:  { label: title ?? 'Budget Tip', kanji: '得', color: 'text-matsu', stripe: '#4d6b44' },
 };
 const config = configs[type as keyof typeof configs] ?? configs.tip;
 ---
 
-<div class="tipbox my-6 flex overflow-hidden" style={`border: 1px solid ${config.stripe}33; background: #0d0d0d; box-shadow: 0 0 20px ${config.glow};`}>
+<div class="tipbox my-6 flex overflow-hidden" style={`border: 1px solid ${config.stripe}55; background: #faf6ea;`}>
   <!-- Left stripe -->
   <div class="shrink-0 w-1" style={`background: ${config.stripe};`}></div>
 
   <div class="flex-1 p-4">
     <!-- Label -->
-    <div class={`font-pixel mb-2 flex items-center gap-2 ${config.color}`} style="font-size: 0.45rem; letter-spacing: 0.08em;">
-      <span>{config.icon}</span>
+    <div class={`font-display font-semibold mb-2 flex items-center gap-2 text-xs tracking-widest ${config.color}`}>
+      <span class="tip-kanji" style={`background: ${config.stripe};`}>{config.kanji}</span>
       <span>{config.label}</span>
     </div>
     <!-- Body -->
-    <div class="font-sans text-sm text-gray-300 leading-relaxed tipbox-body">
+    <div class="font-sans text-sm text-sumi leading-relaxed tipbox-body">
       <slot />
     </div>
   </div>
 </div>
 
 <style>
+  .tip-kanji {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.7em;
+    height: 1.7em;
+    color: #f5efdf;
+    font-family: var(--font-brush);
+    font-size: 1.05em;
+    line-height: 1;
+    border-radius: 3px;
+  }
   .tipbox-body :global(p) {
     margin: 0;
   }

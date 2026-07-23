@@ -17,7 +17,7 @@ const floatClass = side === 'left'
 ---
 
 <figure class={`image-caption ${floatClass}`}>
-  <div class="scanlines relative overflow-hidden" style="border: 1px solid rgba(255,176,0,0.2); box-shadow: 4px 4px 0 rgba(255,176,0,0.12);">
+  <div class="scanlines relative overflow-hidden" style="border: 2px solid var(--color-sumi); box-shadow: 4px 4px 0 rgba(33,29,25,0.15);">
     <img
       src={src}
       alt={alt}
@@ -28,7 +28,7 @@ const floatClass = side === 'left'
     {badge && <span class="img-badge">{badge}</span>}
   </div>
   {caption && (
-    <figcaption class="font-sans text-xs text-gray-500 mt-2 leading-relaxed">
+    <figcaption class="font-sans text-xs text-sumi-soft mt-2 leading-relaxed">
       {caption}
     </figcaption>
   )}

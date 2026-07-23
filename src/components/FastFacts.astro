@@ -10,7 +10,7 @@ interface Props {
   title?: string;
 }
 
-const { items, title = 'FAST FACTS' } = Astro.props;
+const { items, title = 'Fast Facts' } = Astro.props;
 
 const gridCols = items.length === 2 ? 'grid-cols-2'
   : items.length === 4               ? 'grid-cols-2 sm:grid-cols-4'
@@ -21,21 +21,21 @@ const gridCols = items.length === 2 ? 'grid-cols-2'
 <div class="my-8">
   <!-- Title -->
   <div class="flex items-center gap-3 mb-4">
-    <span class="font-pixel text-nes-amber text-glow-amber" style="font-size: 0.55rem; letter-spacing: 0.1em;">{title}</span>
+    <span class="font-display font-semibold text-shu text-sm tracking-widest">{title}</span>
     <div class="flex-1 pixel-divider"></div>
   </div>
 
   <!-- Grid -->
   <div class={`grid ${gridCols} gap-3`}>
     {items.map(item => (
-      <div class="fact-card border-t-2 border-nes-amber p-3">
-        <div class="font-pixel text-gray-600 mb-1" style="font-size: 0.38rem; letter-spacing: 0.08em; text-transform: uppercase;">
+      <div class="fact-card border-t-2 border-shu p-3">
+        <div class="font-display text-sumi-soft mb-1 text-[0.65rem] tracking-widest uppercase">
           {item.label}
         </div>
         {item.highlight ? (
-          <div class="font-pixel text-nes-amber leading-snug" style="font-size: 0.5rem;">{item.value}</div>
+          <div class="font-display font-semibold text-shu leading-snug text-sm">{item.value}</div>
         ) : (
-          <div class="font-sans text-sm text-gray-200 leading-snug">{item.value}</div>
+          <div class="font-sans text-sm text-sumi leading-snug">{item.value}</div>
         )}
       </div>
     ))}
@@ -44,8 +44,8 @@ const gridCols = items.length === 2 ? 'grid-cols-2'
 
 <style>
   .fact-card {
-    background: #0d0d0d;
-    border: 1px solid #1e1e1e;
+    background: #faf6ea;
+    border: 1px solid var(--color-washi-edge);
     overflow: hidden;
   }
 </style>
