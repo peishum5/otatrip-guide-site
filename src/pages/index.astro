@@ -14,143 +14,55 @@ const latestPosts = blogPosts.slice(0, 3);
   description="Explore Kyoto with local expert guides. Rated 4.9/5 on TripAdvisor. Book a walking tour or browse our practical travel guides for first-time visitors."
 >
   <!-- Hero Section -->
-  <section class="scanlines relative bg-nes-black text-nes-white overflow-hidden">
+  <section class="relative bg-washi overflow-hidden">
     <img
-      src="/images/tours/tour-kiyomizu-night.jpg"
-      alt="Gion night walking tour guests"
-      class="absolute inset-0 w-full h-full object-cover opacity-70"
+      src="/images/theme/hero-ukiyoe.webp"
+      alt="Ukiyo-e style woodblock print of Gion, Kyoto at night"
+      class="absolute inset-0 w-full h-full object-cover"
       loading="eager"
     />
+    <!-- Washi scrim for text legibility -->
+    <div class="absolute inset-0 bg-gradient-to-r from-washi via-washi/85 to-transparent md:to-washi/10"></div>
+
     <div class="relative z-10 max-w-6xl mx-auto px-4 py-20 md:py-32">
+      <!-- Vertical decorative kanji -->
+      <span class="vertical-jp hidden lg:block absolute right-8 top-1/2 -translate-y-1/2 text-kin text-3xl opacity-60 select-none" aria-hidden="true">京都　祇園</span>
 
       <!-- Rating badge -->
-      <div id="hero-badge" class="hero-reveal inline-flex items-center gap-3 border border-nes-amber px-4 py-2 mb-6" style="--d:0.2s">
-        <span class="text-nes-amber text-sm">★★★★★</span>
-        <span class="font-pixel text-[0.9rem] text-nes-white">4.9 / 5</span>
-        <span class="font-sans text-xs text-gray-400">on TripAdvisor</span>
+      <div class="hero-reveal inline-flex items-center gap-3 washi-card border-2 border-sumi px-4 py-2 mb-8" style="--d:0.05s; box-shadow: 3px 3px 0 rgba(33,29,25,0.15);">
+        <span class="hanko text-sm" aria-hidden="true">評</span>
+        <span class="text-kin text-sm">★★★★★</span>
+        <span class="font-display font-bold text-sumi">4.9 / 5</span>
+        <span class="font-sans text-xs text-sumi-soft">on TripAdvisor</span>
       </div>
 
-      <!-- Typewriter h1 -->
-      <h1 id="hero-h1" class="font-pixel text-nes-amber leading-relaxed mb-6" style="font-size: clamp(0.9rem, 3vw, 1.5rem); min-height: 3.5em;">
-        <span id="hero-line1"></span><span id="hero-cursor" class="hero-cursor">█</span><br />
-        <span id="hero-line2" class="text-nes-white"></span>
+      <!-- Heading -->
+      <h1 class="hero-reveal font-display font-bold text-sumi leading-tight mb-6" style="--d:0.15s; font-size: clamp(2.1rem, 5vw, 3.5rem);">
+        Discover <span class="text-shu">Kyoto</span>,<br />
+        like a local.
       </h1>
 
       <!-- Description -->
-      <p id="hero-desc" class="hero-reveal font-sans text-gray-300 text-lg leading-relaxed mb-8 max-w-xl" style="--d:0s; opacity:0">
+      <p class="hero-reveal font-sans text-sumi-soft text-lg leading-relaxed mb-9 max-w-xl" style="--d:0.25s">
         Intimate walking tours through Gion's lantern-lit alleys. Sake tastings at bars only locals know.
         Small groups, genuine experiences.
       </p>
 
       <!-- Buttons -->
-      <div id="hero-btns" class="hero-reveal flex flex-col sm:flex-row gap-5" style="--d:0s; opacity:0">
-        <a href="/tours" class="nes-btn nes-btn-gold" data-track-label="home_hero_see_tours">SEE ALL TOURS</a>
-        <a href="/blog" class="nes-btn nes-btn-outline" data-track-label="home_hero_browse_guides">BROWSE TRAVEL GUIDES</a>
+      <div class="hero-reveal flex flex-col sm:flex-row gap-5" style="--d:0.35s">
+        <a href="/tours" class="nes-btn nes-btn-gold" data-track-label="home_hero_see_tours">See All Tours</a>
+        <a href="/blog" class="nes-btn nes-btn-outline" data-track-label="home_hero_browse_guides">Browse Travel Guides</a>
       </div>
     </div>
   </section>
 
-  <style>
-    /* hero element reveal */
-    @keyframes heroFadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .hero-reveal {
-      opacity: 0;
-      animation: heroFadeUp 0.6s ease forwards;
-      animation-delay: var(--d, 0s);
-    }
-
-    /* blinking block cursor */
-    @keyframes blockBlink {
-      0%, 49% { opacity: 1; }
-      50%, 100% { opacity: 0; }
-    }
-    .hero-cursor {
-      display: inline-block;
-      animation: blockBlink 0.7s step-end infinite;
-    }
-
-    /* glitch twitch */
-    @keyframes glitchTwitch {
-      0%   { transform: translate(0); }
-      20%  { transform: translate(-3px, 1px); filter: brightness(1.3); }
-      40%  { transform: translate(3px, -1px); }
-      60%  { transform: translate(-2px, 0); }
-      80%  { transform: translate(2px, 1px); filter: brightness(0.9); }
-      100% { transform: translate(0); filter: none; }
-    }
-    #hero-h1.glitch {
-      animation: glitchTwitch 0.15s steps(1) forwards;
-    }
-  </style>
-
-  <script>
-  (() => {
-    const L1 = 'DISCOVER KYOTO';
-    const L2 = 'LIKE A LOCAL';
-    const SPEED = 60; // ms per char
-
-    const el1    = document.getElementById('hero-line1');
-    const el2    = document.getElementById('hero-line2');
-    const cursor = document.getElementById('hero-cursor');
-    const desc   = document.getElementById('hero-desc');
-    const btns   = document.getElementById('hero-btns');
-    const h1     = document.getElementById('hero-h1');
-
-    function typeText(el, text, cb) {
-      let i = 0;
-      const t = setInterval(() => {
-        el.textContent += text[i++];
-        if (i >= text.length) { clearInterval(t); if (cb) cb(); }
-      }, SPEED);
-    }
-
-    // Start after badge fades in
-    setTimeout(() => {
-      typeText(el1, L1, () => {
-        // Move cursor to line2 position
-        setTimeout(() => {
-          el2.appendChild(cursor); // move cursor to line2
-          typeText(el2, L2, () => {
-            // Typing done — reveal desc & buttons
-            desc.style.setProperty('--d', '0.1s');
-            desc.style.removeProperty('opacity');
-            desc.classList.add('hero-reveal');
-
-            setTimeout(() => {
-              btns.style.setProperty('--d', '0.1s');
-              btns.style.removeProperty('opacity');
-              btns.classList.add('hero-reveal');
-            }, 300);
-
-            // Start periodic glitch after a short pause
-            setTimeout(startGlitch, 2000);
-          });
-        }, 220);
-      });
-    }, 600);
-
-    function startGlitch() {
-      function glitch() {
-        h1.classList.add('glitch');
-        setTimeout(() => h1.classList.remove('glitch'), 200);
-        // Schedule next glitch randomly 4–9s later
-        setTimeout(glitch, 4000 + Math.random() * 5000);
-      }
-      glitch();
-    }
-  })();
-  </script>
-
   <!-- Why Choose Us -->
-  <section class="bg-nes-black py-16">
+  <section class="bg-washi py-16 seigaiha-bg">
     <div class="max-w-6xl mx-auto px-4">
       <div class="text-center mb-12">
-        <p class="font-pixel text-[0.9rem] text-nes-cyan mb-4 rpg-prefix">WHY OTAtrip GUIDE</p>
-        <h2 class="font-pixel text-nes-white leading-relaxed" style="font-size: clamp(0.65rem, 2vw, 0.9rem);">
-          KYOTO FROM THE INSIDE
+        <p class="font-display text-sm text-ai mb-4 tracking-widest">Why OTAtrip Guide</p>
+        <h2 class="font-display font-bold text-sumi text-2xl md:text-3xl">
+          Kyoto, from the Inside
         </h2>
       </div>
       <div class="grid md:grid-cols-3 gap-6">
@@ -158,19 +70,19 @@ const latestPosts = blogPosts.slice(0, 3);
           {
             icon: '🏮',
             img: '/images/why/local-expertise.jpg',
-            title: 'LOCAL EXPERTISE',
+            title: 'Local Expertise',
             desc: "Our guides have lived in Kyoto for years. We take you to bars, alleys, and viewpoints most visitors never find.",
           },
           {
             icon: '🎭',
             img: '/images/why/entertainment-pro.png',
-            title: 'ENTERTAINMENT PROS',
+            title: 'Entertainment Pros',
             desc: 'OTAtrip Guide is produced by Cosmic Magic — a professional entertainment company behind immersive experiences and Alternate Reality Games (ARGs).',
           },
           {
             icon: '👥',
             img: '/images/why/small-groups.jpg',
-            title: 'SMALL GROUPS',
+            title: 'Small Groups',
             desc: 'We keep groups small so every guest gets real attention. Ask questions, go off-script, connect with your guide and the city on your own terms.',
           },
         ].map(item => (
@@ -179,15 +91,15 @@ const latestPosts = blogPosts.slice(0, 3);
               {item.img ? (
                 <img src={item.img} alt={item.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-400" />
               ) : (
-                <div class="w-full h-full bg-gray-900 flex items-center justify-center">
+                <div class="w-full h-full bg-washi-deep flex items-center justify-center">
                   <span class="text-5xl">{item.icon}</span>
                 </div>
               )}
-              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
             </div>
             <div class="p-6">
-              <h3 class="font-pixel text-[0.9rem] text-nes-amber mb-3">{item.title}</h3>
-              <p class="font-sans text-gray-400 text-sm leading-relaxed">{item.desc}</p>
+              <h3 class="font-display font-bold text-lg text-sumi mb-3">{item.title}</h3>
+              <p class="font-sans text-sumi-soft text-sm leading-relaxed">{item.desc}</p>
             </div>
           </div>
         ))}
@@ -198,14 +110,14 @@ const latestPosts = blogPosts.slice(0, 3);
   <!-- Mini Game -->
   <section class="max-w-4xl mx-auto px-4 py-10">
     <div class="flex items-center gap-4 mb-2">
-      <h2 class="font-pixel text-[0.9rem] text-nes-green">// MINI GAME</h2>
-      <div class="flex-1 border-t border-gray-800"></div>
-      <a href="/game" class="font-pixel text-nes-cyan hover:text-nes-amber transition-colors" style="font-size: 0.5rem;">
-        FULL PAGE &rsaquo;
+      <h2 class="font-display font-bold text-lg text-sumi">Mini Game — Gion Night Quest</h2>
+      <div class="flex-1 border-t border-washi-edge"></div>
+      <a href="/game" class="font-display text-xs text-ai hover:text-shu transition-colors tracking-wide">
+        Full page &rsaquo;
       </a>
     </div>
-    <p class="font-sans text-sm text-gray-500 mb-6">
-      Explore a tiny pixel-art Gion at night. Talk to the locals, collect 3 stamps — then book the real thing.
+    <p class="font-sans text-sm text-sumi-soft mb-6">
+      An 8-bit interlude: explore a tiny pixel-art Gion at night. Talk to the locals, collect 3 stamps — then book the real thing.
     </p>
     <GionQuest />
   </section>
@@ -219,37 +131,37 @@ const latestPosts = blogPosts.slice(0, 3);
   <section class="max-w-6xl mx-auto px-4 pb-16">
     <div class="flex items-end justify-between mb-8">
       <div>
-        <p class="font-pixel text-[0.9rem] text-nes-amber mb-2 rpg-prefix">AVAILABLE QUESTS</p>
-        <h2 class="font-pixel text-nes-white leading-relaxed" style="font-size: clamp(0.65rem, 2vw, 0.9rem);">
-          OUR TOURS
+        <p class="font-display text-sm text-ai mb-2 tracking-widest">Tours &amp; Experiences</p>
+        <h2 class="font-display font-bold text-sumi text-2xl md:text-3xl">
+          Our Tours
         </h2>
       </div>
-      <a href="/tours" class="font-pixel text-[0.9rem] text-nes-cyan hover:text-nes-amber transition-colors hidden md:block" style="font-size: 0.5rem;">
-        ALL TOURS &rsaquo;
+      <a href="/tours" class="font-display text-xs text-ai hover:text-shu transition-colors hidden md:block tracking-wide">
+        All tours &rsaquo;
       </a>
     </div>
     <div class="space-y-3">
       {[
         {
           icon: '🏮',
-          tag: 'EVENING · GION',
-          name: 'GION SAKE WALKING TOUR',
+          tag: 'Evening · Gion',
+          name: 'Gion Sake Walking Tour',
           meta: '3 hrs · Max 10 · Sake · EN',
           price: 'from ¥5,600',
           href: '/tours/gion-sake-walk',
         },
         {
           icon: '🍻',
-          tag: 'EVENING · PONTOCHO',
-          name: 'KYOTO IZAKAYA HOPPING',
+          tag: 'Evening · Pontocho',
+          name: 'Kyoto Izakaya Hopping',
           meta: '3 hrs · Small group · Food · EN',
           price: 'from ¥4,160',
           href: '/tours/izakaya-hopping',
         },
         {
           icon: '⛩️',
-          tag: 'MORNING · SHIMOGAMO',
-          name: 'SHIMOGAMO SHRINE & MANGA WALK',
+          tag: 'Morning · Shimogamo',
+          name: 'Shimogamo Shrine & Manga Walk',
           meta: '2 hrs · 10:00 / 14:00 · Manga · EN',
           price: 'from ¥8,500',
           href: '/tours/shimogamo-manga-walk',
@@ -258,18 +170,18 @@ const latestPosts = blogPosts.slice(0, 3);
         <a href={tour.href} class="blog-card group flex flex-col sm:flex-row items-start sm:items-center gap-5 p-5 block">
           <div class="text-3xl shrink-0 group-hover:scale-110 transition-transform">{tour.icon}</div>
           <div class="flex-1 min-w-0">
-            <p class="font-pixel text-nes-cyan mb-1" style="font-size: 0.5rem; letter-spacing: 0.06em;">{tour.tag}</p>
-            <h3 class="font-pixel text-nes-white group-hover:text-nes-amber transition-colors leading-relaxed mb-1" style="font-size: 0.6rem;">{tour.name}</h3>
-            <p class="font-pixel text-gray-600" style="font-size: 0.48rem;">{tour.meta} · <span class="text-nes-amber">{tour.price}</span></p>
+            <p class="font-display text-xs text-ai mb-1 tracking-wide">{tour.tag}</p>
+            <h3 class="font-display font-bold text-lg text-sumi group-hover:text-shu transition-colors leading-relaxed mb-1">{tour.name}</h3>
+            <p class="font-sans text-xs text-sumi-soft">{tour.meta} · <span class="text-shu font-medium">{tour.price}</span></p>
           </div>
-          <span class="font-pixel text-nes-amber group-hover:text-nes-white transition-colors shrink-0" style="font-size: 0.5rem;">
-            VIEW &rarr;
+          <span class="font-display text-sm text-shu group-hover:text-shu-dark transition-colors shrink-0">
+            View &rarr;
           </span>
         </a>
       ))}
     </div>
     <div class="text-center mt-6 md:hidden">
-      <a href="/tours" class="font-pixel text-[0.9rem] text-nes-cyan hover:text-nes-amber transition-colors" style="font-size: 0.5rem;">ALL TOURS &rsaquo;</a>
+      <a href="/tours" class="font-display text-sm text-ai hover:text-shu transition-colors tracking-wide">All tours &rsaquo;</a>
     </div>
   </section>
 
@@ -282,13 +194,13 @@ const latestPosts = blogPosts.slice(0, 3);
   <section class="max-w-6xl mx-auto px-4 py-16">
     <div class="flex items-end justify-between mb-8">
       <div>
-        <p class="font-pixel text-[0.9rem] text-nes-amber mb-2 rpg-prefix">TRAVEL GUIDES</p>
-        <h2 class="font-pixel text-nes-white leading-relaxed" style="font-size: clamp(0.65rem, 2vw, 0.9rem);">
-          PLAN YOUR KYOTO TRIP
+        <p class="font-display text-sm text-ai mb-2 tracking-widest">Travel Guides</p>
+        <h2 class="font-display font-bold text-sumi text-2xl md:text-3xl">
+          Plan Your Kyoto Trip
         </h2>
       </div>
-      <a href="/blog" class="font-pixel text-nes-cyan hover:text-nes-amber transition-colors hidden md:block" style="font-size: 0.5rem;">
-        ALL GUIDES &rsaquo;
+      <a href="/blog" class="font-display text-xs text-ai hover:text-shu transition-colors hidden md:block tracking-wide">
+        All guides &rsaquo;
       </a>
     </div>
 
@@ -306,20 +218,20 @@ const latestPosts = blogPosts.slice(0, 3);
                     loading="lazy"
                   />
                 ) : (
-                  <div class="w-full h-full bg-gray-900 flex items-center justify-center">
-                    <span class="font-pixel text-[0.9rem] text-gray-700">KYOTO</span>
+                  <div class="w-full h-full bg-washi-deep flex items-center justify-center">
+                    <span class="font-display text-sumi-soft">KYOTO</span>
                   </div>
                 )}
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
                 <span class="img-badge">{post.data.category || 'Kyoto Guide'}</span>
               </div>
               <div class="p-5">
-                <h3 class="font-pixel text-[0.9rem] text-nes-white group-hover:text-nes-amber transition-colors leading-relaxed mb-3 line-clamp-2">
+                <h3 class="font-display font-bold text-sumi group-hover:text-shu transition-colors leading-relaxed mb-3 line-clamp-2">
                   {post.data.title}
                 </h3>
-                <p class="font-sans text-gray-500 text-sm leading-relaxed line-clamp-3">{post.data.description}</p>
-                <div class="mt-4 font-pixel text-nes-cyan group-hover:text-nes-amber transition-colors" style="font-size: 0.5rem;">
-                  READ GUIDE &rarr;
+                <p class="font-sans text-sumi-soft text-sm leading-relaxed line-clamp-3">{post.data.description}</p>
+                <div class="mt-4 font-display text-xs text-ai group-hover:text-shu transition-colors tracking-wide">
+                  Read guide &rarr;
                 </div>
               </div>
             </a>
@@ -327,11 +239,11 @@ const latestPosts = blogPosts.slice(0, 3);
         ))}
       </div>
     ) : (
-      <p class="font-pixel text-[0.9rem] text-gray-600 text-center py-12">// BLOG POSTS COMING SOON</p>
+      <p class="font-display text-sumi-soft text-center py-12">New guides coming soon</p>
     )}
 
     <div class="text-center mt-8 md:hidden">
-      <a href="/blog" class="font-pixel text-nes-cyan hover:text-nes-amber transition-colors" style="font-size: 0.5rem;">ALL GUIDES &rsaquo;</a>
+      <a href="/blog" class="font-display text-sm text-ai hover:text-shu transition-colors tracking-wide">All guides &rsaquo;</a>
     </div>
   </section>
 
