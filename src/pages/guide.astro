@@ -4,36 +4,36 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const guides = [
   {
     id: 'shumpei',
-    name: 'SHUMPEI',
+    name: 'Shumpei',
     realName: '名越俊平',
-    class: 'COSMIC MAGE',
-    level: 13,
+    role: 'Founder · Magician & Astrophysicist',
+    kyotoYears: 13,
     portrait: '🪄',
     photo: '/images/guides/shumpei.png',
     xId: 'peishum5',
     bio: 'Founder of OTAtrip Guide. Holds a Ph.D. in astrophysics and built a parallel career as a professional magician. Leads Cosmic Magic — an entertainment company creating Alternate Reality Games. A tech enthusiast and performer who has called Kyoto home for 13 years.',
     stats: [
-      { label: 'KYOTO KNOWLEDGE', value: 90, note: '13 YRS' },
-      { label: 'ENTERTAINMENT', value: 98 },
-      { label: 'TECH & SCIENCE', value: 96, note: 'Ph.D.' },
-      { label: 'LANGUAGES', value: 85, note: 'EN/JP' },
+      { label: 'Kyoto Knowledge', value: 90, note: '13 yrs' },
+      { label: 'Entertainment', value: 98 },
+      { label: 'Tech & Science', value: 96, note: 'Ph.D.' },
+      { label: 'Languages', value: 85, note: 'EN/JP' },
     ],
   },
   {
     id: 'yuina',
-    name: 'YUINA AKIKOSHI',
+    name: 'Yuina Akikoshi',
     realName: '秋越結菜',
-    class: 'ARTS MASTER',
-    level: 17,
+    role: 'Traditional Arts Master',
+    kyotoYears: 17,
     portrait: '🎎',
     photo: '/images/guides/yuina.png',
     xId: 'yunaaachan23',
     bio: 'A Kyoto native with 17 years of deep roots in the city\'s traditional arts scene. Yuina has mastered nihon buyo (Japanese traditional dance) and koto, and brings a rare insider perspective on Kyoto\'s living cultural heritage.',
     stats: [
-      { label: 'KYOTO KNOWLEDGE', value: 97, note: '17 YRS' },
-      { label: 'TRADITIONAL ARTS', value: 99 },
-      { label: 'PERFORMANCE', value: 95 },
-      { label: 'LANGUAGES', value: 80, note: 'EN/JP' },
+      { label: 'Kyoto Knowledge', value: 97, note: '17 yrs' },
+      { label: 'Traditional Arts', value: 99 },
+      { label: 'Performance', value: 95 },
+      { label: 'Languages', value: 80, note: 'EN/JP' },
     ],
   },
 ];
@@ -44,14 +44,13 @@ const guides = [
   description="Meet the local experts who lead your Kyoto experience. A tech-wizard founder and a traditional arts master — all based in Kyoto."
   canonical="/guide"
 >
-  <!-- PLAYER SELECT Header -->
-  <section class="scanlines bg-nes-black py-16 text-center">
+  <!-- Header -->
+  <section class="scanlines bg-washi border-b border-washi-edge py-16 text-center">
     <div class="relative z-10 max-w-3xl mx-auto px-4">
-      <p class="font-pixel text-[0.9rem] text-gray-600 mb-4">★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★</p>
-      <p class="font-pixel text-[0.9rem] text-nes-amber mb-6 rpg-prefix">SELECT YOUR GUIDE</p>
-      <h1 class="font-pixel text-nes-white mb-6" style="font-size: clamp(1.2rem, 5vw, 2.5rem);">PLAYER SELECT</h1>
-      <p class="font-pixel text-[0.9rem] text-nes-cyan pixel-cursor">CHOOSE YOUR GUIDE</p>
-      <p class="font-pixel text-[0.9rem] text-gray-600 mt-6">★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★</p>
+      <p class="font-display text-sm text-ai tracking-widest mb-4 rpg-prefix">Local Experts</p>
+      <h1 class="font-display text-3xl md:text-4xl font-bold text-sumi mb-6">Meet Your Guides</h1>
+      <p class="font-sans text-sm text-sumi-soft">The locals who walk Kyoto with you.</p>
+      <div class="pixel-divider max-w-xs mx-auto mt-8"></div>
     </div>
   </section>
 
@@ -60,36 +59,35 @@ const guides = [
     <div class="grid md:grid-cols-3 gap-8">
 
       <!-- Real guide cards -->
-      {guides.map((guide, i) => (
+      {guides.map((guide) => (
         <div class="dialogue-box flex flex-col">
           <!-- Portrait + Identity -->
-          <div class="text-center mb-6 border-b border-gray-800 pb-6">
+          <div class="text-center mb-6 border-b border-washi-edge pb-6">
             {guide.photo ? (
               <img
                 src={guide.photo}
                 alt={guide.name}
-                class="w-20 h-20 md:w-24 md:h-24 mx-auto object-cover border-2 border-nes-amber mb-4"
+                class="w-20 h-20 md:w-24 md:h-24 mx-auto object-cover border-2 border-sumi mb-4"
               />
             ) : (
-              <div class="w-20 h-20 md:w-24 md:h-24 mx-auto bg-gray-900 border-2 border-nes-amber flex items-center justify-center text-5xl mb-4">
+              <div class="w-20 h-20 md:w-24 md:h-24 mx-auto bg-washi border-2 border-sumi flex items-center justify-center text-5xl mb-4">
                 {guide.portrait}
               </div>
             )}
-            <p class="font-sans text-xs text-nes-cyan mb-2">PLAYER {i + 1}</p>
-            <h2 class="font-pixel text-[0.95rem] text-nes-white mb-1 leading-relaxed">{guide.name}</h2>
+            <h2 class="font-display text-lg font-bold text-sumi mb-1 leading-relaxed">{guide.name}</h2>
             {guide.realName && (
-              <p class="font-sans text-xs text-gray-500 mb-3">{guide.realName}</p>
+              <p class="font-sans text-xs text-sumi-soft mb-3">{guide.realName}</p>
             )}
-            <div class="inline-block border border-nes-cyan px-3 py-1 mb-3">
-              <span class="font-pixel text-[0.9rem] text-nes-cyan">{guide.class}</span>
+            <div class="inline-block border border-ai px-3 py-1 mb-3">
+              <span class="font-display text-xs text-ai tracking-wide">{guide.role}</span>
             </div>
-            <p class="font-sans text-xs text-nes-green font-bold">LV. {guide.level}</p>
+            <p class="font-sans text-xs text-matsu font-bold">{guide.kyotoYears} years in Kyoto</p>
             {guide.xId && (
               <a
                 href={`https://x.com/${guide.xId}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center gap-1 mt-3 font-sans text-xs text-gray-500 hover:text-nes-cyan transition-colors"
+                class="inline-flex items-center gap-1 mt-3 font-sans text-xs text-sumi-soft hover:text-ai transition-colors"
               >
                 <svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
@@ -99,16 +97,16 @@ const guides = [
             )}
           </div>
 
-          <!-- Stats -->
-          <div class="mb-6 border-b border-gray-800 pb-6">
-            <p class="font-pixel text-[0.9rem] text-nes-cyan mb-4">// STATS</p>
+          <!-- Skills -->
+          <div class="mb-6 border-b border-washi-edge pb-6">
+            <p class="font-display text-sm text-ai tracking-widest mb-4">Skills</p>
             <div class="space-y-4">
               {guide.stats.map(stat => (
                 <div>
                   <div class="flex justify-between mb-1">
-                    <span class="font-sans text-xs text-gray-500">{stat.label}</span>
+                    <span class="font-sans text-xs text-sumi-soft">{stat.label}</span>
                     {stat.note && (
-                      <span class="font-sans text-xs text-nes-amber font-medium">{stat.note}</span>
+                      <span class="font-sans text-xs text-shu font-medium">{stat.note}</span>
                     )}
                   </div>
                   <div class="stat-bar-track">
@@ -121,41 +119,41 @@ const guides = [
 
           <!-- Bio -->
           <div class="mb-6 flex-1">
-            <p class="font-pixel text-[0.9rem] text-nes-cyan mb-4">// BIO</p>
-            <p class="font-sans text-sm text-gray-300 leading-relaxed">{guide.bio}</p>
+            <p class="font-display text-sm text-ai tracking-widest mb-4">Bio</p>
+            <p class="font-sans text-sm text-sumi-soft leading-relaxed">{guide.bio}</p>
           </div>
 
           <!-- CTA -->
           <a href="/tours" class="nes-btn nes-btn-gold block w-full text-center">
-            START ADVENTURE
+            Explore Our Tours
           </a>
         </div>
       ))}
 
-      <!-- PLAYER 3: Recruitment card -->
-      <div class="flex flex-col" style="border: 3px dashed #444; padding: 1.5rem; background: #0d0d0d;">
-        <div class="text-center mb-6 border-b border-gray-800 pb-6">
-          <div class="w-24 h-24 mx-auto bg-gray-900 border-2 border-dashed border-gray-600 flex items-center justify-center text-5xl mb-4">
+      <!-- Recruitment card -->
+      <div class="washi-card flex flex-col border-2 border-dashed border-washi-edge p-6">
+        <div class="text-center mb-6 border-b border-washi-edge pb-6">
+          <div class="w-24 h-24 mx-auto bg-washi-deep border-2 border-dashed border-washi-edge flex items-center justify-center text-5xl text-sumi-soft mb-4">
             ?
           </div>
-          <p class="font-sans text-xs text-gray-600 mb-2">PLAYER 3 & BEYOND</p>
-          <h2 class="font-pixel text-[0.95rem] text-gray-500 mb-3 leading-relaxed">STUDENT GUIDES</h2>
-          <div class="inline-block border border-gray-700 px-3 py-1">
-            <span class="font-pixel text-[0.9rem] text-gray-600">MANY CLASSES</span>
+          <p class="font-sans text-xs text-sumi-soft mb-2">And Many More</p>
+          <h2 class="font-display text-lg font-bold text-sumi mb-3 leading-relaxed">Student Guides</h2>
+          <div class="inline-block border border-washi-edge px-3 py-1">
+            <span class="font-display text-xs text-sumi-soft tracking-wide">Many Backgrounds</span>
           </div>
         </div>
 
         <div class="mb-6 flex-1">
-          <p class="font-sans text-sm text-gray-400 leading-relaxed mb-4">
+          <p class="font-sans text-sm text-sumi-soft leading-relaxed mb-4">
             Behind our tours is a growing team of passionate student guides — Kyoto locals with a wide range of backgrounds, from history and arts to science and tech.
           </p>
-          <p class="font-sans text-sm text-gray-400 leading-relaxed">
+          <p class="font-sans text-sm text-sumi-soft leading-relaxed">
             Interested in becoming a guide? We'd love to hear from you.
           </p>
         </div>
 
         <a href="/contact" class="nes-btn nes-btn-outline block w-full text-center">
-          GET IN TOUCH
+          Get in Touch
         </a>
       </div>
 
@@ -163,9 +161,9 @@ const guides = [
   </section>
 
   <!-- Back link -->
-  <div class="text-center pb-16 border-t border-gray-900 pt-8">
-    <a href="/" class="font-pixel text-[0.9rem] text-nes-amber hover:text-nes-cyan transition-colors">
-      &lt; BACK TO QUEST SELECT
+  <div class="text-center pb-16 border-t border-washi-edge pt-8">
+    <a href="/" class="font-display text-sm text-ai hover:text-shu transition-colors">
+      &larr; Back to Tours
     </a>
   </div>
 </BaseLayout>

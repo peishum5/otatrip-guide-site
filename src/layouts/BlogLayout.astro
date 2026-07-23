@@ -124,40 +124,40 @@ if (faq.length > 0) {
   {hero_image && hero_image !== '' && (
     <div class="relative w-full overflow-hidden" style="height: clamp(200px, 40vw, 400px);">
       <img src={hero_image} alt={title} class="w-full h-full object-cover" loading="eager" />
-      <div class="absolute inset-0 bg-gradient-to-t from-nes-black via-transparent to-transparent" style="background: linear-gradient(to top, #0a0a0a 0%, rgba(10,10,10,0.3) 40%, transparent 100%);"></div>
+      <div class="absolute inset-0" style="background: linear-gradient(to top, #f5efdf 0%, rgba(245,239,223,0.25) 30%, transparent 60%);"></div>
     </div>
   )}
 
   <article class="max-w-4xl mx-auto px-4 py-10">
 
     <!-- Breadcrumb -->
-    <nav class="font-pixel text-gray-700 mb-8 flex items-center gap-2 flex-wrap" style="font-size: 0.45rem; letter-spacing: 0.06em;" aria-label="Breadcrumb">
-      <a href="/" class="hover:text-nes-amber transition-colors">HOME</a>
-      <span class="text-gray-800">/</span>
-      <a href="/blog" class="hover:text-nes-amber transition-colors">GUIDES</a>
+    <nav class="font-display text-xs tracking-wide text-sumi-soft mb-8 flex items-center gap-2 flex-wrap" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-shu transition-colors">Home</a>
+      <span class="text-washi-edge">/</span>
+      <a href="/blog" class="hover:text-shu transition-colors">Guides</a>
       {category && (
         <>
-          <span class="text-gray-800">/</span>
+          <span class="text-washi-edge">/</span>
           {categoryHref ? (
-            <a href={categoryHref} class="hover:text-nes-amber transition-colors">{category.toUpperCase()}</a>
+            <a href={categoryHref} class="hover:text-shu transition-colors">{category}</a>
           ) : (
-            <span class="text-gray-700">{category.toUpperCase()}</span>
+            <span>{category}</span>
           )}
         </>
       )}
     </nav>
 
     <!-- Title + meta -->
-    <header class="mb-10 pb-8 border-b border-gray-800/60">
-      <p class="font-pixel text-nes-cyan mb-4" style="font-size: 0.5rem; letter-spacing: 0.1em;">{(category || 'Kyoto Guide').toUpperCase()}</p>
-      <h1 class="font-pixel text-nes-white leading-relaxed mb-6" style="font-size: clamp(0.75rem, 2.5vw, 1rem);">{title}</h1>
-      <div class="flex flex-wrap items-center gap-4 text-gray-600 font-pixel" style="font-size: 0.45rem; letter-spacing: 0.06em;">
-        <span>BY {author.toUpperCase()}</span>
+    <header class="mb-10 pb-8 border-b border-washi-edge">
+      <p class="font-display text-sm tracking-[0.15em] text-ai mb-4">{category || 'Kyoto Guide'}</p>
+      <h1 class="font-display font-bold text-sumi text-3xl md:text-4xl leading-snug mb-6">{title}</h1>
+      <div class="flex flex-wrap items-center gap-4 text-sumi-soft font-sans text-xs tracking-wide">
+        <span>By {author}</span>
         {displayDate && displayDate !== '' && (
-          <span class="text-gray-700">·</span>
+          <span class="text-washi-edge">·</span>
         )}
         {displayDate && displayDate !== '' && (
-          <time datetime={displayDate}>UPDATED {displayDate}</time>
+          <time datetime={displayDate}>Updated {displayDate}</time>
         )}
       </div>
     </header>
@@ -171,19 +171,19 @@ if (faq.length > 0) {
     <ArticleCTA />
 
     {faq.length > 0 && (
-      <section class="mt-12 border-t border-gray-800/60 pt-10">
+      <section class="mt-12 border-t border-washi-edge pt-10">
         <div class="flex items-center gap-4 mb-6">
-          <h2 class="font-pixel text-nes-amber" style="font-size: 0.6rem;">FAQ</h2>
+          <h2 class="font-display font-bold text-sumi text-lg">FAQ</h2>
           <div class="flex-1 pixel-divider"></div>
         </div>
         <div class="space-y-2">
           {faq.map((item) => (
-            <details class="border border-gray-800 blog-card group">
-              <summary class="flex items-center justify-between px-5 py-4 cursor-pointer font-pixel text-nes-white hover:text-nes-amber transition-colors" style="font-size: 0.55rem; line-height: 1.6;">
+            <details class="blog-card group">
+              <summary class="flex items-center justify-between px-5 py-4 cursor-pointer font-display text-sm leading-relaxed text-sumi hover:text-shu transition-colors">
                 {item.q}
-                <span class="ml-4 text-gray-700 shrink-0 group-open:rotate-180 transition-transform">▼</span>
+                <span class="ml-4 text-sumi-soft shrink-0 group-open:rotate-180 transition-transform">▼</span>
               </summary>
-              <div class="px-5 pb-5 pt-3 font-sans text-sm text-gray-400 leading-relaxed border-t border-gray-800">
+              <div class="px-5 pb-5 pt-3 font-sans text-sm text-sumi-soft leading-relaxed border-t border-washi-edge">
                 {item.a}
               </div>
             </details>
@@ -193,9 +193,9 @@ if (faq.length > 0) {
     )}
 
     {relatedPosts.length > 0 && (
-      <section class="mt-12 border-t border-gray-800/60 pt-10">
+      <section class="mt-12 border-t border-washi-edge pt-10">
         <div class="flex items-center gap-4 mb-6">
-          <h2 class="font-pixel text-nes-cyan" style="font-size: 0.6rem;">RELATED GUIDES</h2>
+          <h2 class="font-display font-bold text-sumi text-lg">Related Guides</h2>
           <div class="flex-1 pixel-divider"></div>
         </div>
         <div class="grid md:grid-cols-3 gap-4">
@@ -208,11 +208,11 @@ if (faq.length > 0) {
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                   </div>
                 ) : (
-                  <div class="bg-gray-900" style="height: 80px;"></div>
+                  <div class="bg-washi-deep" style="height: 80px;"></div>
                 )}
                 <div class="p-4">
-                  <h3 class="font-pixel text-nes-white group-hover:text-nes-amber transition-colors leading-relaxed mb-2" style="font-size: 0.5rem;">{item.title}</h3>
-                  <p class="font-sans text-xs text-gray-600 leading-relaxed line-clamp-2">{item.description}</p>
+                  <h3 class="font-display text-sm font-semibold text-sumi group-hover:text-shu transition-colors leading-relaxed mb-2">{item.title}</h3>
+                  <p class="font-sans text-xs text-sumi-soft leading-relaxed line-clamp-2">{item.description}</p>
                 </div>
               </a>
             </article>
@@ -222,13 +222,11 @@ if (faq.length > 0) {
     )}
 
     <!-- Author box -->
-    <div class="mt-12 border-t border-gray-800/60 pt-8 flex items-start gap-4">
-      <div class="w-11 h-11 border border-nes-amber bg-nes-black flex items-center justify-center shrink-0" style="box-shadow: 0 0 12px rgba(255,176,0,0.2);">
-        <span class="font-pixel text-nes-amber" style="font-size: 0.5rem;">OG</span>
-      </div>
+    <div class="mt-12 border-t border-washi-edge pt-8 flex items-start gap-4">
+      <span class="hanko text-2xl shrink-0" aria-hidden="true">京</span>
       <div>
-        <div class="font-pixel text-nes-white mb-2" style="font-size: 0.55rem;">{author.toUpperCase()}</div>
-        <p class="font-sans text-sm text-gray-500 leading-relaxed">
+        <div class="font-display font-semibold text-sumi text-sm mb-2">{author}</div>
+        <p class="font-sans text-sm text-sumi-soft leading-relaxed">
           Local guide based in Gion, Kyoto. Leading intimate walking tours and sake experiences since 2018.
           Passionate about connecting travelers with authentic Kyoto culture.
         </p>
