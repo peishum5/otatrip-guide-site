@@ -1,13 +1,32 @@
 ---
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  body?: string;
+  href?: string;
+  primaryLabel?: string;
+  secondaryLabel?: string;
+  trackPrefix?: string;
+}
+
+// Defaults reproduce the original generic CTA, so BlogLayout's no-prop call is unchanged.
+const {
+  eyebrow = 'Kyoto Local Experience',
+  heading = 'Explore Kyoto<br />with a Local Guide',
+  body = 'Skip the crowds and see the Kyoto most visitors never find. Small-group tours led by local experts — built around genuine stories, hidden spots, and real connections with the city.',
+  href = '/tours',
+  primaryLabel = 'See Tour Details',
+  secondaryLabel = 'Book Now',
+  trackPrefix = 'blog_cta',
+} = Astro.props;
 ---
 
 <div class="article-cta my-12 scanlines">
   <div class="dialogue-box relative z-10 text-center">
-    <p class="font-display text-sm text-ai mb-4 tracking-widest">Kyoto Local Experience</p>
-    <h3 class="font-display font-bold text-sumi text-xl md:text-2xl mb-4 leading-relaxed">Explore Kyoto<br />with a Local Guide</h3>
+    <p class="font-display text-sm text-ai mb-4 tracking-widest">{eyebrow}</p>
+    <h3 class="font-display font-bold text-sumi text-xl md:text-2xl mb-4 leading-relaxed" set:html={heading}></h3>
     <p class="font-sans text-sm text-sumi-soft leading-relaxed max-w-xl mx-auto mb-4">
-      Skip the crowds and see the Kyoto most visitors never find. Small-group tours led by local experts —
-      built around genuine stories, hidden spots, and real connections with the city.
+      {body}
     </p>
     <div class="flex flex-wrap justify-center gap-6 font-sans text-xs text-sumi-soft mb-6">
       <span class="rpg-prefix">4.9/5 on TripAdvisor</span>
@@ -15,11 +34,11 @@
       <span class="rpg-prefix">Local experts</span>
     </div>
     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="/tours" class="nes-btn nes-btn-gold" data-track-label="blog_cta_tour_details">
-        See Tour Details
+      <a href={href} class="nes-btn nes-btn-gold" data-track-label={`${trackPrefix}_tour_details`}>
+        {primaryLabel}
       </a>
-      <a href="/tours" class="nes-btn nes-btn-outline" data-track-label="blog_cta_book_now">
-        Book Now
+      <a href={href} class="nes-btn nes-btn-outline" data-track-label={`${trackPrefix}_book_now`}>
+        {secondaryLabel}
       </a>
     </div>
   </div>

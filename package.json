@@ -4,7 +4,8 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build --force",
+    "build": "npm run check:images && astro build --force",
+    "check:images": "node scripts/check-images.mjs",
     "preview": "astro preview",
     "check": "astro check",
     "astro": "astro",
