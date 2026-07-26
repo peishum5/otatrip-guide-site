@@ -1,0 +1,312 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const BOOK = {
+  title: "Don't Be That Tourist",
+  subtitle: 'Japanese Etiquette for Travelers, Explained by a Kyoto Tour Guide',
+  author: 'Shumpei Nagoshi',
+  asin: 'B0HBMVHT82',
+  pages: 140,
+  illustrations: 49,
+  language: 'English',
+  published: '2026-07-26',
+  publishedLabel: 'July 26, 2026',
+  cover: '/images/book/dont-be-that-tourist-cover.jpg',
+  amazonUS: 'https://www.amazon.com/dp/B0HBMVHT82',
+  amazonJP: 'https://www.amazon.co.jp/dp/B0HBMVHT82',
+};
+
+const temperatures = [
+  {
+    kanji: '熱',
+    heat: 'It causes a real problem',
+    tone: 'shu',
+    desc: 'Someone ends up genuinely worse off — woken at midnight, blocked on a staircase, out of pocket for an empty table. This group is short. Learn it and you are most of the way there.',
+  },
+  {
+    kanji: '温',
+    heat: 'People notice, nobody says anything',
+    tone: 'kin',
+    desc: 'You are slightly out of step. Nothing follows, and you never find out it happened. Worth knowing, not worth the anxiety.',
+  },
+  {
+    kanji: '冷',
+    heat: 'Nobody minds at all',
+    tone: 'ai',
+    desc: 'It is in the guidebooks and not in the life. This group is much larger than the first — and because strangers here do not correct each other, it is the one thing you could never work out on your own.',
+  },
+];
+
+const inside = [
+  'The single rule underneath every other rule — learn it and you can work out the rest yourself',
+  'How to read a doorway and know instantly whether your shoes come off',
+  'Shrine or temple? The gate tells you, and it changes what you do',
+  'The honest answer on tipping, from someone who receives them',
+  'Onsen from start to finish, including what to do about tattoos',
+  'Photographing people in Gion: where the line actually is, and how to tell a working maiko from a tourist in a rental kimono',
+  'The two chopstick gestures that genuinely land badly, and the ten that do not',
+  'Why people freeze when you speak English, and the three things that dissolve it',
+  'What actually happens when you get one wrong — usually, nothing at all',
+];
+
+const specs = [
+  { label: 'Format', value: 'Kindle edition (eBook)' },
+  { label: 'Length', value: `${BOOK.pages} pages` },
+  { label: 'Illustrations', value: `${BOOK.illustrations} line drawings` },
+  { label: 'Language', value: BOOK.language },
+  { label: 'Published', value: BOOK.publishedLabel },
+  { label: 'ASIN', value: BOOK.asin },
+];
+
+const bookLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Book',
+  name: `${BOOK.title}: ${BOOK.subtitle}`,
+  bookFormat: 'https://schema.org/EBook',
+  inLanguage: 'en',
+  numberOfPages: BOOK.pages,
+  datePublished: BOOK.published,
+  image: `https://otatrip.guide${BOOK.cover}`,
+  url: 'https://otatrip.guide/book',
+  description:
+    'A Kyoto tour guide sorts Japanese etiquette into what genuinely matters, what people quietly notice, and what nobody minds at all — so you can stop worrying about a hundred things equally.',
+  author: {
+    '@type': 'Person',
+    name: BOOK.author,
+    alternateName: '名越俊平',
+    url: 'https://otatrip.guide/guide',
+  },
+  publisher: { '@type': 'Organization', name: 'OTAtrip Guide' },
+  workExample: {
+    '@type': 'Book',
+    '@id': BOOK.amazonUS,
+    bookFormat: 'https://schema.org/EBook',
+    inLanguage: 'en',
+    potentialAction: {
+      '@type': 'ReadAction',
+      target: { '@type': 'EntryPoint', urlTemplate: BOOK.amazonUS },
+    },
+  },
+};
+---
+
+<BaseLayout
+  title={`${BOOK.title} — A Book by Our Kyoto Guide`}
+  description="Don't Be That Tourist: Japanese Etiquette for Travelers, Explained by a Kyoto Tour Guide. A new Kindle book by Shumpei Nagoshi of OTAtrip Guide — what actually matters, what nobody minds, and why."
+  canonical="/book"
+  ogImage={BOOK.cover}
+  ogType="book"
+  keywords={[
+    'Japanese etiquette book',
+    'Japan travel etiquette',
+    'Kyoto tour guide book',
+    "Don't Be That Tourist",
+    'Kindle Japan travel guide',
+  ]}
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(bookLd)} />
+
+  <!-- ===== Hero ===== -->
+  <section class="scanlines bg-washi border-b border-washi-edge py-14 md:py-20">
+    <div class="relative z-10 max-w-5xl mx-auto px-4">
+      <div class="grid md:grid-cols-[minmax(0,300px)_1fr] gap-10 md:gap-14 items-center">
+
+        <!-- Cover -->
+        <div class="mx-auto w-52 md:w-full max-w-[300px]">
+          <a href={BOOK.amazonUS} target="_blank" rel="noopener noreferrer"
+            data-track-label="book_cover_amazon" class="block group">
+            <img
+              src={BOOK.cover}
+              alt={`Book cover — ${BOOK.title}: ${BOOK.subtitle}`}
+              width="1000"
+              height="1600"
+              class="frame-woodblock w-full h-auto transition-transform duration-150 group-hover:-translate-y-1"
+              style="box-shadow: 8px 8px 0 rgba(33,29,25,0.18);"
+            />
+          </a>
+        </div>
+
+        <!-- Text -->
+        <div class="text-center md:text-left">
+          <p class="font-display text-sm text-ai tracking-widest mb-4 rpg-prefix">New Release · Kindle</p>
+          <h1 class="font-display text-3xl md:text-5xl font-bold text-sumi leading-tight mb-4">
+            {BOOK.title}
+          </h1>
+          <p class="font-display text-base md:text-lg text-sumi-soft leading-relaxed mb-5">
+            {BOOK.subtitle}
+          </p>
+          <p class="font-sans text-sm text-sumi mb-7">
+            by <span class="font-medium">{BOOK.author}</span>
+            <span class="text-washi-edge mx-2">·</span>
+            <a href="/guide" class="text-ai hover:text-shu transition-colors">founder of OTAtrip Guide</a>
+          </p>
+
+          <div class="flex flex-wrap gap-3 justify-center md:justify-start mb-6">
+            <a href={BOOK.amazonUS} target="_blank" rel="noopener noreferrer"
+              data-track-label="book_amazon_us" class="nes-btn nes-btn-gold">
+              Get it on Amazon
+            </a>
+            <a href="#inside" class="nes-btn nes-btn-outline">
+              What's Inside
+            </a>
+          </div>
+
+          <p class="font-sans text-xs text-sumi-soft">
+            Free to read with Kindle Unlimited.
+            <span class="block mt-1">
+              In Japan? <a href={BOOK.amazonJP} target="_blank" rel="noopener noreferrer"
+                data-track-label="book_amazon_jp"
+                class="text-ai hover:text-shu transition-colors underline decoration-washi-edge underline-offset-2">Amazon.co.jp</a>
+            </span>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="max-w-3xl mx-auto px-4 py-14">
+
+    <!-- ===== Pitch ===== -->
+    <section class="mb-14">
+      <div class="dialogue-box">
+        <p class="font-display text-sm text-ai tracking-widest mb-4">About the Book</p>
+        <p class="font-display text-lg md:text-xl text-sumi leading-relaxed mb-5">
+          Most of what you are worried about does not matter. A few things really do.
+          This book tells you which is which.
+        </p>
+        <p class="font-sans text-sm text-sumi-soft leading-relaxed mb-4">
+          You have read the lists. Don't stand your chopsticks in the rice, don't tip, don't eat while walking,
+          don't, don't, don't. So you arrive frightened of a hundred things equally — and standing frozen in a
+          doorway is a worse look than any of them.
+        </p>
+        <p class="font-sans text-sm text-sumi-soft leading-relaxed">
+          Shumpei runs a small tour company in Kyoto. Every week he watches visitors succeed and stumble in real
+          Japanese rooms — tea rooms, izakaya, temple gates, crowded buses — and then has to explain what just
+          happened. This book is that explanation, written down.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== Three temperatures ===== -->
+    <section class="mb-14">
+      <div class="flex items-center gap-4 mb-3">
+        <h2 class="font-display text-xl md:text-2xl font-bold text-sumi">Three Temperatures</h2>
+        <div class="flex-1 border-t border-washi-edge"></div>
+      </div>
+      <p class="font-sans text-sm text-sumi-soft leading-relaxed mb-6">
+        Every custom in the book is sorted into one of three groups — and you are told which one you are standing in.
+      </p>
+
+      <div class="space-y-4">
+        {temperatures.map((t) => (
+          <div class="washi-card p-5 flex gap-5 items-start border-l-4" style={`border-left-color: var(--color-${t.tone});`}>
+            <span class="hanko text-lg shrink-0" aria-hidden="true">{t.kanji}</span>
+            <div>
+              <p class="font-display text-base font-semibold text-sumi mb-2 leading-snug">{t.heat}</p>
+              <p class="font-sans text-xs text-sumi-soft leading-relaxed">{t.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <p class="font-sans text-sm text-sumi-soft leading-relaxed mt-6">
+        Not a rulebook. An explanation. Because a rule only helps you in the situation it was written for,
+        and a reason helps you everywhere.
+      </p>
+    </section>
+
+    <!-- ===== Inside ===== -->
+    <section id="inside" class="mb-14 scroll-mt-24">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-display text-xl md:text-2xl font-bold text-sumi">What's Inside</h2>
+        <div class="flex-1 border-t border-washi-edge"></div>
+      </div>
+      <ul class="space-y-3">
+        {inside.map((item) => (
+          <li class="flex gap-3 items-start">
+            <span class="text-shu opacity-60 font-display shrink-0 mt-0.5">&rsaquo;</span>
+            <span class="font-sans text-sm text-sumi-soft leading-relaxed">{item}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div class="dialogue-box mt-8">
+        <p class="font-sans text-sm text-sumi-soft leading-relaxed mb-3">
+          <span class="nes-number">{BOOK.illustrations}</span> clean line illustrations for the things that are
+          faster to see than to read: the tea bowl, the water basin at a shrine, the order of operations at an
+          onsen, the difference between a maiko and a rental kimono.
+        </p>
+        <p class="font-sans text-sm text-sumi-soft leading-relaxed">
+          Current for 2026, including the new tax-free shopping rules that most advice online still gets wrong.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== Details ===== -->
+    <section class="mb-14">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-display text-xl md:text-2xl font-bold text-sumi">Details</h2>
+        <div class="flex-1 border-t border-washi-edge"></div>
+      </div>
+      <dl class="grid sm:grid-cols-2 gap-x-8 gap-y-0">
+        {specs.map((spec) => (
+          <div class="flex justify-between gap-4 border-b border-washi-edge py-3">
+            <dt class="font-display text-xs text-ai tracking-widest">{spec.label}</dt>
+            <dd class="font-sans text-xs text-sumi-soft text-right">{spec.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <!-- ===== Author ===== -->
+    <section class="mb-14">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-display text-xl md:text-2xl font-bold text-sumi">About the Author</h2>
+        <div class="flex-1 border-t border-washi-edge"></div>
+      </div>
+      <div class="dialogue-box flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+        <img
+          src="/images/guides/shumpei.png"
+          alt="Shumpei Nagoshi"
+          width="96"
+          height="96"
+          class="w-24 h-24 object-cover border-2 border-sumi shrink-0"
+        />
+        <div class="text-center sm:text-left">
+          <p class="font-display text-lg font-bold text-sumi mb-1">{BOOK.author}</p>
+          <p class="font-sans text-xs text-sumi-soft mb-4">名越俊平 · Founder, OTAtrip Guide</p>
+          <p class="font-sans text-sm text-sumi-soft leading-relaxed mb-4">
+            A working guide in Kyoto, where he has lived for 13 years. He holds a Ph.D. in astrophysics and a
+            parallel career as a professional magician. The examples in this book come from the streets he works on.
+          </p>
+          <a href="/guide" class="font-display text-sm text-ai hover:text-shu transition-colors">
+            Meet the guides &rarr;
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Closing CTA ===== -->
+    <section class="text-center border-t border-washi-edge pt-12">
+      <p class="font-display text-sm text-ai tracking-widest mb-4 rpg-prefix">Read It, Then Walk It</p>
+      <h2 class="font-display text-xl md:text-2xl font-bold text-sumi mb-4">
+        The book explains it. A guide shows you.
+      </h2>
+      <p class="font-sans text-sm text-sumi-soft leading-relaxed max-w-xl mx-auto mb-8">
+        Everything in these pages started on a tour in Gion. If you'd rather learn it the way it was learned —
+        in the rooms themselves — come walk with us.
+      </p>
+      <div class="flex flex-wrap gap-3 justify-center">
+        <a href={BOOK.amazonUS} target="_blank" rel="noopener noreferrer"
+          data-track-label="book_amazon_footer" class="nes-btn nes-btn-gold">
+          Get the Book
+        </a>
+        <a href="/tours" class="nes-btn nes-btn-outline">
+          Browse Our Tours
+        </a>
+      </div>
+    </section>
+
+  </div>
+</BaseLayout>
