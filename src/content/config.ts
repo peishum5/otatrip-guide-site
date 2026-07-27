@@ -17,8 +17,18 @@ const blog = defineCollection({
       q: z.string(),
       a: z.string(),
     })).optional(),
-    slug: z.string().optional(),
     noIndex: z.boolean().optional(),
+    // Overrides the generic end-of-article tour CTA so a post can point at the
+    // tour it actually relates to. Omit to keep the default /tours CTA.
+    cta: z.object({
+      eyebrow: z.string().optional(),
+      heading: z.string().optional(),
+      body: z.string().optional(),
+      href: z.string().optional(),
+      primaryLabel: z.string().optional(),
+      secondaryLabel: z.string().optional(),
+      trackPrefix: z.string().optional(),
+    }).optional(),
   }),
 });
 
