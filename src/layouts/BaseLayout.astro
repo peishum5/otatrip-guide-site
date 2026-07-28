@@ -105,5 +105,68 @@ const fullTitle = title.includes('OTA Trip Guide') ? title : `${title} | OTA Tri
     <slot />
   </main>
   <Footer />
+
+  <!-- 朱のにじみ: feeds the pointer position into .ink-bleed / .blog-card as
+       --ink-x / --ink-y. One delegated listener for the whole document. -->
+  <script>
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const SEL = '.blog-card, .ink-bleed';
+      let pending: { el: HTMLElement; x: number; y: number } | null = null;
+      let frame = 0;
+
+      const flush = () => {
+        frame = 0;
+        if (!pending) return;
+        const { el, x, y } = pending;
+        pending = null;
+        el.style.setProperty('--ink-x', x + '%');
+        el.style.setProperty('--ink-y', y + '%');
+      };
+
+      const track = (e: PointerEvent): HTMLElement | null => {
+        const target = e.target instanceof Element ? e.target.closest(SEL) : null;
+        if (!(target instanceof HTMLElement)) return null;
+        const r = target.getBoundingClientRect();
+        if (!r.width || !r.height) return null;
+        pending = {
+          el: target,
+          x: ((e.clientX - r.left) / r.width) * 100,
+          y: ((e.clientY - r.top) / r.height) * 100,
+        };
+        if (!frame) frame = requestAnimationFrame(flush);
+        return target;
+      };
+
+      document.addEventListener('pointermove', track, { passive: true });
+
+      // Touch: no hover state exists, so spread the ink while the finger is down
+      let inked: HTMLElement | null = null;
+      let timer = 0;
+
+      document.addEventListener(
+        'pointerdown',
+        (e) => {
+          const el = track(e);
+          if (!el) return;
+          window.clearTimeout(timer);
+          if (inked && inked !== el) inked.classList.remove('is-inked');
+          inked = el;
+          el.classList.add('is-inked');
+        },
+        { passive: true }
+      );
+
+      const release = () => {
+        if (!inked) return;
+        const el = inked;
+        inked = null;
+        window.clearTimeout(timer);
+        timer = window.setTimeout(() => el.classList.remove('is-inked'), 400);
+      };
+
+      document.addEventListener('pointerup', release, { passive: true });
+      document.addEventListener('pointercancel', release, { passive: true });
+    }
+  </script>
 </body>
 </html>

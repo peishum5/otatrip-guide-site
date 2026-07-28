@@ -38,6 +38,19 @@
   --font-pixel: 'Shippori Mincho', serif; /* legacy alias; restored inside .gq-root */
 }
 
+/* Registered custom properties so the radial "Explore" spokes can animate
+   their polar offset outward from the centre. Must sit at the top level. */
+@property --tx {
+  syntax: '<length-percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+@property --ty {
+  syntax: '<length-percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -55,7 +68,14 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
     .hero-reveal { animation: none; opacity: 1; }
+    /* Ink bleed + card lift (see "Ink bleed" below) */
+    .ink-bleed::after,
+    .blog-card::after { display: none; }
+    .blog-card:hover { transform: none; }
+    /* Drifting gold clouds behind the two-layer band */
+    .parallax-band__kumo { animation: none; }
   }
 
   /* === Legacy utility classes, restyled === */
@@ -179,6 +199,19 @@
   .nes-btn-outline:hover {
     background: var(--color-ai);
     color: #f5efdf;
+  }
+
+  /* Outline button for dark backdrops (see .parallax-band) */
+  .nes-btn-invert {
+    background: transparent;
+    color: #f5efdf;
+    border: 2px solid #f5efdf;
+    box-shadow: 3px 3px 0 rgba(245, 239, 223, 0.22);
+  }
+
+  .nes-btn-invert:hover {
+    background: #f5efdf;
+    color: var(--color-sumi);
   }
 
   /* === New ukiyo-e helpers === */
@@ -483,6 +516,110 @@
     border-color: rgba(195, 39, 43, 0.6);
     box-shadow: 4px 4px 0 rgba(195, 39, 43, 0.12);
     transform: translateY(-2px);
+  }
+
+  /* === Ink bleed (朱のにじみ) ===
+     Vermillion spreads out of the point that was touched / hovered, the way
+     pigment bleeds into washi. The position is fed in as --ink-x / --ink-y by
+     the delegated pointer listener in BaseLayout.astro. */
+  .ink-bleed,
+  .blog-card {
+    position: relative;
+    isolation: isolate; /* keeps the multiply blend inside the card */
+  }
+
+  .ink-bleed::after,
+  .blog-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    mix-blend-mode: multiply;
+    background: radial-gradient(
+      circle 240px at var(--ink-x, 50%) var(--ink-y, 50%),
+      rgba(195, 39, 43, 0.42),
+      rgba(195, 39, 43, 0.16) 42%,
+      transparent 70%
+    );
+  }
+
+  @media (hover: hover) {
+    .ink-bleed:hover::after,
+    .blog-card:hover::after {
+      opacity: 1;
+    }
+  }
+
+  /* Touch devices have no hover — the listener toggles this on pointerdown */
+  .ink-bleed.is-inked::after,
+  .blog-card.is-inked::after {
+    opacity: 1;
+  }
+
+  /* === Two-layer band (二層) ===
+     clip-path makes .parallax-band the containing block for its fixed
+     backdrop, so the artwork stays pinned inside the band's window while the
+     content scrolls over it — and it works on iOS, which ignores
+     background-attachment: fixed. */
+  .parallax-band {
+    position: relative;
+    clip-path: inset(0);
+    isolation: isolate;
+  }
+
+  .parallax-band__bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    background: #0d1622;
+  }
+
+  .parallax-band__img {
+    position: absolute;
+    inset: 0;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  /* Gold cloud band drifting sideways above the rooftops */
+  .parallax-band__kumo {
+    position: absolute;
+    top: 4rem; /* clears the sticky header when the band fills the viewport */
+    left: 0;
+    width: calc(100% + 2400px);
+    height: 202px;
+    background: url('/images/theme/kumo-band-alpha.webp') repeat-x left top;
+    background-size: 2400px auto;
+    opacity: 0.42;
+    animation: kumo-drift 130s linear infinite;
+  }
+
+  /* One tile wide, so the loop is seamless (the tile is mirrored end-to-end) */
+  @keyframes kumo-drift {
+    from { transform: translateX(0); }
+    to { transform: translateX(-2400px); }
+  }
+
+  .parallax-band__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(10, 18, 30, 0.8),
+      rgba(10, 18, 30, 0.55) 45%,
+      rgba(10, 18, 30, 0.82)
+    );
+  }
+
+  .parallax-band__content {
+    position: relative;
+    z-index: 1;
+    padding-block: 4rem;
   }
 
   /* === Category Filter Pills === */

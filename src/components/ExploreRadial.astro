@@ -1,0 +1,387 @@
+---
+/**
+ * Explore hub — six entry points folded into a vermillion seal. On desktop
+ * they stay tucked behind the seal and fly out along their hairlines when the
+ * pointer enters the hub (or when a link takes keyboard focus). Below 768px
+ * there is no hover to rely on, so the hub is always open as a plain grid.
+ *
+ * Positions are computed here in JS (not with CSS cos()/sin()) so there is no
+ * browser-support question: each spoke just receives a --fx / --fy percentage.
+ * The travel is a transition on the registered --tx / --ty custom properties
+ * declared in global.css. No JS at runtime — the open state is pure CSS.
+ */
+
+const SPOKES = [
+  // 🏮 belongs to the lantern at the centre now, so Tours takes the sake cup
+  { icon: '🍶', label: 'Tours',          meta: '3 evening & morning walks', href: '/tours',   track: 'home_explore_tours' },
+  { icon: '📖', label: 'Travel Guides',  meta: '38 practical Kyoto guides', href: '/blog',    track: 'home_explore_blog' },
+  { icon: '👥', label: 'Group Bookings', meta: 'Teams, schools & charters', href: '/groups',  track: 'home_explore_groups' },
+  { icon: '🎮', label: 'Mini Game',      meta: 'Gion Night Quest',          href: '/game',    track: 'home_explore_game' },
+  { icon: '⛩️', label: 'Our Guides',     meta: 'The people you walk with',  href: '/guide',   track: 'home_explore_guide' },
+  { icon: '✉️', label: 'Contact',        meta: 'Ask us anything',           href: '/contact', track: 'home_explore_contact' },
+];
+
+// Elliptical radii, as a % of the hub box. Index 0 sits at the top, then clockwise.
+const RX = 34;
+const RY = 35;
+
+// SVG viewBox is 160 x 90 — the same 16:9 ratio as the hub, so the
+// non-uniform scaling introduced by preserveAspectRatio="none" is actually
+// uniform and the hairlines keep an even weight.
+const items = SPOKES.map((spoke, i) => {
+  const angle = ((-90 + i * 60) * Math.PI) / 180;
+  const tx = +(Math.cos(angle) * RX).toFixed(2);
+  const ty = +(Math.sin(angle) * RY).toFixed(2);
+  const x2 = +(80 + tx * 1.6).toFixed(2);
+  const y2 = +(45 + ty * 0.9).toFixed(2);
+  return { ...spoke, i, tx, ty, x2, y2, len: +Math.hypot(x2 - 80, y2 - 45).toFixed(2) };
+});
+---
+
+<section class="explore-section bg-washi pt-14 pb-16 md:pt-16 md:pb-20">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="text-center mb-8 md:mb-4">
+      <p class="font-display text-sm text-ai mb-3 tracking-widest">Explore</p>
+      <h2 class="font-display font-bold text-sumi text-2xl md:text-3xl">Where to Begin</h2>
+      <p class="explore-hint font-sans text-xs text-sumi-soft mt-3 tracking-wide">
+        Hover to unfold the map
+      </p>
+    </div>
+
+    <div class="explore-hub">
+      <svg class="explore-lines" viewBox="0 0 160 90" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        {items.map(item => (
+          <line
+            x1="80"
+            y1="45"
+            x2={item.x2}
+            y2={item.y2}
+            style={`--len:${item.len}; --i:${item.i}`}
+          />
+        ))}
+      </svg>
+
+      <div class="explore-core" aria-hidden="true">
+        <svg class="explore-core__lantern" viewBox="0 0 80 112" focusable="false">
+          <defs>
+            <clipPath id="explore-lantern-clip">
+              <path d="M30 15 C11 23 7 38 7 56 C7 74 11 89 30 97 L50 97 C69 89 73 74 73 56 C73 38 69 23 50 15 Z" />
+            </clipPath>
+          </defs>
+
+          <!-- cord -->
+          <path class="lantern-cord" d="M40 0 V 9" />
+
+          <!-- paper body -->
+          <path
+            class="lantern-body"
+            d="M30 15 C11 23 7 38 7 56 C7 74 11 89 30 97 L50 97 C69 89 73 74 73 56 C73 38 69 23 50 15 Z"
+          />
+
+          <!-- bamboo ribs, clipped to the body -->
+          <g class="lantern-ribs" clip-path="url(#explore-lantern-clip)">
+            <path d="M0 27 H80 M0 39 H80 M0 51 H80 M0 63 H80 M0 75 H80 M0 87 H80" />
+          </g>
+
+          <!-- wooden caps and the knob underneath -->
+          <rect class="lantern-cap" x="26" y="7" width="28" height="9" rx="2" />
+          <rect class="lantern-cap" x="30" y="94" width="20" height="8" rx="2" />
+          <rect class="lantern-cap" x="36" y="101" width="8" height="7" rx="2" />
+        </svg>
+
+        <span class="explore-core__seal">京</span>
+      </div>
+
+      {items.map(item => (
+        <a
+          href={item.href}
+          class="explore-spoke ink-bleed"
+          style={`--fx:${item.tx}%; --fy:${item.ty}%; --i:${item.i}`}
+          data-track-label={item.track}
+        >
+          <span class="explore-spoke__icon" aria-hidden="true">{item.icon}</span>
+          <span class="explore-spoke__label">{item.label}</span>
+          <span class="explore-spoke__meta">{item.meta}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .explore-hub {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  /* The hint only makes sense where there is a pointer to hover with */
+  .explore-hint {
+    display: none;
+    transition: opacity 0.3s ease;
+  }
+
+  /* --- Radiating hairlines --- */
+  .explore-lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .explore-lines line {
+    stroke: rgba(33, 29, 25, 0.3);
+    stroke-width: 0.25;
+    stroke-dasharray: var(--len);
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.7s ease;
+  }
+
+  /* --- Centre: a hanging paper lantern --- */
+  .explore-core {
+    --lantern-paper: var(--color-shu);
+
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 120px;
+    height: 168px; /* keeps the 80:112 viewBox ratio */
+    margin: -84px 0 0 -60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-origin: 50% 6%; /* swings from the cord, not the middle */
+    transition:
+      scale 0.45s cubic-bezier(0.34, 1.4, 0.5, 1),
+      rotate 0.45s ease;
+  }
+
+  .explore-core__lantern {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    transition: filter 0.4s ease;
+  }
+
+  .lantern-body {
+    fill: var(--lantern-paper);
+    stroke: var(--color-sumi);
+    stroke-width: 2.5;
+    transition: fill 0.4s ease;
+  }
+
+  .lantern-ribs path {
+    fill: none;
+    stroke: rgba(33, 29, 25, 0.28);
+    stroke-width: 1.1;
+  }
+
+  .lantern-cord {
+    fill: none;
+    stroke: var(--color-sumi);
+    stroke-width: 2;
+  }
+
+  .lantern-cap {
+    fill: var(--color-sumi);
+  }
+
+  .explore-core__seal {
+    position: relative;
+    font-family: var(--font-brush);
+    font-size: 3rem;
+    line-height: 1;
+    color: #f5efdf;
+    text-shadow: 0 1px 0 rgba(33, 29, 25, 0.3);
+  }
+
+  /* --- Spokes --- */
+  .explore-spoke {
+    --pop: cubic-bezier(0.34, 1.4, 0.5, 1);
+    --tx: var(--fx);
+    --ty: var(--fy);
+
+    /* Percentages on left/top resolve against the hub, unlike percentages
+       inside transform: translate() which resolve against the chip itself. */
+    position: absolute;
+    left: calc(50% + var(--tx));
+    top: calc(50% + var(--ty));
+    transform: translate(-50%, -50%);
+    width: 176px;
+    padding: 0.85rem 0.9rem 0.95rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    text-align: center;
+    text-decoration: none;
+    background: #faf6ea;
+    border: 2px solid var(--color-sumi);
+    box-shadow: 3px 3px 0 rgba(33, 29, 25, 0.16);
+    overflow: hidden;
+    opacity: 1;
+    scale: 1;
+
+    transition-property: opacity, --tx, --ty, scale, translate, border-color, box-shadow;
+    transition-duration: 0.35s, 0.55s, 0.55s, 0.55s, 0.55s, 0.25s, 0.25s;
+    transition-timing-function: ease, var(--pop), var(--pop), var(--pop), var(--pop), ease, ease;
+  }
+
+  .explore-spoke:hover,
+  .explore-spoke:focus-visible {
+    border-color: var(--color-shu);
+    box-shadow: 5px 5px 0 rgba(195, 39, 43, 0.2);
+  }
+
+  .explore-spoke__icon {
+    font-size: 1.6rem;
+    line-height: 1;
+  }
+
+  .explore-spoke__label {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--color-sumi);
+    letter-spacing: 0.03em;
+  }
+
+  .explore-spoke__meta {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    line-height: 1.45;
+    color: var(--color-sumi-soft);
+  }
+
+  /* ==========================================================
+     Desktop: folded shut until the pointer (or keyboard focus)
+     enters the hub. Pure CSS — nothing to hydrate.
+     ========================================================== */
+  @media (min-width: 768px) {
+    .explore-hint {
+      display: block;
+    }
+
+    /* Closed: tucked behind the seal, and out of the way of its own hover */
+    .explore-spoke {
+      --tx: 0%;
+      --ty: 0%;
+      opacity: 0;
+      scale: 0.5;
+      pointer-events: none;
+    }
+
+    /* Stubs hint that six things are waiting to unfold. A fixed 20 viewBox
+       units keeps every stub the same length on screen and, since the seal is
+       ~15 units tall, leaves a visible tail poking out of it. */
+    .explore-lines line {
+      stroke-dashoffset: calc(var(--len) - 24);
+    }
+
+    /* The lantern sways gently while it is closed, to read as interactive */
+    .explore-core {
+      animation: explore-sway 5s ease-in-out infinite;
+    }
+
+    .explore-hub:hover .explore-spoke,
+    .explore-hub:focus-within .explore-spoke {
+      --tx: var(--fx);
+      --ty: var(--fy);
+      opacity: 1;
+      scale: 1;
+      pointer-events: auto;
+      /* Stagger only on the way out; closing snaps back together */
+      transition-delay: calc(var(--i) * 0.05s);
+    }
+
+    .explore-hub:hover .explore-lines line,
+    .explore-hub:focus-within .explore-lines line {
+      stroke-dashoffset: 0;
+    }
+
+    /* Opening the map lights the lantern: it stops swaying, brightens and glows */
+    .explore-hub:hover .explore-core,
+    .explore-hub:focus-within .explore-core {
+      --lantern-paper: #d9403f;
+      animation: none;
+      rotate: 0deg;
+      scale: 1.06;
+    }
+
+    .explore-hub:hover .explore-core__lantern,
+    .explore-hub:focus-within .explore-core__lantern {
+      filter: drop-shadow(0 0 16px rgba(201, 168, 76, 0.55));
+    }
+
+    /* The hint sits above the hub, so it has to be reached from the section.
+       Where :has() is unsupported the hint simply stays put — harmless. */
+    .explore-section:has(.explore-hub:hover) .explore-hint,
+    .explore-section:has(.explore-hub:focus-within) .explore-hint {
+      opacity: 0;
+    }
+  }
+
+  @keyframes explore-sway {
+    0%, 100% { rotate: -2.4deg; }
+    50% { rotate: 2.4deg; }
+  }
+
+  /* --- Mobile: no hover to rely on, so the map is simply always open --- */
+  @media (max-width: 767px) {
+    .explore-hub {
+      aspect-ratio: auto;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7rem;
+    }
+
+    .explore-lines {
+      display: none;
+    }
+
+    /* relative, not static — the lantern SVG and the ink-bleed layer are
+       absolutely positioned and would otherwise stretch to the whole hub */
+    .explore-core {
+      position: relative;
+      left: auto;
+      top: auto;
+      grid-column: 1 / -1;
+      width: 94px;
+      height: 132px;
+      margin: 0 auto 0.9rem;
+    }
+
+    .explore-core__seal {
+      font-size: 2.35rem;
+    }
+
+    .explore-spoke {
+      position: relative;
+      left: auto;
+      top: auto;
+      width: auto;
+      height: 100%;
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* Opening is an interaction, not decoration — keep it, drop the travel */
+    .explore-spoke,
+    .explore-core,
+    .explore-lines line,
+    .explore-hint {
+      transition: none;
+      animation: none;
+    }
+
+    .explore-hub:hover .explore-spoke,
+    .explore-hub:focus-within .explore-spoke {
+      transition-delay: 0s;
+    }
+  }
+</style>
