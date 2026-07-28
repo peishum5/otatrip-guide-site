@@ -1,7 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ExploreRadial from '../components/ExploreRadial.astro';
 import GionQuest from '../components/GionQuest.astro';
 import GroupCTA from '../components/GroupCTA.astro';
+import ParallaxBand from '../components/ParallaxBand.astro';
 import ReviewsSection from '../components/ReviewsSection.astro';
 import { getCollection } from 'astro:content';
 
@@ -55,6 +57,9 @@ const latestPosts = blogPosts.slice(0, 3);
       </div>
     </div>
   </section>
+
+  <!-- Explore hub (radial) -->
+  <ExploreRadial />
 
   <!-- Why Choose Us -->
   <section class="bg-washi py-16 seigaiha-bg">
@@ -122,10 +127,12 @@ const latestPosts = blogPosts.slice(0, 3);
     <GionQuest />
   </section>
 
-  <!-- Reviews -->
-  <section class="max-w-6xl mx-auto px-4">
-    <ReviewsSection />
-  </section>
+  <!-- Reviews, over the fixed night-Gion backdrop -->
+  <ParallaxBand>
+    <div class="max-w-6xl mx-auto px-4">
+      <ReviewsSection onDark />
+    </div>
+  </ParallaxBand>
 
   <!-- Tours teaser -->
   <section class="max-w-6xl mx-auto px-4 pb-16">

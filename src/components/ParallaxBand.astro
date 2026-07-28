@@ -1,0 +1,33 @@
+---
+/**
+ * Two-layer band — the backdrop stays pinned while the slotted content
+ * scrolls over it.
+ *
+ * The wrapper uses clip-path: inset(0), which makes it the containing block
+ * for the position: fixed backdrop. That keeps the artwork locked inside this
+ * band's window and, unlike `background-attachment: fixed`, it also works on
+ * iOS Safari. Styles live in global.css so the reduced-motion block can reach
+ * the drifting cloud layer.
+ */
+
+interface Props {
+  /** Backdrop artwork. */
+  image?: string;
+  /** Extra classes for the content wrapper. */
+  class?: string;
+}
+
+const { image = '/images/theme/night-gion-band.webp', class: className = '' } = Astro.props;
+---
+
+<div class="parallax-band">
+  <div class="parallax-band__bg" aria-hidden="true">
+    <div class="parallax-band__img" style={`background-image: url('${image}');`}></div>
+    <div class="parallax-band__kumo"></div>
+    <div class="parallax-band__scrim"></div>
+  </div>
+
+  <div class:list={['parallax-band__content', className]}>
+    <slot />
+  </div>
+</div>

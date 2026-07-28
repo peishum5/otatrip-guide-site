@@ -1,6 +1,14 @@
 ---
 import { TRIPADVISOR_URL } from '../config/site';
 
+interface Props {
+  /** Set when the section sits on the dark ParallaxBand backdrop — flips the
+   *  heading and the TripAdvisor button to washi. The cards stay light. */
+  onDark?: boolean;
+}
+
+const { onDark = false } = Astro.props;
+
 const reviews = [
   {
     name: 'Kyoko O.',
@@ -37,17 +45,17 @@ const reviews = [
 ];
 ---
 
-<div class="my-16">
+<div class={onDark ? '' : 'my-16'}>
   <!-- Header -->
   <div class="text-center mb-10">
-    <p class="font-display text-sm text-shu mb-3 tracking-widest">Guest Reviews</p>
-    <h2 class="font-display font-bold text-sumi text-2xl md:text-3xl mb-4">
+    <p class={`font-display text-sm mb-3 tracking-widest ${onDark ? 'text-kin' : 'text-shu'}`}>Guest Reviews</p>
+    <h2 class={`font-display font-bold text-2xl md:text-3xl mb-4 ${onDark ? 'text-washi' : 'text-sumi'}`}>
       What Guests Say
     </h2>
     <div class="flex items-center justify-center gap-3">
       <span class="text-kin" style="letter-spacing: 0.1em;">★★★★★</span>
-      <span class="font-display font-bold text-sumi">4.9 / 5</span>
-      <span class="font-sans text-xs text-sumi-soft">on TripAdvisor</span>
+      <span class={`font-display font-bold ${onDark ? 'text-washi' : 'text-sumi'}`}>4.9 / 5</span>
+      <span class={`font-sans text-xs ${onDark ? 'text-washi/70' : 'text-sumi-soft'}`}>on TripAdvisor</span>
     </div>
   </div>
 
@@ -82,7 +90,7 @@ const reviews = [
       href={TRIPADVISOR_URL}
       target="_blank"
       rel="noopener noreferrer"
-      class="nes-btn nes-btn-outline"
+      class={`nes-btn ${onDark ? 'nes-btn-invert' : 'nes-btn-outline'}`}
     >
       See All Reviews on TripAdvisor
     </a>

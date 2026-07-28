@@ -1,0 +1,289 @@
+---
+/**
+ * Explore hub — six entry points radiating out of a vermillion seal.
+ *
+ * Positions are computed here in JS (not with CSS cos()/sin()) so there is no
+ * browser-support question: each spoke just receives a --fx / --fy percentage.
+ * The pop-out is a transition on the registered --tx / --ty custom properties
+ * declared in global.css.
+ */
+
+const SPOKES = [
+  { icon: '🏮', label: 'Tours',          meta: '3 evening & morning walks', href: '/tours',   track: 'home_explore_tours' },
+  { icon: '📖', label: 'Travel Guides',  meta: '38 practical Kyoto guides', href: '/blog',    track: 'home_explore_blog' },
+  { icon: '👥', label: 'Group Bookings', meta: 'Teams, schools & charters', href: '/groups',  track: 'home_explore_groups' },
+  { icon: '🎮', label: 'Mini Game',      meta: 'Gion Night Quest',          href: '/game',    track: 'home_explore_game' },
+  { icon: '⛩️', label: 'Our Guides',     meta: 'The people you walk with',  href: '/guide',   track: 'home_explore_guide' },
+  { icon: '✉️', label: 'Contact',        meta: 'Ask us anything',           href: '/contact', track: 'home_explore_contact' },
+];
+
+// Elliptical radii, as a % of the hub box. Index 0 sits at the top, then clockwise.
+const RX = 34;
+const RY = 35;
+
+// SVG viewBox is 160 x 90 — the same 16:9 ratio as the hub, so the
+// non-uniform scaling introduced by preserveAspectRatio="none" is actually
+// uniform and the hairlines keep an even weight.
+const items = SPOKES.map((spoke, i) => {
+  const angle = ((-90 + i * 60) * Math.PI) / 180;
+  const tx = +(Math.cos(angle) * RX).toFixed(2);
+  const ty = +(Math.sin(angle) * RY).toFixed(2);
+  const x2 = +(80 + tx * 1.6).toFixed(2);
+  const y2 = +(45 + ty * 0.9).toFixed(2);
+  return { ...spoke, i, tx, ty, x2, y2, len: +Math.hypot(x2 - 80, y2 - 45).toFixed(2) };
+});
+---
+
+<section class="bg-washi pt-14 pb-16 md:pt-16 md:pb-20">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="text-center mb-8 md:mb-4">
+      <p class="font-display text-sm text-ai mb-3 tracking-widest">Explore</p>
+      <h2 class="font-display font-bold text-sumi text-2xl md:text-3xl">Where to Begin</h2>
+    </div>
+
+    <div class="explore-hub" data-explore>
+      <svg class="explore-lines" viewBox="0 0 160 90" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        {items.map(item => (
+          <line
+            x1="80"
+            y1="45"
+            x2={item.x2}
+            y2={item.y2}
+            style={`--len:${item.len}; --i:${item.i}`}
+          />
+        ))}
+      </svg>
+
+      <div class="explore-core" aria-hidden="true">
+        <span class="explore-core__seal">京</span>
+      </div>
+
+      {items.map(item => (
+        <a
+          href={item.href}
+          class="explore-spoke ink-bleed"
+          style={`--fx:${item.tx}%; --fy:${item.ty}%; --i:${item.i}`}
+          data-track-label={item.track}
+        >
+          <span class="explore-spoke__icon" aria-hidden="true">{item.icon}</span>
+          <span class="explore-spoke__label">{item.label}</span>
+          <span class="explore-spoke__meta">{item.meta}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .explore-hub {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  /* --- Radiating hairlines --- */
+  .explore-lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .explore-lines line {
+    stroke: rgba(33, 29, 25, 0.3);
+    stroke-width: 0.25;
+    stroke-dasharray: var(--len);
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.7s ease;
+    transition-delay: calc(var(--i) * 0.06s + 0.15s);
+  }
+
+  /* --- Centre seal --- */
+  .explore-core {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 116px;
+    height: 116px;
+    margin: -58px 0 0 -58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-shu);
+    border: 2px solid var(--color-sumi);
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 7px rgba(195, 39, 43, 0.09),
+      4px 4px 0 rgba(33, 29, 25, 0.18);
+    opacity: 1;
+    scale: 1;
+    transition:
+      opacity 0.5s ease,
+      scale 0.5s cubic-bezier(0.34, 1.4, 0.5, 1);
+  }
+
+  .explore-core__seal {
+    font-family: var(--font-brush);
+    font-size: 2.7rem;
+    line-height: 1;
+    color: #f5efdf;
+    text-shadow: 0 1px 0 rgba(33, 29, 25, 0.25);
+  }
+
+  /* --- Spokes --- */
+  .explore-spoke {
+    --pop: cubic-bezier(0.34, 1.4, 0.5, 1);
+    --reveal-delay: calc(var(--i) * 0.06s + 0.12s);
+    --tx: var(--fx);
+    --ty: var(--fy);
+
+    /* Percentages on left/top resolve against the hub, unlike percentages
+       inside transform: translate() which resolve against the chip itself. */
+    position: absolute;
+    left: calc(50% + var(--tx));
+    top: calc(50% + var(--ty));
+    transform: translate(-50%, -50%);
+    width: 176px;
+    padding: 0.85rem 0.9rem 0.95rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    text-align: center;
+    text-decoration: none;
+    background: #faf6ea;
+    border: 2px solid var(--color-sumi);
+    box-shadow: 3px 3px 0 rgba(33, 29, 25, 0.16);
+    overflow: hidden;
+    opacity: 1;
+    scale: 1;
+
+    transition-property: opacity, --tx, --ty, scale, translate, border-color, box-shadow;
+    transition-duration: 0.5s, 0.65s, 0.65s, 0.65s, 0.65s, 0.25s, 0.25s;
+    transition-timing-function: ease, var(--pop), var(--pop), var(--pop), var(--pop), ease, ease;
+    transition-delay: var(--reveal-delay), var(--reveal-delay), var(--reveal-delay),
+      var(--reveal-delay), var(--reveal-delay), 0s, 0s;
+  }
+
+  .explore-spoke:hover,
+  .explore-spoke:focus-visible {
+    border-color: var(--color-shu);
+    box-shadow: 5px 5px 0 rgba(195, 39, 43, 0.2);
+  }
+
+  .explore-spoke__icon {
+    font-size: 1.6rem;
+    line-height: 1;
+  }
+
+  .explore-spoke__label {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--color-sumi);
+    letter-spacing: 0.03em;
+  }
+
+  .explore-spoke__meta {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    line-height: 1.45;
+    color: var(--color-sumi-soft);
+  }
+
+  /* --- Armed state (JS only, so no-JS / reduced-motion shows everything) --- */
+  .explore-hub.is-armed .explore-lines line {
+    stroke-dashoffset: var(--len);
+  }
+  .explore-hub.is-armed .explore-core {
+    opacity: 0;
+    scale: 0.7;
+  }
+  .explore-hub.is-armed .explore-spoke {
+    opacity: 0;
+    scale: 0.55;
+    --tx: 0%;
+    --ty: 0%;
+  }
+
+  .explore-hub.is-armed.is-revealed .explore-lines line {
+    stroke-dashoffset: 0;
+  }
+  .explore-hub.is-armed.is-revealed .explore-core {
+    opacity: 1;
+    scale: 1;
+  }
+  .explore-hub.is-armed.is-revealed .explore-spoke {
+    opacity: 1;
+    scale: 1;
+    --tx: var(--fx);
+    --ty: var(--fy);
+  }
+
+  /* --- Mobile: the radial layout collapses into a 2-column stack --- */
+  @media (max-width: 767px) {
+    .explore-hub {
+      aspect-ratio: auto;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7rem;
+    }
+
+    .explore-lines {
+      display: none;
+    }
+
+    .explore-core {
+      position: static;
+      grid-column: 1 / -1;
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 0.6rem;
+    }
+
+    .explore-core__seal {
+      font-size: 2.1rem;
+    }
+
+    .explore-spoke {
+      position: static;
+      width: auto;
+      height: 100%;
+      transform: none;
+      translate: 0 0;
+    }
+
+    .explore-hub.is-armed .explore-spoke {
+      scale: 1;
+      translate: 0 14px;
+    }
+
+    .explore-hub.is-armed.is-revealed .explore-spoke {
+      translate: 0 0;
+    }
+  }
+</style>
+
+<script>
+  const hub = document.querySelector<HTMLElement>('[data-explore]');
+
+  if (hub && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    // Only collapse the spokes once we know we can animate them back out
+    hub.classList.add('is-armed');
+
+    const io = new IntersectionObserver(
+      entries => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          hub.classList.add('is-revealed');
+          io.disconnect();
+        }
+      },
+      { threshold: 0.25 }
+    );
+
+    io.observe(hub);
+  }
+</script>
