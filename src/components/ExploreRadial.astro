@@ -146,9 +146,9 @@ const items = SPOKES.map((spoke, i) => {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 94px;
-    height: 132px; /* keeps the 80:112 viewBox ratio */
-    margin: -66px 0 0 -47px;
+    width: 120px;
+    height: 168px; /* keeps the 80:112 viewBox ratio */
+    margin: -84px 0 0 -60px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -193,7 +193,7 @@ const items = SPOKES.map((spoke, i) => {
   .explore-core__seal {
     position: relative;
     font-family: var(--font-brush);
-    font-size: 2.35rem;
+    font-size: 3rem;
     line-height: 1;
     color: #f5efdf;
     text-shadow: 0 1px 0 rgba(33, 29, 25, 0.3);
@@ -277,9 +277,9 @@ const items = SPOKES.map((spoke, i) => {
 
     /* Stubs hint that six things are waiting to unfold. A fixed 20 viewBox
        units keeps every stub the same length on screen and, since the seal is
-       ~11 units across, leaves a visible tail poking out of it. */
+       ~15 units tall, leaves a visible tail poking out of it. */
     .explore-lines line {
-      stroke-dashoffset: calc(var(--len) - 20);
+      stroke-dashoffset: calc(var(--len) - 24);
     }
 
     /* The lantern sways gently while it is closed, to read as interactive */
@@ -350,13 +350,13 @@ const items = SPOKES.map((spoke, i) => {
       left: auto;
       top: auto;
       grid-column: 1 / -1;
-      width: 74px;
-      height: 104px;
-      margin: 0 auto 0.8rem;
+      width: 94px;
+      height: 132px;
+      margin: 0 auto 0.9rem;
     }
 
     .explore-core__seal {
-      font-size: 1.7rem;
+      font-size: 2.35rem;
     }
 
     .explore-spoke {
