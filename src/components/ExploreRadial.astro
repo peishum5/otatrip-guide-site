@@ -12,7 +12,8 @@
  */
 
 const SPOKES = [
-  { icon: '🏮', label: 'Tours',          meta: '3 evening & morning walks', href: '/tours',   track: 'home_explore_tours' },
+  // 🏮 belongs to the lantern at the centre now, so Tours takes the sake cup
+  { icon: '🍶', label: 'Tours',          meta: '3 evening & morning walks', href: '/tours',   track: 'home_explore_tours' },
   { icon: '📖', label: 'Travel Guides',  meta: '38 practical Kyoto guides', href: '/blog',    track: 'home_explore_blog' },
   { icon: '👥', label: 'Group Bookings', meta: 'Teams, schools & charters', href: '/groups',  track: 'home_explore_groups' },
   { icon: '🎮', label: 'Mini Game',      meta: 'Gion Night Quest',          href: '/game',    track: 'home_explore_game' },
@@ -61,6 +62,33 @@ const items = SPOKES.map((spoke, i) => {
       </svg>
 
       <div class="explore-core" aria-hidden="true">
+        <svg class="explore-core__lantern" viewBox="0 0 80 112" focusable="false">
+          <defs>
+            <clipPath id="explore-lantern-clip">
+              <path d="M30 15 C11 23 7 38 7 56 C7 74 11 89 30 97 L50 97 C69 89 73 74 73 56 C73 38 69 23 50 15 Z" />
+            </clipPath>
+          </defs>
+
+          <!-- cord -->
+          <path class="lantern-cord" d="M40 0 V 9" />
+
+          <!-- paper body -->
+          <path
+            class="lantern-body"
+            d="M30 15 C11 23 7 38 7 56 C7 74 11 89 30 97 L50 97 C69 89 73 74 73 56 C73 38 69 23 50 15 Z"
+          />
+
+          <!-- bamboo ribs, clipped to the body -->
+          <g class="lantern-ribs" clip-path="url(#explore-lantern-clip)">
+            <path d="M0 27 H80 M0 39 H80 M0 51 H80 M0 63 H80 M0 75 H80 M0 87 H80" />
+          </g>
+
+          <!-- wooden caps and the knob underneath -->
+          <rect class="lantern-cap" x="26" y="7" width="28" height="9" rx="2" />
+          <rect class="lantern-cap" x="30" y="94" width="20" height="8" rx="2" />
+          <rect class="lantern-cap" x="36" y="101" width="8" height="7" rx="2" />
+        </svg>
+
         <span class="explore-core__seal">京</span>
       </div>
 
@@ -111,32 +139,64 @@ const items = SPOKES.map((spoke, i) => {
     transition: stroke-dashoffset 0.7s ease;
   }
 
-  /* --- Centre seal --- */
+  /* --- Centre: a hanging paper lantern --- */
   .explore-core {
+    --lantern-paper: var(--color-shu);
+
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 116px;
-    height: 116px;
-    margin: -58px 0 0 -58px;
+    width: 94px;
+    height: 132px; /* keeps the 80:112 viewBox ratio */
+    margin: -66px 0 0 -47px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--color-shu);
-    border: 2px solid var(--color-sumi);
-    border-radius: 50%;
-    box-shadow:
-      0 0 0 7px rgba(195, 39, 43, 0.09),
-      4px 4px 0 rgba(33, 29, 25, 0.18);
-    transition: scale 0.45s cubic-bezier(0.34, 1.4, 0.5, 1);
+    transform-origin: 50% 6%; /* swings from the cord, not the middle */
+    transition:
+      scale 0.45s cubic-bezier(0.34, 1.4, 0.5, 1),
+      rotate 0.45s ease;
+  }
+
+  .explore-core__lantern {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    transition: filter 0.4s ease;
+  }
+
+  .lantern-body {
+    fill: var(--lantern-paper);
+    stroke: var(--color-sumi);
+    stroke-width: 2.5;
+    transition: fill 0.4s ease;
+  }
+
+  .lantern-ribs path {
+    fill: none;
+    stroke: rgba(33, 29, 25, 0.28);
+    stroke-width: 1.1;
+  }
+
+  .lantern-cord {
+    fill: none;
+    stroke: var(--color-sumi);
+    stroke-width: 2;
+  }
+
+  .lantern-cap {
+    fill: var(--color-sumi);
   }
 
   .explore-core__seal {
+    position: relative;
     font-family: var(--font-brush);
-    font-size: 2.7rem;
+    font-size: 2.35rem;
     line-height: 1;
     color: #f5efdf;
-    text-shadow: 0 1px 0 rgba(33, 29, 25, 0.25);
+    text-shadow: 0 1px 0 rgba(33, 29, 25, 0.3);
   }
 
   /* --- Spokes --- */
@@ -222,9 +282,9 @@ const items = SPOKES.map((spoke, i) => {
       stroke-dashoffset: calc(var(--len) - 20);
     }
 
-    /* The seal breathes while it is closed, to read as interactive */
+    /* The lantern sways gently while it is closed, to read as interactive */
     .explore-core {
-      animation: explore-breathe 3.4s ease-in-out infinite;
+      animation: explore-sway 5s ease-in-out infinite;
     }
 
     .explore-hub:hover .explore-spoke,
@@ -243,10 +303,18 @@ const items = SPOKES.map((spoke, i) => {
       stroke-dashoffset: 0;
     }
 
+    /* Opening the map lights the lantern: it stops swaying, brightens and glows */
     .explore-hub:hover .explore-core,
     .explore-hub:focus-within .explore-core {
+      --lantern-paper: #d9403f;
       animation: none;
+      rotate: 0deg;
       scale: 1.06;
+    }
+
+    .explore-hub:hover .explore-core__lantern,
+    .explore-hub:focus-within .explore-core__lantern {
+      filter: drop-shadow(0 0 16px rgba(201, 168, 76, 0.55));
     }
 
     /* The hint sits above the hub, so it has to be reached from the section.
@@ -257,9 +325,9 @@ const items = SPOKES.map((spoke, i) => {
     }
   }
 
-  @keyframes explore-breathe {
-    0%, 100% { scale: 1; }
-    50% { scale: 1.045; }
+  @keyframes explore-sway {
+    0%, 100% { rotate: -2.4deg; }
+    50% { rotate: 2.4deg; }
   }
 
   /* --- Mobile: no hover to rely on, so the map is simply always open --- */
@@ -275,20 +343,26 @@ const items = SPOKES.map((spoke, i) => {
       display: none;
     }
 
+    /* relative, not static — the lantern SVG and the ink-bleed layer are
+       absolutely positioned and would otherwise stretch to the whole hub */
     .explore-core {
-      position: static;
+      position: relative;
+      left: auto;
+      top: auto;
       grid-column: 1 / -1;
-      width: 88px;
-      height: 88px;
-      margin: 0 auto 0.6rem;
+      width: 74px;
+      height: 104px;
+      margin: 0 auto 0.8rem;
     }
 
     .explore-core__seal {
-      font-size: 2.1rem;
+      font-size: 1.7rem;
     }
 
     .explore-spoke {
-      position: static;
+      position: relative;
+      left: auto;
+      top: auto;
       width: auto;
       height: 100%;
       transform: none;
