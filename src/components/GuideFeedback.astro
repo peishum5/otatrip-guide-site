@@ -1,0 +1,551 @@
+---
+/**
+ * The private guide-feedback form, shared by both routes:
+ *   /guest/guide-feedback           → tour = null, the guest picks the tour
+ *   /guest/guide-feedback/<slug>    → tour fixed by the QR code they scanned
+ *
+ * The only difference is the "which tour?" question and which review links
+ * appear on the thank-you screen. Everything else is identical.
+ */
+import {
+  CONTACT_EMAIL,
+} from '../config/site';
+import {
+  GUIDES,
+  TOURS,
+  RATING_AXES,
+  OTHER_GUIDE_SLUG,
+  OTHER_TOUR_SLUG,
+  FEEDBACK_ENDPOINT,
+  MIN_FILL_SECONDS,
+  MAX_TEXT_LENGTH,
+  reviewLinksFor,
+  reviewLinksByTour,
+  type TourOption,
+} from '../config/guideFeedback';
+
+interface Props {
+  /** Fixed tour, when the guest arrived from a tour-specific QR code. */
+  tour?: TourOption | null;
+}
+
+const { tour = null } = Astro.props;
+
+// With a fixed tour we already know the review links; otherwise the script
+// picks them from this map once the guest tells us which tour they joined.
+const reviewsBySlug = tour ? { [tour.slug]: reviewLinksFor(tour.slug) } : reviewLinksByTour();
+
+const againOptions = [
+  { value: 'yes', label: 'Yes' },
+  { value: 'maybe', label: 'Maybe' },
+  { value: 'no', label: 'No' },
+];
+---
+
+<!-- ============================ FORM VIEW ============================ -->
+<div id="form-view">
+  <section class="border-b border-washi-edge bg-washi-deep">
+    <div class="mx-auto max-w-2xl px-4 py-10 md:py-14">
+      <p class="mb-3 font-display text-sm tracking-[0.15em] text-ai">Guests Only</p>
+      <h1 class="mb-4 font-display text-3xl font-bold leading-tight text-sumi md:text-4xl">
+        How was your guide?
+      </h1>
+      {tour && (
+        <p class="mb-3 font-sans text-sm text-sumi-soft">
+          About your <span class="font-semibold text-sumi">{tour.name}</span>.
+        </p>
+      )}
+      <p class="font-sans text-base leading-relaxed text-sumi-soft">
+        About 1 minute. Answer honestly and we will hand you a small thank-you gift.
+      </p>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-2xl px-4 py-8 md:py-10">
+    <!-- The promise. This is the whole reason the page exists. -->
+    <section class="mb-9 dialogue-box">
+      <p class="mb-3 font-display text-sm font-semibold tracking-[0.15em] text-shu">
+        Your Guide Will Never See This
+      </p>
+      <p class="font-sans text-base leading-relaxed text-sumi">
+        These answers go straight to the owner of OTAtrip Guide. Your guide is not shown
+        them, ever.
+      </p>
+      <p class="mt-3 font-sans text-sm leading-relaxed text-sumi-soft">
+        So please be blunt. Praise is lovely, but the awkward stuff is what actually makes
+        our tours better. You can stay completely anonymous.
+      </p>
+    </section>
+
+    <form id="feedback-form" novalidate>
+      <!-- Bot trap. Off-screen, never focusable by a human. -->
+      <div class="honeypot" aria-hidden="true">
+        <label for="company">Company</label>
+        <input type="text" id="company" name="company" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <!-- Q1: which guide -->
+      <fieldset class="mb-9">
+        <legend class="mb-4 font-display text-lg font-semibold text-sumi">
+          Who was your guide?
+          <span class="ml-1 font-sans text-sm font-normal text-shu">required</span>
+        </legend>
+        <div class="flex flex-wrap gap-2.5">
+          {GUIDES.map((guide) => (
+            <label class="choice-chip" data-guide-chip>
+              <input type="radio" name="guide" value={guide.slug} class="sr-only" />
+              {guide.name}
+            </label>
+          ))}
+          <label class="choice-chip" data-guide-chip>
+            <input type="radio" name="guide" value={OTHER_GUIDE_SLUG} class="sr-only" />
+            Someone else
+          </label>
+        </div>
+        <div id="guide-other-wrap" class="mt-3 hidden">
+          <label for="guideOther" class="mb-2 block font-sans text-sm text-sumi-soft">
+            Their name, if you remember it
+          </label>
+          <input
+            type="text"
+            id="guideOther"
+            name="guideOther"
+            class="feedback-input"
+            maxlength="80"
+            autocomplete="off"
+          />
+        </div>
+      </fieldset>
+
+      <!-- Q2: which tour. Skipped entirely when the QR code already told us. -->
+      {tour ? (
+        <input type="hidden" name="tour" value={tour.slug} />
+      ) : (
+        <fieldset class="mb-9">
+          <legend class="mb-4 font-display text-lg font-semibold text-sumi">
+            Which tour did you join?
+            <span class="ml-1 font-sans text-sm font-normal text-shu">required</span>
+          </legend>
+          <div class="flex flex-col gap-2.5">
+            {TOURS.map((option) => (
+              <label class="choice-chip">
+                <input type="radio" name="tour" value={option.slug} class="sr-only" />
+                {option.name}
+              </label>
+            ))}
+            <label class="choice-chip">
+              <input type="radio" name="tour" value={OTHER_TOUR_SLUG} class="sr-only" />
+              Another tour
+            </label>
+          </div>
+        </fieldset>
+      )}
+
+      <!-- Q3: overall -->
+      <fieldset class="mb-9">
+        <legend class="mb-4 font-display text-lg font-semibold text-sumi">
+          Overall, how was your guide?
+          <span class="ml-1 font-sans text-sm font-normal text-shu">required</span>
+        </legend>
+        <div class="flex gap-2">
+          {[1, 2, 3, 4, 5].map((score) => (
+            <label class="rating-chip" aria-label={`${score} out of 5`}>
+              <input type="radio" name="overall" value={String(score)} class="sr-only" />
+              {score}
+            </label>
+          ))}
+        </div>
+        <div class="mt-2 flex justify-between font-sans text-xs text-sumi-soft">
+          <span>Disappointing</span>
+          <span>Outstanding</span>
+        </div>
+      </fieldset>
+
+      <!-- Q4: sub-ratings -->
+      <fieldset class="mb-9">
+        <legend class="mb-1 font-display text-lg font-semibold text-sumi">Quick ratings</legend>
+        <p class="mb-5 font-sans text-sm text-sumi-soft">Skip any that do not apply.</p>
+        <div class="space-y-5">
+          {RATING_AXES.map((axis) => (
+            <div>
+              <p class="mb-2 font-sans text-sm text-sumi">{axis.label}</p>
+              <div class="flex gap-2">
+                {[1, 2, 3, 4, 5].map((score) => (
+                  <label class="rating-chip" aria-label={`${axis.label}: ${score} out of 5`}>
+                    <input
+                      type="radio"
+                      name={`axis_${axis.key}`}
+                      value={String(score)}
+                      class="sr-only"
+                    />
+                    {score}
+                  </label>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </fieldset>
+
+      <!-- Q5: praise -->
+      <fieldset class="mb-9">
+        <label for="best" class="mb-4 block font-display text-lg font-semibold text-sumi">
+          What did they do best?
+        </label>
+        <textarea
+          id="best"
+          name="best"
+          class="feedback-textarea"
+          maxlength={MAX_TEXT_LENGTH}
+          placeholder="Anything that stood out."></textarea>
+      </fieldset>
+
+      <!-- Q6: the honest one -->
+      <fieldset class="mb-9 dialogue-box">
+        <label for="improve" class="mb-2 block font-display text-lg font-semibold text-sumi">
+          If you could change one thing, what would it be?
+        </label>
+        <p class="mb-4 font-sans text-sm leading-relaxed text-sumi-soft">
+          This is the most useful box on the page. Even a small niggle helps — something
+          you did not want to say out loud is exactly what we want here.
+        </p>
+        <textarea
+          id="improve"
+          name="improve"
+          class="feedback-textarea"
+          maxlength={MAX_TEXT_LENGTH}
+          placeholder="Be honest. Nobody on the tour will read this."></textarea>
+      </fieldset>
+
+      <!-- Q7: book again -->
+      <fieldset class="mb-9">
+        <legend class="mb-4 font-display text-lg font-semibold text-sumi">
+          Would you want this guide again?
+        </legend>
+        <div class="flex flex-wrap gap-2.5">
+          {againOptions.map((option) => (
+            <label class="choice-chip min-w-[5.5rem]">
+              <input type="radio" name="again" value={option.value} class="sr-only" />
+              {option.label}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <!-- Q8: optional identity -->
+      <fieldset class="mb-9">
+        <legend class="mb-1 font-display text-lg font-semibold text-sumi">
+          Who are you? <span class="font-sans text-sm font-normal text-sumi-soft">optional</span>
+        </legend>
+        <p class="mb-4 font-sans text-sm text-sumi-soft">
+          Leave both blank to stay anonymous. Your gift does not depend on it.
+        </p>
+        <div class="space-y-3">
+          <input
+            type="text"
+            name="name"
+            class="feedback-input"
+            placeholder="Name"
+            maxlength="120"
+            autocomplete="name"
+          />
+          <input
+            type="email"
+            name="email"
+            class="feedback-input"
+            placeholder="Email, if you would like a reply"
+            maxlength="160"
+            autocomplete="email"
+          />
+        </div>
+      </fieldset>
+
+      <!-- Errors -->
+      <p
+        id="form-error"
+        class="mb-4 hidden border-2 border-shu bg-washi-deep px-4 py-3 font-sans text-sm leading-relaxed text-shu-dark"
+        role="alert"
+      >
+      </p>
+
+      <button
+        type="submit"
+        id="submit-btn"
+        class="nes-btn nes-btn-gold w-full text-center"
+        data-track-label="guide_feedback_submit"
+      >
+        Send &amp; get my gift
+      </button>
+
+      <p class="mt-4 font-sans text-xs leading-relaxed text-sumi-soft">
+        We store your answers privately to improve our tours. We never publish them and we
+        never share them with your guide.
+      </p>
+    </form>
+  </div>
+</div>
+
+<!-- ========================= COMPLETION VIEW ========================= -->
+<div id="done-view" class="hidden">
+  <section class="border-b border-washi-edge bg-washi-deep">
+    <div class="mx-auto max-w-2xl px-4 py-12 text-center md:py-16">
+      <div class="mb-6 flex justify-center">
+        <span class="hanko-stamp" aria-hidden="true">礼</span>
+      </div>
+      <h1 class="mb-4 font-display text-3xl font-bold leading-tight text-sumi md:text-4xl">
+        Thank you!
+      </h1>
+      <p class="font-sans text-base leading-relaxed text-sumi-soft">
+        That genuinely helps us. Really.
+      </p>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-2xl px-4 py-9">
+    <!-- The gift voucher. This is what the guest shows the guide. -->
+    <section class="frame-woodblock mb-10 bg-washi px-6 py-8 text-center">
+      <p class="mb-4 font-display text-sm tracking-[0.15em] text-shu">Show This To Your Guide</p>
+      <p class="mb-6 font-display text-2xl font-bold leading-snug text-sumi">
+        Feedback received 🎁
+      </p>
+      <div class="mx-auto max-w-xs border-t border-washi-edge pt-5">
+        <p class="font-sans text-xs uppercase tracking-[0.15em] text-sumi-soft">Submitted</p>
+        <p id="done-timestamp" class="mt-1 font-display text-base text-sumi"></p>
+        <p id="done-guide" class="mt-3 font-sans text-sm text-sumi-soft"></p>
+      </div>
+    </section>
+
+    <!-- Filled in on submit with the review links for the tour they joined. -->
+    <section id="review-section" class="mb-10 hidden">
+      <div class="pixel-divider mx-auto mb-8 max-w-xs"></div>
+      <h2 class="mb-3 font-display text-xl font-bold text-sumi">One more thing?</h2>
+      <p class="mb-2 font-sans text-sm leading-relaxed text-sumi-soft">
+        If you enjoyed the tour, a public review is the single biggest help a small
+        Kyoto team can get. It takes about a minute.
+      </p>
+      <p class="mb-6 font-sans text-sm leading-relaxed text-sumi-soft">
+        Fair warning, and this is the honest bit: reviews below are
+        <strong class="text-sumi">public, and your guide will read them</strong>. The form
+        you just filled in is the private one.
+      </p>
+      <div id="review-links" class="flex flex-col gap-3"></div>
+    </section>
+
+    <div class="flex flex-col gap-3 border-t border-washi-edge pt-8 sm:flex-row">
+      <a href="/tours" class="nes-btn nes-btn-outline text-center">Browse Tours</a>
+      <a href="/" class="nes-btn nes-btn-outline text-center">Back to Home</a>
+    </div>
+  </div>
+</div>
+
+<script
+  is:inline
+  define:vars={{
+    endpoint: FEEDBACK_ENDPOINT,
+    minFillSeconds: MIN_FILL_SECONDS,
+    maxTextLength: MAX_TEXT_LENGTH,
+    contactEmail: CONTACT_EMAIL,
+    guides: GUIDES,
+    otherGuideSlug: OTHER_GUIDE_SLUG,
+    axisKeys: RATING_AXES.map((axis) => axis.key),
+    reviewsBySlug,
+  }}
+>
+  (function () {
+    var form = document.getElementById('feedback-form');
+    var formView = document.getElementById('form-view');
+    var doneView = document.getElementById('done-view');
+    var errorBox = document.getElementById('form-error');
+    var submitBtn = document.getElementById('submit-btn');
+    var guideOtherWrap = document.getElementById('guide-other-wrap');
+    var openedAt = Date.now();
+    var sending = false;
+
+    // Pre-select a guide from ?g=slug so the guide can hand over a ready link.
+    var requestedGuide = new URLSearchParams(window.location.search).get('g');
+    if (requestedGuide) {
+      var preselect = form.querySelector(
+        'input[name="guide"][value="' + CSS.escape(requestedGuide) + '"]'
+      );
+      if (preselect) preselect.checked = true;
+    }
+
+    // Reveal the free-text name box only when "Someone else" is picked.
+    function syncGuideOther() {
+      var picked = form.querySelector('input[name="guide"]:checked');
+      var isOther = picked && picked.value === otherGuideSlug;
+      guideOtherWrap.classList.toggle('hidden', !isOther);
+    }
+    form.querySelectorAll('input[name="guide"]').forEach(function (input) {
+      input.addEventListener('change', syncGuideOther);
+    });
+    syncGuideOther();
+
+    function showError(message) {
+      errorBox.textContent = message;
+      errorBox.classList.remove('hidden');
+      errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function clearError() {
+      errorBox.classList.add('hidden');
+      errorBox.innerHTML = '';
+    }
+
+    function value(name) {
+      var field = form.querySelector('input[name="' + name + '"]:checked');
+      if (!field) field = form.querySelector('input[type="hidden"][name="' + name + '"]');
+      return field ? field.value : '';
+    }
+
+    function guideLabel(slug, fallback) {
+      for (var i = 0; i < guides.length; i++) {
+        if (guides[i].slug === slug) return guides[i].name;
+      }
+      return fallback || 'your guide';
+    }
+
+    /** Public review buttons for the tour the guest actually joined. */
+    function showReviewLinks(tourSlug) {
+      var links = reviewsBySlug[tourSlug] || [];
+      if (!links.length) return;
+      var container = document.getElementById('review-links');
+      links.forEach(function (link) {
+        var anchor = document.createElement('a');
+        anchor.href = link.url;
+        anchor.target = '_blank';
+        anchor.rel = 'noopener noreferrer';
+        anchor.className = 'nes-btn nes-btn-gold text-center';
+        anchor.setAttribute('data-track-label', 'feedback_review_' + link.key);
+        anchor.textContent = link.label;
+        container.appendChild(anchor);
+      });
+      document.getElementById('review-section').classList.remove('hidden');
+    }
+
+    /**
+     * Apps Script web apps have no CORS preflight for text/plain, so we send
+     * the JSON body as text/plain and read the reply. If the browser still
+     * blocks reading it, we retry as an opaque no-cors send: the data lands
+     * either way, we just cannot see the answer.
+     */
+    function send(payload) {
+      // No endpoint configured means an empty fetch() URL, which posts back to
+      // this page, fails to parse, and would look like success while the answer
+      // is thrown away. Fail loudly instead.
+      if (!endpoint) return Promise.reject(new Error('endpoint not configured'));
+      var body = JSON.stringify(payload);
+      return fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: body,
+      })
+        .then(function (response) {
+          return response.json().catch(function () {
+            return { ok: true };
+          });
+        })
+        .catch(function () {
+          return fetch(endpoint, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: body,
+          }).then(function () {
+            return { ok: true };
+          });
+        });
+    }
+
+    function showDone(payload) {
+      document.getElementById('done-timestamp').textContent = new Date().toLocaleString(
+        'en-GB',
+        { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }
+      );
+      document.getElementById('done-guide').textContent =
+        'Guide: ' + guideLabel(payload.guide, payload.guideOther);
+      showReviewLinks(payload.tour);
+
+      formView.classList.add('hidden');
+      doneView.classList.remove('hidden');
+      // 'instant' is required: the site sets scroll-behavior:smooth globally,
+      // and a smooth scroll gets cancelled by the page shrinking underneath it,
+      // stranding the guest at the footer instead of the thank-you screen.
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      // Drop ?g= so a reload lands on a clean form rather than re-submitting.
+      history.replaceState(null, '', window.location.pathname);
+    }
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      if (sending) return;
+      clearError();
+
+      var guide = value('guide');
+      var tour = value('tour');
+      var overall = value('overall');
+
+      if (!guide) return showError('Please choose which guide you had.');
+      if (!tour) return showError('Please choose which tour you joined.');
+      if (!overall) return showError('Please give your guide an overall score.');
+
+      // Bots fill hidden fields and submit instantly; humans do neither.
+      if (form.querySelector('input[name="company"]').value) return;
+      if ((Date.now() - openedAt) / 1000 < minFillSeconds) {
+        return showError('That was quick! Please take a moment, then send again.');
+      }
+
+      var payload = {
+        guide: guide,
+        guideOther: form.querySelector('#guideOther').value.slice(0, 80),
+        tour: tour,
+        overall: overall,
+        best: form.querySelector('#best').value.slice(0, maxTextLength),
+        improve: form.querySelector('#improve').value.slice(0, maxTextLength),
+        again: value('again'),
+        name: form.querySelector('input[name="name"]').value.slice(0, 120),
+        email: form.querySelector('input[name="email"]').value.slice(0, 160),
+        company: '',
+        axes: {},
+        page: window.location.href,
+      };
+      axisKeys.forEach(function (key) {
+        payload.axes[key] = value('axis_' + key);
+      });
+
+      sending = true;
+      submitBtn.disabled = true;
+      submitBtn.style.opacity = '0.65';
+      submitBtn.textContent = 'Sending...';
+
+      send(payload)
+        .then(function (result) {
+          if (result && result.ok === false) throw new Error(result.error || 'rejected');
+          if (window.track) {
+            window.track('guide_feedback_submit', {
+              guide: payload.guide,
+              tour: payload.tour,
+              overall: Number(payload.overall),
+            });
+          }
+          showDone(payload);
+        })
+        .catch(function () {
+          sending = false;
+          submitBtn.disabled = false;
+          submitBtn.style.opacity = '';
+          submitBtn.textContent = 'Try sending again';
+          errorBox.innerHTML =
+            'We could not send that — it is us, not you. Please tap the button again. ' +
+            'If it still fails, your guide can take your feedback, or email us at ' +
+            '<a class="underline" href="mailto:' +
+            contactEmail +
+            '?subject=Guide%20feedback">' +
+            contactEmail +
+            '</a>.';
+          errorBox.classList.remove('hidden');
+          errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+    });
+  })();
+</script>

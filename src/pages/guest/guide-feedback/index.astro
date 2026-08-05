@@ -1,0 +1,19 @@
+---
+/**
+ * Fallback feedback page: the guest tells us which tour they joined.
+ * Tour-specific QR codes should point at /feedback/<tour-slug> instead, which
+ * skips that question. This page exists for handing out a single link that
+ * works for any tour.
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import GuideFeedback from '../../../components/GuideFeedback.astro';
+---
+
+<BaseLayout
+  title="How was your guide? | OTAtrip Guide"
+  description="Private feedback about your guide, for the OTAtrip Guide owner only."
+  canonical="/guest/guide-feedback"
+  noIndex={true}
+>
+  <GuideFeedback />
+</BaseLayout>

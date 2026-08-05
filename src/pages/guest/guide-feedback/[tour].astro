@@ -1,0 +1,25 @@
+---
+/**
+ * One feedback page per tour, generated from TOURS in config/guideFeedback.ts.
+ * Add a tour there and its page — plus its own review links — appears here.
+ * Reached by the guest as /feedback/<tour-slug> (see vercel.json).
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import GuideFeedback from '../../../components/GuideFeedback.astro';
+import { TOURS } from '../../../config/guideFeedback';
+
+export function getStaticPaths() {
+  return TOURS.map((tour) => ({ params: { tour: tour.slug }, props: { tour } }));
+}
+
+const { tour } = Astro.props;
+---
+
+<BaseLayout
+  title={`How was your guide? | ${tour.name}`}
+  description="Private feedback about your guide, for the OTAtrip Guide owner only."
+  canonical={`/guest/guide-feedback/${tour.slug}`}
+  noIndex={true}
+>
+  <GuideFeedback tour={tour} />
+</BaseLayout>

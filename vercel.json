@@ -2,5 +2,17 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "installCommand": "npm install",
-  "framework": "astro"
+  "framework": "astro",
+  "redirects": [
+    {
+      "source": "/feedback",
+      "destination": "/guest/guide-feedback",
+      "permanent": false
+    },
+    {
+      "source": "/feedback/:tour",
+      "destination": "/guest/guide-feedback/:tour",
+      "permanent": false
+    }
+  ]
 }

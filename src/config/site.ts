@@ -23,3 +23,14 @@ export const GA4_MEASUREMENT_ID = 'G-7NL28Z41JD';
 /** TripAdvisor review page. */
 export const TRIPADVISOR_URL =
   'https://www.tripadvisor.com/Attraction_Review-g298564-d27525194-Reviews-OTAtrip_Guide-Kyoto_Kyoto_Prefecture_Kinki.html';
+
+/**
+ * Google "write a review" link from the Google Business Profile
+ * ("Ask for reviews" / クチコミを増やす). NOT the maps pin link.
+ *
+ * Google reviews attach to the business, not to a single tour, so this one
+ * link is offered on every tour's feedback page. Per-tour review links
+ * (TripAdvisor, GetYourGuide) live in config/guideFeedback.ts instead.
+ * Leave empty to hide the button.
+ */
+export const GOOGLE_REVIEW_URL = 'https://share.google/Qhpx7AhfBwDTN78Yx';
