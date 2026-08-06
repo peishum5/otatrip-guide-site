@@ -66,8 +66,9 @@ const reviewsBySlug = tour ? { [tour.slug]: reviewLinksFor(tour.slug) } : review
         them, ever.
       </p>
       <p class="mt-3 font-sans text-sm leading-relaxed text-sumi-soft">
-        So please be blunt. Praise is lovely, but the awkward stuff is what actually makes
-        our tours better. We never ask for your name, so nobody can trace this back to you.
+        So please be blunt. Kind words are welcome too, and there is a place for those at
+        the end — this form is for the awkward stuff, which is what actually makes our
+        tours better. We never ask for your name, so nobody can trace this back to you.
       </p>
     </section>
 
@@ -168,20 +169,8 @@ const reviewsBySlug = tour ? { [tour.slug]: reviewLinksFor(tour.slug) } : review
         </div>
       </fieldset>
 
-      <!-- Q5: praise -->
-      <fieldset class="mb-9">
-        <label for="best" class="mb-4 block font-display text-lg font-semibold text-sumi">
-          What did they do best?
-        </label>
-        <textarea
-          id="best"
-          name="best"
-          class="feedback-textarea"
-          maxlength={MAX_TEXT_LENGTH}
-          placeholder="Anything that stood out."></textarea>
-      </fieldset>
-
-      <!-- Q6: the honest one -->
+      <!-- Q5: the honest one. The only free-text box, on purpose: praise is
+           worth more to us as a public review, which we ask for after this. -->
       <fieldset class="mb-9 dialogue-box">
         <label for="improve" class="mb-2 block font-display text-lg font-semibold text-sumi">
           If you could change one thing, what would it be?
@@ -415,7 +404,6 @@ const reviewsBySlug = tour ? { [tour.slug]: reviewLinksFor(tour.slug) } : review
         guide: guide,
         tour: tour,
         overall: overall,
-        best: form.querySelector('#best').value.slice(0, maxTextLength),
         improve: form.querySelector('#improve').value.slice(0, maxTextLength),
         company: '',
         axes: {},
