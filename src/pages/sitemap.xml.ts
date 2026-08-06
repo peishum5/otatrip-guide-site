@@ -12,6 +12,7 @@ const STATIC_ROUTES = [
   '/tours/shimogamo-manga-walk',
   '/blog',
   '/guide',
+  '/book',
   '/groups',
   '/contact',
   '/game',
