@@ -56,19 +56,19 @@ const reviewsBySlug = tour ? { [tour.slug]: reviewLinksFor(tour.slug) } : review
   </section>
 
   <div class="mx-auto max-w-2xl px-4 py-8 md:py-10">
-    <!-- The promise. This is the whole reason the page exists. -->
+    <!-- Why we are asking. Framed around the next guests, not around blame. -->
     <section class="mb-9 dialogue-box">
       <p class="mb-3 font-display text-sm font-semibold tracking-[0.15em] text-shu">
-        Your Guide Will Never See This
+        For The Guests Who Come After You
       </p>
       <p class="font-sans text-base leading-relaxed text-sumi">
-        These answers go straight to the owner of OTAtrip Guide. Your guide is not shown
-        them, ever.
+        We are a small Kyoto team, and this is how our tours get better. What you tell us
+        here shapes the tour for the next group.
       </p>
       <p class="mt-3 font-sans text-sm leading-relaxed text-sumi-soft">
-        So please be blunt. Kind words are welcome too, and there is a place for those at
-        the end — this form is for the awkward stuff, which is what actually makes our
-        tours better. We never ask for your name, so nobody can trace this back to you.
+        Your answers go straight to the owner of OTAtrip Guide, and your guide is never
+        shown them. We never ask for your name either, so please say what you really
+        think — that is the only way it helps.
       </p>
     </section>
 
@@ -176,15 +176,19 @@ const reviewsBySlug = tour ? { [tour.slug]: reviewLinksFor(tour.slug) } : review
           If you could change one thing, what would it be?
         </label>
         <p class="mb-4 font-sans text-sm leading-relaxed text-sumi-soft">
-          This is the most useful box on the page. Even a small niggle helps — something
-          you did not want to say out loud is exactly what we want here.
+          Even a small niggle helps — chances are the next group would notice it too.
+        </p>
+        <p class="mb-4 font-sans text-sm leading-relaxed text-sumi-soft">
+          Got something lovely to say instead? Please put that somewhere public — we will
+          show you where on the next screen. Praise only reaches new travellers if they
+          can see it.
         </p>
         <textarea
           id="improve"
           name="improve"
           class="feedback-textarea"
           maxlength={MAX_TEXT_LENGTH}
-          placeholder="Be honest. Nobody on the tour will read this."></textarea>
+          placeholder="Anything you would have done differently."></textarea>
       </fieldset>
 
       <!-- Errors -->
