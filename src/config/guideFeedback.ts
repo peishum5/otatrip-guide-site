@@ -6,7 +6,8 @@
  * owner's spreadsheet and inbox.
  *
  * 運用メモ（日本語）:
- * - ガイドが増えたら GUIDES に1行足すだけ。slug は URL 用の短い英字（?g=shumpei）。
+ * - ガイド名はお客さんが手入力する（短答）。名簿を持たないので、ガイドが増えても
+ *   設定の変更は不要。?g=Shumpei を付けたリンクを渡すと名前を入れた状態で開ける。
  * - ツアーが増えたら TOURS に1行足すだけ。専用ページ /feedback/<slug> が自動でできる。
  * - レビュー投稿先はツアーごとに違うので、各ツアーの reviews に書く。
  *   Googleだけは店舗単位なので config/site.ts の GOOGLE_REVIEW_URL に1つだけ置く。
@@ -14,8 +15,6 @@
  */
 
 import { GOOGLE_REVIEW_URL } from './site';
-
-export type GuideOption = { slug: string; name: string };
 
 /**
  * "Write a review" links for one tour. Each platform lists our tours as
@@ -33,18 +32,8 @@ export type TourOption = { slug: string; name: string; reviews?: TourReviewLinks
 export type RatingAxis = { key: string; label: string };
 export type ReviewLink = { key: string; label: string; url: string };
 
-/**
- * Guides that can be rated. `slug` is used by the ?g= URL parameter to
- * pre-select a guide (e.g. /feedback?g=shumpei), and is what gets written to
- * the spreadsheet. Keep slugs stable once used on printed QR codes.
- */
-export const GUIDES: GuideOption[] = [
-  { slug: 'shumpei', name: 'Shumpei' },
-  { slug: 'yuina', name: 'Yuina' },
-];
-
-/** Shown as the last chip. Lets guests rate a guide who is not listed above. */
-export const OTHER_GUIDE_SLUG = 'other';
+/** Cap on the typed guide name. */
+export const MAX_GUIDE_NAME_LENGTH = 80;
 
 /**
  * Tours that can be reviewed. Mirrors src/pages/tours/index.astro.
@@ -97,13 +86,16 @@ export function reviewLinksByTour(): Record<string, ReviewLink[]> {
 /**
  * The 1-5 sub-ratings. All optional for the guest — the overall score is the
  * only required rating. Order here is the order shown on the page.
+ *
+ * Kept to three on purpose: a long grid of scores gets abandoned or answered
+ * carelessly. Pace and local knowledge were dropped because the free-text
+ * answers surface those anyway. Swapping one back in means editing this list
+ * and FEEDBACK.AXIS_KEYS / AXIS_LABELS in the Apps Script to match.
  */
 export const RATING_AXES: RatingAxis[] = [
   { key: 'clarity', label: 'Clear and easy to understand' },
   { key: 'friendliness', label: 'Friendly and attentive' },
   { key: 'energy', label: 'Fun energy' },
-  { key: 'pacing', label: 'Good pace, finished on time' },
-  { key: 'knowledge', label: 'Local knowledge' },
 ];
 
 /**

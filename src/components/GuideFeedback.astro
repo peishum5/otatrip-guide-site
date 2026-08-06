@@ -11,14 +11,13 @@ import {
   CONTACT_EMAIL,
 } from '../config/site';
 import {
-  GUIDES,
   TOURS,
   RATING_AXES,
-  OTHER_GUIDE_SLUG,
   OTHER_TOUR_SLUG,
   FEEDBACK_ENDPOINT,
   MIN_FILL_SECONDS,
   MAX_TEXT_LENGTH,
+  MAX_GUIDE_NAME_LENGTH,
   reviewLinksFor,
   reviewLinksByTour,
   type TourOption,
@@ -34,12 +33,6 @@ const { tour = null } = Astro.props;
 // With a fixed tour we already know the review links; otherwise the script
 // picks them from this map once the guest tells us which tour they joined.
 const reviewsBySlug = tour ? { [tour.slug]: reviewLinksFor(tour.slug) } : reviewLinksByTour();
-
-const againOptions = [
-  { value: 'yes', label: 'Yes' },
-  { value: 'maybe', label: 'Maybe' },
-  { value: 'no', label: 'No' },
-];
 ---
 
 <!-- ============================ FORM VIEW ============================ -->
@@ -56,7 +49,8 @@ const againOptions = [
         </p>
       )}
       <p class="font-sans text-base leading-relaxed text-sumi-soft">
-        About 1 minute. Answer honestly and we will hand you a small thank-you gift.
+        Under a minute, and anonymous. Answer honestly and we will hand you a small
+        thank-you gift.
       </p>
     </div>
   </section>
@@ -73,7 +67,7 @@ const againOptions = [
       </p>
       <p class="mt-3 font-sans text-sm leading-relaxed text-sumi-soft">
         So please be blunt. Praise is lovely, but the awkward stuff is what actually makes
-        our tours better. You can stay completely anonymous.
+        our tours better. We never ask for your name, so nobody can trace this back to you.
       </p>
     </section>
 
@@ -84,37 +78,24 @@ const againOptions = [
         <input type="text" id="company" name="company" tabindex="-1" autocomplete="off" />
       </div>
 
-      <!-- Q1: which guide -->
+      <!-- Q1: which guide. Typed, not picked, so a new guide needs no config. -->
       <fieldset class="mb-9">
-        <legend class="mb-4 font-display text-lg font-semibold text-sumi">
+        <label for="guide" class="mb-2 block font-display text-lg font-semibold text-sumi">
           Who was your guide?
           <span class="ml-1 font-sans text-sm font-normal text-shu">required</span>
-        </legend>
-        <div class="flex flex-wrap gap-2.5">
-          {GUIDES.map((guide) => (
-            <label class="choice-chip" data-guide-chip>
-              <input type="radio" name="guide" value={guide.slug} class="sr-only" />
-              {guide.name}
-            </label>
-          ))}
-          <label class="choice-chip" data-guide-chip>
-            <input type="radio" name="guide" value={OTHER_GUIDE_SLUG} class="sr-only" />
-            Someone else
-          </label>
-        </div>
-        <div id="guide-other-wrap" class="mt-3 hidden">
-          <label for="guideOther" class="mb-2 block font-sans text-sm text-sumi-soft">
-            Their name, if you remember it
-          </label>
-          <input
-            type="text"
-            id="guideOther"
-            name="guideOther"
-            class="feedback-input"
-            maxlength="80"
-            autocomplete="off"
-          />
-        </div>
+        </label>
+        <p class="mb-4 font-sans text-sm text-sumi-soft">
+          Their first name is plenty.
+        </p>
+        <input
+          type="text"
+          id="guide"
+          name="guide"
+          class="feedback-input"
+          maxlength={MAX_GUIDE_NAME_LENGTH}
+          placeholder="e.g. Shumpei"
+          autocomplete="off"
+        />
       </fieldset>
 
       <!-- Q2: which tour. Skipped entirely when the QR code already told us. -->
@@ -217,49 +198,6 @@ const againOptions = [
           placeholder="Be honest. Nobody on the tour will read this."></textarea>
       </fieldset>
 
-      <!-- Q7: book again -->
-      <fieldset class="mb-9">
-        <legend class="mb-4 font-display text-lg font-semibold text-sumi">
-          Would you want this guide again?
-        </legend>
-        <div class="flex flex-wrap gap-2.5">
-          {againOptions.map((option) => (
-            <label class="choice-chip min-w-[5.5rem]">
-              <input type="radio" name="again" value={option.value} class="sr-only" />
-              {option.label}
-            </label>
-          ))}
-        </div>
-      </fieldset>
-
-      <!-- Q8: optional identity -->
-      <fieldset class="mb-9">
-        <legend class="mb-1 font-display text-lg font-semibold text-sumi">
-          Who are you? <span class="font-sans text-sm font-normal text-sumi-soft">optional</span>
-        </legend>
-        <p class="mb-4 font-sans text-sm text-sumi-soft">
-          Leave both blank to stay anonymous. Your gift does not depend on it.
-        </p>
-        <div class="space-y-3">
-          <input
-            type="text"
-            name="name"
-            class="feedback-input"
-            placeholder="Name"
-            maxlength="120"
-            autocomplete="name"
-          />
-          <input
-            type="email"
-            name="email"
-            class="feedback-input"
-            placeholder="Email, if you would like a reply"
-            maxlength="160"
-            autocomplete="email"
-          />
-        </div>
-      </fieldset>
-
       <!-- Errors -->
       <p
         id="form-error"
@@ -344,9 +282,8 @@ const againOptions = [
     endpoint: FEEDBACK_ENDPOINT,
     minFillSeconds: MIN_FILL_SECONDS,
     maxTextLength: MAX_TEXT_LENGTH,
+    maxGuideNameLength: MAX_GUIDE_NAME_LENGTH,
     contactEmail: CONTACT_EMAIL,
-    guides: GUIDES,
-    otherGuideSlug: OTHER_GUIDE_SLUG,
     axisKeys: RATING_AXES.map((axis) => axis.key),
     reviewsBySlug,
   }}
@@ -357,29 +294,16 @@ const againOptions = [
     var doneView = document.getElementById('done-view');
     var errorBox = document.getElementById('form-error');
     var submitBtn = document.getElementById('submit-btn');
-    var guideOtherWrap = document.getElementById('guide-other-wrap');
+    var guideInput = document.getElementById('guide');
     var openedAt = Date.now();
     var sending = false;
 
-    // Pre-select a guide from ?g=slug so the guide can hand over a ready link.
+    // ?g=Shumpei fills the name in, so a guide can hand over a ready-made link.
+    // Still editable — the guest may have had someone else.
     var requestedGuide = new URLSearchParams(window.location.search).get('g');
     if (requestedGuide) {
-      var preselect = form.querySelector(
-        'input[name="guide"][value="' + CSS.escape(requestedGuide) + '"]'
-      );
-      if (preselect) preselect.checked = true;
+      guideInput.value = requestedGuide.slice(0, maxGuideNameLength);
     }
-
-    // Reveal the free-text name box only when "Someone else" is picked.
-    function syncGuideOther() {
-      var picked = form.querySelector('input[name="guide"]:checked');
-      var isOther = picked && picked.value === otherGuideSlug;
-      guideOtherWrap.classList.toggle('hidden', !isOther);
-    }
-    form.querySelectorAll('input[name="guide"]').forEach(function (input) {
-      input.addEventListener('change', syncGuideOther);
-    });
-    syncGuideOther();
 
     function showError(message) {
       errorBox.textContent = message;
@@ -396,13 +320,6 @@ const againOptions = [
       var field = form.querySelector('input[name="' + name + '"]:checked');
       if (!field) field = form.querySelector('input[type="hidden"][name="' + name + '"]');
       return field ? field.value : '';
-    }
-
-    function guideLabel(slug, fallback) {
-      for (var i = 0; i < guides.length; i++) {
-        if (guides[i].slug === slug) return guides[i].name;
-      }
-      return fallback || 'your guide';
     }
 
     /** Public review buttons for the tour the guest actually joined. */
@@ -462,8 +379,7 @@ const againOptions = [
         'en-GB',
         { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }
       );
-      document.getElementById('done-guide').textContent =
-        'Guide: ' + guideLabel(payload.guide, payload.guideOther);
+      document.getElementById('done-guide').textContent = 'Guide: ' + payload.guide;
       showReviewLinks(payload.tour);
 
       formView.classList.add('hidden');
@@ -481,11 +397,11 @@ const againOptions = [
       if (sending) return;
       clearError();
 
-      var guide = value('guide');
+      var guide = guideInput.value.trim().slice(0, maxGuideNameLength);
       var tour = value('tour');
       var overall = value('overall');
 
-      if (!guide) return showError('Please choose which guide you had.');
+      if (!guide) return showError('Please tell us which guide you had.');
       if (!tour) return showError('Please choose which tour you joined.');
       if (!overall) return showError('Please give your guide an overall score.');
 
@@ -497,14 +413,10 @@ const againOptions = [
 
       var payload = {
         guide: guide,
-        guideOther: form.querySelector('#guideOther').value.slice(0, 80),
         tour: tour,
         overall: overall,
         best: form.querySelector('#best').value.slice(0, maxTextLength),
         improve: form.querySelector('#improve').value.slice(0, maxTextLength),
-        again: value('again'),
-        name: form.querySelector('input[name="name"]').value.slice(0, 120),
-        email: form.querySelector('input[name="email"]').value.slice(0, 160),
         company: '',
         axes: {},
         page: window.location.href,
@@ -522,8 +434,9 @@ const againOptions = [
         .then(function (result) {
           if (result && result.ok === false) throw new Error(result.error || 'rejected');
           if (window.track) {
+            // Deliberately no guide name: it is now free text, and typed names
+            // do not belong in analytics. The spreadsheet has them.
             window.track('guide_feedback_submit', {
-              guide: payload.guide,
               tour: payload.tour,
               overall: Number(payload.overall),
             });
