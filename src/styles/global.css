@@ -70,9 +70,6 @@
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .hero-reveal { animation: none; opacity: 1; }
-    /* Ink bleed + card lift (see "Ink bleed" below) */
-    .ink-bleed::after,
-    .blog-card::after { display: none; }
     .blog-card:hover { transform: none; }
     /* Drifting gold clouds behind the two-layer band */
     .parallax-band__kumo { animation: none; }
@@ -516,47 +513,6 @@
     border-color: rgba(195, 39, 43, 0.6);
     box-shadow: 4px 4px 0 rgba(195, 39, 43, 0.12);
     transform: translateY(-2px);
-  }
-
-  /* === Ink bleed (朱のにじみ) ===
-     Vermillion spreads out of the point that was touched / hovered, the way
-     pigment bleeds into washi. The position is fed in as --ink-x / --ink-y by
-     the delegated pointer listener in BaseLayout.astro. */
-  .ink-bleed,
-  .blog-card {
-    position: relative;
-    isolation: isolate; /* keeps the multiply blend inside the card */
-  }
-
-  .ink-bleed::after,
-  .blog-card::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 5;
-    opacity: 0;
-    transition: opacity 0.35s ease;
-    mix-blend-mode: multiply;
-    background: radial-gradient(
-      circle 240px at var(--ink-x, 50%) var(--ink-y, 50%),
-      rgba(195, 39, 43, 0.42),
-      rgba(195, 39, 43, 0.16) 42%,
-      transparent 70%
-    );
-  }
-
-  @media (hover: hover) {
-    .ink-bleed:hover::after,
-    .blog-card:hover::after {
-      opacity: 1;
-    }
-  }
-
-  /* Touch devices have no hover — the listener toggles this on pointerdown */
-  .ink-bleed.is-inked::after,
-  .blog-card.is-inked::after {
-    opacity: 1;
   }
 
   /* === Two-layer band (二層) ===
