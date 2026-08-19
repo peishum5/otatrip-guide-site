@@ -11,7 +11,7 @@ export const SITE_NAME = 'OTAtrip Guide';
 export const CONTACT_EMAIL = 'kyoto.otatrip.guide@gmail.com';
 
 /** Bokun booking channel UUID (booking widget). */
-export const BOKUN_CHANNEL_UUID = 'f23bdb2c-1b09-450d-bc03-a0a0b23700e9';
+export const BOKUN_CHANNEL_UUID = 'a4214d32-0142-4458-a7f8-3e03401d2cb7';
 
 /** Bokun widgets loader script src, parameterized by the channel UUID. */
 export const BOKUN_LOADER_SRC =
