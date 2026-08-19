@@ -10,6 +10,7 @@ const STATIC_ROUTES = [
   '/tours/gion-sake-walk',
   '/tours/izakaya-hopping',
   '/tours/shimogamo-manga-walk',
+  '/tours/coffee-ceremony',
   '/blog',
   '/guide',
   '/groups',

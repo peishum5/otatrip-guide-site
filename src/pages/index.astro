@@ -173,6 +173,14 @@ const latestPosts = blogPosts.slice(0, 3);
           price: 'from ¥8,500',
           href: '/tours/shimogamo-manga-walk',
         },
+        {
+          icon: '☕',
+          tag: 'Daytime · Nishiki Market',
+          name: 'Hands-On Coffee Ceremony with a Master',
+          meta: '70 min · Max 4 · Coffee · EN',
+          price: '¥24,000 / group',
+          href: '/tours/coffee-ceremony',
+        },
       ].map(tour => (
         <a href={tour.href} class="blog-card group flex flex-col sm:flex-row items-start sm:items-center gap-5 p-5 block">
           <div class="text-3xl shrink-0 group-hover:scale-110 transition-transform">{tour.icon}</div>

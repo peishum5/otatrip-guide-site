@@ -13,7 +13,7 @@
 
 const SPOKES = [
   // 🏮 belongs to the lantern at the centre now, so Tours takes the sake cup
-  { icon: '🍶', label: 'Tours',          meta: '3 evening & morning walks', href: '/tours',   track: 'home_explore_tours' },
+  { icon: '🍶', label: 'Tours',          meta: '4 walks & workshops',       href: '/tours',   track: 'home_explore_tours' },
   { icon: '📖', label: 'Travel Guides',  meta: '38 practical Kyoto guides', href: '/blog',    track: 'home_explore_blog' },
   { icon: '👥', label: 'Group Bookings', meta: 'Teams, schools & charters', href: '/groups',  track: 'home_explore_groups' },
   { icon: '🎮', label: 'Mini Game',      meta: 'Gion Night Quest',          href: '/game',    track: 'home_explore_game' },
@@ -95,7 +95,7 @@ const items = SPOKES.map((spoke, i) => {
       {items.map(item => (
         <a
           href={item.href}
-          class="explore-spoke ink-bleed"
+          class="explore-spoke"
           style={`--fx:${item.tx}%; --fy:${item.ty}%; --i:${item.i}`}
           data-track-label={item.track}
         >
@@ -343,8 +343,8 @@ const items = SPOKES.map((spoke, i) => {
       display: none;
     }
 
-    /* relative, not static — the lantern SVG and the ink-bleed layer are
-       absolutely positioned and would otherwise stretch to the whole hub */
+    /* relative, not static — the lantern SVG is absolutely positioned and
+       would otherwise stretch to the whole hub */
     .explore-core {
       position: relative;
       left: auto;

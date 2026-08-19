@@ -1,0 +1,248 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BookingWidget from '../../components/BookingWidget.astro';
+import GroupCTA from '../../components/GroupCTA.astro';
+import ReviewsSection from '../../components/ReviewsSection.astro';
+import { BOKUN_LOADER_SRC } from '../../config/site';
+
+const highlights = [
+  'Brew two different specialty coffees with your own hands',
+  'Welcome cup of hand-drip coffee, brewed by the Master',
+  'Kyoto sweets paired with your coffee',
+  'Take-home: 30g of specialty beans in Japanese craft packaging',
+  'Certificate of completion, with your recipe handwritten on the back',
+  'All equipment provided — English-speaking guidance throughout',
+];
+
+const timeline = [
+  { time: 'Start', desc: 'Welcome. The Master greets you and brews you a cup of hand-drip coffee — the taste you will be aiming for.' },
+  { time: '+10m', desc: 'The story of Japanese coffee. A short, fun talk with quiz questions. Smell and compare today’s beans.' },
+  { time: '+20m', desc: 'Watch the Master brew one cup from start to finish: the grind, the water temperature, the bloom, the slow circular pour.' },
+  { time: '+30m', desc: 'Your turn. With the Master beside you, brew two different coffees with your own hands.' },
+  { time: '+50m', desc: 'Tasting, with Kyoto sweets. Compare your two coffees side by side — this is where the differences really click.' },
+  { time: '+65m', desc: 'Wrap-up. Questions, photos, and your take-home set, plus the Master’s favorite local Kyoto spots.' },
+];
+
+const faqs = [
+  {
+    q: 'Do I need any coffee experience?',
+    a: 'Not at all. Complete beginners are welcome. The Master guides every step, from the grind to the pour.',
+  },
+  {
+    q: 'Can children join?',
+    a: 'Yes. Children under 12 are welcome with a paying adult.',
+  },
+  {
+    q: 'I have a food allergy. Can you adjust?',
+    a: 'Yes. Please tell us about any food allergies when you book — the coffee and sweets can be adjusted.',
+  },
+  {
+    q: 'Is the workshop in English?',
+    a: 'Yes, it is conducted entirely in English. No Japanese required.',
+  },
+  {
+    q: 'How do I find the cafe?',
+    a: 'The cafe is tucked down a small alley a few minutes from Nishiki Market. Look for the noren (shop curtain) at the end of the alley, and please arrive 5 minutes before your start time.',
+  },
+];
+---
+
+<BaseLayout
+  title="Hands-On Coffee Ceremony with a Master — Nishiki Market | OTAtrip Guide"
+  description="Learn Japanese pour-over coffee at a hidden alley cafe a few minutes from Nishiki Market, Kyoto. Grind, bloom, and brew two coffees with a Master, then compare them over Kyoto sweets. 70 minutes, max 4 guests."
+  canonical="/tours/coffee-ceremony"
+>
+  <Fragment slot="head">
+    <script is:inline type="text/javascript" src={BOKUN_LOADER_SRC} async></script>
+  </Fragment>
+
+  <!-- Hero -->
+  <section class="relative bg-sumi overflow-hidden">
+    <img
+      src="/images/tours/coffee-ceremony/master-lecture.jpg"
+      alt="The Master talking to guests at the start of the coffee workshop"
+      class="absolute inset-0 w-full h-full object-cover opacity-60"
+      loading="eager"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
+    <div class="relative z-10 max-w-4xl mx-auto px-4 py-24 md:py-32">
+      <p class="font-display text-sm text-kin tracking-widest mb-4 rpg-prefix">Daytime Workshop · Near Nishiki Market</p>
+      <h1 class="font-display text-3xl md:text-4xl font-bold text-white leading-tight mb-4">
+        Hands-On Coffee Ceremony with a Master
+      </h1>
+      <p class="font-sans text-gray-200 text-base leading-relaxed mb-8 max-w-xl">
+        Japan brews coffee with the same care it gives to tea.
+        In a hidden alley cafe near Nishiki Market, you grind, bloom, and brew two coffees with a Master —
+        then compare them slowly over Kyoto sweets.
+      </p>
+      <div class="flex flex-wrap gap-6 mb-8">
+        {[
+          { label: 'Duration', value: '70 minutes' },
+          { label: 'Group size', value: 'Max 4 guests' },
+          { label: 'Language', value: 'English' },
+          { label: 'Time', value: 'Daytime' },
+          { label: 'Price', value: '¥24,000 / group' },
+        ].map(item => (
+          <div>
+            <div class="font-display text-base font-semibold text-white">{item.value}</div>
+            <div class="font-sans text-xs text-gray-300">{item.label}</div>
+          </div>
+        ))}
+      </div>
+      <a href="#booking" class="nes-btn nes-btn-gold">Book Your Spot</a>
+    </div>
+  </section>
+
+  <div class="max-w-4xl mx-auto px-4 py-12">
+
+    <!-- Highlights -->
+    <section class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-display text-2xl md:text-3xl font-bold text-sumi">What's Included</h2>
+        <div class="flex-1 border-t border-washi-edge"></div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-3">
+        {highlights.map(item => (
+          <div class="flex items-start gap-3 bg-washi-deep border border-washi-edge px-4 py-3">
+            <span class="font-display text-sm text-matsu shrink-0">✓</span>
+            <span class="font-sans text-sumi-soft text-sm leading-relaxed">{item}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Photo gallery -->
+    <section class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-display text-2xl md:text-3xl font-bold text-sumi">Workshop Photos</h2>
+        <div class="flex-1 border-t border-washi-edge"></div>
+      </div>
+      <div class="columns-2 md:columns-3 gap-2 space-y-2">
+        {[
+          { src: '/images/tours/coffee-ceremony/lecture-quiz.jpg',   alt: 'The Master sharing the story of Japanese coffee with the group' },
+          { src: '/images/tours/coffee-ceremony/grinder-demo.jpg',   alt: 'The Master demonstrating the coffee grinder at each guest\'s station' },
+          { src: '/images/tours/coffee-ceremony/workshop-table.jpg', alt: 'Guests at the workshop table, each with their own brewing station' },
+          { src: '/images/tours/coffee-ceremony/hands-on-pour.jpg',  alt: 'A guest pouring water over the filter while family films the moment' },
+          { src: '/images/tours/coffee-ceremony/guests-kettles.jpg', alt: 'Smiling guests holding gooseneck kettles, ready to brew' },
+          { src: '/images/tours/coffee-ceremony/group-photo.jpg',    alt: 'Guests posing for a group photo at the end of the workshop' },
+        ].map(photo => (
+          <div class="break-inside-avoid overflow-hidden border border-washi-edge">
+            <img
+              src={photo.src}
+              alt={photo.alt}
+              class="w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-display text-2xl md:text-3xl font-bold text-sumi">How the 70 Minutes Unfold</h2>
+        <div class="flex-1 border-t border-washi-edge"></div>
+      </div>
+      <div class="space-y-5">
+        {timeline.map(item => (
+          <div class="flex items-start gap-5">
+            <span class="font-display text-sm text-ai shrink-0 w-12 text-right pt-1">{item.time}</span>
+            <div class="flex-1 border-l border-washi-edge pl-5 pb-3">
+              <p class="font-sans text-sm text-sumi-soft leading-relaxed">{item.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Meeting point -->
+    <section class="mb-12">
+      <div class="dialogue-box">
+        <p class="font-display text-sm text-ai tracking-widest mb-4">Meeting Point</p>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <p class="font-sans text-sumi font-semibold text-sm mb-1">Ashinoyashiro Coffee (葦乃社珈琲)</p>
+            <p class="font-sans text-sumi-soft text-xs leading-relaxed mb-3">
+              151 Nagahara-cho, Shimogyo-ku, Kyoto — down the alley on the east side of Yanaginobanba St.,
+              just south of Ayanokoji St. Look for the indigo noren (shop curtain) at the end of the alley.
+            </p>
+            <p class="font-sans text-sumi-soft text-xs mb-3">
+              About 5 minutes on foot from Nishiki Market, and about 6 minutes from Subway "Shijo" / Hankyu "Karasuma" stations.
+              Please arrive 5 minutes before your start time.
+            </p>
+          </div>
+          <div class="space-y-2 font-sans text-sm">
+            {[
+              { k: 'Start times', v: '8:00 / 10:00' },
+              { k: 'Duration', v: '70 minutes' },
+              { k: 'Dress code', v: 'Casual' },
+            ].map(row => (
+              <div class="flex justify-between border-b border-washi-edge pb-2">
+                <span class="text-sumi-soft">{row.k}</span>
+                <span class="text-sumi">{row.v}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Booking -->
+    <section id="booking" class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-display text-2xl md:text-3xl font-bold text-sumi">Book Your Spot</h2>
+        <div class="flex-1 border-t border-washi-edge"></div>
+      </div>
+      <p class="font-sans text-sumi-soft text-sm mb-6">Only 4 seats per session. Book early to secure your date.</p>
+      <BookingWidget widgetPath="experience-calendar/1242619" />
+    </section>
+
+    <!-- Reviews -->
+    <ReviewsSection />
+
+    <!-- Group CTA -->
+    <GroupCTA />
+
+    <!-- FAQ -->
+    <section class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-display text-2xl md:text-3xl font-bold text-sumi">FAQ</h2>
+        <div class="flex-1 border-t border-washi-edge"></div>
+      </div>
+      <div class="space-y-3">
+        {faqs.map(faq => (
+          <details class="border border-washi-edge bg-washi-deep group">
+            <summary class="flex items-center justify-between px-5 py-4 cursor-pointer font-display text-base text-sumi hover:text-shu transition-colors">
+              {faq.q}
+              <span class="ml-4 text-sumi-soft shrink-0 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-5 pb-4 font-sans text-sm text-sumi-soft leading-relaxed border-t border-washi-edge pt-4">
+              {faq.a}
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "TouristAttraction",
+    "name": "Hands-On Coffee Ceremony with a Master near Nishiki Market",
+    "description": "Learn Japanese pour-over coffee at a hidden alley cafe a few minutes from Nishiki Market, Kyoto. Grind, bloom, and brew two coffees with a Master, then compare them over Kyoto sweets. 70 minutes, max 4 guests.",
+    "url": "https://otatrip.guide/tours/coffee-ceremony",
+    "provider": {
+      "@type": "TouristInformationCenter",
+      "name": "OTAtrip Guide",
+      "url": "https://otatrip.guide"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "24000",
+      "priceCurrency": "JPY",
+      "availability": "https://schema.org/InStock"
+    }
+  })} />
+</BaseLayout>
