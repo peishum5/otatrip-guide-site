@@ -11,6 +11,7 @@ const STATIC_ROUTES = [
   '/tours/izakaya-hopping',
   '/tours/shimogamo-manga-walk',
   '/tours/coffee-ceremony',
+  '/tours/tea-ceremony',
   '/blog',
   '/guide',
   '/groups',

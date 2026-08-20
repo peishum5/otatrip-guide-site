@@ -181,6 +181,14 @@ const latestPosts = blogPosts.slice(0, 3);
           price: '¥24,000 / group',
           href: '/tours/coffee-ceremony',
         },
+        {
+          icon: '🍵',
+          tag: 'Daytime · Kawaramachi',
+          name: 'Matcha Tea Ceremony with an Urasenke Master',
+          meta: '80 min · Max 5 · Matcha · EN',
+          price: '¥12,000 / adult',
+          href: '/tours/tea-ceremony',
+        },
       ].map(tour => (
         <a href={tour.href} class="blog-card group flex flex-col sm:flex-row items-start sm:items-center gap-5 p-5 block">
           <div class="text-3xl shrink-0 group-hover:scale-110 transition-transform">{tour.icon}</div>

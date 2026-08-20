@@ -1,0 +1,247 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BookingWidget from '../../components/BookingWidget.astro';
+import GroupCTA from '../../components/GroupCTA.astro';
+import ReviewsSection from '../../components/ReviewsSection.astro';
+import { BOKUN_LOADER_SRC } from '../../config/site';
+
+const highlights = [
+  'Guided by a certified Urasenke teacher — one of Japan\'s most prestigious tea traditions',
+  'Watch a complete temae (tea preparation), explained in English',
+  'Hands-on: whisk your own bowl of matcha under personal guidance',
+  'Seasonal wagashi (Japanese sweets) included',
+  'Tasting of three kinds of Japanese tea',
+  'Certificate of participation, handwritten and signed by your sensei',
+];
+
+const timeline = [
+  { time: 'Start', desc: 'Welcome and introductions. A friendly start sets a relaxed tone for the session.' },
+  { time: '+10m', desc: 'The Way of Tea. Your sensei shares the history of tea ceremony, the legendary Sen no Rikyu, and the four principles of chado: harmony, respect, purity, and tranquility. Each tool is introduced and explained.' },
+  { time: '+25m', desc: 'The sensei\'s demonstration. A complete, unhurried temae performed from start to finish — every movement explained in English.' },
+  { time: '+45m', desc: 'Your turn. Measure, sift, and whisk your own bowl of matcha, step by step with the sensei beside you.' },
+  { time: '+55m', desc: 'Enjoy your matcha with seasonal wagashi (Japanese sweets).' },
+  { time: '+65m', desc: 'A relaxed finish: taste and compare three kinds of Japanese tea, with time for photos and questions.' },
+];
+
+const faqs = [
+  {
+    q: 'Do I need any tea ceremony experience?',
+    a: 'Not at all. Complete beginners are welcome. Your sensei guides every step, and it is simpler than it looks.',
+  },
+  {
+    q: 'Can children join?',
+    a: 'Yes. Children are welcome with an adult. The child price is ¥8,000.',
+  },
+  {
+    q: 'Is the workshop in English?',
+    a: 'Yes, it is conducted entirely in English. No Japanese required.',
+  },
+  {
+    q: 'Can I take photos?',
+    a: 'Yes. There is time for photos at the end of the session, and you are welcome to capture your own bowl as you go.',
+  },
+  {
+    q: 'Where exactly do we meet?',
+    a: 'The session takes place at Das, a cafe in the Kawaramachi-Sanjo area of central Kyoto. The exact address and directions are sent with your booking confirmation.',
+  },
+];
+---
+
+<BaseLayout
+  title="Matcha Tea Ceremony with an Urasenke Master | OTAtrip Guide"
+  description="An authentic matcha tea ceremony and tasting class in central Kyoto, led by a certified Urasenke tea master. Whisk your own matcha, enjoy seasonal wagashi, and compare three Japanese teas. 80 minutes, max 5 guests."
+  canonical="/tours/tea-ceremony"
+>
+  <Fragment slot="head">
+    <script is:inline type="text/javascript" src={BOKUN_LOADER_SRC} async></script>
+  </Fragment>
+
+  <!-- Hero -->
+  <section class="relative bg-sumi overflow-hidden">
+    <img
+      src="/images/tours/tea-ceremony/sensei-guiding.jpg"
+      alt="The Urasenke tea master guiding a guest as she scoops matcha into her bowl"
+      class="absolute inset-0 w-full h-full object-cover opacity-60"
+      loading="eager"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
+    <div class="relative z-10 max-w-4xl mx-auto px-4 py-24 md:py-32">
+      <p class="font-display text-sm text-kin tracking-widest mb-4 rpg-prefix">Daytime Workshop · Kawaramachi-Sanjo</p>
+      <h1 class="font-display text-3xl md:text-4xl font-bold text-white leading-tight mb-4">
+        Matcha Tea Ceremony with an Urasenke Master
+      </h1>
+      <p class="font-sans text-gray-200 text-base leading-relaxed mb-8 max-w-xl">
+        Step into the meditative world of Japanese tea ceremony, led by a certified Urasenke master in central Kyoto.
+        Watch a full temae, then take the bamboo whisk in your own hands.
+      </p>
+      <div class="flex flex-wrap gap-6 mb-8">
+        {[
+          { label: 'Duration', value: '80 minutes' },
+          { label: 'Group size', value: 'Max 5 guests' },
+          { label: 'Language', value: 'English' },
+          { label: 'Time', value: 'Daytime' },
+          { label: 'Price', value: '¥12,000 / adult' },
+        ].map(item => (
+          <div>
+            <div class="font-display text-base font-semibold text-white">{item.value}</div>
+            <div class="font-sans text-xs text-gray-300">{item.label}</div>
+          </div>
+        ))}
+      </div>
+      <a href="#booking" class="nes-btn nes-btn-gold">Book Your Spot</a>
+    </div>
+  </section>
+
+  <div class="max-w-4xl mx-auto px-4 py-12">
+
+    <!-- Highlights -->
+    <section class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-display text-2xl md:text-3xl font-bold text-sumi">What's Included</h2>
+        <div class="flex-1 border-t border-washi-edge"></div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-3">
+        {highlights.map(item => (
+          <div class="flex items-start gap-3 bg-washi-deep border border-washi-edge px-4 py-3">
+            <span class="font-display text-sm text-matsu shrink-0">✓</span>
+            <span class="font-sans text-sumi-soft text-sm leading-relaxed">{item}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Photo gallery -->
+    <section class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-display text-2xl md:text-3xl font-bold text-sumi">Workshop Photos</h2>
+        <div class="flex-1 border-t border-washi-edge"></div>
+      </div>
+      <div class="columns-2 md:columns-3 gap-2 space-y-2">
+        {[
+          { src: '/images/tours/tea-ceremony/tea-lecture.jpg',       alt: 'The sensei introducing the world of matcha at the start of the class' },
+          { src: '/images/tours/tea-ceremony/ladle-lesson.jpg',      alt: 'The sensei explaining the bamboo ladle and iron kettle to guests' },
+          { src: '/images/tours/tea-ceremony/whisking-hands-on.jpg', alt: 'Guests whisking their own bowls of matcha' },
+          { src: '/images/tours/tea-ceremony/wagashi-moment.jpg',    alt: 'A guest scooping matcha with a bamboo tea scoop, sensei smiling beside her' },
+          { src: '/images/tours/tea-ceremony/table-atmosphere.jpg',  alt: 'The tea ceremony table with iron kettle, scroll, and bowls of matcha' },
+          { src: '/images/tours/tea-ceremony/group-photo.jpg',       alt: 'Guests and sensei posing for a group photo after the tea ceremony' },
+        ].map(photo => (
+          <div class="break-inside-avoid overflow-hidden border border-washi-edge">
+            <img
+              src={photo.src}
+              alt={photo.alt}
+              class="w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-display text-2xl md:text-3xl font-bold text-sumi">How the 80 Minutes Unfold</h2>
+        <div class="flex-1 border-t border-washi-edge"></div>
+      </div>
+      <div class="space-y-5">
+        {timeline.map(item => (
+          <div class="flex items-start gap-5">
+            <span class="font-display text-sm text-ai shrink-0 w-12 text-right pt-1">{item.time}</span>
+            <div class="flex-1 border-l border-washi-edge pl-5 pb-3">
+              <p class="font-sans text-sm text-sumi-soft leading-relaxed">{item.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Meeting point -->
+    <section class="mb-12">
+      <div class="dialogue-box">
+        <p class="font-display text-sm text-ai tracking-widest mb-4">Meeting Point</p>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <p class="font-sans text-sumi font-semibold text-sm mb-1">Das (Kawaramachi-Sanjo, Kyoto)</p>
+            <p class="font-sans text-sumi-soft text-xs leading-relaxed mb-3">
+              A calm, modern cafe in the Kawaramachi-Sanjo neighborhood, steps from central Kyoto.
+              The exact address and walking directions are sent with your booking confirmation.
+            </p>
+            <p class="font-sans text-sumi-soft text-xs mb-3">
+              Please arrive 5 minutes before your start time.
+            </p>
+          </div>
+          <div class="space-y-2 font-sans text-sm">
+            {[
+              { k: 'Duration', v: '~80 minutes' },
+              { k: 'Adult', v: '¥12,000' },
+              { k: 'Child', v: '¥8,000' },
+              { k: 'Dress code', v: 'Casual' },
+            ].map(row => (
+              <div class="flex justify-between border-b border-washi-edge pb-2">
+                <span class="text-sumi-soft">{row.k}</span>
+                <span class="text-sumi">{row.v}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Booking -->
+    <section id="booking" class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-display text-2xl md:text-3xl font-bold text-sumi">Book Your Spot</h2>
+        <div class="flex-1 border-t border-washi-edge"></div>
+      </div>
+      <p class="font-sans text-sumi-soft text-sm mb-6">Only 5 seats per session. Book early to secure your date.</p>
+      <BookingWidget widgetPath="experience-calendar/1218436" />
+    </section>
+
+    <!-- Reviews -->
+    <ReviewsSection />
+
+    <!-- Group CTA -->
+    <GroupCTA />
+
+    <!-- FAQ -->
+    <section class="mb-12">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-display text-2xl md:text-3xl font-bold text-sumi">FAQ</h2>
+        <div class="flex-1 border-t border-washi-edge"></div>
+      </div>
+      <div class="space-y-3">
+        {faqs.map(faq => (
+          <details class="border border-washi-edge bg-washi-deep group">
+            <summary class="flex items-center justify-between px-5 py-4 cursor-pointer font-display text-base text-sumi hover:text-shu transition-colors">
+              {faq.q}
+              <span class="ml-4 text-sumi-soft shrink-0 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-5 pb-4 font-sans text-sm text-sumi-soft leading-relaxed border-t border-washi-edge pt-4">
+              {faq.a}
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "TouristAttraction",
+    "name": "Matcha Tea Ceremony with an Urasenke Master",
+    "description": "An authentic matcha tea ceremony and tasting class in central Kyoto, led by a certified Urasenke tea master. Whisk your own matcha, enjoy seasonal wagashi, and compare three Japanese teas. 80 minutes, max 5 guests.",
+    "url": "https://otatrip.guide/tours/tea-ceremony",
+    "provider": {
+      "@type": "TouristInformationCenter",
+      "name": "OTAtrip Guide",
+      "url": "https://otatrip.guide"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "12000",
+      "priceCurrency": "JPY",
+      "availability": "https://schema.org/InStock"
+    }
+  })} />
+</BaseLayout>
