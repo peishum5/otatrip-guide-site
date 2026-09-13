@@ -7,52 +7,52 @@ import ReviewsSection from '../../components/ReviewsSection.astro';
 import { BOKUN_LOADER_SRC } from '../../config/site';
 
 const highlights = [
-  'Visit 2–3 local izakayas in Pontocho & Kiyamachi',
-  'No hidden commissions — you pay the restaurant directly',
-  'Customizable for dietary needs (vegetarian, no seafood, etc.)',
-  'Small groups for a relaxed, genuine izakaya experience',
-  'Learn izakaya etiquette and how to order like a local',
-  'English-speaking guide throughout',
+  'Guided by a certified Urasenke teacher — one of Japan\'s most prestigious tea traditions',
+  'Watch a complete temae (tea preparation), explained in English',
+  'Hands-on: whisk your own bowl of matcha under personal guidance',
+  'Seasonal wagashi (Japanese sweets) included',
+  'Tasting of three kinds of Japanese tea',
+  'Certificate of participation, handwritten and signed by your sensei',
 ];
 
 const timeline = [
-  { time: '18:00', desc: 'Meet near Kiyamachi-Sanjo. Brief intro to the neighborhood and izakaya culture.' },
-  { time: '18:15', desc: 'First izakaya — classic Kyoto small-plates and local draft beer or sake.' },
-  { time: '19:00', desc: 'Walk through the narrow lanes of Pontocho alley.' },
-  { time: '19:15', desc: 'Second izakaya — regional specialties, your guide explains each dish.' },
-  { time: '20:15', desc: 'Optional third stop — continuing the night on your own terms.' },
-  { time: '21:00', desc: 'Tour ends. Stay out or head back — the night is yours.' },
+  { time: 'Start', desc: 'Welcome and introductions. A friendly start sets a relaxed tone for the session.' },
+  { time: '+10m', desc: 'The Way of Tea. Your sensei shares the history of tea ceremony, the legendary Sen no Rikyu, and the four principles of chado: harmony, respect, purity, and tranquility. Each tool is introduced and explained.' },
+  { time: '+25m', desc: 'The sensei\'s demonstration. A complete, unhurried temae performed from start to finish — every movement explained in English.' },
+  { time: '+45m', desc: 'Your turn. Measure, sift, and whisk your own bowl of matcha, step by step with the sensei beside you.' },
+  { time: '+55m', desc: 'Enjoy your matcha with seasonal wagashi (Japanese sweets).' },
+  { time: '+65m', desc: 'A relaxed finish: taste and compare three kinds of Japanese tea, with time for photos and questions.' },
 ];
 
 const faqs = [
   {
-    q: 'Do I need to speak Japanese?',
-    a: 'Not at all. Your guide handles all ordering and communication. You just sit back and enjoy.',
+    q: 'Do I need any tea ceremony experience?',
+    a: 'Not at all. Complete beginners are welcome. Your sensei guides every step, and it is simpler than it looks.',
   },
   {
-    q: 'How much should I budget for food and drinks?',
-    a: 'Typically ¥3,000–5,000 per person for food and drinks across the stops. This is paid directly at each izakaya.',
+    q: 'Can children join?',
+    a: 'Yes. Children are welcome with an adult. The child price is ¥8,000.',
   },
   {
-    q: 'Can the tour accommodate vegetarians or dietary restrictions?',
-    a: 'Yes. Let us know in advance and we will choose izakayas with good options for you.',
+    q: 'Is the workshop in English?',
+    a: 'Yes, it is conducted entirely in English. No Japanese required.',
   },
   {
-    q: 'Is this suitable for solo travelers?',
-    a: 'Absolutely. Solo travelers are very welcome — the small-group format makes it easy to chat and meet people.',
+    q: 'Can I take photos?',
+    a: 'Yes. There is time for photos at the end of the session, and you are welcome to capture your own bowl as you go.',
   },
   {
-    q: 'Can I book a private version for my group?',
-    a: 'Yes. Private bookings for 2–8 guests available. Contact us via the Groups page.',
+    q: 'Where exactly do we meet?',
+    a: 'The session takes place at Das, a cafe in the Kawaramachi-Sanjo area of central Kyoto. The exact address and directions are sent with your booking confirmation.',
   },
 ];
 ---
 
 <BaseLayout
-  title="Kyoto Izakaya Hopping — Pontocho & Kiyamachi | OTAtrip Guide"
-  description="An evening bar-hopping tour through Kyoto's most atmospheric backstreets. Visit 2–3 local izakayas in Pontocho and Kiyamachi with a local guide. Small groups."
-  canonical="/tours/izakaya-hopping"
-  ogImage="/images/tours/izakaya/izakaya-guests.jpg"
+  title="Matcha Tea Ceremony with an Urasenke Master | OTAtrip Guide"
+  description="An authentic matcha tea ceremony and tasting class in central Kyoto, led by a certified Urasenke tea master. Whisk your own matcha, enjoy seasonal wagashi, and compare three Japanese teas. 80 minutes, max 5 guests."
+  canonical="/tours/tea-ceremony"
+  ogImage="/images/tours/tea-ceremony/sensei-guiding.jpg"
 >
   <Fragment slot="head">
     <script is:inline type="text/javascript" src={BOKUN_LOADER_SRC} async></script>
@@ -61,28 +61,28 @@ const faqs = [
   <!-- Hero -->
   <section class="relative bg-sumi overflow-hidden">
     <img
-      src="/images/tours/izakaya/izakaya-guests.jpg"
-      alt="Guests enjoying food and drinks inside a Kyoto izakaya"
+      src="/images/tours/tea-ceremony/sensei-guiding.jpg"
+      alt="The Urasenke tea master guiding a guest as she scoops matcha into her bowl"
       class="absolute inset-0 w-full h-full object-cover opacity-60"
       loading="eager"
     />
     <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
     <div class="relative z-10 max-w-4xl mx-auto px-4 py-24 md:py-32">
-      <p class="font-display text-sm text-kin tracking-widest mb-4 rpg-prefix">Evening Tour · Pontocho & Kiyamachi</p>
+      <p class="font-display text-sm text-kin tracking-widest mb-4 rpg-prefix">Daytime Workshop · Kawaramachi-Sanjo</p>
       <h1 class="font-display text-3xl md:text-4xl font-bold text-white leading-tight mb-4">
-        Kyoto Izakaya Hopping
+        Matcha Tea Ceremony with an Urasenke Master
       </h1>
       <p class="font-sans text-gray-200 text-base leading-relaxed mb-8 max-w-xl">
-        Dive into Kyoto's nightlife with a local in the lead.
-        Narrow alleys, cold draft beer, small plates — and the stories behind the city after dark.
+        Step into the meditative world of Japanese tea ceremony, led by a certified Urasenke master in central Kyoto.
+        Watch a full temae, then take the bamboo whisk in your own hands.
       </p>
       <div class="flex flex-wrap gap-6 mb-8">
         {[
-          { label: 'Duration', value: '~3 hours' },
-          { label: 'Group size', value: 'Small group' },
+          { label: 'Duration', value: '80 minutes' },
+          { label: 'Group size', value: 'Max 5 guests' },
           { label: 'Language', value: 'English' },
-          { label: 'Time', value: 'Evening' },
-          { label: 'Price', value: 'from ¥4,160' },
+          { label: 'Time', value: 'Daytime' },
+          { label: 'Price', value: '¥12,000 / adult' },
         ].map(item => (
           <div>
             <div class="font-display text-base font-semibold text-white">{item.value}</div>
@@ -90,7 +90,7 @@ const faqs = [
           </div>
         ))}
       </div>
-      <a href="#booking" class="nes-btn nes-btn-gold" data-track-label="tour_hero_book_izakaya-hopping">Book Your Spot</a>
+      <a href="#booking" class="nes-btn nes-btn-gold" data-track-label="tour_hero_book_tea-ceremony">Book Your Spot</a>
     </div>
   </section>
 
@@ -115,14 +115,17 @@ const faqs = [
     <!-- Photo gallery -->
     <section class="mb-12">
       <div class="flex items-center gap-4 mb-6">
-        <h2 class="font-display text-2xl md:text-3xl font-bold text-sumi">Tour Photos</h2>
+        <h2 class="font-display text-2xl md:text-3xl font-bold text-sumi">Workshop Photos</h2>
         <div class="flex-1 border-t border-washi-edge"></div>
       </div>
       <div class="columns-2 md:columns-3 gap-2 space-y-2">
         {[
-          { src: '/images/tours/izakaya/pontocho-alley-night.jpg', alt: 'Pontocho alley lined with izakayas and lanterns at night' },
-          { src: '/images/tours/izakaya/izakaya-guests.jpg',       alt: 'Guests enjoying drinks and food inside a Kyoto izakaya' },
-          { src: '/images/tours/izakaya/pontocho-lanterns.jpg',    alt: 'Red lanterns glowing in a Pontocho alley at night' },
+          { src: '/images/tours/tea-ceremony/tea-lecture.jpg',       alt: 'The sensei introducing the world of matcha at the start of the class' },
+          { src: '/images/tours/tea-ceremony/ladle-lesson.jpg',      alt: 'The sensei explaining the bamboo ladle and iron kettle to guests' },
+          { src: '/images/tours/tea-ceremony/whisking-hands-on.jpg', alt: 'Guests whisking their own bowls of matcha' },
+          { src: '/images/tours/tea-ceremony/wagashi-moment.jpg',    alt: 'A guest scooping matcha with a bamboo tea scoop, sensei smiling beside her' },
+          { src: '/images/tours/tea-ceremony/table-atmosphere.jpg',  alt: 'The tea ceremony table with iron kettle, scroll, and bowls of matcha' },
+          { src: '/images/tours/tea-ceremony/group-photo.jpg',       alt: 'Guests and sensei posing for a group photo after the tea ceremony' },
         ].map(photo => (
           <div class="break-inside-avoid overflow-hidden border border-washi-edge">
             <img
@@ -139,7 +142,7 @@ const faqs = [
     <!-- Timeline -->
     <section class="mb-12">
       <div class="flex items-center gap-4 mb-6">
-        <h2 class="font-display text-2xl md:text-3xl font-bold text-sumi">Tour Timeline</h2>
+        <h2 class="font-display text-2xl md:text-3xl font-bold text-sumi">How the 80 Minutes Unfold</h2>
         <div class="flex-1 border-t border-washi-edge"></div>
       </div>
       <div class="space-y-5">
@@ -160,27 +163,20 @@ const faqs = [
         <p class="font-display text-sm text-ai tracking-widest mb-4">Meeting Point</p>
         <div class="grid md:grid-cols-2 gap-6">
           <div>
-            <p class="font-sans text-sumi font-semibold text-sm mb-1">Shijo Kiyamachi</p>
+            <p class="font-sans text-sumi font-semibold text-sm mb-1">Das (Kawaramachi-Sanjo, Kyoto)</p>
             <p class="font-sans text-sumi-soft text-xs leading-relaxed mb-3">
-              On Kiyamachi Street, slightly south of Shijo — between McDonald's and the Japanese restaurant Kikunoi Roan.
-              Your guide will be holding a sign that reads <span class="text-sumi font-medium">"Otatrip Guide"</span>.
+              A calm, modern cafe in the Kawaramachi-Sanjo neighborhood, steps from central Kyoto.
+              The exact address and walking directions are sent with your booking confirmation.
             </p>
             <p class="font-sans text-sumi-soft text-xs mb-3">
-              This is a group tour. Please arrive a few minutes early — late arrivals may cause the tour to start without you.
+              Please arrive 5 minutes before your start time.
             </p>
-            <a
-              href="https://maps.app.goo.gl/J7SmSwzVmAfjZJs36"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 font-display text-sm text-ai hover:text-shu transition-colors"
-            >
-              ▶ Open in Google Maps
-            </a>
           </div>
           <div class="space-y-2 font-sans text-sm">
             {[
-              { k: 'Start times', v: '12:00 / 18:00' },
-              { k: 'End time', v: '+3 hours' },
+              { k: 'Duration', v: '~80 minutes' },
+              { k: 'Adult', v: '¥12,000' },
+              { k: 'Child', v: '¥8,000' },
               { k: 'Dress code', v: 'Casual' },
             ].map(row => (
               <div class="flex justify-between border-b border-washi-edge pb-2">
@@ -199,12 +195,12 @@ const faqs = [
         <h2 class="font-display text-2xl md:text-3xl font-bold text-sumi">Book Your Spot</h2>
         <div class="flex-1 border-t border-washi-edge"></div>
       </div>
-      <p class="font-sans text-sumi-soft text-sm mb-6">Spots are limited. Book early to secure your date.</p>
-      <BookingWidget widgetPath="experience-calendar/901506" />
+      <p class="font-sans text-sumi-soft text-sm mb-6">Only 5 seats per session. Book early to secure your date.</p>
+      <BookingWidget widgetPath="experience-calendar/1218436" />
     </section>
 
     <!-- Reviews -->
-    <ReviewsSection />
+    <ReviewsSection compact />
 
     <!-- Group CTA -->
     <GroupCTA />
@@ -235,10 +231,10 @@ const faqs = [
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "TouristAttraction",
-    "name": "Kyoto Izakaya Hopping",
-    "description": "An evening bar-hopping tour through Kyoto's most atmospheric backstreets in Pontocho and Kiyamachi. Small groups.",
-    "url": "https://otatrip.guide/tours/izakaya-hopping",
-    "image": "https://otatrip.guide/images/tours/izakaya/izakaya-guests.jpg",
+    "name": "Matcha Tea Ceremony with an Urasenke Master",
+    "description": "An authentic matcha tea ceremony and tasting class in central Kyoto, led by a certified Urasenke tea master. Whisk your own matcha, enjoy seasonal wagashi, and compare three Japanese teas. 80 minutes, max 5 guests.",
+    "url": "https://otatrip.guide/tours/tea-ceremony",
+    "image": "https://otatrip.guide/images/tours/tea-ceremony/sensei-guiding.jpg",
     "provider": {
       "@type": "TouristInformationCenter",
       "name": "OTAtrip Guide",
@@ -246,10 +242,9 @@ const faqs = [
     },
     "offers": {
       "@type": "Offer",
-      "price": "4160",
+      "price": "12000",
       "priceCurrency": "JPY",
-      "availability": "https://schema.org/InStock",
-      "url": "https://otatrip.guide/tours/izakaya-hopping#booking"
+      "availability": "https://schema.org/InStock"
     }
   })} />
   <script type="application/ld+json" set:html={JSON.stringify({
@@ -261,5 +256,5 @@ const faqs = [
       "acceptedAnswer": { "@type": "Answer", "text": faq.a }
     }))
   })} />
-  <StickyBookBar price="from ¥4,160" slug="izakaya-hopping" />
+  <StickyBookBar price="¥12,000 / adult" slug="tea-ceremony" />
 </BaseLayout>

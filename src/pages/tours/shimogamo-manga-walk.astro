@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BookingWidget from '../../components/BookingWidget.astro';
+import StickyBookBar from '../../components/StickyBookBar.astro';
 import GroupCTA from '../../components/GroupCTA.astro';
 import ReviewsSection from '../../components/ReviewsSection.astro';
 import { BOKUN_LOADER_SRC } from '../../config/site';
@@ -81,6 +82,7 @@ const faqs = [
   title="Shimogamo Shrine & Manga Walk — Kyoto Morning Tour | OTAtrip Guide"
   description="A morning walk through Shimogamo Shrine and Tadasu-no-Mori forest. Cinematic photography throughout, finishing with a custom manga-style print souvenir."
   canonical="/tours/shimogamo-manga-walk"
+  ogImage="/images/tours/shimogamo/photo-bridge.jpg"
 >
   <Fragment slot="head">
     <script is:inline type="text/javascript" src={BOKUN_LOADER_SRC} async></script>
@@ -118,7 +120,7 @@ const faqs = [
           </div>
         ))}
       </div>
-      <a href="#booking" class="nes-btn nes-btn-gold">Book Your Spot</a>
+      <a href="#booking" class="nes-btn nes-btn-gold" data-track-label="tour_hero_book_shimogamo-manga-walk">Book Your Spot</a>
     </div>
   </section>
 
@@ -301,6 +303,7 @@ const faqs = [
     "name": "Shimogamo Shrine & Manga Walk",
     "description": "A morning walk through Shimogamo Shrine and Tadasu-no-Mori forest with cinematic photography and a custom manga-style print souvenir.",
     "url": "https://otatrip.guide/tours/shimogamo-manga-walk",
+    "image": "https://otatrip.guide/images/tours/shimogamo/photo-bridge.jpg",
     "provider": {
       "@type": "TouristInformationCenter",
       "name": "OTAtrip Guide",
@@ -308,7 +311,20 @@ const faqs = [
     },
     "offers": {
       "@type": "Offer",
-      "availability": "https://schema.org/InStock"
+      "price": "8500",
+      "priceCurrency": "JPY",
+      "availability": "https://schema.org/InStock",
+      "url": "https://otatrip.guide/tours/shimogamo-manga-walk#booking"
     }
   })} />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": { "@type": "Answer", "text": faq.a }
+    }))
+  })} />
+  <StickyBookBar price="from ¥8,500" slug="shimogamo-manga-walk" />
 </BaseLayout>

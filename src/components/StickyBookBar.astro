@@ -1,0 +1,39 @@
+---
+/**
+ * Mobile-only booking bar pinned to the bottom of the screen on tour pages.
+ * Shows the price and a "Book Now" jump link to the #booking section, and
+ * hides itself while the booking widget is on screen so it never covers it.
+ */
+interface Props {
+  /** Short price line, e.g. "from ¥5,600" or "¥24,000 / group" */
+  price: string;
+  /** Used as the cta_click label, e.g. "gion-sake-walk" */
+  slug: string;
+  /** Anchor of the booking section (default "#booking") */
+  target?: string;
+}
+const { price, slug, target = '#booking' } = Astro.props;
+---
+
+<div
+  id="sticky-book-bar"
+  class="md:hidden fixed inset-x-0 bottom-0 z-40 bg-washi border-t-2 border-sumi px-4 py-3 flex items-center justify-between gap-4 transition-transform duration-200"
+  style="box-shadow: 0 -3px 0 rgba(33,29,25,0.15); padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));"
+>
+  <div class="min-w-0">
+    <div class="font-display text-sm font-bold text-sumi truncate">{price}</div>
+    <div class="font-sans text-[0.65rem] text-sumi-soft tracking-wide">Small groups · Local guide</div>
+  </div>
+  <a href={target} class="nes-btn nes-btn-gold shrink-0 !py-2 !px-5" data-track-label={`sticky_book_${slug}`}>Book Now</a>
+</div>
+
+<script>
+  const bar = document.getElementById('sticky-book-bar');
+  const booking = document.querySelector(bar?.getAttribute('data-target') || '#booking');
+  if (bar && booking) {
+    const io = new IntersectionObserver(([entry]) => {
+      bar.style.transform = entry.isIntersecting ? 'translateY(110%)' : '';
+    }, { threshold: 0.1 });
+    io.observe(booking);
+  }
+</script>

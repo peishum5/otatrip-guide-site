@@ -88,12 +88,33 @@ const tours = [
       'Take-home beans & your handwritten recipe',
     ],
   },
+  {
+    id: 'tea-ceremony',
+    name: 'Matcha Tea Ceremony with an Urasenke Master',
+    tagline: 'Certified Urasenke sensei. Whisk your own matcha. Central Kyoto.',
+    description: 'Step into the meditative world of Japanese tea ceremony, led by a certified Urasenke master. Watch a complete temae demonstration, whisk your own bowl of matcha, and finish with seasonal wagashi and a tasting of three Japanese teas.',
+    duration: '80 minutes',
+    groupSize: 'Max 5 guests',
+    time: 'Daytime',
+    rating: null,
+    reviews: null,
+    price: '¥12,000 / adult',
+    icon: '🍵',
+    href: '/tours/tea-ceremony',
+    photo: '/images/tours/tea-ceremony/guests-table.jpg',
+    tags: ['Daytime', 'Tea Ceremony', 'Hands-on', 'Kawaramachi'],
+    highlights: [
+      'Full temae demonstration by an Urasenke-certified sensei',
+      'Whisk your own bowl of matcha',
+      'Seasonal wagashi & three-tea tasting',
+    ],
+  },
 ];
 ---
 
 <BaseLayout
   title="Tours | OTAtrip Guide"
-  description="Explore Kyoto with OTAtrip Guide. Evening sake tours, izakaya hopping in Pontocho, World Heritage walks with manga souvenirs, and a hands-on coffee ceremony near Nishiki Market. Rated 4.9/5 on TripAdvisor."
+  description="Explore Kyoto with OTAtrip Guide. Evening sake tours, izakaya hopping in Pontocho, World Heritage walks with manga souvenirs, a hands-on coffee ceremony near Nishiki Market, and a matcha tea ceremony with an Urasenke master. Rated 4.9/5 on TripAdvisor."
   canonical="/tours"
 >
   <!-- Header -->
@@ -159,7 +180,7 @@ const tours = [
 
             <!-- CTA -->
             <div class="shrink-0 w-full md:w-auto mt-4 md:mt-0">
-              <a href={tour.href} class="nes-btn nes-btn-gold block w-full md:w-auto text-center">
+              <a href={tour.href} class="nes-btn nes-btn-gold block w-full md:w-auto text-center" data-track-label={`tours_index_${tour.href.split('/').pop()}`}>
                 View Tour
               </a>
             </div>
@@ -181,7 +202,7 @@ const tours = [
       <p class="font-display text-sm text-ai tracking-widest mb-3">For Agencies & Groups</p>
       <h3 class="font-display text-xl font-bold text-sumi leading-relaxed mb-4">Need a Custom Tour?</h3>
       <p class="font-sans text-sm text-sumi-soft mb-6 max-w-md mx-auto">Private bookings, custom routes, and group pricing available for travel agencies and corporate groups.</p>
-      <a href="/groups" class="nes-btn nes-btn-gold">View Group Options</a>
+      <a href="/groups" class="nes-btn nes-btn-gold" data-track-label="tours_index_group_options">View Group Options</a>
     </div>
   </section>
 </BaseLayout>

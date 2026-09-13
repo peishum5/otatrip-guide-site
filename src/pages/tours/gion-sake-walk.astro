@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BookingWidget from '../../components/BookingWidget.astro';
+import StickyBookBar from '../../components/StickyBookBar.astro';
 import GroupCTA from '../../components/GroupCTA.astro';
 import ReviewsSection from '../../components/ReviewsSection.astro';
 import { BOKUN_LOADER_SRC } from '../../config/site';
@@ -109,7 +110,7 @@ const photos = [
           </div>
         ))}
       </div>
-      <a href="#booking" class="nes-btn nes-btn-gold">Book Your Spot</a>
+      <a href="#booking" class="nes-btn nes-btn-gold" data-track-label="tour_hero_book_gion-sake-walk">Book Your Spot</a>
     </div>
   </section>
 
@@ -276,6 +277,7 @@ const photos = [
     "name": "Kyoto Gion Night Walk: Sake, Hidden Gems & Geisha",
     "description": "A 90-minute walking tour through Gion's stone-paved alleys with sake tastings at 3 local bars. 4 daily slots. Small groups of max 10 guests.",
     "url": "https://otatrip.guide/tours/gion-sake-walk",
+    "image": "https://otatrip.guide/images/tours/gion/hero.jpg",
     "provider": {
       "@type": "TouristInformationCenter",
       "name": "OTAtrip Guide",
@@ -283,7 +285,10 @@ const photos = [
     },
     "offers": {
       "@type": "Offer",
-      "availability": "https://schema.org/InStock"
+      "price": "5600",
+      "priceCurrency": "JPY",
+      "availability": "https://schema.org/InStock",
+      "url": "https://otatrip.guide/tours/gion-sake-walk#booking"
     },
     "aggregateRating": {
       "@type": "AggregateRating",
@@ -338,4 +343,14 @@ const photos = [
     if (e.key === 'ArrowRight') show(current + 1);
   });
 </script>
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": { "@type": "Answer", "text": faq.a }
+    }))
+  })} />
+  <StickyBookBar price="from ¥5,600" slug="gion-sake-walk" />
 </BaseLayout>
