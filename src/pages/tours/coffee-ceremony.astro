@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BookingWidget from '../../components/BookingWidget.astro';
+import StickyBookBar from '../../components/StickyBookBar.astro';
 import GroupCTA from '../../components/GroupCTA.astro';
 import ReviewsSection from '../../components/ReviewsSection.astro';
 import { BOKUN_LOADER_SRC } from '../../config/site';
@@ -51,6 +52,7 @@ const faqs = [
   title="Hands-On Coffee Ceremony with a Master — Nishiki Market | OTAtrip Guide"
   description="Learn Japanese pour-over coffee at a hidden alley cafe a few minutes from Nishiki Market, Kyoto. Grind, bloom, and brew two coffees with a Master, then compare them over Kyoto sweets. 70 minutes, max 4 guests."
   canonical="/tours/coffee-ceremony"
+  ogImage="/images/tours/coffee-ceremony/master-lecture.jpg"
 >
   <Fragment slot="head">
     <script is:inline type="text/javascript" src={BOKUN_LOADER_SRC} async></script>
@@ -89,7 +91,7 @@ const faqs = [
           </div>
         ))}
       </div>
-      <a href="#booking" class="nes-btn nes-btn-gold">Book Your Spot</a>
+      <a href="#booking" class="nes-btn nes-btn-gold" data-track-label="tour_hero_book_coffee-ceremony">Book Your Spot</a>
     </div>
   </section>
 
@@ -199,7 +201,7 @@ const faqs = [
     </section>
 
     <!-- Reviews -->
-    <ReviewsSection />
+    <ReviewsSection compact />
 
     <!-- Group CTA -->
     <GroupCTA />
@@ -233,6 +235,7 @@ const faqs = [
     "name": "Hands-On Coffee Ceremony with a Master near Nishiki Market",
     "description": "Learn Japanese pour-over coffee at a hidden alley cafe a few minutes from Nishiki Market, Kyoto. Grind, bloom, and brew two coffees with a Master, then compare them over Kyoto sweets. 70 minutes, max 4 guests.",
     "url": "https://otatrip.guide/tours/coffee-ceremony",
+    "image": "https://otatrip.guide/images/tours/coffee-ceremony/master-lecture.jpg",
     "provider": {
       "@type": "TouristInformationCenter",
       "name": "OTAtrip Guide",
@@ -245,4 +248,14 @@ const faqs = [
       "availability": "https://schema.org/InStock"
     }
   })} />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": { "@type": "Answer", "text": faq.a }
+    }))
+  })} />
+  <StickyBookBar price="¥24,000 / group" slug="coffee-ceremony" />
 </BaseLayout>

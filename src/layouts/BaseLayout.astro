@@ -3,6 +3,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Analytics from '../components/Analytics.astro';
 import '../styles/global.css';
+import { CONTACT_EMAIL, TRIPADVISOR_URL } from '../config/site';
 
 interface Props {
   title: string;
@@ -32,7 +33,10 @@ const siteUrl = (Astro.site ?? new URL('https://otatrip.guide')).origin;
 const canonicalPath = canonical || Astro.url.pathname;
 const canonicalUrl = new URL(canonicalPath, siteUrl).toString();
 const ogImageUrl = new URL(ogImage || '/images/og-default.jpg', siteUrl).toString();
-const fullTitle = title.includes('OTA Trip Guide') ? title : `${title} | OTA Trip Guide`;
+// Strip any brand suffix a page may already carry, then append exactly one.
+const BRAND = 'OTAtrip Guide';
+const baseTitle = title.replace(/\s*\|\s*OTA\s?[Tt]rip Guide\s*$/i, '').trim();
+const fullTitle = baseTitle.includes(BRAND) ? baseTitle : `${baseTitle} | ${BRAND}`;
 ---
 
 <!DOCTYPE html>
@@ -52,7 +56,8 @@ const fullTitle = title.includes('OTA Trip Guide') ? title : `${title} | OTA Tri
   <meta property="og:url" content={canonicalUrl} />
   <meta property="og:image" content={ogImageUrl} />
   <meta property="og:type" content={ogType} />
-  <meta property="og:site_name" content="OTA Trip Guide" />
+  <meta property="og:site_name" content="OTAtrip Guide" />
+  <meta property="og:locale" content="en_US" />
   {publishedTime && <meta property="article:published_time" content={publishedTime} />}
   {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
 
@@ -70,7 +75,10 @@ const fullTitle = title.includes('OTA Trip Guide') ? title : `${title} | OTA Tri
         "@id": `${siteUrl}/#organization`,
         "name": "OTAtrip Guide",
         "url": siteUrl,
-        "logo": `${siteUrl}/favicon.svg`
+        "logo": `${siteUrl}/favicon.svg`,
+        "email": CONTACT_EMAIL,
+        "areaServed": { "@type": "City", "name": "Kyoto" },
+        "sameAs": [TRIPADVISOR_URL, "https://x.com/Otatrip_guide", "https://instagram.com/Otatrip_guide"]
       },
       {
         "@type": "WebSite",

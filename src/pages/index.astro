@@ -6,9 +6,13 @@ import GroupCTA from '../components/GroupCTA.astro';
 import ParallaxBand from '../components/ParallaxBand.astro';
 import ReviewsSection from '../components/ReviewsSection.astro';
 import { getCollection } from 'astro:content';
+import { getBlogSortDate } from '../utils/blog';
 
 const blogPosts = await getCollection('blog');
-const latestPosts = blogPosts.slice(0, 3);
+const latestPosts = blogPosts
+  .filter((post) => !post.data.noIndex)
+  .sort((a, b) => getBlogSortDate(b) - getBlogSortDate(a))
+  .slice(0, 3);
 ---
 
 <BaseLayout
@@ -153,7 +157,7 @@ const latestPosts = blogPosts.slice(0, 3);
           icon: '🏮',
           tag: 'Evening · Gion',
           name: 'Gion Sake Walking Tour',
-          meta: '3 hrs · Max 10 · Sake · EN',
+          meta: '90 min · Max 10 · Sake · EN',
           price: 'from ¥5,600',
           href: '/tours/gion-sake-walk',
         },

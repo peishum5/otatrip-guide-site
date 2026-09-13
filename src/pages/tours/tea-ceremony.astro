@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BookingWidget from '../../components/BookingWidget.astro';
+import StickyBookBar from '../../components/StickyBookBar.astro';
 import GroupCTA from '../../components/GroupCTA.astro';
 import ReviewsSection from '../../components/ReviewsSection.astro';
 import { BOKUN_LOADER_SRC } from '../../config/site';
@@ -51,6 +52,7 @@ const faqs = [
   title="Matcha Tea Ceremony with an Urasenke Master | OTAtrip Guide"
   description="An authentic matcha tea ceremony and tasting class in central Kyoto, led by a certified Urasenke tea master. Whisk your own matcha, enjoy seasonal wagashi, and compare three Japanese teas. 80 minutes, max 5 guests."
   canonical="/tours/tea-ceremony"
+  ogImage="/images/tours/tea-ceremony/sensei-guiding.jpg"
 >
   <Fragment slot="head">
     <script is:inline type="text/javascript" src={BOKUN_LOADER_SRC} async></script>
@@ -88,7 +90,7 @@ const faqs = [
           </div>
         ))}
       </div>
-      <a href="#booking" class="nes-btn nes-btn-gold">Book Your Spot</a>
+      <a href="#booking" class="nes-btn nes-btn-gold" data-track-label="tour_hero_book_tea-ceremony">Book Your Spot</a>
     </div>
   </section>
 
@@ -198,7 +200,7 @@ const faqs = [
     </section>
 
     <!-- Reviews -->
-    <ReviewsSection />
+    <ReviewsSection compact />
 
     <!-- Group CTA -->
     <GroupCTA />
@@ -232,6 +234,7 @@ const faqs = [
     "name": "Matcha Tea Ceremony with an Urasenke Master",
     "description": "An authentic matcha tea ceremony and tasting class in central Kyoto, led by a certified Urasenke tea master. Whisk your own matcha, enjoy seasonal wagashi, and compare three Japanese teas. 80 minutes, max 5 guests.",
     "url": "https://otatrip.guide/tours/tea-ceremony",
+    "image": "https://otatrip.guide/images/tours/tea-ceremony/sensei-guiding.jpg",
     "provider": {
       "@type": "TouristInformationCenter",
       "name": "OTAtrip Guide",
@@ -244,4 +247,14 @@ const faqs = [
       "availability": "https://schema.org/InStock"
     }
   })} />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": { "@type": "Answer", "text": faq.a }
+    }))
+  })} />
+  <StickyBookBar price="¥12,000 / adult" slug="tea-ceremony" />
 </BaseLayout>

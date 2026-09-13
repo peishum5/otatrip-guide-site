@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BookingWidget from '../../components/BookingWidget.astro';
+import StickyBookBar from '../../components/StickyBookBar.astro';
 import GroupCTA from '../../components/GroupCTA.astro';
 import ReviewsSection from '../../components/ReviewsSection.astro';
 import { BOKUN_LOADER_SRC } from '../../config/site';
@@ -51,6 +52,7 @@ const faqs = [
   title="Kyoto Izakaya Hopping — Pontocho & Kiyamachi | OTAtrip Guide"
   description="An evening bar-hopping tour through Kyoto's most atmospheric backstreets. Visit 2–3 local izakayas in Pontocho and Kiyamachi with a local guide. Small groups."
   canonical="/tours/izakaya-hopping"
+  ogImage="/images/tours/izakaya/izakaya-guests.jpg"
 >
   <Fragment slot="head">
     <script is:inline type="text/javascript" src={BOKUN_LOADER_SRC} async></script>
@@ -88,7 +90,7 @@ const faqs = [
           </div>
         ))}
       </div>
-      <a href="#booking" class="nes-btn nes-btn-gold">Book Your Spot</a>
+      <a href="#booking" class="nes-btn nes-btn-gold" data-track-label="tour_hero_book_izakaya-hopping">Book Your Spot</a>
     </div>
   </section>
 
@@ -236,6 +238,7 @@ const faqs = [
     "name": "Kyoto Izakaya Hopping",
     "description": "An evening bar-hopping tour through Kyoto's most atmospheric backstreets in Pontocho and Kiyamachi. Small groups.",
     "url": "https://otatrip.guide/tours/izakaya-hopping",
+    "image": "https://otatrip.guide/images/tours/izakaya/izakaya-guests.jpg",
     "provider": {
       "@type": "TouristInformationCenter",
       "name": "OTAtrip Guide",
@@ -243,7 +246,20 @@ const faqs = [
     },
     "offers": {
       "@type": "Offer",
-      "availability": "https://schema.org/InStock"
+      "price": "4160",
+      "priceCurrency": "JPY",
+      "availability": "https://schema.org/InStock",
+      "url": "https://otatrip.guide/tours/izakaya-hopping#booking"
     }
   })} />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": { "@type": "Answer", "text": faq.a }
+    }))
+  })} />
+  <StickyBookBar price="from ¥4,160" slug="izakaya-hopping" />
 </BaseLayout>

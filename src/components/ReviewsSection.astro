@@ -5,9 +5,12 @@ interface Props {
   /** Set when the section sits on the dark ParallaxBand backdrop — flips the
    *  heading and the TripAdvisor button to washi. The cards stay light. */
   onDark?: boolean;
+  /** Hide the quoted reviews (they are all from the Gion sake walk) and show
+   *  only the overall rating + TripAdvisor link. Use on other experiences. */
+  compact?: boolean;
 }
 
-const { onDark = false } = Astro.props;
+const { onDark = false, compact = false } = Astro.props;
 
 const reviews = [
   {
@@ -50,7 +53,7 @@ const reviews = [
   <div class="text-center mb-10">
     <p class={`font-display text-sm mb-3 tracking-widest ${onDark ? 'text-kin' : 'text-shu'}`}>Guest Reviews</p>
     <h2 class={`font-display font-bold text-2xl md:text-3xl mb-4 ${onDark ? 'text-washi' : 'text-sumi'}`}>
-      What Guests Say
+      {compact ? 'Guests Rate Our Kyoto Experiences' : 'What Guests Say'}
     </h2>
     <div class="flex items-center justify-center gap-3">
       <span class="text-kin" style="letter-spacing: 0.1em;">★★★★★</span>
@@ -60,7 +63,7 @@ const reviews = [
   </div>
 
   <!-- Review cards -->
-  <div class="grid md:grid-cols-2 gap-5">
+  {!compact && <div class="grid md:grid-cols-2 gap-5">
     {reviews.map(review => (
       <div class="blog-card p-6 flex flex-col gap-4">
         <!-- Stars + type -->
@@ -82,10 +85,10 @@ const reviews = [
         </div>
       </div>
     ))}
-  </div>
+  </div>}
 
   <!-- TA link -->
-  <div class="text-center mt-8">
+  <div class={compact ? 'text-center' : 'text-center mt-8'}>
     <a
       href={TRIPADVISOR_URL}
       target="_blank"

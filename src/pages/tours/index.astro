@@ -180,7 +180,7 @@ const tours = [
 
             <!-- CTA -->
             <div class="shrink-0 w-full md:w-auto mt-4 md:mt-0">
-              <a href={tour.href} class="nes-btn nes-btn-gold block w-full md:w-auto text-center">
+              <a href={tour.href} class="nes-btn nes-btn-gold block w-full md:w-auto text-center" data-track-label={`tours_index_${tour.href.split('/').pop()}`}>
                 View Tour
               </a>
             </div>
@@ -202,7 +202,7 @@ const tours = [
       <p class="font-display text-sm text-ai tracking-widest mb-3">For Agencies & Groups</p>
       <h3 class="font-display text-xl font-bold text-sumi leading-relaxed mb-4">Need a Custom Tour?</h3>
       <p class="font-sans text-sm text-sumi-soft mb-6 max-w-md mx-auto">Private bookings, custom routes, and group pricing available for travel agencies and corporate groups.</p>
-      <a href="/groups" class="nes-btn nes-btn-gold">View Group Options</a>
+      <a href="/groups" class="nes-btn nes-btn-gold" data-track-label="tours_index_group_options">View Group Options</a>
     </div>
   </section>
 </BaseLayout>
