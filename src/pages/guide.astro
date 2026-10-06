@@ -20,30 +20,12 @@ const guides = [
       { label: 'LANGUAGES', value: 85, note: 'EN/JP' },
     ],
   },
-  {
-    id: 'yuina',
-    name: 'YUINA AKIKOSHI',
-    realName: '秋越結菜',
-    class: 'ARTS MASTER',
-    role: 'Traditional Arts Master',
-    level: 17,
-    portrait: '🎎',
-    photo: '/images/guides/yuina.png',
-    xId: 'yunaaachan23',
-    bio: 'A Kyoto native with 17 years of deep roots in the city\'s traditional arts scene. Yuina has mastered nihon buyo (Japanese traditional dance) and koto, and brings a rare insider perspective on Kyoto\'s living cultural heritage.',
-    stats: [
-      { label: 'KYOTO KNOWLEDGE', value: 97, note: '17 YRS' },
-      { label: 'TRADITIONAL ARTS', value: 99 },
-      { label: 'PERFORMANCE', value: 95 },
-      { label: 'LANGUAGES', value: 80, note: 'EN/JP' },
-    ],
-  },
 ];
 ---
 
 <BaseLayout
   title="Our Guides | OTAtrip Guide"
-  description="Meet the local experts who lead your Kyoto experience. A tech-wizard founder and a traditional arts master — all based in Kyoto."
+  description="Meet the local experts who lead your Kyoto experience. A magician-astrophysicist founder and a growing team of local guides — all based in Kyoto."
   canonical="/guide"
 >
   <!-- PLAYER SELECT Header -->
@@ -59,7 +41,7 @@ const guides = [
 
   <!-- Guide Cards -->
   <section class="max-w-6xl mx-auto px-4 py-16">
-    <div class="grid md:grid-cols-3 gap-8">
+    <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
 
       <!-- Real guide cards -->
       {guides.map((guide, i) => (
@@ -136,13 +118,13 @@ const guides = [
         </div>
       ))}
 
-      <!-- PLAYER 3: Recruitment card -->
+      <!-- PLAYER 2: Recruitment card -->
       <div class="flex flex-col" style="border: 3px dashed #444; padding: 1.5rem; background: #0d0d0d;">
         <div class="text-center mb-6 border-b border-gray-800 pb-6">
           <div class="w-24 h-24 mx-auto bg-neutral-900 border-2 border-dashed border-gray-600 flex items-center justify-center text-5xl mb-4">
             ?
           </div>
-          <p class="font-sans text-xs text-gray-400 mb-2">PLAYER 3 & BEYOND</p>
+          <p class="font-sans text-xs text-gray-400 mb-2">PLAYER 2 & BEYOND</p>
           <h2 class="font-pixel text-[0.95rem] text-gray-500 mb-3 leading-relaxed">STUDENT GUIDES</h2>
           <div class="inline-block border border-gray-700 px-3 py-1">
             <span class="font-pixel text-[0.9rem] text-gray-400">MANY CLASSES</span>
