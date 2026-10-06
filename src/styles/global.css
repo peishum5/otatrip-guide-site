@@ -1,20 +1,6 @@
 @import "tailwindcss";
 
 @theme {
-  /* === Ukiyo-e palette (traditional Japanese pigments) === */
-  --color-washi: #f5efdf;        /* 和紙 — page background */
-  --color-washi-deep: #ece3cc;   /* deeper washi — cards / alternating sections */
-  --color-washi-edge: #d9cba8;   /* hairline borders */
-  --color-sumi: #211d19;         /* 墨 — primary text, woodblock outlines */
-  --color-sumi-soft: #5c5245;    /* secondary text */
-  --color-shu: #c3272b;          /* 朱 — vermillion accent, CTAs, hanko */
-  --color-shu-dark: #9e1f23;     /* pressed / hover vermillion */
-  --color-ai: #165e83;           /* 藍 — indigo, links */
-  --color-ai-deep: #0f4666;      /* dark indigo bands */
-  --color-kin: #c9a84c;          /* 金 — gold, decorative only */
-  --color-matsu: #4d6b44;        /* 松葉 — pine green, gauges */
-
-  /* Legacy tokens kept for compatibility */
   --color-navy: #1a2744;
   --color-navy-light: #2a3a6a;
   --color-navy-dark: #0f1829;
@@ -22,33 +8,20 @@
   --color-gold-light: #e0c06b;
   --color-gold-dark: #a07830;
 
-  /* Legacy NES aliases — old utility names now resolve to the ukiyo-e palette.
-     Do NOT use in new code; inside .gq-root these are re-scoped back to NES values. */
-  --color-nes-black:  #f5efdf;
-  --color-nes-cyan:   #165e83;
-  --color-nes-red:    #9e1f23;
-  --color-nes-amber:  #c3272b;
-  --color-nes-green:  #4d6b44;
-  --color-nes-white:  #211d19;
+  /* NES/Famicom palette */
+  --color-nes-black:  #0a0a0a;
+  --color-nes-cyan:   #00e5ff;
+  --color-nes-red:    #ff2222;
+  --color-nes-amber:  #ffb000;
+  --color-nes-green:  #00d800;
+  --color-nes-white:  #f8f8f8;
 
-  --font-sans: 'Zen Kaku Gothic New', Inter, system-ui, sans-serif;
-  --font-serif: 'Shippori Mincho', Georgia, serif;
-  --font-display: 'Shippori Mincho', 'Hiragino Mincho ProN', serif;
-  --font-brush: 'Yuji Syuku', serif;
-  --font-pixel: 'Shippori Mincho', serif; /* legacy alias; restored inside .gq-root */
-}
-
-/* Registered custom properties so the radial "Explore" spokes can animate
-   their polar offset outward from the centre. Must sit at the top level. */
-@property --tx {
-  syntax: '<length-percentage>';
-  inherits: false;
-  initial-value: 0%;
-}
-@property --ty {
-  syntax: '<length-percentage>';
-  inherits: false;
-  initial-value: 0%;
+  --font-sans: Inter, system-ui, sans-serif;
+  --font-serif: Georgia, serif;
+  --font-pixel: 'Press Start 2P', monospace;
+  /* Readable dot font for longer titles (card / tour names) where
+     Press Start 2P gets too wide to scan. */
+  --font-dot: 'DotGothic16', 'Press Start 2P', monospace;
 }
 
 @layer base {
@@ -56,47 +29,75 @@
     scroll-behavior: smooth;
   }
 
-  /* === Animations === */
-  @keyframes hero-reveal {
-    from { opacity: 0; transform: translateY(14px); }
-    to { opacity: 1; transform: translateY(0); }
+  /* Visible keyboard focus in the same 8-bit language as the rest */
+  :focus-visible {
+    outline: 2px dashed var(--color-nes-cyan);
+    outline-offset: 3px;
   }
 
-  .hero-reveal {
-    animation: hero-reveal 0.7s ease both;
-    animation-delay: var(--d, 0s);
+  ::selection {
+    background: var(--color-nes-amber);
+    color: #0a0a0a;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    .hero-reveal { animation: none; opacity: 1; }
-    .blog-card:hover { transform: none; }
-    /* Drifting gold clouds behind the two-layer band */
-    .parallax-band__kumo { animation: none; }
+  /* === Type scale ===
+     Press Start 2P is reserved for short labels and headings; it is set at
+     a handful of fixed steps so the pages stop drifting between sizes. */
+  .px-eyebrow {
+    font-family: var(--font-pixel);
+    font-size: 0.625rem;
+    line-height: 1.6;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
-  /* === Legacy utility classes, restyled === */
+  .px-h2 {
+    font-family: var(--font-pixel);
+    font-size: clamp(0.85rem, 2.2vw, 1.15rem);
+    line-height: 1.7;
+    color: var(--color-nes-white);
+  }
+
+  .px-label {
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    line-height: 1.6;
+    letter-spacing: 0.06em;
+  }
+
+  .font-dot {
+    font-family: var(--font-dot);
+  }
+
+  /* === NES Animations === */
+  @keyframes blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+
+  @keyframes pixel-flicker {
+    0%, 93%, 100% { opacity: 1; }
+    94% { opacity: 0.85; }
+    96% { opacity: 1; }
+    98% { opacity: 0.9; }
+  }
+
+  /* === NES Utility Classes === */
   .font-pixel {
     font-family: var(--font-pixel);
   }
 
-  .font-display {
-    font-family: var(--font-display);
-  }
-
-  .font-brush {
-    font-family: var(--font-brush);
-  }
-
   .pixel-cursor::after {
-    content: '';
+    content: '_';
+    animation: blink 1s step-end infinite;
+    color: var(--color-nes-cyan);
+    margin-left: 2px;
   }
 
   .pixel-flicker {
-    animation: none;
+    animation: pixel-flicker 5s ease-in-out infinite;
   }
 
-  /* Washi paper grain overlay (was CRT scanlines) */
   .scanlines {
     position: relative;
     overflow: hidden;
@@ -106,167 +107,108 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: url('/images/theme/washi-texture.webp') repeat;
-    background-size: 512px 512px;
-    opacity: 0.35;
-    mix-blend-mode: multiply;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.10) 2px,
+      rgba(0, 0, 0, 0.10) 4px
+    );
     pointer-events: none;
     z-index: 10;
   }
 
-  /* Woodblock print frame (was RPG dialogue box) */
   .dialogue-box {
-    border: 3px solid var(--color-sumi);
-    outline: 1px solid var(--color-kin);
-    outline-offset: -7px;
-    box-shadow: none;
+    border: 3px solid var(--color-nes-amber);
+    box-shadow: 6px 6px 0 rgba(255, 176, 0, 0.35);
     border-radius: 0;
-    background: var(--color-washi-deep);
+    background: #0d0d0d;
     padding: 1.5rem;
   }
 
   .stat-bar-track {
-    background: #e0d5b8;
+    background: #2a2a2a;
     height: 10px;
     width: 100%;
-    border: 1px solid var(--color-sumi);
+    border: 1px solid #444;
   }
 
   .stat-bar-fill {
-    background: linear-gradient(90deg, var(--color-matsu), #5f7f54);
-    height: 8px;
+    background: var(--color-nes-green);
+    height: 10px;
   }
 
   .nes-number {
-    font-family: var(--font-display);
-    font-weight: 700;
-    color: var(--color-shu);
+    font-family: var(--font-pixel);
+    color: var(--color-nes-amber);
   }
 
   .rpg-prefix::before {
-    content: '';
-    display: inline-block;
-    width: 0.55em;
-    height: 0.55em;
-    margin-right: 0.5em;
-    background: var(--color-shu);
-    vertical-align: baseline;
+    content: '> ';
+    color: var(--color-nes-amber);
   }
 
   .nes-btn {
     display: inline-block;
     min-height: 44px;
-    background: var(--color-shu);
-    color: #f5efdf;
-    font-family: var(--font-display);
-    font-size: 0.9rem;
-    font-weight: 600;
-    line-height: 1.4;
-    padding: 0.7rem 1.6rem;
-    border: 2px solid var(--color-sumi);
-    border-radius: 2px;
-    box-shadow: 3px 3px 0 rgba(33, 29, 25, 0.25);
+    background: var(--color-nes-amber);
+    color: #0a0a0a;
+    font-family: var(--font-pixel);
+    font-size: 0.625rem;
+    line-height: 1.6;
+    padding: 0.85rem 1.5rem;
+    border: 2px solid var(--color-nes-amber);
+    box-shadow: 4px 4px 0 #7a5500;
     cursor: pointer;
     text-decoration: none;
-    transition: transform 0.08s, box-shadow 0.08s, background-color 0.15s;
-    letter-spacing: 0.08em;
+    transition: transform 0.08s, box-shadow 0.08s;
+    letter-spacing: 0.05em;
     white-space: nowrap;
   }
 
   .nes-btn:hover {
-    background: var(--color-shu-dark);
-    transform: translate(1px, 1px);
-    box-shadow: 2px 2px 0 rgba(33, 29, 25, 0.25);
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 #7a5500;
   }
 
   .nes-btn-gold {
-    background: var(--color-shu);
-    color: #f5efdf;
-    border-color: var(--color-sumi);
-    box-shadow: 3px 3px 0 rgba(33, 29, 25, 0.25);
+    background: var(--color-nes-amber);
+    color: #0a0a0a;
+    border-color: var(--color-nes-amber);
+    box-shadow: 4px 4px 0 #7a5500;
   }
 
   .nes-btn-outline {
     background: transparent;
-    color: var(--color-ai);
-    border: 2px solid var(--color-ai);
-    box-shadow: 3px 3px 0 rgba(22, 94, 131, 0.18);
+    color: var(--color-nes-amber);
+    border: 2px solid var(--color-nes-amber);
+    box-shadow: 4px 4px 0 rgba(255, 176, 0, 0.3);
   }
 
   .nes-btn-outline:hover {
-    background: var(--color-ai);
-    color: #f5efdf;
+    background: var(--color-nes-amber);
+    color: #0a0a0a;
   }
 
-  /* Outline button for dark backdrops (see .parallax-band) */
+  /* Secondary action in cyan, for when amber is already taken nearby */
   .nes-btn-invert {
     background: transparent;
-    color: #f5efdf;
-    border: 2px solid #f5efdf;
-    box-shadow: 3px 3px 0 rgba(245, 239, 223, 0.22);
+    color: var(--color-nes-cyan);
+    border: 2px solid var(--color-nes-cyan);
+    box-shadow: 4px 4px 0 rgba(0, 229, 255, 0.25);
   }
 
   .nes-btn-invert:hover {
-    background: #f5efdf;
-    color: var(--color-sumi);
+    background: var(--color-nes-cyan);
+    color: #0a0a0a;
   }
 
-  /* === New ukiyo-e helpers === */
-
-  /* Vermillion hanko seal chip */
-  .hanko {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.9em;
-    height: 1.9em;
-    background: var(--color-shu);
-    color: #f5efdf;
-    font-family: var(--font-brush);
-    font-size: 0.9em;
-    line-height: 1;
-    border-radius: 3px;
-    box-shadow: inset 0 0 0 1px rgba(245, 239, 223, 0.35);
-  }
-
-  /* Thick sumi frame with inner gold hairline */
-  .frame-woodblock {
-    border: 3px solid var(--color-sumi);
-    outline: 1px solid var(--color-kin);
-    outline-offset: -7px;
-  }
-
-  /* Light washi card */
-  .washi-card {
-    background: #faf6ea;
-    border: 1px solid var(--color-washi-edge);
-  }
-
-  /* Hanging-scroll indigo bands */
-  .kakejiku-band {
-    border-block: 8px solid var(--color-ai-deep);
-  }
-
-  /* Seigaiha wave pattern */
-  .seigaiha-bg {
-    background-image: radial-gradient(circle at 50% 100%, transparent 9px, rgba(22, 94, 131, 0.10) 9px 10px, transparent 10px);
-    background-size: 24px 12px;
-  }
-
-  /* Asanoha-inspired lattice */
-  .asanoha-bg {
-    background-image:
-      linear-gradient(30deg, rgba(33, 29, 25, 0.05) 1px, transparent 1px),
-      linear-gradient(150deg, rgba(33, 29, 25, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(33, 29, 25, 0.05) 1px, transparent 1px);
-    background-size: 28px 48px, 28px 48px, 28px 48px;
-  }
-
-  /* Vertical Japanese decorative text */
-  .vertical-jp {
-    writing-mode: vertical-rl;
-    font-family: var(--font-brush);
-    letter-spacing: 0.35em;
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .pixel-flicker,
+    .pixel-cursor::after { animation: none; }
+    .blog-card:hover,
+    .nes-btn:hover { transform: none; }
   }
 
   /* === Line Clamp === */
@@ -284,24 +226,32 @@
     overflow: hidden;
   }
 
-  /* === Prose (light washi background) === */
+  /* === Prose Dark Background === */
   .prose {
-    color: #3a332c;
+    color: #d1d5db;
     max-width: 65ch;
   }
 
   .prose h1, .prose h2, .prose h3, .prose h4 {
-    color: var(--color-sumi);
-    font-family: var(--font-display);
+    color: #f8f8f8;
     font-weight: 700;
+  }
+
+  /* Article headings in the dot font so long guides keep the 8-bit voice */
+  .prose h2, .prose h3 {
+    font-family: var(--font-dot);
+    font-weight: 400;
+    line-height: 1.35;
+  }
+
+  .prose h2 {
+    color: var(--color-nes-amber);
   }
 
   .prose h2 {
     font-size: 1.5rem;
     margin-top: 2.5rem;
     margin-bottom: 1rem;
-    padding-bottom: 0.35rem;
-    border-bottom: 1px solid var(--color-washi-edge);
   }
 
   .prose h3 {
@@ -317,20 +267,17 @@
   }
 
   .prose a {
-    color: var(--color-ai);
-    text-decoration: underline;
-    text-decoration-color: rgba(22, 94, 131, 0.35);
-    text-underline-offset: 3px;
+    color: var(--color-nes-cyan);
+    text-decoration: none;
   }
 
   .prose a:hover {
-    color: var(--color-shu);
-    text-decoration-color: rgba(195, 39, 43, 0.45);
+    color: var(--color-nes-amber);
   }
 
   .prose a[href*="maps.google.com"],
   .prose a[href*="maps.app.goo.gl"] {
-    color: var(--color-ai);
+    color: var(--color-nes-cyan);
   }
 
   .prose p > a[href*="maps.google.com"]:only-child,
@@ -341,10 +288,12 @@
     gap: 1rem;
     margin: 1.25rem 0;
     padding: 1rem;
-    border: 2px solid var(--color-sumi);
-    background: var(--color-washi-deep);
-    color: var(--color-sumi);
-    box-shadow: 3px 3px 0 rgba(33, 29, 25, 0.12);
+    border: 1px solid rgba(0, 229, 255, 0.28);
+    background:
+      linear-gradient(135deg, rgba(0, 229, 255, 0.08), rgba(255, 176, 0, 0.12)),
+      #111827;
+    color: #f8f8f8;
+    box-shadow: 0 0 0 1px rgba(255, 176, 0, 0.08);
     text-decoration: none;
     position: relative;
     overflow: hidden;
@@ -356,14 +305,15 @@
     display: block;
     width: 100%;
     min-height: 88px;
-    border: 1px solid var(--color-washi-edge);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     background:
-      radial-gradient(circle at 65% 35%, rgba(195, 39, 43, 0.95) 0 4px, transparent 5px),
-      linear-gradient(0deg, rgba(33, 29, 25, 0.07) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(33, 29, 25, 0.07) 1px, transparent 1px),
-      linear-gradient(135deg, rgba(22, 94, 131, 0.14), rgba(201, 168, 76, 0.10)),
-      #ece3cc;
+      radial-gradient(circle at 65% 35%, rgba(255, 176, 0, 0.9) 0 4px, transparent 5px),
+      linear-gradient(0deg, rgba(255,255,255,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px),
+      linear-gradient(135deg, rgba(0, 229, 255, 0.18), rgba(255, 176, 0, 0.08)),
+      #0f172a;
     background-size: auto, 18px 18px, 18px 18px, auto, auto;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
   }
 
   .prose p > a[href*="maps.google.com"]:only-child::after,
@@ -375,12 +325,13 @@
     font-size: 0.78rem;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--color-shu);
+    color: var(--color-nes-amber);
   }
 
   .prose p > a[href*="maps.google.com"]:only-child:hover,
   .prose p > a[href*="maps.app.goo.gl"]:only-child:hover {
-    border-color: var(--color-shu);
+    color: #f8f8f8;
+    border-color: rgba(255, 176, 0, 0.5);
     transform: translateY(-1px);
   }
 
@@ -394,11 +345,10 @@
     align-items: center;
     gap: 0.35rem;
     padding: 0.18rem 0.5rem;
-    border: 1px solid rgba(22, 94, 131, 0.3);
-    background: rgba(22, 94, 131, 0.06);
-    color: var(--color-ai);
+    border: 1px solid rgba(0, 229, 255, 0.25);
+    background: rgba(0, 229, 255, 0.08);
+    color: var(--color-nes-cyan);
     line-height: 1.4;
-    text-decoration: none;
   }
 
   .prose p > strong > a[href*="maps.google.com"]::before,
@@ -408,7 +358,7 @@
   .prose p a[href*="maps.google.com"]:not(:only-child)::before,
   .prose p a[href*="maps.app.goo.gl"]:not(:only-child)::before {
     content: '▣';
-    color: var(--color-shu);
+    color: var(--color-nes-amber);
     font-size: 0.8em;
   }
 
@@ -430,13 +380,13 @@
   }
 
   .prose strong {
-    color: var(--color-sumi);
+    color: #f8f8f8;
     font-weight: 600;
   }
 
   .prose code {
-    background: #efe6d0;
-    color: var(--color-sumi);
+    background: #1a1a1a;
+    color: var(--color-nes-cyan);
     padding: 0.125rem 0.25rem;
     border-radius: 0.25rem;
     font-size: 0.875em;
@@ -464,36 +414,35 @@
   }
 
   .prose th {
-    background-color: var(--color-washi-deep);
-    color: var(--color-sumi);
-    font-family: var(--font-display);
+    background-color: #1a1a1a;
+    color: var(--color-nes-amber);
     text-align: left;
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
-    font-weight: 600;
-    border: 1px solid var(--color-washi-edge);
+    font-weight: 500;
+    border: 1px solid #333;
   }
 
   .prose td {
-    border: 1px solid var(--color-washi-edge);
+    border: 1px solid #333;
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
-    color: #3a332c;
+    color: #d1d5db;
   }
 
   .prose tr:nth-child(even) td {
-    background-color: #f0e9d6;
+    background-color: #111;
   }
 
   /* Blockquote styling */
   .prose blockquote {
-    background: var(--color-washi-deep);
-    border-left: 4px solid var(--color-shu);
+    background: #111;
+    border-left: 4px solid var(--color-nes-amber);
     padding-left: 1rem;
     padding-right: 1rem;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
-    color: var(--color-sumi-soft);
+    color: #9ca3af;
     font-style: normal;
   }
 
@@ -504,113 +453,49 @@
 
   /* === Blog Card === */
   .blog-card {
-    background: #faf6ea;
-    border: 1px solid var(--color-washi-edge);
+    background: #0d0d0d;
+    border: 1px solid #1e1e1e;
     transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
     overflow: hidden;
   }
   .blog-card:hover {
-    border-color: rgba(195, 39, 43, 0.6);
-    box-shadow: 4px 4px 0 rgba(195, 39, 43, 0.12);
+    border-color: rgba(255, 176, 0, 0.55);
+    box-shadow: 0 0 28px rgba(255, 176, 0, 0.08), 0 8px 28px rgba(0, 0, 0, 0.45);
     transform: translateY(-2px);
-  }
-
-  /* === Two-layer band (二層) ===
-     clip-path makes .parallax-band the containing block for its fixed
-     backdrop, so the artwork stays pinned inside the band's window while the
-     content scrolls over it — and it works on iOS, which ignores
-     background-attachment: fixed. */
-  .parallax-band {
-    position: relative;
-    clip-path: inset(0);
-    isolation: isolate;
-  }
-
-  .parallax-band__bg {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    overflow: hidden;
-    background: #0d1622;
-  }
-
-  .parallax-band__img {
-    position: absolute;
-    inset: 0;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-  }
-
-  /* Gold cloud band drifting sideways above the rooftops */
-  .parallax-band__kumo {
-    position: absolute;
-    top: 4rem; /* clears the sticky header when the band fills the viewport */
-    left: 0;
-    width: calc(100% + 2400px);
-    height: 202px;
-    background: url('/images/theme/kumo-band-alpha.webp') repeat-x left top;
-    background-size: 2400px auto;
-    opacity: 0.42;
-    animation: kumo-drift 130s linear infinite;
-  }
-
-  /* One tile wide, so the loop is seamless (the tile is mirrored end-to-end) */
-  @keyframes kumo-drift {
-    from { transform: translateX(0); }
-    to { transform: translateX(-2400px); }
-  }
-
-  .parallax-band__scrim {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to bottom,
-      rgba(10, 18, 30, 0.8),
-      rgba(10, 18, 30, 0.55) 45%,
-      rgba(10, 18, 30, 0.82)
-    );
-  }
-
-  .parallax-band__content {
-    position: relative;
-    z-index: 1;
-    padding-block: 4rem;
   }
 
   /* === Category Filter Pills === */
   .cat-pill {
-    font-family: var(--font-display);
-    font-size: 0.8rem;
-    font-weight: 500;
-    padding: 0.4rem 1rem;
-    border: 1px solid var(--color-washi-edge);
-    border-radius: 999px;
-    color: var(--color-sumi-soft);
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid #333;
+    color: #9ca3af;
     background: transparent;
     cursor: pointer;
     transition: all 0.15s ease;
     white-space: nowrap;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
     line-height: 1.5;
   }
   .cat-pill:hover {
-    border-color: rgba(195, 39, 43, 0.5);
-    color: var(--color-shu);
-    background: rgba(195, 39, 43, 0.04);
+    border-color: rgba(255, 176, 0, 0.45);
+    color: rgba(255, 176, 0, 0.8);
+    background: rgba(255, 176, 0, 0.04);
   }
   .cat-pill.active {
-    border-color: var(--color-shu);
-    color: var(--color-shu);
-    background: rgba(195, 39, 43, 0.07);
+    border-color: var(--color-nes-amber);
+    color: var(--color-nes-amber);
+    background: rgba(255, 176, 0, 0.07);
+    box-shadow: 0 0 12px rgba(255, 176, 0, 0.15);
   }
 
-  /* === Glow classes (legacy names, now subtle ink accents) === */
+  /* === Neon Glow Text === */
   .text-glow-amber {
-    text-shadow: 0 1px 0 rgba(201, 168, 76, 0.35);
+    text-shadow: 0 0 16px rgba(255, 176, 0, 0.55), 0 0 32px rgba(255, 176, 0, 0.2);
   }
   .text-glow-cyan {
-    text-shadow: 0 1px 0 rgba(22, 94, 131, 0.25);
+    text-shadow: 0 0 16px rgba(0, 229, 255, 0.55), 0 0 32px rgba(0, 229, 255, 0.2);
   }
 
   /* === Featured Post === */
@@ -618,18 +503,23 @@
     background: linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.1) 100%);
   }
 
-  /* === Seigaiha background (legacy name) === */
+  /* === Dot Grid Background === */
   .dot-grid-bg {
-    background-image: radial-gradient(circle at 50% 100%, transparent 9px, rgba(22, 94, 131, 0.10) 9px 10px, transparent 10px);
-    background-size: 24px 12px;
+    background-image: radial-gradient(circle, rgba(255,176,0,0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
   }
 
   /* === Section Divider Line === */
   .pixel-divider {
-    height: 6px;
-    background-image: radial-gradient(circle at 50% 100%, transparent 4px, rgba(22, 94, 131, 0.45) 4px 5px, transparent 5px);
-    background-size: 12px 6px;
-    opacity: 0.6;
+    height: 2px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--color-nes-amber) 0px,
+      var(--color-nes-amber) 6px,
+      transparent 6px,
+      transparent 10px
+    );
+    opacity: 0.35;
   }
 
   /* === Image overlay badge === */
@@ -637,14 +527,13 @@
     position: absolute;
     bottom: 0.75rem;
     left: 0.75rem;
-    font-family: var(--font-display);
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: var(--color-sumi);
-    background: rgba(245, 239, 223, 0.92);
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    color: var(--color-nes-amber);
+    background: rgba(0,0,0,0.82);
     padding: 0.3rem 0.6rem;
     letter-spacing: 0.05em;
-    border-left: 3px solid var(--color-shu);
+    border: 1px solid rgba(255,176,0,0.3);
     backdrop-filter: blur(4px);
   }
 
@@ -656,68 +545,5 @@
   }
   .scroll-x-smooth::-webkit-scrollbar {
     display: none;
-  }
-
-  /* ============================================================
-     GION NIGHT QUEST — the mini-game is intentionally retro.
-     Re-scope the legacy NES tokens inside .gq-root so the game
-     keeps its original 8-bit look on the ukiyo-e site.
-     ============================================================ */
-  .gq-root {
-    --color-nes-black:  #0a0a0a;
-    --color-nes-cyan:   #00e5ff;
-    --color-nes-red:    #ff2222;
-    --color-nes-amber:  #ffb000;
-    --color-nes-green:  #00d800;
-    --color-nes-white:  #f8f8f8;
-    --font-pixel: 'Press Start 2P', monospace;
-  }
-
-  .gq-root .scanlines::after {
-    background: repeating-linear-gradient(
-      to bottom,
-      transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.10) 2px,
-      rgba(0, 0, 0, 0.10) 4px
-    );
-    background-size: auto;
-    opacity: 1;
-    mix-blend-mode: normal;
-  }
-
-  .gq-root .text-glow-amber {
-    text-shadow: 0 0 16px rgba(255, 176, 0, 0.55), 0 0 32px rgba(255, 176, 0, 0.2);
-  }
-
-  .gq-root .nes-btn {
-    background: var(--color-nes-amber);
-    color: #0a0a0a;
-    font-family: var(--font-pixel);
-    font-size: 0.5rem;
-    font-weight: 400;
-    border: 2px solid var(--color-nes-amber);
-    border-radius: 0;
-    box-shadow: 4px 4px 0 #7a5500;
-    letter-spacing: 0.05em;
-    padding: 0.75rem 1.5rem;
-  }
-
-  .gq-root .nes-btn:hover {
-    background: var(--color-nes-amber);
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0 #7a5500;
-  }
-
-  .gq-root .nes-btn-outline {
-    background: transparent;
-    color: var(--color-nes-amber);
-    border: 2px solid var(--color-nes-amber);
-    box-shadow: 4px 4px 0 rgba(255, 176, 0, 0.3);
-  }
-
-  .gq-root .nes-btn-outline:hover {
-    background: var(--color-nes-amber);
-    color: #0a0a0a;
   }
 }
