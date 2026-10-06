@@ -1,18 +1,68 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ExploreRadial from '../components/ExploreRadial.astro';
 import GionQuest from '../components/GionQuest.astro';
 import GroupCTA from '../components/GroupCTA.astro';
-import ParallaxBand from '../components/ParallaxBand.astro';
 import ReviewsSection from '../components/ReviewsSection.astro';
 import { getCollection } from 'astro:content';
 import { getBlogSortDate } from '../utils/blog';
 
 const blogPosts = await getCollection('blog');
-const latestPosts = blogPosts
-  .filter((post) => !post.data.noIndex)
+const publicPosts = blogPosts.filter((post) => !post.data.noIndex);
+const latestPosts = [...publicPosts]
   .sort((a, b) => getBlogSortDate(b) - getBlogSortDate(a))
   .slice(0, 3);
+
+const tours = [
+  {
+    icon: '🏮',
+    tag: 'EVENING · GION',
+    name: 'Gion Sake Walking Tour',
+    meta: '90 min · Max 10 · Sake · EN',
+    price: 'from ¥5,600',
+    href: '/tours/gion-sake-walk',
+  },
+  {
+    icon: '🍻',
+    tag: 'EVENING · PONTOCHO',
+    name: 'Kyoto Izakaya Hopping',
+    meta: '3 hrs · Small group · Food · EN',
+    price: 'from ¥4,160',
+    href: '/tours/izakaya-hopping',
+  },
+  {
+    icon: '⛩️',
+    tag: 'MORNING · SHIMOGAMO',
+    name: 'Shimogamo Shrine & Manga Walk',
+    meta: '2 hrs · 10:00 / 14:00 · Manga · EN',
+    price: 'from ¥8,500',
+    href: '/tours/shimogamo-manga-walk',
+  },
+  {
+    icon: '☕',
+    tag: 'DAYTIME · NISHIKI MARKET',
+    name: 'Hands-On Coffee Ceremony with a Master',
+    meta: '70 min · Max 4 · Coffee · EN',
+    price: '¥24,000 / group',
+    href: '/tours/coffee-ceremony',
+  },
+  {
+    icon: '🍵',
+    tag: 'DAYTIME · KAWARAMACHI',
+    name: 'Matcha Tea Ceremony with an Urasenke Master',
+    meta: '80 min · Max 5 · Matcha · EN',
+    price: '¥12,000 / adult',
+    href: '/tours/tea-ceremony',
+  },
+];
+
+const stages = [
+  { icon: '🍶', label: 'TOURS',   meta: `${tours.length} walks & workshops`,        href: '/tours',   track: 'home_explore_tours' },
+  { icon: '📖', label: 'GUIDES',  meta: `${publicPosts.length} practical Kyoto guides`, href: '/blog',    track: 'home_explore_blog' },
+  { icon: '👥', label: 'GROUPS',  meta: 'Teams, schools & charters',               href: '/groups',  track: 'home_explore_groups' },
+  { icon: '🎮', label: 'PLAY',    meta: 'Gion Night Quest',                        href: '/game',    track: 'home_explore_game' },
+  { icon: '⛩️', label: 'GUIDE',   meta: 'The people you walk with',                href: '/guide',   track: 'home_explore_guide' },
+  { icon: '✉️', label: 'CONTACT', meta: 'Ask us anything',                         href: '/contact', track: 'home_explore_contact' },
+];
 ---
 
 <BaseLayout
@@ -20,95 +70,251 @@ const latestPosts = blogPosts
   description="Explore Kyoto with local expert guides. Rated 4.9/5 on TripAdvisor. Book a walking tour or browse our practical travel guides for first-time visitors."
 >
   <!-- Hero Section -->
-  <section class="relative bg-washi overflow-hidden">
+  <section class="scanlines relative bg-nes-black text-nes-white overflow-hidden">
     <img
-      src="/images/theme/hero-ukiyoe.webp"
-      alt="Ukiyo-e style woodblock print of Gion, Kyoto at night"
-      class="absolute inset-0 w-full h-full object-cover"
+      src="/images/tours/tour-kiyomizu-night.jpg"
+      alt="Gion night walking tour guests"
+      class="absolute inset-0 w-full h-full object-cover opacity-90"
       loading="eager"
+      fetchpriority="high"
     />
-    <!-- Washi scrim for text legibility -->
-    <div class="absolute inset-0 bg-gradient-to-r from-washi via-washi/85 to-transparent md:to-washi/10"></div>
+    <!-- Dark scrim so the pixel type always reads over the photo -->
+    <div class="absolute inset-0 bg-gradient-to-r from-nes-black/95 via-nes-black/60 to-transparent"></div>
+    <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-nes-black to-transparent"></div>
 
     <div class="relative z-10 max-w-6xl mx-auto px-4 py-20 md:py-32">
-      <!-- Vertical decorative kanji -->
-      <span class="vertical-jp hidden lg:block absolute right-8 top-1/2 -translate-y-1/2 text-kin text-3xl opacity-60 select-none" aria-hidden="true">京都　祇園</span>
 
       <!-- Rating badge -->
-      <div class="hero-reveal inline-flex items-center gap-3 washi-card border-2 border-sumi px-4 py-2 mb-8" style="--d:0.05s; box-shadow: 3px 3px 0 rgba(33,29,25,0.15);">
-        <span class="hanko text-sm" aria-hidden="true">評</span>
-        <span class="text-kin text-sm">★★★★★</span>
-        <span class="font-display font-bold text-sumi">4.9 / 5</span>
-        <span class="font-sans text-xs text-sumi-soft">on TripAdvisor</span>
+      <div class="hero-reveal inline-flex items-center gap-3 border-2 border-nes-amber bg-nes-black/80 px-4 py-2 mb-8" style="--d:0.1s; box-shadow: 4px 4px 0 rgba(255,176,0,0.3);">
+        <span class="text-nes-amber text-sm">★★★★★</span>
+        <span class="font-pixel text-[0.7rem] text-nes-white">4.9 / 5</span>
+        <span class="font-sans text-xs text-gray-300">on TripAdvisor</span>
       </div>
 
-      <!-- Heading -->
-      <h1 class="hero-reveal font-display font-bold text-sumi leading-tight mb-6" style="--d:0.15s; font-size: clamp(2.1rem, 5vw, 3.5rem);">
-        Discover <span class="text-shu">Kyoto</span>,<br />
-        like a local.
+      <!-- Heading: real text in the HTML (for search engines and screen
+           readers); the typewriter only replays it when motion is allowed. -->
+      <h1 id="hero-h1" class="font-pixel text-nes-amber text-glow-amber mb-8" style="font-size: clamp(1.25rem, 4.2vw, 2.4rem); line-height: 1.5;">
+        <span id="hero-line1" data-text="DISCOVER KYOTO">DISCOVER KYOTO</span><br />
+        <span id="hero-line2" data-text="LIKE A LOCAL" class="text-nes-white">LIKE A LOCAL</span><span id="hero-cursor" class="hero-cursor" aria-hidden="true">█</span>
       </h1>
 
       <!-- Description -->
-      <p class="hero-reveal font-sans text-sumi-soft text-lg leading-relaxed mb-9 max-w-xl" style="--d:0.25s">
-        Intimate walking tours through Gion's lantern-lit alleys. Sake tastings at bars only locals know.
-        Small groups, genuine experiences.
+      <p class="hero-reveal font-sans text-gray-200 text-lg leading-relaxed mb-10 max-w-xl" style="--d:0.3s">
+        Intimate walking tours through Gion's lantern-lit alleys, sake at bars only locals know,
+        and hands-on coffee &amp; tea ceremonies. Small groups, genuine experiences.
       </p>
 
       <!-- Buttons -->
-      <div class="hero-reveal flex flex-col sm:flex-row gap-5" style="--d:0.35s">
-        <a href="/tours" class="nes-btn nes-btn-gold" data-track-label="home_hero_see_tours">See All Tours</a>
-        <a href="/blog" class="nes-btn nes-btn-outline" data-track-label="home_hero_browse_guides">Browse Travel Guides</a>
+      <div class="hero-reveal flex flex-col sm:flex-row gap-5" style="--d:0.45s">
+        <a href="/tours" class="nes-btn nes-btn-gold text-center" data-track-label="home_hero_see_tours">▶ SEE ALL TOURS</a>
+        <a href="/blog" class="nes-btn nes-btn-outline text-center" data-track-label="home_hero_browse_guides">BROWSE TRAVEL GUIDES</a>
       </div>
     </div>
   </section>
 
-  <!-- Explore hub (radial) -->
-  <ExploreRadial />
+  <style>
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-reveal {
+      animation: heroFadeUp 0.6s ease both;
+      animation-delay: var(--d, 0s);
+    }
+
+    @keyframes blockBlink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+    .hero-cursor {
+      display: inline-block;
+      margin-left: 0.15em;
+      animation: blockBlink 0.7s step-end infinite;
+    }
+
+    @keyframes glitchTwitch {
+      0%   { transform: translate(0); }
+      20%  { transform: translate(-3px, 1px); filter: brightness(1.3); }
+      40%  { transform: translate(3px, -1px); }
+      60%  { transform: translate(-2px, 0); }
+      80%  { transform: translate(2px, 1px); filter: brightness(0.9); }
+      100% { transform: translate(0); filter: none; }
+    }
+    #hero-h1.glitch {
+      animation: glitchTwitch 0.15s steps(1) forwards;
+    }
+
+    /* Stage-select menu: a ▶ cursor jumps to whichever tile is hovered */
+    .stage-tile {
+      position: relative;
+      background: #0d0d0d;
+      border: 2px solid #262626;
+      transition: border-color 0.12s, background 0.12s, transform 0.08s;
+    }
+    .stage-tile:hover,
+    .stage-tile:focus-visible {
+      border-color: var(--color-nes-amber);
+      background: rgba(255, 176, 0, 0.06);
+      transform: translate(-2px, -2px);
+      box-shadow: 4px 4px 0 rgba(255, 176, 0, 0.35);
+    }
+    .stage-cursor {
+      opacity: 0;
+      color: var(--color-nes-amber);
+    }
+    .stage-tile:hover .stage-cursor,
+    .stage-tile:focus-visible .stage-cursor {
+      opacity: 1;
+      animation: blockBlink 0.7s step-end infinite;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-reveal, .hero-cursor, #hero-h1.glitch { animation: none; }
+      .stage-tile:hover, .stage-tile:focus-visible { transform: none; }
+      .stage-tile:hover .stage-cursor { animation: none; }
+    }
+  </style>
+
+  <script>
+  (() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const SPEED = 60; // ms per char
+    const el1 = document.getElementById('hero-line1');
+    const el2 = document.getElementById('hero-line2');
+    const cursor = document.getElementById('hero-cursor');
+    const h1 = document.getElementById('hero-h1');
+    if (!el1 || !el2 || !cursor || !h1) return;
+
+    // Keep the full heading for assistive tech while the visible text retypes
+    h1.setAttribute('aria-label', `${el1.dataset.text} ${el2.dataset.text}`);
+    const L1 = el1.dataset.text || '';
+    const L2 = el2.dataset.text || '';
+    // Hold the final height so the layout below never jumps while typing
+    h1.style.minHeight = `${h1.offsetHeight}px`;
+    el1.textContent = '';
+    el2.textContent = '';
+    el1.after(cursor);
+
+    function typeText(el: HTMLElement, text: string, cb: () => void) {
+      let i = 0;
+      const t = setInterval(() => {
+        el.textContent += text[i++];
+        if (i >= text.length) { clearInterval(t); cb(); }
+      }, SPEED);
+    }
+
+    function glitch() {
+      h1!.classList.add('glitch');
+      setTimeout(() => h1!.classList.remove('glitch'), 200);
+      setTimeout(glitch, 4000 + Math.random() * 5000);
+    }
+
+    setTimeout(() => {
+      typeText(el1, L1, () => {
+        setTimeout(() => {
+          el2.after(cursor);
+          typeText(el2, L2, () => setTimeout(glitch, 2000));
+        }, 220);
+      });
+    }, 300);
+  })();
+  </script>
+
+  <!-- Stage select (explore hub) -->
+  <section class="bg-nes-black py-14 md:py-16">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="text-center mb-8">
+        <p class="px-eyebrow text-nes-cyan mb-3 rpg-prefix">EXPLORE</p>
+        <h2 class="px-h2">SELECT YOUR STAGE</h2>
+      </div>
+      <nav aria-label="Explore OTAtrip Guide" class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+        {stages.map((stage, i) => (
+          <a href={stage.href} class="stage-tile group flex items-center gap-3 md:gap-4 p-4 md:p-5" data-track-label={stage.track}>
+            <span class="text-2xl md:text-3xl shrink-0" aria-hidden="true">{stage.icon}</span>
+            <span class="min-w-0 flex-1">
+              <span class="block font-pixel text-[0.625rem] md:text-[0.75rem] text-nes-white group-hover:text-nes-amber leading-relaxed">
+                <span class="stage-cursor" aria-hidden="true">▶</span> {stage.label}
+              </span>
+              <span class="block font-dot text-xs md:text-sm text-gray-400 mt-1 leading-snug">{stage.meta}</span>
+            </span>
+            <span class="hidden md:block px-label text-gray-400" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          </a>
+        ))}
+      </nav>
+    </div>
+  </section>
+
+  <div class="max-w-6xl mx-auto px-4"><div class="pixel-divider"></div></div>
+
+  <!-- Tours teaser -->
+  <section class="max-w-6xl mx-auto px-4 py-16">
+    <div class="flex items-end justify-between mb-8">
+      <div>
+        <p class="px-eyebrow text-nes-amber mb-3 rpg-prefix">AVAILABLE QUESTS</p>
+        <h2 class="px-h2">OUR TOURS</h2>
+      </div>
+      <a href="/tours" class="px-label text-nes-cyan hover:text-nes-amber transition-colors hidden md:block">
+        ALL TOURS &rsaquo;
+      </a>
+    </div>
+    <div class="space-y-3">
+      {tours.map(tour => (
+        <a href={tour.href} class="blog-card group flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5 p-5" data-track-label={`home_tour_${tour.href.split('/').pop()}`}>
+          <div class="w-14 h-14 shrink-0 bg-neutral-900 border-2 border-gray-700 group-hover:border-nes-amber flex items-center justify-center text-3xl transition-colors" aria-hidden="true">{tour.icon}</div>
+          <div class="flex-1 min-w-0">
+            <p class="px-label text-nes-cyan mb-2">{tour.tag}</p>
+            <h3 class="font-dot text-lg md:text-xl text-nes-white group-hover:text-nes-amber transition-colors leading-snug mb-1">{tour.name}</h3>
+            <p class="font-dot text-sm text-gray-400">{tour.meta} · <span class="text-nes-amber">{tour.price}</span></p>
+          </div>
+          <span class="px-label text-nes-amber group-hover:text-nes-white transition-colors shrink-0">
+            VIEW ▶
+          </span>
+        </a>
+      ))}
+    </div>
+    <div class="text-center mt-6 md:hidden">
+      <a href="/tours" class="px-label text-nes-cyan hover:text-nes-amber transition-colors">ALL TOURS &rsaquo;</a>
+    </div>
+  </section>
 
   <!-- Why Choose Us -->
-  <section class="bg-washi py-16 seigaiha-bg">
+  <section class="bg-[#070707] border-y border-gray-900 py-16 dot-grid-bg">
     <div class="max-w-6xl mx-auto px-4">
       <div class="text-center mb-12">
-        <p class="font-display text-sm text-ai mb-4 tracking-widest">Why OTAtrip Guide</p>
-        <h2 class="font-display font-bold text-sumi text-2xl md:text-3xl">
-          Kyoto, from the Inside
-        </h2>
+        <p class="px-eyebrow text-nes-cyan mb-3 rpg-prefix">WHY OTAtrip GUIDE</p>
+        <h2 class="px-h2">KYOTO FROM THE INSIDE</h2>
       </div>
       <div class="grid md:grid-cols-3 gap-6">
         {[
           {
-            icon: '🏮',
             img: '/images/why/local-expertise.jpg',
+            stat: 'INT +99',
             title: 'Local Expertise',
             desc: "Our guides have lived in Kyoto for years. We take you to bars, alleys, and viewpoints most visitors never find.",
           },
           {
-            icon: '🎭',
             img: '/images/why/entertainment-pro.png',
+            stat: 'CHA +99',
             title: 'Entertainment Pros',
             desc: 'OTAtrip Guide was started by a professional magician. We design our tours like shows — with pacing, surprises, and moments you will keep telling people about.',
           },
           {
-            icon: '👥',
             img: '/images/why/small-groups.jpg',
+            stat: 'PARTY: SMALL',
             title: 'Small Groups',
             desc: 'We keep groups small so every guest gets real attention. Ask questions, go off-script, connect with your guide and the city on your own terms.',
           },
         ].map(item => (
           <div class="blog-card group">
             <div class="relative overflow-hidden" style="height: 220px;">
-              {item.img ? (
-                <img src={item.img} alt={item.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-400" />
-              ) : (
-                <div class="w-full h-full bg-washi-deep flex items-center justify-center">
-                  <span class="text-5xl">{item.icon}</span>
-                </div>
-              )}
-              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+              <img src={item.img} alt={item.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-400" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+              <span class="img-badge">{item.stat}</span>
             </div>
             <div class="p-6">
-              <h3 class="font-display font-bold text-lg text-sumi mb-3">{item.title}</h3>
-              <p class="font-sans text-sumi-soft text-sm leading-relaxed">{item.desc}</p>
+              <h3 class="font-pixel text-[0.75rem] leading-relaxed text-nes-amber mb-3 uppercase">{item.title}</h3>
+              <p class="font-sans text-gray-300 text-sm leading-relaxed">{item.desc}</p>
             </div>
           </div>
         ))}
@@ -116,100 +322,24 @@ const latestPosts = blogPosts
     </div>
   </section>
 
-  <!-- Mini Game -->
-  <section class="max-w-4xl mx-auto px-4 py-10">
-    <div class="flex items-center gap-4 mb-2">
-      <h2 class="font-display font-bold text-lg text-sumi">Mini Game — Gion Night Quest</h2>
-      <div class="flex-1 border-t border-washi-edge"></div>
-      <a href="/game" class="font-display text-xs text-ai hover:text-shu transition-colors tracking-wide">
-        Full page &rsaquo;
-      </a>
-    </div>
-    <p class="font-sans text-sm text-sumi-soft mb-6">
-      An 8-bit interlude: explore a tiny pixel-art Gion at night. Talk to the locals, collect 3 stamps — then book the real thing.
-    </p>
-    <GionQuest />
+  <!-- Reviews -->
+  <section class="max-w-6xl mx-auto px-4">
+    <ReviewsSection />
   </section>
 
-  <!-- Reviews, over the fixed night-Gion backdrop -->
-  <ParallaxBand>
-    <div class="max-w-6xl mx-auto px-4">
-      <ReviewsSection onDark />
-    </div>
-  </ParallaxBand>
-
-  <!-- Tours teaser -->
-  <section class="max-w-6xl mx-auto px-4 pb-16">
-    <div class="flex items-end justify-between mb-8">
-      <div>
-        <p class="font-display text-sm text-ai mb-2 tracking-widest">Tours &amp; Experiences</p>
-        <h2 class="font-display font-bold text-sumi text-2xl md:text-3xl">
-          Our Tours
-        </h2>
-      </div>
-      <a href="/tours" class="font-display text-xs text-ai hover:text-shu transition-colors hidden md:block tracking-wide">
-        All tours &rsaquo;
+  <!-- Mini Game -->
+  <section class="max-w-4xl mx-auto px-4 pb-14">
+    <div class="flex items-center gap-4 mb-3">
+      <h2 class="px-eyebrow text-nes-green">// MINI GAME</h2>
+      <div class="flex-1 border-t border-gray-800"></div>
+      <a href="/game" class="px-label text-nes-cyan hover:text-nes-amber transition-colors">
+        FULL PAGE &rsaquo;
       </a>
     </div>
-    <div class="space-y-3">
-      {[
-        {
-          icon: '🏮',
-          tag: 'Evening · Gion',
-          name: 'Gion Sake Walking Tour',
-          meta: '90 min · Max 10 · Sake · EN',
-          price: 'from ¥5,600',
-          href: '/tours/gion-sake-walk',
-        },
-        {
-          icon: '🍻',
-          tag: 'Evening · Pontocho',
-          name: 'Kyoto Izakaya Hopping',
-          meta: '3 hrs · Small group · Food · EN',
-          price: 'from ¥4,160',
-          href: '/tours/izakaya-hopping',
-        },
-        {
-          icon: '⛩️',
-          tag: 'Morning · Shimogamo',
-          name: 'Shimogamo Shrine & Manga Walk',
-          meta: '2 hrs · 10:00 / 14:00 · Manga · EN',
-          price: 'from ¥8,500',
-          href: '/tours/shimogamo-manga-walk',
-        },
-        {
-          icon: '☕',
-          tag: 'Daytime · Nishiki Market',
-          name: 'Hands-On Coffee Ceremony with a Master',
-          meta: '70 min · Max 4 · Coffee · EN',
-          price: '¥24,000 / group',
-          href: '/tours/coffee-ceremony',
-        },
-        {
-          icon: '🍵',
-          tag: 'Daytime · Kawaramachi',
-          name: 'Matcha Tea Ceremony with an Urasenke Master',
-          meta: '80 min · Max 5 · Matcha · EN',
-          price: '¥12,000 / adult',
-          href: '/tours/tea-ceremony',
-        },
-      ].map(tour => (
-        <a href={tour.href} class="blog-card group flex flex-col sm:flex-row items-start sm:items-center gap-5 p-5 block">
-          <div class="text-3xl shrink-0 group-hover:scale-110 transition-transform">{tour.icon}</div>
-          <div class="flex-1 min-w-0">
-            <p class="font-display text-xs text-ai mb-1 tracking-wide">{tour.tag}</p>
-            <h3 class="font-display font-bold text-lg text-sumi group-hover:text-shu transition-colors leading-relaxed mb-1">{tour.name}</h3>
-            <p class="font-sans text-xs text-sumi-soft">{tour.meta} · <span class="text-shu font-medium">{tour.price}</span></p>
-          </div>
-          <span class="font-display text-sm text-shu group-hover:text-shu-dark transition-colors shrink-0">
-            View &rarr;
-          </span>
-        </a>
-      ))}
-    </div>
-    <div class="text-center mt-6 md:hidden">
-      <a href="/tours" class="font-display text-sm text-ai hover:text-shu transition-colors tracking-wide">All tours &rsaquo;</a>
-    </div>
+    <p class="font-sans text-sm text-gray-300 mb-6">
+      Explore a tiny pixel-art Gion at night. Talk to the locals, collect 3 stamps — then book the real thing.
+    </p>
+    <GionQuest />
   </section>
 
   <!-- B2B Group CTA -->
@@ -221,13 +351,11 @@ const latestPosts = blogPosts
   <section class="max-w-6xl mx-auto px-4 py-16">
     <div class="flex items-end justify-between mb-8">
       <div>
-        <p class="font-display text-sm text-ai mb-2 tracking-widest">Travel Guides</p>
-        <h2 class="font-display font-bold text-sumi text-2xl md:text-3xl">
-          Plan Your Kyoto Trip
-        </h2>
+        <p class="px-eyebrow text-nes-amber mb-3 rpg-prefix">TRAVEL GUIDES</p>
+        <h2 class="px-h2">PLAN YOUR KYOTO TRIP</h2>
       </div>
-      <a href="/blog" class="font-display text-xs text-ai hover:text-shu transition-colors hidden md:block tracking-wide">
-        All guides &rsaquo;
+      <a href="/blog" class="px-label text-nes-cyan hover:text-nes-amber transition-colors hidden md:block">
+        ALL GUIDES &rsaquo;
       </a>
     </div>
 
@@ -245,20 +373,20 @@ const latestPosts = blogPosts
                     loading="lazy"
                   />
                 ) : (
-                  <div class="w-full h-full bg-washi-deep flex items-center justify-center">
-                    <span class="font-display text-sumi-soft">KYOTO</span>
+                  <div class="w-full h-full bg-neutral-900 flex items-center justify-center">
+                    <span class="px-label text-gray-500">KYOTO</span>
                   </div>
                 )}
-                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-                <span class="img-badge">{post.data.category || 'Kyoto Guide'}</span>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                <span class="img-badge">{(post.data.category || 'Kyoto Guide').toUpperCase()}</span>
               </div>
               <div class="p-5">
-                <h3 class="font-display font-bold text-sumi group-hover:text-shu transition-colors leading-relaxed mb-3 line-clamp-2">
+                <h3 class="font-dot text-lg text-nes-white group-hover:text-nes-amber transition-colors leading-snug mb-3 line-clamp-2">
                   {post.data.title}
                 </h3>
-                <p class="font-sans text-sumi-soft text-sm leading-relaxed line-clamp-3">{post.data.description}</p>
-                <div class="mt-4 font-display text-xs text-ai group-hover:text-shu transition-colors tracking-wide">
-                  Read guide &rarr;
+                <p class="font-sans text-gray-400 text-sm leading-relaxed line-clamp-3">{post.data.description}</p>
+                <div class="mt-4 px-label text-nes-cyan group-hover:text-nes-amber transition-colors">
+                  READ GUIDE ▶
                 </div>
               </div>
             </a>
@@ -266,11 +394,11 @@ const latestPosts = blogPosts
         ))}
       </div>
     ) : (
-      <p class="font-display text-sumi-soft text-center py-12">New guides coming soon</p>
+      <p class="px-label text-gray-500 text-center py-12">// BLOG POSTS COMING SOON</p>
     )}
 
     <div class="text-center mt-8 md:hidden">
-      <a href="/blog" class="font-display text-sm text-ai hover:text-shu transition-colors tracking-wide">All guides &rsaquo;</a>
+      <a href="/blog" class="px-label text-nes-cyan hover:text-nes-amber transition-colors">ALL GUIDES &rsaquo;</a>
     </div>
   </section>
 

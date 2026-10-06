@@ -17,14 +17,15 @@ const { price, slug, target = '#booking' } = Astro.props;
 
 <div
   id="sticky-book-bar"
-  class="md:hidden fixed inset-x-0 bottom-0 z-40 bg-washi border-t-2 border-sumi px-4 py-3 flex items-center justify-between gap-4 transition-transform duration-200"
-  style="box-shadow: 0 -3px 0 rgba(33,29,25,0.15); padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));"
+  data-target={target}
+  class="md:hidden fixed inset-x-0 bottom-0 z-40 bg-nes-black border-t-2 border-nes-amber px-4 py-3 flex items-center justify-between gap-4 transition-transform duration-200"
+  style="box-shadow: 0 -4px 0 rgba(255,176,0,0.18); padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));"
 >
   <div class="min-w-0">
-    <div class="font-display text-sm font-bold text-sumi truncate">{price}</div>
-    <div class="font-sans text-[0.65rem] text-sumi-soft tracking-wide">Small groups · Local guide</div>
+    <div class="font-pixel text-[0.7rem] text-nes-amber truncate leading-relaxed">{price}</div>
+    <div class="font-sans text-[0.7rem] text-gray-400 tracking-wide">Small groups · Local guide</div>
   </div>
-  <a href={target} class="nes-btn nes-btn-gold shrink-0 !py-2 !px-5" data-track-label={`sticky_book_${slug}`}>Book Now</a>
+  <a href={target} class="nes-btn nes-btn-gold shrink-0 !py-2 !px-5" data-track-label={`sticky_book_${slug}`}>BOOK NOW</a>
 </div>
 
 <script>

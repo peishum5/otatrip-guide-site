@@ -59,24 +59,24 @@ const faqs = [
   </Fragment>
 
   <!-- Hero -->
-  <section class="relative bg-sumi overflow-hidden">
+  <section class="relative bg-nes-black overflow-hidden">
     <img
       src="/images/tours/tea-ceremony/sensei-guiding.jpg"
       alt="The Urasenke tea master guiding a guest as she scoops matcha into her bowl"
       class="absolute inset-0 w-full h-full object-cover opacity-60"
       loading="eager"
     />
-    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-nes-black via-nes-black/60 to-transparent"></div>
     <div class="relative z-10 max-w-4xl mx-auto px-4 py-24 md:py-32">
-      <p class="font-display text-sm text-kin tracking-widest mb-4 rpg-prefix">Daytime Workshop · Kawaramachi-Sanjo</p>
-      <h1 class="font-display text-3xl md:text-4xl font-bold text-white leading-tight mb-4">
+      <p class="font-pixel text-[0.7rem] leading-relaxed text-nes-amber mb-4 rpg-prefix">DAYTIME WORKSHOP · KAWARAMACHI-SANJO</p>
+      <h1 class="font-dot text-4xl md:text-5xl text-nes-white leading-tight mb-5">
         Matcha Tea Ceremony with an Urasenke Master
       </h1>
-      <p class="font-sans text-gray-200 text-base leading-relaxed mb-8 max-w-xl">
+      <p class="font-sans text-gray-300 text-base leading-relaxed mb-8 max-w-xl">
         Step into the meditative world of Japanese tea ceremony, led by a certified Urasenke master in central Kyoto.
         Watch a full temae, then take the bamboo whisk in your own hands.
       </p>
-      <div class="flex flex-wrap gap-6 mb-8">
+      <div class="flex flex-wrap gap-x-8 gap-y-4 mb-8">
         {[
           { label: 'Duration', value: '80 minutes' },
           { label: 'Group size', value: 'Max 5 guests' },
@@ -85,12 +85,12 @@ const faqs = [
           { label: 'Price', value: '¥12,000 / adult' },
         ].map(item => (
           <div>
-            <div class="font-display text-base font-semibold text-white">{item.value}</div>
-            <div class="font-sans text-xs text-gray-300">{item.label}</div>
+            <div class="font-dot text-xl text-nes-amber">{item.value}</div>
+            <div class="px-label text-gray-300 mt-1">{item.label.toUpperCase()}</div>
           </div>
         ))}
       </div>
-      <a href="#booking" class="nes-btn nes-btn-gold" data-track-label="tour_hero_book_tea-ceremony">Book Your Spot</a>
+      <a href="#booking" class="nes-btn nes-btn-gold" data-track-label="tour_hero_book_tea-ceremony">BOOK YOUR SPOT</a>
     </div>
   </section>
 
@@ -99,14 +99,14 @@ const faqs = [
     <!-- Highlights -->
     <section class="mb-12">
       <div class="flex items-center gap-4 mb-6">
-        <h2 class="font-display text-2xl md:text-3xl font-bold text-sumi">What's Included</h2>
-        <div class="flex-1 border-t border-washi-edge"></div>
+        <h2 class="font-pixel text-[0.8rem] md:text-[0.9rem] leading-relaxed text-nes-amber">WHAT'S INCLUDED</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
       </div>
       <div class="grid md:grid-cols-2 gap-3">
         {highlights.map(item => (
-          <div class="flex items-start gap-3 bg-washi-deep border border-washi-edge px-4 py-3">
-            <span class="font-display text-sm text-matsu shrink-0">✓</span>
-            <span class="font-sans text-sumi-soft text-sm leading-relaxed">{item}</span>
+          <div class="flex items-start gap-3 bg-neutral-900 border border-gray-800 px-4 py-3">
+            <span class="px-label text-nes-green shrink-0 pt-1">[OK]</span>
+            <span class="font-sans text-gray-300 text-sm leading-relaxed">{item}</span>
           </div>
         ))}
       </div>
@@ -115,8 +115,8 @@ const faqs = [
     <!-- Photo gallery -->
     <section class="mb-12">
       <div class="flex items-center gap-4 mb-6">
-        <h2 class="font-display text-2xl md:text-3xl font-bold text-sumi">Workshop Photos</h2>
-        <div class="flex-1 border-t border-washi-edge"></div>
+        <h2 class="font-pixel text-[0.8rem] md:text-[0.9rem] leading-relaxed text-nes-amber">WORKSHOP PHOTOS</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
       </div>
       <div class="columns-2 md:columns-3 gap-2 space-y-2">
         {[
@@ -127,7 +127,7 @@ const faqs = [
           { src: '/images/tours/tea-ceremony/table-atmosphere.jpg',  alt: 'The tea ceremony table with iron kettle, scroll, and bowls of matcha' },
           { src: '/images/tours/tea-ceremony/group-photo.jpg',       alt: 'Guests and sensei posing for a group photo after the tea ceremony' },
         ].map(photo => (
-          <div class="break-inside-avoid overflow-hidden border border-washi-edge">
+          <div class="break-inside-avoid overflow-hidden border border-gray-800">
             <img
               src={photo.src}
               alt={photo.alt}
@@ -142,15 +142,15 @@ const faqs = [
     <!-- Timeline -->
     <section class="mb-12">
       <div class="flex items-center gap-4 mb-6">
-        <h2 class="font-display text-2xl md:text-3xl font-bold text-sumi">How the 80 Minutes Unfold</h2>
-        <div class="flex-1 border-t border-washi-edge"></div>
+        <h2 class="font-pixel text-[0.8rem] md:text-[0.9rem] leading-relaxed text-nes-amber">HOW THE 80 MINUTES UNFOLD</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
       </div>
       <div class="space-y-5">
         {timeline.map(item => (
           <div class="flex items-start gap-5">
-            <span class="font-display text-sm text-ai shrink-0 w-12 text-right pt-1">{item.time}</span>
-            <div class="flex-1 border-l border-washi-edge pl-5 pb-3">
-              <p class="font-sans text-sm text-sumi-soft leading-relaxed">{item.desc}</p>
+            <span class="font-pixel text-[0.625rem] text-nes-cyan shrink-0 w-14 text-right pt-1.5">{item.time}</span>
+            <div class="flex-1 border-l border-gray-700 pl-5 pb-3">
+              <p class="font-sans text-sm text-gray-300 leading-relaxed">{item.desc}</p>
             </div>
           </div>
         ))}
@@ -160,28 +160,28 @@ const faqs = [
     <!-- Meeting point -->
     <section class="mb-12">
       <div class="dialogue-box">
-        <p class="font-display text-sm text-ai tracking-widest mb-4">Meeting Point</p>
+        <p class="px-eyebrow text-nes-cyan mb-4">// MEETING POINT</p>
         <div class="grid md:grid-cols-2 gap-6">
           <div>
-            <p class="font-sans text-sumi font-semibold text-sm mb-1">Das (Kawaramachi-Sanjo, Kyoto)</p>
-            <p class="font-sans text-sumi-soft text-xs leading-relaxed mb-3">
+            <p class="font-sans text-nes-white font-semibold text-sm mb-1">Das (Kawaramachi-Sanjo, Kyoto)</p>
+            <p class="font-sans text-gray-400 text-xs leading-relaxed mb-3">
               A calm, modern cafe in the Kawaramachi-Sanjo neighborhood, steps from central Kyoto.
               The exact address and walking directions are sent with your booking confirmation.
             </p>
-            <p class="font-sans text-sumi-soft text-xs mb-3">
+            <p class="font-sans text-gray-400 text-xs mb-3">
               Please arrive 5 minutes before your start time.
             </p>
           </div>
-          <div class="space-y-2 font-sans text-sm">
+          <div class="space-y-2 font-dot text-base">
             {[
               { k: 'Duration', v: '~80 minutes' },
               { k: 'Adult', v: '¥12,000' },
               { k: 'Child', v: '¥8,000' },
               { k: 'Dress code', v: 'Casual' },
             ].map(row => (
-              <div class="flex justify-between border-b border-washi-edge pb-2">
-                <span class="text-sumi-soft">{row.k}</span>
-                <span class="text-sumi">{row.v}</span>
+              <div class="flex justify-between border-b border-gray-800 pb-2">
+                <span class="text-gray-400">{row.k}</span>
+                <span class="text-nes-white">{row.v}</span>
               </div>
             ))}
           </div>
@@ -192,10 +192,10 @@ const faqs = [
     <!-- Booking -->
     <section id="booking" class="mb-12">
       <div class="flex items-center gap-4 mb-6">
-        <h2 class="font-display text-2xl md:text-3xl font-bold text-sumi">Book Your Spot</h2>
-        <div class="flex-1 border-t border-washi-edge"></div>
+        <h2 class="font-pixel text-[0.8rem] md:text-[0.9rem] leading-relaxed text-nes-amber">BOOK YOUR SPOT</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
       </div>
-      <p class="font-sans text-sumi-soft text-sm mb-6">Only 5 seats per session. Book early to secure your date.</p>
+      <p class="font-sans text-gray-300 text-sm mb-6">Only 5 seats per session. Book early to secure your date.</p>
       <BookingWidget widgetPath="experience-calendar/1218436" />
     </section>
 
@@ -208,17 +208,17 @@ const faqs = [
     <!-- FAQ -->
     <section class="mb-12">
       <div class="flex items-center gap-4 mb-6">
-        <h2 class="font-display text-2xl md:text-3xl font-bold text-sumi">FAQ</h2>
-        <div class="flex-1 border-t border-washi-edge"></div>
+        <h2 class="font-pixel text-[0.8rem] md:text-[0.9rem] leading-relaxed text-nes-amber">FAQ</h2>
+        <div class="flex-1 border-t border-gray-800"></div>
       </div>
       <div class="space-y-3">
         {faqs.map(faq => (
-          <details class="border border-washi-edge bg-washi-deep group">
-            <summary class="flex items-center justify-between px-5 py-4 cursor-pointer font-display text-base text-sumi hover:text-shu transition-colors">
+          <details class="border border-gray-800 bg-neutral-900 group">
+            <summary class="flex items-center justify-between px-5 py-4 cursor-pointer font-dot text-base md:text-lg leading-snug text-nes-white hover:text-nes-amber transition-colors">
               {faq.q}
-              <span class="ml-4 text-sumi-soft shrink-0 group-open:rotate-180 transition-transform">▼</span>
+              <span class="ml-4 text-gray-400 shrink-0 group-open:rotate-180 transition-transform">▼</span>
             </summary>
-            <div class="px-5 pb-4 font-sans text-sm text-sumi-soft leading-relaxed border-t border-washi-edge pt-4">
+            <div class="px-5 pb-4 font-sans text-sm text-gray-400 leading-relaxed border-t border-gray-800 pt-4">
               {faq.a}
             </div>
           </details>
