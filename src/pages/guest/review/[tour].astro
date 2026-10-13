@@ -1,0 +1,24 @@
+---
+/**
+ * One review-helper page per tour, generated from TOURS in config/reviewHelper.ts.
+ * Reached by the guest as /review/<tour-slug> (see vercel.json).
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ReviewHelper from '../../../components/ReviewHelper.astro';
+import { TOURS } from '../../../config/reviewHelper';
+
+export function getStaticPaths() {
+  return TOURS.map((tour) => ({ params: { tour: tour.slug }, props: { tour } }));
+}
+
+const { tour } = Astro.props;
+---
+
+<BaseLayout
+  title={`How was your tour? | ${tour.name}`}
+  description="Turn your impressions into a short TripAdvisor review."
+  canonical={`/guest/review/${tour.slug}`}
+  noIndex={true}
+>
+  <ReviewHelper tour={tour} />
+</BaseLayout>
