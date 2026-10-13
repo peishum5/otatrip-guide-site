@@ -78,12 +78,19 @@ export function tripadvisorUrlFor(tour: ReviewTour): string {
  * through, so the final button follows this answer.
  */
 export const BOOKING_SOURCES = [
-  { key: 'tripadvisor', label: 'TripAdvisor / Viator' },
-  { key: 'getyourguide', label: 'GetYourGuide' },
-  { key: 'klook', label: 'Klook' },
-  { key: 'airbnb', label: 'Airbnb' },
-  { key: 'other', label: 'Somewhere else' },
+  { key: 'tripadvisor', label: 'TripAdvisor / Viator', logos: ['tripadvisor.svg', 'viator.png'] },
+  { key: 'getyourguide', label: 'GetYourGuide', logos: ['getyourguide.png'] },
+  { key: 'klook', label: 'Klook', logos: ['klook.svg'] },
+  { key: 'airbnb', label: 'Airbnb', logos: ['airbnb.svg'] },
+  { key: 'other', label: 'Somewhere else', logos: [] },
 ];
+
+/**
+ * Logos live in public/review-logos. SVGs are built from Simple Icons (CC0)
+ * on each brand's colour; GetYourGuide and Viator are not in Simple Icons,
+ * so theirs are the sites' own favicons. Used only to label the platforms.
+ */
+export const LOGO_DIR = '/review-logos/';
 
 /**
  * Google Maps link for OTAtrip Guide, opened on the Reviews tab (the

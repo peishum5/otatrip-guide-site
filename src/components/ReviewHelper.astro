@@ -20,6 +20,7 @@ import {
   MAX_GUIDE_NAME_LENGTH,
   REVIEW_LOG_ENDPOINT,
   BOOKING_SOURCES,
+  LOGO_DIR,
   GOOGLE_REVIEW_URL,
   MIN_DRAFT_LENGTH,
   TEMPLATES,
@@ -158,7 +159,16 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
       {BOOKING_SOURCES.map((source, index) => (
         <label class:list={['rv-chip', { 'col-span-2': BOOKING_SOURCES.length % 2 === 1 && index === BOOKING_SOURCES.length - 1 }]}>
           <input type="radio" name="source" value={source.key} class="sr-only" />
-          {source.label}
+          <span class="flex items-center justify-center gap-2.5">
+            {source.logos.length > 0 && (
+              <span class="flex shrink-0 gap-1" aria-hidden="true">
+                {source.logos.map((logo) => (
+                  <img src={LOGO_DIR + logo} alt="" width="24" height="24" class="rv-logo" loading="lazy" />
+                ))}
+              </span>
+            )}
+            <span>{source.label}</span>
+          </span>
         </label>
       ))}
     </div>
@@ -202,7 +212,10 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
     <!-- Filled in by the script for the site the guest booked through. -->
     <div class="dialogue-box mt-10">
       <p class="mb-3 px-label text-nes-red">FINAL STAGE</p>
-      <p id="dest-text" class="mb-4 font-sans text-base leading-relaxed text-nes-white"></p>
+      <div class="mb-4 flex items-start gap-3">
+        <img id="dest-logo" src="" alt="" width="36" height="36" class="rv-logo rv-logo-lg hidden" aria-hidden="true" />
+        <p id="dest-text" class="font-sans text-base leading-relaxed text-nes-white"></p>
+      </div>
       <a
         id="dest-link"
         href="#"
@@ -228,7 +241,10 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
           class="nes-btn nes-btn-invert block w-full whitespace-normal text-center leading-loose"
           data-track-label="review_helper_google"
         >
-          REVIEW ON GOOGLE MAPS ▶
+          <span class="inline-flex items-center justify-center gap-3">
+            <img src={LOGO_DIR + 'googlemaps.svg'} alt="" width="22" height="22" class="rv-logo" aria-hidden="true" />
+            <span>REVIEW ON GOOGLE MAPS ▶</span>
+          </span>
         </a>
       </div>
     )}
@@ -246,6 +262,7 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
     templates: TEMPLATES,
     logEndpoint: REVIEW_LOG_ENDPOINT,
     minDraftLength: MIN_DRAFT_LENGTH,
+    logoDir: LOGO_DIR,
   }}
 >
   (function () {
@@ -254,6 +271,7 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
     var destText = document.getElementById('dest-text');
     var destLink = document.getElementById('dest-link');
     var destNote = document.getElementById('dest-note');
+    var destLogo = document.getElementById('dest-logo');
     var googleLink = document.getElementById('google-link');
     var draft = document.getElementById('draft');
     var result = document.getElementById('result');
@@ -397,6 +415,7 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
         if (tour.getyourguide) {
           return {
             key: 'getyourguide',
+            logo: 'getyourguide.png',
             text: 'Last step: open GetYourGuide and <strong>paste</strong> your review.',
             label: 'GO TO GETYOURGUIDE \u25B6',
             url: tour.getyourguide,
@@ -404,6 +423,7 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
           };
         }
         return {
+          logo: 'getyourguide.png',
           text:
             'Last step: open the <strong>GetYourGuide app</strong> (or their review email), ' +
             'find this tour and <strong>paste</strong> your review.',
@@ -411,6 +431,7 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
       }
       if (source === 'airbnb') {
         return {
+          logo: 'airbnb.svg',
           text:
             'Last step: open the <strong>Airbnb app</strong>, tap Trips, pick this experience ' +
             'and <strong>paste</strong> your review.',
@@ -418,6 +439,7 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
       }
       if (source === 'klook') {
         return {
+          logo: 'klook.svg',
           text:
             'Last step: open the <strong>Klook app</strong>, tap Account, then Reviews, ' +
             'pick this tour and <strong>paste</strong> your review.',
@@ -425,6 +447,7 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
       }
       return {
         key: 'tripadvisor',
+        logo: 'tripadvisor.svg',
         text: 'Last step: open TripAdvisor and <strong>paste</strong> your review.',
         label: 'GO TO TRIPADVISOR \u25B6',
         url: tour.tripadvisor,
@@ -435,6 +458,8 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
     function showDestination() {
       var dest = destinationFor(checked('source'), tourData[tourSlug()]);
       destText.innerHTML = dest.text;
+      destLogo.src = logoDir + dest.logo;
+      destLogo.classList.remove('hidden');
       destNote.textContent = dest.note || '';
       destNote.classList.toggle('hidden', !dest.note);
       if (dest.url) {

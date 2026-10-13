@@ -702,6 +702,22 @@
 
   .rv-chip:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #000; }
 
+  /* Platform logos: small app-icon tiles, framed so every brand colour
+     reads on both the dark chip and the amber selected chip. */
+  .rv-logo {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    box-shadow: 0 0 0 2px #000;
+    image-rendering: auto;
+    background: #fff;
+  }
+  .rv-logo-lg {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+  }
+
   .rv-chip-level {
     flex: 1 1 0;
     min-width: 0;
