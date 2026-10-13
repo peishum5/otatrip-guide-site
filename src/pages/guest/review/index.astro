@@ -1,0 +1,17 @@
+---
+/**
+ * Fallback review-helper page: the guest tells us which tour they joined.
+ * Tour-specific QR codes should point at /review/<tour-slug> instead.
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ReviewHelper from '../../../components/ReviewHelper.astro';
+---
+
+<BaseLayout
+  title="How was your tour? | OTAtrip Guide"
+  description="Turn your impressions into a short TripAdvisor review."
+  canonical="/guest/review"
+  noIndex={true}
+>
+  <ReviewHelper />
+</BaseLayout>
