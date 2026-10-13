@@ -12,7 +12,9 @@
  * - ?g=Shumpei を付けたリンクを渡すと、ガイド名を入れた状態で開ける。
  * - 文面は毎回少しずつ言い回しが変わる（全員同じ文章だと TripAdvisor に
  *   不正レビューと疑われるため）。お客さんが自由に書き足せる。
- * - 回答はどこにも送信しない。ブラウザの中で文面を作るだけ。
+ * - 回答はオーナー専用スプレッドシート「OTAtrip レビュー回答ログ」に記録する
+ *   （送信先は下の REVIEW_LOG_ENDPOINT。GAS は ~/8E6/OTAtripGuide/ReviewLog）。
+ *   記録に失敗しても、お客さんの画面（コピー・TripAdvisor）は止めない。
  */
 
 import { TRIPADVISOR_URL } from './site';
@@ -84,6 +86,14 @@ export const RATING_AXES = [
 
 /** Cap on the typed guide name. */
 export const MAX_GUIDE_NAME_LENGTH = 40;
+
+/**
+ * Apps Script web app that logs answers to the owner-only spreadsheet.
+ * Public by nature (it ships in the page), so it holds no secrets and the
+ * script checks every field itself. Empty string turns logging off.
+ */
+export const REVIEW_LOG_ENDPOINT =
+  'https://script.google.com/macros/s/AKfycbyYqGSOMyNZi50HGnM2uQ-bXOsgPQcLPWoUx6cr8LqtfJeI1LNiOjBrIShKHL8Xn6nFBQ/exec';
 
 /**
  * Sentence pieces for the draft. {g} = guide name, {t} = tour short name,

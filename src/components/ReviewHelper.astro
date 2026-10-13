@@ -6,8 +6,9 @@
  *
  * One screen: impression words, quick ratings and an optional guide name.
  * One button builds a short review and copies it; the review then appears
- * below with "new wording" / "copy again", and a button on to TripAdvisor. Nothing is sent anywhere; the draft is built in
- * the browser from TEMPLATES in config/reviewHelper.ts.
+ * below with "new wording" / "copy again", and a button on to TripAdvisor.
+ * The draft is built in the browser from TEMPLATES in config/reviewHelper.ts;
+ * the answers are also logged to the owner's spreadsheet (see log()).
  */
 import {
   TOURS,
@@ -16,6 +17,7 @@ import {
   RATING_LEVELS,
   RATING_AXES,
   MAX_GUIDE_NAME_LENGTH,
+  REVIEW_LOG_ENDPOINT,
   TEMPLATES,
   tripadvisorUrlFor,
   type ReviewTour,
@@ -117,6 +119,12 @@ const tourData = Object.fromEntries(
     />
   </div>
 
+  <!-- Bot trap. Off-screen, never focusable by a human. -->
+  <div class="rv-honeypot" aria-hidden="true">
+    <label for="company">Company</label>
+    <input type="text" id="company" tabindex="-1" autocomplete="off" />
+  </div>
+
   <p id="form-error" class="mb-4 hidden font-sans text-sm text-nes-amber" role="alert"></p>
 
   <button type="button" id="make-btn" class="nes-btn nes-btn-gold block w-full whitespace-normal text-center leading-loose">
@@ -168,6 +176,7 @@ const tourData = Object.fromEntries(
     maxGuideNameLength: MAX_GUIDE_NAME_LENGTH,
     axisKeys: RATING_AXES.map((axis) => axis.key),
     templates: TEMPLATES,
+    logEndpoint: REVIEW_LOG_ENDPOINT,
   }}
 >
   (function () {
@@ -286,6 +295,45 @@ const tourData = Object.fromEntries(
       }
     }
 
+    // One id per page view, so pressing submit again updates the same
+    // spreadsheet row instead of adding a new one.
+    var visitId = Math.random().toString(36).slice(2, 12) + Date.now().toString(36);
+
+    /**
+     * Fire-and-forget log to the owner's spreadsheet. Apps Script cannot
+     * answer a CORS preflight, so this is a no-cors text/plain send: we never
+     * see the reply, and a failure must never get in the guest's way.
+     */
+    function log(payload) {
+      if (!logEndpoint) return;
+      payload.id = visitId;
+      try {
+        fetch(logEndpoint, {
+          method: 'POST',
+          mode: 'no-cors',
+          keepalive: true,
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload),
+        }).catch(function () {});
+      } catch (e) {}
+    }
+
+    function logAnswers() {
+      var ratings = {};
+      axisKeys.forEach(function (key) {
+        ratings[key] = checked('axis_' + key);
+      });
+      log({
+        type: 'submit',
+        tour: tourSlug(),
+        words: wordBoxes.filter(function (b) { return b.checked; }).map(function (b) { return b.value; }),
+        ratings: ratings,
+        guide: guideInput.value.trim().slice(0, maxGuideNameLength),
+        draft: draft.value,
+        company: document.getElementById('company').value,
+      });
+    }
+
     function makeReview() {
       // The draft is shown before copying: the fallback copy needs visible text.
       draft.value = buildDraft();
@@ -303,6 +351,7 @@ const tourData = Object.fromEntries(
       formError.classList.add('hidden');
       result.classList.remove('hidden');
       makeReview();
+      logAnswers();
       makeBtn.textContent = 'UPDATE MY REVIEW \u25B6';
       result.scrollIntoView({ behavior: 'smooth', block: 'start' });
       if (window.track) window.track('review_helper_submit', { tour: tourSlug() });
@@ -310,6 +359,10 @@ const tourData = Object.fromEntries(
 
     document.getElementById('reshuffle').addEventListener('click', makeReview);
     document.getElementById('copy-again').addEventListener('click', copyDraft);
+    tripadvisorLink.addEventListener('click', function () {
+      // Send the final text too: the guest may have reworded or edited it.
+      log({ type: 'tripadvisor', draft: draft.value });
+    });
     draft.addEventListener('input', fitDraft);
   })();
 </script>

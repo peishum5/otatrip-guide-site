@@ -585,6 +585,16 @@
     resize: vertical;
   }
 
+  /* Honeypot: off-screen but not display:none, so bots still fill it. */
+  .rv-honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
   .rv-input:focus {
     outline: none;
     border-color: var(--color-nes-cyan);
