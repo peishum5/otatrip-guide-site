@@ -12,7 +12,7 @@
  *   GetYourGuide が未設定のツアーは「アプリから書いてね」という案内文を出す。
  * - 「どこで予約したか」で最後のボタンが変わる（BOOKING_SOURCES）。
  *   Viator は配れる投稿リンクがないので TripAdvisor に案内する（同じグループ会社）。
- *   Klook も配れるリンクがないので、アプリでの書き方を案内する。
+ *   Klook・Airbnb も配れるリンクがないので、アプリでの書き方を案内する。
  * - Google マップのボタンは、どの予約サイトを選んでも下に出る（店舗単位で1つ）。
  * - ?g=Shumpei を付けたリンクを渡すと、ガイド名を入れた状態で開ける。
  * - 文面は毎回少しずつ言い回しが変わる（全員同じ文章だと TripAdvisor に
@@ -81,17 +81,19 @@ export const BOOKING_SOURCES = [
   { key: 'tripadvisor', label: 'TripAdvisor / Viator' },
   { key: 'getyourguide', label: 'GetYourGuide' },
   { key: 'klook', label: 'Klook' },
+  { key: 'airbnb', label: 'Airbnb' },
   { key: 'other', label: 'Somewhere else' },
 ];
 
 /**
- * Google "write a review" link. Google reviews belong to the business, not
- * to one tour, so this single link is offered on every page.
- * TODO: swap for the direct review-form link from Google Business Profile
- * ("Ask for reviews") once ownership moves to 8e6.co.jp. This one opens the
- * business panel, where the guest taps "Write a review".
+ * Google Maps link for OTAtrip Guide, opened on the Reviews tab (the
+ * "!9m1!1b1" part), where the guest taps "Write a review". Google reviews
+ * belong to the business, not to one tour, so this one link is on every page.
+ * Could be swapped for the direct review-form link from Google Business
+ * Profile ("Ask for reviews") once ownership moves to 8e6.co.jp.
  */
-export const GOOGLE_REVIEW_URL = 'https://share.google/Qhpx7AhfBwDTN78Yx';
+export const GOOGLE_REVIEW_URL =
+  'https://www.google.com/maps/place/OTAtrip+Guide/@35.0977501,135.3892209,10z/data=!4m16!1m9!3m8!1s0xa03cccb43bf8f4b1:0x64235011b996cc1d!2sOTAtrip+Guide!8m2!3d35.0981962!4d135.7188694!9m1!1b1!16s%2Fg%2F11yp1gsncq!3m5!1s0xa03cccb43bf8f4b1:0x64235011b996cc1d!8m2!3d35.0981962!4d135.7188694!16s%2Fg%2F11yp1gsncq';
 
 /**
  * Reviews shorter than this get one or two neutral sentences appended.

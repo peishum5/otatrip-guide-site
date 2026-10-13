@@ -131,8 +131,8 @@ const tourData = Object.fromEntries(
       Where did you book this tour?
     </legend>
     <div class="grid grid-cols-2 gap-2.5">
-      {BOOKING_SOURCES.map((source) => (
-        <label class="rv-chip">
+      {BOOKING_SOURCES.map((source, index) => (
+        <label class:list={['rv-chip', { 'col-span-2': BOOKING_SOURCES.length % 2 === 1 && index === BOOKING_SOURCES.length - 1 }]}>
           <input type="radio" name="source" value={source.key} class="sr-only" />
           {source.label}
         </label>
@@ -250,9 +250,9 @@ const tourData = Object.fromEntries(
     });
 
     /**
-     * The "last step" box for the site the guest booked through. Viator and
-     * Klook hand out no review links: Viator guests go to TripAdvisor (same
-     * group), Klook guests get directions to the app instead of a button.
+     * The "last step" box for the site the guest booked through. Viator,
+     * Klook and Airbnb hand out no review links: Viator guests go to
+     * TripAdvisor (same group), the others get directions to their app.
      */
     function destinationFor(source, tour) {
       if (source === 'getyourguide') {
@@ -269,6 +269,13 @@ const tourData = Object.fromEntries(
           text:
             'Last step: open the <strong>GetYourGuide app</strong> (or their review email), ' +
             'find this tour and <strong>paste</strong> your review.',
+        };
+      }
+      if (source === 'airbnb') {
+        return {
+          text:
+            'Last step: open the <strong>Airbnb app</strong>, tap Trips, pick this experience ' +
+            'and <strong>paste</strong> your review.',
         };
       }
       if (source === 'klook') {
