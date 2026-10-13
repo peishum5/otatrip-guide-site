@@ -11,6 +11,7 @@
  * The draft is built in the browser from TEMPLATES in config/reviewHelper.ts;
  * the answers are also logged to the owner's spreadsheet (see log()).
  */
+import { CONTACT_EMAIL } from '../config/site';
 import {
   TOURS,
   IMPRESSION_WORDS,
@@ -19,6 +20,7 @@ import {
   RATING_AXES,
   MAX_GUIDE_NAME_LENGTH,
   REVIEW_LOG_ENDPOINT,
+  MAX_OWNER_NOTE_LENGTH,
   BOOKING_SOURCES,
   LOGO_DIR,
   GOOGLE_REVIEW_URL,
@@ -248,6 +250,29 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
         </a>
       </div>
     )}
+
+    <!-- Private note to the owner. Goes to the owner-only spreadsheet; the
+         guide never sees it. Separate from the public review on purpose. -->
+    <div class="rv-window mt-14">
+      <label for="owner-note" class="rv-window-title">▶ SECRET MESSAGE TO THE OWNER</label>
+      <p class="mb-3 font-sans text-sm leading-relaxed text-gray-300">
+        Anything that bothered you, or something we could do better? Big or small,
+        we would love to know.
+      </p>
+      <p class="mb-4 border-l-4 border-nes-cyan bg-[#0b1a1d] px-3 py-2 font-sans text-sm leading-relaxed text-nes-white">
+        🔒 Only the owner of OTAtrip Guide reads this. It is <strong>never shared with your guide</strong>.
+      </p>
+      <textarea
+        id="owner-note"
+        class="rv-input rv-textarea mb-3"
+        maxlength={MAX_OWNER_NOTE_LENGTH}
+        placeholder="Optional. Anything at all helps."
+      ></textarea>
+      <button type="button" id="owner-send" class="nes-btn nes-btn-invert w-full whitespace-normal text-center">
+        SEND TO OWNER
+      </button>
+      <p id="owner-status" class="mt-3 min-h-[1.25rem] font-sans text-sm" aria-live="polite"></p>
+    </div>
   </section>
 </div>
 
@@ -263,6 +288,8 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
     logEndpoint: REVIEW_LOG_ENDPOINT,
     minDraftLength: MIN_DRAFT_LENGTH,
     logoDir: LOGO_DIR,
+    maxOwnerNoteLength: MAX_OWNER_NOTE_LENGTH,
+    contactEmail: CONTACT_EMAIL,
   }}
 >
   (function () {
@@ -644,6 +671,60 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
       log({ type: 'open', target: destLink.getAttribute('data-dest'), draft: draft.value });
       if (window.track) window.track('review_helper_open', { target: destLink.getAttribute('data-dest') });
     });
+    // Secret message to the owner. Unlike the fire-and-forget logs, the guest
+    // is told whether it arrived, so a complaint is never silently lost.
+    var ownerNote = document.getElementById('owner-note');
+    var ownerSend = document.getElementById('owner-send');
+    var ownerStatus = document.getElementById('owner-status');
+    var ownerSending = false;
+
+    function setOwnerStatus(colorClass, html) {
+      ownerStatus.className = 'mt-3 min-h-[1.25rem] font-sans text-sm ' + colorClass;
+      ownerStatus.innerHTML = html;
+    }
+
+    function ownerResult(ok) {
+      ownerSending = false;
+      ownerSend.disabled = false;
+      if (ok) {
+        setOwnerStatus('text-nes-green', '\u2714 Sent. Thank you for telling us.');
+        ownerNote.value = '';
+        ownerSend.textContent = 'SEND ANOTHER';
+      } else {
+        setOwnerStatus(
+          'text-nes-amber',
+          'Sorry, that did not go through. Please try again, or email ' +
+            '<a class="underline" href="mailto:' + contactEmail + '">' + contactEmail + '</a>.'
+        );
+      }
+    }
+
+    ownerSend.addEventListener('click', function () {
+      var text = ownerNote.value.trim().slice(0, maxOwnerNoteLength);
+      if (!text) {
+        setOwnerStatus('text-gray-400', 'Write something first, then tap send.');
+        return;
+      }
+      if (ownerSending) return;
+      if (!logEndpoint) return ownerResult(false);
+      ownerSending = true;
+      ownerSend.disabled = true;
+      setOwnerStatus('text-gray-400', 'Sending...');
+      fetch(logEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          type: 'feedback',
+          id: visitId,
+          text: text,
+          company: document.getElementById('company').value,
+        }),
+      })
+        .then(function (response) { return response.json(); })
+        .then(function (data) { ownerResult(Boolean(data && data.ok)); })
+        .catch(function () { ownerResult(false); });
+    });
+
     if (googleLink) {
       googleLink.addEventListener('click', function () {
         log({ type: 'open', target: 'google', draft: draft.value });

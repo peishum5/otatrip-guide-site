@@ -145,6 +145,9 @@ export const MAX_GUIDE_NAME_LENGTH = 40;
  * Public by nature (it ships in the page), so it holds no secrets and the
  * script checks every field itself. Empty string turns logging off.
  */
+/** Cap on the private message to the owner (mirrored in the Apps Script). */
+export const MAX_OWNER_NOTE_LENGTH = 2000;
+
 export const REVIEW_LOG_ENDPOINT =
   'https://script.google.com/macros/s/AKfycbyYqGSOMyNZi50HGnM2uQ-bXOsgPQcLPWoUx6cr8LqtfJeI1LNiOjBrIShKHL8Xn6nFBQ/exec';
 
