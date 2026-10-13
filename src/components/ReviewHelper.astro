@@ -4,9 +4,9 @@
  *   /guest/review           → tour = null, the guest picks the tour
  *   /guest/review/<slug>    → tour fixed by the QR code they scanned
  *
- * One screen: impression words, quick ratings and an optional guide name,
- * then a single button that builds a short review, copies it, and opens
- * TripAdvisor in a new tab. Nothing is sent anywhere; the draft is built in
+ * One screen: impression words, quick ratings and an optional guide name.
+ * One button builds a short review and copies it; the review then appears
+ * below with "new wording" / "copy again", and a button on to TripAdvisor. Nothing is sent anywhere; the draft is built in
  * the browser from TEMPLATES in config/reviewHelper.ts.
  */
 import {
@@ -119,32 +119,43 @@ const tourData = Object.fromEntries(
 
   <p id="form-error" class="mb-4 hidden font-sans text-sm text-nes-amber" role="alert"></p>
 
-  <!-- A real link, so the new tab opens straight from the tap and is never
-       caught by a popup blocker. The click handler copies the review first. -->
-  <a
-    id="go-btn"
-    href={tour ? tripadvisorUrlFor(tour) : '#'}
-    target="_blank"
-    rel="noopener noreferrer"
-    class="nes-btn nes-btn-gold block w-full whitespace-normal text-center leading-loose"
-    data-track-label="review_helper_go"
-  >
-    COPY &amp; GO TO TRIPADVISOR ▶
-  </a>
-  <p class="mt-3 text-center font-sans text-sm text-gray-400">
-    One tap copies your review and opens TripAdvisor. Then just paste it in.
-  </p>
+  <button type="button" id="make-btn" class="nes-btn nes-btn-gold block w-full whitespace-normal text-center leading-loose">
+    SUBMIT &amp; COPY MY REVIEW ▶
+  </button>
 
-  <!-- Shown after the tap, for when the guest comes back to this tab. -->
-  <section id="result" class="dialogue-box mt-10 hidden">
-    <p id="copy-status" class="mb-3 font-sans text-sm font-semibold text-nes-green" aria-live="polite"></p>
-    <p class="mb-3 font-sans text-sm leading-relaxed text-gray-300">
-      Here is what we copied. You can edit it and copy again.
-    </p>
-    <textarea id="draft" class="rv-input rv-textarea mb-4" aria-label="Your review"></textarea>
-    <button type="button" id="copy-again" class="nes-btn nes-btn-outline w-full text-center">
-      COPY AGAIN
-    </button>
+  <!-- Appears after the tap: the review, proof it was copied, then TripAdvisor. -->
+  <section id="result" class="mt-10 hidden scroll-mt-24">
+    <div class="mb-4 border-2 border-nes-green bg-[#0f1f0f] px-4 py-3 text-center" aria-live="polite">
+      <p id="copy-status" class="font-sans text-base font-bold text-nes-green"></p>
+      <p id="copy-hint" class="mt-1 font-sans text-sm text-gray-300"></p>
+    </div>
+
+    <p class="mb-2 px-label text-nes-cyan">YOUR REVIEW</p>
+    <textarea id="draft" class="rv-input rv-textarea mb-3" aria-label="Your review"></textarea>
+    <div class="mb-10 flex gap-3">
+      <button type="button" id="reshuffle" class="nes-btn nes-btn-outline flex-1 whitespace-normal text-center">
+        NEW WORDING
+      </button>
+      <button type="button" id="copy-again" class="nes-btn nes-btn-outline flex-1 whitespace-normal text-center">
+        COPY AGAIN
+      </button>
+    </div>
+
+    <div class="dialogue-box">
+      <p class="mb-4 font-sans text-base leading-relaxed text-nes-white">
+        Last step: open TripAdvisor and <strong>paste</strong> your review.
+      </p>
+      <a
+        id="tripadvisor-link"
+        href={tour ? tripadvisorUrlFor(tour) : '#'}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="nes-btn nes-btn-gold block w-full whitespace-normal text-center leading-loose"
+        data-track-label="review_helper_tripadvisor"
+      >
+        GO TO TRIPADVISOR ▶
+      </a>
+    </div>
   </section>
 </div>
 
@@ -161,10 +172,12 @@ const tourData = Object.fromEntries(
 >
   (function () {
     var guideInput = document.getElementById('guide');
-    var goBtn = document.getElementById('go-btn');
+    var makeBtn = document.getElementById('make-btn');
+    var tripadvisorLink = document.getElementById('tripadvisor-link');
     var draft = document.getElementById('draft');
     var result = document.getElementById('result');
     var copyStatus = document.getElementById('copy-status');
+    var copyHint = document.getElementById('copy-hint');
     var formError = document.getElementById('form-error');
 
     // ?g=Shumpei fills the name in, so a guide can hand over a ready-made link.
@@ -180,10 +193,10 @@ const tourData = Object.fromEntries(
       return fixedTour || checked('tour');
     }
 
-    // On the all-tours page, point the button at the chosen tour's listing.
+    // On the all-tours page, point the TripAdvisor button at the chosen tour.
     document.querySelectorAll('input[name="tour"]').forEach(function (radio) {
       radio.addEventListener('change', function () {
-        goBtn.href = tourData[radio.value].url;
+        tripadvisorLink.href = tourData[radio.value].url;
         formError.classList.add('hidden');
       });
     });
@@ -254,11 +267,16 @@ const tourData = Object.fromEntries(
 
     function copyDraft() {
       var done = function () {
-        copyStatus.textContent = 'Copied! Paste it on TripAdvisor.';
+        copyStatus.textContent = '\u2714 Review copied!';
+        copyHint.textContent = 'It is ready to paste on TripAdvisor.';
       };
       var failed = function () {
-        copyStatus.textContent = 'Could not copy automatically. Please copy the text below.';
+        copyStatus.textContent = 'Could not copy automatically.';
+        copyHint.textContent = 'Please press and hold the text below to copy it.';
       };
+      // Clear first, so a repeat copy visibly blinks and the guest sees it happen.
+      copyStatus.textContent = '';
+      copyHint.textContent = '';
       if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(draft.value).then(done, function () {
           fallbackCopy() ? done() : failed();
@@ -268,23 +286,29 @@ const tourData = Object.fromEntries(
       }
     }
 
-    goBtn.addEventListener('click', function (event) {
+    function makeReview() {
+      // The draft is shown before copying: the fallback copy needs visible text.
+      draft.value = buildDraft();
+      fitDraft();
+      copyDraft();
+    }
+
+    makeBtn.addEventListener('click', function () {
       if (!tourSlug()) {
-        event.preventDefault();
         formError.textContent = 'Please choose which tour you joined.';
         formError.classList.remove('hidden');
         formError.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
-      // The draft is shown before copying: the fallback copy needs visible text.
-      draft.value = buildDraft();
+      formError.classList.add('hidden');
       result.classList.remove('hidden');
-      fitDraft();
-      copyDraft();
-      if (window.track) window.track('review_helper_go', { tour: tourSlug() });
-      // No preventDefault: the link itself opens TripAdvisor in a new tab.
+      makeReview();
+      makeBtn.textContent = 'UPDATE MY REVIEW \u25B6';
+      result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (window.track) window.track('review_helper_submit', { tour: tourSlug() });
     });
 
+    document.getElementById('reshuffle').addEventListener('click', makeReview);
     document.getElementById('copy-again').addEventListener('click', copyDraft);
     draft.addEventListener('input', fitDraft);
   })();
