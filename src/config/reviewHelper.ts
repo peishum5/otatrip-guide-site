@@ -151,7 +151,7 @@ export const TEMPLATES = {
       'Every stop was a gem we would never have found ourselves.',
       'The route was perfect, full of real local spots.',
       'Each place we visited felt special and away from the crowds.',
-      'Honestly, the places we went were the real highlight.',
+      'The places we went were the real highlight for us.',
     ],
     2: [
       'We really enjoyed the places we visited.',
