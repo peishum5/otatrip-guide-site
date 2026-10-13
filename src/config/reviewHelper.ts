@@ -111,7 +111,7 @@ export const TEMPLATES = {
       '{G} was so friendly, it felt like exploring with a local friend.',
       '{G} was incredibly warm and made everyone feel at home.',
       '{G} made us feel welcome from the very first minute.',
-      'By the end, {g} felt more like a friend than a guide.',
+      'By the end, {g} felt like an old friend.',
     ],
     2: [
       '{G} was really friendly and easy to talk to.',
