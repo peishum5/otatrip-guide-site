@@ -6,7 +6,8 @@
  *
  * One screen: impression words, quick ratings and an optional guide name.
  * One button builds a short review and copies it; the review then appears
- * below with "new wording" / "copy again", and a button on to TripAdvisor.
+ * below with "new wording" / "copy again", a button on to the site the guest
+ * booked through, and a Google Maps button under that.
  * The draft is built in the browser from TEMPLATES in config/reviewHelper.ts;
  * the answers are also logged to the owner's spreadsheet (see log()).
  */
@@ -18,6 +19,9 @@ import {
   RATING_AXES,
   MAX_GUIDE_NAME_LENGTH,
   REVIEW_LOG_ENDPOINT,
+  BOOKING_SOURCES,
+  GOOGLE_REVIEW_URL,
+  MIN_DRAFT_LENGTH,
   TEMPLATES,
   tripadvisorUrlFor,
   type ReviewTour,
@@ -31,7 +35,10 @@ interface Props {
 const { tour = null } = Astro.props;
 
 const tourData = Object.fromEntries(
-  (tour ? [tour] : TOURS).map((t) => [t.slug, { shortName: t.shortName, url: tripadvisorUrlFor(t) }])
+  (tour ? [tour] : TOURS).map((t) => [
+    t.slug,
+    { shortName: t.shortName, tripadvisor: tripadvisorUrlFor(t), getyourguide: t.getyourguide || '' },
+  ])
 );
 ---
 
@@ -119,6 +126,20 @@ const tourData = Object.fromEntries(
     />
   </div>
 
+  <fieldset class="mb-10">
+    <legend class="mb-4 font-sans text-lg font-semibold text-nes-white">
+      Where did you book this tour?
+    </legend>
+    <div class="grid grid-cols-2 gap-2.5">
+      {BOOKING_SOURCES.map((source) => (
+        <label class="rv-chip">
+          <input type="radio" name="source" value={source.key} class="sr-only" />
+          {source.label}
+        </label>
+      ))}
+    </div>
+  </fieldset>
+
   <!-- Bot trap. Off-screen, never focusable by a human. -->
   <div class="rv-honeypot" aria-hidden="true">
     <label for="company">Company</label>
@@ -149,21 +170,37 @@ const tourData = Object.fromEntries(
       </button>
     </div>
 
+    <!-- Filled in by the script for the site the guest booked through. -->
     <div class="dialogue-box">
-      <p class="mb-4 font-sans text-base leading-relaxed text-nes-white">
-        Last step: open TripAdvisor and <strong>paste</strong> your review.
-      </p>
+      <p id="dest-text" class="mb-4 font-sans text-base leading-relaxed text-nes-white"></p>
       <a
-        id="tripadvisor-link"
-        href={tour ? tripadvisorUrlFor(tour) : '#'}
+        id="dest-link"
+        href="#"
         target="_blank"
         rel="noopener noreferrer"
         class="nes-btn nes-btn-gold block w-full whitespace-normal text-center leading-loose"
-        data-track-label="review_helper_tripadvisor"
-      >
-        GO TO TRIPADVISOR ▶
-      </a>
+      ></a>
+      <p id="dest-note" class="mt-3 font-sans text-sm leading-relaxed text-gray-400"></p>
     </div>
+
+    {GOOGLE_REVIEW_URL && (
+      <div class="mt-8">
+        <p class="mb-3 font-sans text-sm leading-relaxed text-gray-300">
+          Have a Google account? A review on Google Maps helps us a lot too.
+          Paste the same text.
+        </p>
+        <a
+          id="google-link"
+          href={GOOGLE_REVIEW_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="nes-btn nes-btn-invert block w-full whitespace-normal text-center leading-loose"
+          data-track-label="review_helper_google"
+        >
+          REVIEW ON GOOGLE MAPS ▶
+        </a>
+      </div>
+    )}
   </section>
 </div>
 
@@ -177,12 +214,16 @@ const tourData = Object.fromEntries(
     axisKeys: RATING_AXES.map((axis) => axis.key),
     templates: TEMPLATES,
     logEndpoint: REVIEW_LOG_ENDPOINT,
+    minDraftLength: MIN_DRAFT_LENGTH,
   }}
 >
   (function () {
     var guideInput = document.getElementById('guide');
     var makeBtn = document.getElementById('make-btn');
-    var tripadvisorLink = document.getElementById('tripadvisor-link');
+    var destText = document.getElementById('dest-text');
+    var destLink = document.getElementById('dest-link');
+    var destNote = document.getElementById('dest-note');
+    var googleLink = document.getElementById('google-link');
     var draft = document.getElementById('draft');
     var result = document.getElementById('result');
     var copyStatus = document.getElementById('copy-status');
@@ -202,13 +243,64 @@ const tourData = Object.fromEntries(
       return fixedTour || checked('tour');
     }
 
-    // On the all-tours page, point the TripAdvisor button at the chosen tour.
-    document.querySelectorAll('input[name="tour"]').forEach(function (radio) {
+    document.querySelectorAll('input[name="tour"], input[name="source"]').forEach(function (radio) {
       radio.addEventListener('change', function () {
-        tripadvisorLink.href = tourData[radio.value].url;
         formError.classList.add('hidden');
       });
     });
+
+    /**
+     * The "last step" box for the site the guest booked through. Viator and
+     * Klook hand out no review links: Viator guests go to TripAdvisor (same
+     * group), Klook guests get directions to the app instead of a button.
+     */
+    function destinationFor(source, tour) {
+      if (source === 'getyourguide') {
+        if (tour.getyourguide) {
+          return {
+            key: 'getyourguide',
+            text: 'Last step: open GetYourGuide and <strong>paste</strong> your review.',
+            label: 'GO TO GETYOURGUIDE \u25B6',
+            url: tour.getyourguide,
+            note: 'Sign in with the account you booked with.',
+          };
+        }
+        return {
+          text:
+            'Last step: open the <strong>GetYourGuide app</strong> (or their review email), ' +
+            'find this tour and <strong>paste</strong> your review.',
+        };
+      }
+      if (source === 'klook') {
+        return {
+          text:
+            'Last step: open the <strong>Klook app</strong>, tap Account, then Reviews, ' +
+            'pick this tour and <strong>paste</strong> your review.',
+        };
+      }
+      return {
+        key: 'tripadvisor',
+        text: 'Last step: open TripAdvisor and <strong>paste</strong> your review.',
+        label: 'GO TO TRIPADVISOR \u25B6',
+        url: tour.tripadvisor,
+        note: 'You will need to sign in. Google or Apple sign-in works.',
+      };
+    }
+
+    function showDestination() {
+      var dest = destinationFor(checked('source'), tourData[tourSlug()]);
+      destText.innerHTML = dest.text;
+      destNote.textContent = dest.note || '';
+      destNote.classList.toggle('hidden', !dest.note);
+      if (dest.url) {
+        destLink.href = dest.url;
+        destLink.textContent = dest.label;
+        destLink.setAttribute('data-dest', dest.key);
+        destLink.classList.remove('hidden');
+      } else {
+        destLink.classList.add('hidden');
+      }
+    }
 
     // Cap word picks: once the limit is hit, the rest are disabled.
     var wordBoxes = Array.prototype.slice.call(document.querySelectorAll('input[name="word"]'));
@@ -254,7 +346,15 @@ const tourData = Object.fromEntries(
         var level = checked('axis_' + key);
         if (level) sentences.push(fill(pick(templates[key][level])));
       });
-      sentences.push(pick(templates.closer));
+      var closer = pick(templates.closer);
+
+      // Top up short drafts so review sites do not reject them as too short.
+      var padding = templates.padding.slice().sort(function () { return Math.random() - 0.5; });
+      while (padding.length && (sentences.join(' ') + ' ' + closer).length < minDraftLength) {
+        sentences.push(padding.shift());
+      }
+
+      sentences.push(closer);
       return sentences.join(' ');
     }
 
@@ -277,7 +377,7 @@ const tourData = Object.fromEntries(
     function copyDraft() {
       var done = function () {
         copyStatus.textContent = '\u2714 Review copied!';
-        copyHint.textContent = 'It is ready to paste on TripAdvisor.';
+        copyHint.textContent = 'It is ready to paste.';
       };
       var failed = function () {
         copyStatus.textContent = 'Could not copy automatically.';
@@ -328,6 +428,7 @@ const tourData = Object.fromEntries(
         tour: tourSlug(),
         words: wordBoxes.filter(function (b) { return b.checked; }).map(function (b) { return b.value; }),
         ratings: ratings,
+        source: checked('source'),
         guide: guideInput.value.trim().slice(0, maxGuideNameLength),
         draft: draft.value,
         company: document.getElementById('company').value,
@@ -342,14 +443,20 @@ const tourData = Object.fromEntries(
     }
 
     makeBtn.addEventListener('click', function () {
-      if (!tourSlug()) {
-        formError.textContent = 'Please choose which tour you joined.';
+      var missing = !tourSlug()
+        ? 'Please choose which tour you joined.'
+        : !checked('source')
+          ? 'Please tell us where you booked, so we can send you to the right page.'
+          : '';
+      if (missing) {
+        formError.textContent = missing;
         formError.classList.remove('hidden');
         formError.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
       formError.classList.add('hidden');
       result.classList.remove('hidden');
+      showDestination();
       makeReview();
       logAnswers();
       makeBtn.textContent = 'UPDATE MY REVIEW \u25B6';
@@ -359,10 +466,16 @@ const tourData = Object.fromEntries(
 
     document.getElementById('reshuffle').addEventListener('click', makeReview);
     document.getElementById('copy-again').addEventListener('click', copyDraft);
-    tripadvisorLink.addEventListener('click', function () {
-      // Send the final text too: the guest may have reworded or edited it.
-      log({ type: 'tripadvisor', draft: draft.value });
+    // Send the final text too: the guest may have reworded or edited it.
+    destLink.addEventListener('click', function () {
+      log({ type: 'open', target: destLink.getAttribute('data-dest'), draft: draft.value });
+      if (window.track) window.track('review_helper_open', { target: destLink.getAttribute('data-dest') });
     });
+    if (googleLink) {
+      googleLink.addEventListener('click', function () {
+        log({ type: 'open', target: 'google', draft: draft.value });
+      });
+    }
     draft.addEventListener('input', fitDraft);
   })();
 </script>

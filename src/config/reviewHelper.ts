@@ -2,19 +2,24 @@
  * Settings for the post-tour review helper (/guest/review).
  *
  * Shown to guests at the END of a tour. They tap a few words and quick
- * ratings, type their guide's name, and get a short draft review they can
- * copy and paste into TripAdvisor.
+ * ratings, type their guide's name, say where they booked, and get a short
+ * draft review they can paste into that site's review form (plus Google Maps).
  *
  * 運用メモ（日本語）:
  * - ツアーが増えたら TOURS に1行足すだけ。専用ページ /review/<slug> が自動でできる。
- * - TripAdvisor はツアーごとに別商品なので、投稿リンクも各ツアーに書く。
- *   未設定のツアーは会社ページ（TRIPADVISOR_URL）に飛ぶ。
+ * - TripAdvisor・GetYourGuide はツアーごとに別商品なので、投稿リンクも各ツアーに書く。
+ *   TripAdvisor が未設定のツアーは会社ページ（TRIPADVISOR_URL）に飛ぶ。
+ *   GetYourGuide が未設定のツアーは「アプリから書いてね」という案内文を出す。
+ * - 「どこで予約したか」で最後のボタンが変わる（BOOKING_SOURCES）。
+ *   Viator は配れる投稿リンクがないので TripAdvisor に案内する（同じグループ会社）。
+ *   Klook も配れるリンクがないので、アプリでの書き方を案内する。
+ * - Google マップのボタンは、どの予約サイトを選んでも下に出る（店舗単位で1つ）。
  * - ?g=Shumpei を付けたリンクを渡すと、ガイド名を入れた状態で開ける。
  * - 文面は毎回少しずつ言い回しが変わる（全員同じ文章だと TripAdvisor に
  *   不正レビューと疑われるため）。お客さんが自由に書き足せる。
  * - 回答はオーナー専用スプレッドシート「OTAtrip レビュー回答ログ」に記録する
  *   （送信先は下の REVIEW_LOG_ENDPOINT。GAS は ~/8E6/OTAtripGuide/ReviewLog）。
- *   記録に失敗しても、お客さんの画面（コピー・TripAdvisor）は止めない。
+ *   記録に失敗しても、お客さんの画面（コピー・投稿先への移動）は止めない。
  */
 
 import { TRIPADVISOR_URL } from './site';
@@ -27,6 +32,11 @@ export type ReviewTour = {
   shortName: string;
   /** TripAdvisor "write a review" link for this tour product. */
   tripadvisor?: string;
+  /**
+   * GetYourGuide review link for this activity. From the supplier portal:
+   * Performance > Reviews > Collect more reviews.
+   */
+  getyourguide?: string;
 };
 
 export const TOURS: ReviewTour[] = [
@@ -36,6 +46,8 @@ export const TOURS: ReviewTour[] = [
     shortName: 'Gion Night Walk',
     tripadvisor:
       'https://www.tripadvisor.com/UserReviewEdit-g298564-d27759588-Kyoto_Gion_Night_Walk_Sake_Secret_Alleys_Geisha_District-Kyoto_Kyoto_Prefecture_Kinki.html',
+    getyourguide:
+      'https://www.getyourguide.com/scan-review-qr?activity_id=717960&utm_medium=offline&utm_source=supplier_review_link&utm_campaign=supplier_review_qrcode&utm_content=717960',
   },
   { slug: 'izakaya-hopping', name: 'Kyoto Izakaya Hopping', shortName: 'Izakaya Hopping tour' },
   {
@@ -44,7 +56,13 @@ export const TOURS: ReviewTour[] = [
     shortName: 'Shimogamo & Manga Walk',
   },
   { slug: 'coffee-ceremony', name: 'Hands-On Coffee Ceremony', shortName: 'Coffee Ceremony' },
-  { slug: 'tea-ceremony', name: 'Matcha Tea Ceremony', shortName: 'Matcha Tea Ceremony' },
+  {
+    slug: 'tea-ceremony',
+    name: 'Matcha Tea Ceremony',
+    shortName: 'Matcha Tea Ceremony',
+    tripadvisor:
+      'https://www.tripadvisor.com/UserReviewEdit-g298564-d34405946-Kyoto_Matcha_Tasting_and_Making_Class_with_Urasenke_Tea_Master-Kyoto_Kyoto_Prefecture_Kinki.html',
+  },
 ];
 
 export function findTour(slug: string): ReviewTour | undefined {
@@ -54,6 +72,32 @@ export function findTour(slug: string): ReviewTour | undefined {
 export function tripadvisorUrlFor(tour: ReviewTour): string {
   return tour.tripadvisor || TRIPADVISOR_URL;
 }
+
+/**
+ * Where the guest booked. Each review counts most on the site they booked
+ * through, so the final button follows this answer.
+ */
+export const BOOKING_SOURCES = [
+  { key: 'tripadvisor', label: 'TripAdvisor / Viator' },
+  { key: 'getyourguide', label: 'GetYourGuide' },
+  { key: 'klook', label: 'Klook' },
+  { key: 'other', label: 'Somewhere else' },
+];
+
+/**
+ * Google "write a review" link. Google reviews belong to the business, not
+ * to one tour, so this single link is offered on every page.
+ * TODO: swap for the direct review-form link from Google Business Profile
+ * ("Ask for reviews") once ownership moves to 8e6.co.jp. This one opens the
+ * business panel, where the guest taps "Write a review".
+ */
+export const GOOGLE_REVIEW_URL = 'https://share.google/Qhpx7AhfBwDTN78Yx';
+
+/**
+ * Reviews shorter than this get one or two neutral sentences appended.
+ * TripAdvisor rejects very short reviews (reportedly under 200 characters).
+ */
+export const MIN_DRAFT_LENGTH = 200;
 
 /** Impression words. Adjectives, so they read naturally inside a sentence. */
 export const IMPRESSION_WORDS = [
@@ -176,6 +220,13 @@ export const TEMPLATES = {
       'The pace was comfortable the whole way.',
     ],
   },
+  /** Appended (in random order, no repeats) when a draft is too short. */
+  padding: [
+    'It was a great way to see a different side of Kyoto.',
+    'Easily one of the best things we did on our trip.',
+    'Everything was well organized and easy to join.',
+    'Perfect if you want something more personal than a big group tour.',
+  ],
   closer: [
     'Highly recommend!',
     'Would definitely recommend.',
