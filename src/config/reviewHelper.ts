@@ -49,13 +49,27 @@ export const TOURS: ReviewTour[] = [
     getyourguide:
       'https://www.getyourguide.com/scan-review-qr?activity_id=717960&utm_medium=offline&utm_source=supplier_review_link&utm_campaign=supplier_review_qrcode&utm_content=717960',
   },
-  { slug: 'izakaya-hopping', name: 'Kyoto Izakaya Hopping', shortName: 'Izakaya Hopping tour' },
+  {
+    slug: 'izakaya-hopping',
+    name: 'Kyoto Izakaya Hopping',
+    shortName: 'Izakaya Hopping tour',
+    tripadvisor:
+      'https://www.tripadvisor.com/UserReviewEdit-g298564-d27704383-Kyoto_Izakaya_Hopping_Pontocho_Gion_Local_Food_Tour-Kyoto_Kyoto_Prefecture_Kinki.html',
+  },
   {
     slug: 'shimogamo-manga-walk',
     name: 'Shimogamo Shrine & Manga Walk',
     shortName: 'Shimogamo & Manga Walk',
+    tripadvisor:
+      'https://www.tripadvisor.com/UserReviewEdit-g298564-d28008480-Kyoto_World_Heritage_Walk_Shimogamo_Shrine_Photos_Custom_Manga-Kyoto_Kyoto_Prefecture_Kinki.html',
   },
-  { slug: 'coffee-ceremony', name: 'Hands-On Coffee Ceremony', shortName: 'Coffee Ceremony' },
+  {
+    slug: 'coffee-ceremony',
+    name: 'Hands-On Coffee Ceremony',
+    shortName: 'Coffee Ceremony',
+    tripadvisor:
+      'https://www.tripadvisor.com/UserReviewEdit-g298564-d34500003-Hands_On_Coffee_Ceremony_with_a_Master_near_Nishiki_Market-Kyoto_Kyoto_Prefecture_Kinki.html',
+  },
   {
     slug: 'tea-ceremony',
     name: 'Matcha Tea Ceremony',
