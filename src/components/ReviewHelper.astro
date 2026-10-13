@@ -251,8 +251,9 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
       </div>
     )}
 
-    <!-- Private note to the owner. Goes to the owner-only spreadsheet; the
-         guide never sees it. Separate from the public review on purpose. -->
+    <!-- Private note to the owner. Goes to the owner-only spreadsheet; it is
+         not handed to the guide as-is, only used to improve the tour.
+         Separate from the public review on purpose. -->
     <div class="rv-window mt-14">
       <label for="owner-note" class="rv-window-title">▶ SECRET MESSAGE TO THE OWNER</label>
       <p class="mb-3 font-sans text-sm leading-relaxed text-gray-300">
@@ -260,7 +261,8 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
         we would love to know.
       </p>
       <p class="mb-4 border-l-4 border-nes-cyan bg-[#0b1a1d] px-3 py-2 font-sans text-sm leading-relaxed text-nes-white">
-        🔒 Only the owner of OTAtrip Guide reads this. It is <strong>never shared with your guide</strong>.
+        🔒 Only the owner of OTAtrip Guide reads this. We will <strong>not pass it on to your guide directly</strong>.
+        We use what you tell us to make the tour better for future guests.
       </p>
       <textarea
         id="owner-note"
