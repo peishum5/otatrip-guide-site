@@ -62,6 +62,8 @@ export const TOURS: ReviewTour[] = [
     shortName: 'Shimogamo & Manga Walk',
     tripadvisor:
       'https://www.tripadvisor.com/UserReviewEdit-g298564-d28008480-Kyoto_World_Heritage_Walk_Shimogamo_Shrine_Photos_Custom_Manga-Kyoto_Kyoto_Prefecture_Kinki.html',
+    getyourguide:
+      'https://www.getyourguide.com/scan-review-qr?activity_id=746885&utm_medium=offline&utm_source=supplier_review_link&utm_campaign=supplier_review_qrcode&utm_content=746885',
   },
   {
     slug: 'coffee-ceremony',
@@ -69,6 +71,8 @@ export const TOURS: ReviewTour[] = [
     shortName: 'Coffee Ceremony',
     tripadvisor:
       'https://www.tripadvisor.com/UserReviewEdit-g298564-d34500003-Hands_On_Coffee_Ceremony_with_a_Master_near_Nishiki_Market-Kyoto_Kyoto_Prefecture_Kinki.html',
+    getyourguide:
+      'https://www.getyourguide.com/scan-review-qr?activity_id=1365458&utm_medium=offline&utm_source=supplier_review_link&utm_campaign=supplier_review_qrcode&utm_content=1365458',
   },
   {
     slug: 'tea-ceremony',
@@ -76,6 +80,8 @@ export const TOURS: ReviewTour[] = [
     shortName: 'Matcha Tea Ceremony',
     tripadvisor:
       'https://www.tripadvisor.com/UserReviewEdit-g298564-d34405946-Kyoto_Matcha_Tasting_and_Making_Class_with_Urasenke_Tea_Master-Kyoto_Kyoto_Prefecture_Kinki.html',
+    getyourguide:
+      'https://www.getyourguide.com/scan-review-qr?activity_id=1329761&utm_medium=offline&utm_source=supplier_review_link&utm_campaign=supplier_review_qrcode&utm_content=1329761',
   },
 ];
 
