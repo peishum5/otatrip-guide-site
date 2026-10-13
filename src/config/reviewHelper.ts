@@ -87,45 +87,91 @@ export const MAX_GUIDE_NAME_LENGTH = 40;
 
 /**
  * Sentence pieces for the draft. {g} = guide name, {t} = tour short name,
- * {w} = picked words. Each slot has variants; one is picked at random so that
- * no two guests post identical text. No dashes: they read as machine-written.
+ * {w} = picked words ({W} = same, capitalized for a sentence start).
+ * Each slot has variants; one is picked at random so that no two guests
+ * post identical text. No dashes: they read as machine-written.
  */
 export const TEMPLATES = {
   openerWithWords: [
     'Our {t} with {g} was {w}.',
     'The {t} with {g} was {w}!',
     'We joined the {t} with {g} and it was {w}.',
+    'Just finished the {t} with {g}. {W} from start to finish!',
+    'If I had to sum up the {t} with {g}: {w}.',
+    'Honestly, the {t} with {g} was {w}.',
   ],
   openerNoWords: [
     'We had a great time on the {t} with {g}.',
     'We really enjoyed the {t} with {g}.',
+    'So glad we booked the {t} with {g}.',
+    'The {t} with {g} was a highlight of our Kyoto trip.',
   ],
   friendliness: {
     3: [
       '{G} was so friendly, it felt like exploring with a local friend.',
       '{G} was incredibly warm and made everyone feel at home.',
+      '{G} made us feel welcome from the very first minute.',
+      'By the end, {g} felt more like a friend than a guide.',
     ],
-    2: ['{G} was really friendly and easy to talk to.', '{G} was kind and fun to be around.'],
-    1: ['{G} was friendly and welcoming.', '{G} was nice and easygoing.'],
+    2: [
+      '{G} was really friendly and easy to talk to.',
+      '{G} was kind and fun to be around.',
+      '{G} was cheerful and happy to answer all our questions.',
+      '{G} kept the mood relaxed and friendly the whole time.',
+    ],
+    1: [
+      '{G} was friendly and welcoming.',
+      '{G} was nice and easygoing.',
+      '{G} was polite and easy to follow.',
+      '{G} was approachable and kind.',
+    ],
   },
   learning: {
     3: [
       'We learned so much about Kyoto that we never would have found on our own.',
       'Every stop came with a great story, and we learned a ton.',
+      'I came away knowing so much more about Japanese culture.',
+      'The stories and background made everything we saw come alive.',
     ],
     2: [
       'We learned a lot about local culture along the way.',
       'There were lots of interesting stories about the area.',
+      'We picked up plenty of fun facts and local tips.',
+      'It was a great mix of history and everyday local life.',
     ],
-    1: ['We picked up some fun facts about Kyoto.', 'We got some nice insights into local life.'],
+    1: [
+      'We picked up some fun facts about Kyoto.',
+      'We got some nice insights into local life.',
+      'We learned a few things we did not know before.',
+      'There were some interesting bits of local history.',
+    ],
   },
   route: {
     3: [
       'Every stop was a gem we would never have found ourselves.',
       'The route was perfect, full of real local spots.',
+      'Each place we visited felt special and away from the crowds.',
+      'Honestly, the places we went were the real highlight.',
     ],
-    2: ['We really enjoyed the places we visited.', 'The stops were a great mix.'],
-    1: ['The route was easy to follow and nicely paced.', 'The stops were a nice mix.'],
+    2: [
+      'We really enjoyed the places we visited.',
+      'The stops were a great mix.',
+      'The route was well planned and never felt rushed.',
+      'We saw a side of Kyoto we would have missed on our own.',
+    ],
+    1: [
+      'The route was easy to follow and nicely paced.',
+      'The stops were a nice mix.',
+      'The places we visited were pleasant and easy to get to.',
+      'The pace was comfortable the whole way.',
+    ],
   },
-  closer: ['Highly recommend!', 'Would definitely recommend.', "Don't miss it if you're in Kyoto!"],
+  closer: [
+    'Highly recommend!',
+    'Would definitely recommend.',
+    "Don't miss it if you're in Kyoto!",
+    'Thank you for a wonderful time!',
+    'A must-do in Kyoto.',
+    'We would happily book again.',
+  ],
 };

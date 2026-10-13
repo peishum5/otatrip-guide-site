@@ -235,6 +235,10 @@ const tourData = Object.fromEntries(
       return lower.slice(0, -1).join(', ') + ' and ' + lower[lower.length - 1];
     }
 
+    function capitalize(text) {
+      return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+
     function buildDraft() {
       var guide = guideInput.value.trim();
       var words = wordBoxes.filter(function (b) { return b.checked; }).map(function (b) { return b.value; });
@@ -245,6 +249,7 @@ const tourData = Object.fromEntries(
           .replace(/\{G\}/g, guide || 'Our guide')
           .replace(/\{g\}/g, guide || 'our guide')
           .replace(/\{t\}/g, tour.shortName)
+          .replace(/\{W\}/g, capitalize(joinWords(words)))
           .replace(/\{w\}/g, joinWords(words));
       }
 
