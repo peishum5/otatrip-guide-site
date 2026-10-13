@@ -523,8 +523,140 @@
   }
 
   /* === Review helper (/guest/review) ===
+     Dressed as a game: a QUEST CLEAR title screen, RPG windows for each
+     question, and an item-get banner when the review is copied.
      Tap-first: every control is at least 44px tall for thumbs. The chip
      wraps a visually hidden input, so the whole chip is the tap target. */
+
+  /* Title screen */
+  .rv-hero {
+    position: relative;
+    overflow: hidden;
+    background-image: radial-gradient(circle, rgba(255, 176, 0, 0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .rv-clear {
+    font-size: clamp(1.4rem, 7vw, 2.4rem);
+    line-height: 1.3;
+    text-shadow: 4px 4px 0 #7a5500, 0 0 24px rgba(255, 176, 0, 0.45);
+    animation: rv-clear-in 0.6s cubic-bezier(0.2, 1.6, 0.4, 1) 0.15s both;
+  }
+
+  @keyframes rv-clear-in {
+    0%   { transform: scale(3); opacity: 0; filter: blur(4px); }
+    60%  { transform: scale(0.92); opacity: 1; filter: blur(0); }
+    100% { transform: scale(1); }
+  }
+
+  .rv-hero-stars {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 2.4rem;
+    line-height: 1;
+    color: var(--color-nes-amber);
+    text-shadow: 3px 3px 0 #7a5500;
+  }
+
+  .rv-hero-stars span {
+    display: inline-block;
+    animation: rv-star-drop 0.45s cubic-bezier(0.3, 1.8, 0.5, 1) both;
+  }
+  .rv-hero-stars span:nth-child(1) { animation-delay: 0.55s; }
+  .rv-hero-stars span:nth-child(2) { animation-delay: 0.7s; font-size: 3rem; margin-top: -0.4rem; }
+  .rv-hero-stars span:nth-child(3) { animation-delay: 0.85s; }
+
+  @keyframes rv-star-drop {
+    0%   { transform: translateY(-40px) scale(0) rotate(-180deg); opacity: 0; }
+    100% { transform: none; opacity: 1; }
+  }
+
+  .rv-confetti {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 15;
+  }
+
+  .rv-confetti span {
+    position: absolute;
+    top: -12px;
+    width: 8px;
+    height: 8px;
+    opacity: 0;
+    animation-name: rv-confetti-fall;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+  }
+  .rv-confetti span:nth-child(3n) { width: 6px; height: 10px; }
+
+  @keyframes rv-confetti-fall {
+    0%   { transform: translate(0, 0) rotate(0); opacity: 1; }
+    85%  { opacity: 1; }
+    100% { transform: translate(var(--drift, 0), 420px) rotate(540deg); opacity: 0; }
+  }
+
+  /* Blinking "next" arrow at the end of the dialogue line */
+  .rv-caret {
+    display: inline-block;
+    margin-left: 0.35rem;
+    font-size: 0.7rem;
+    color: var(--color-nes-amber);
+    animation: blink 0.9s step-end infinite;
+  }
+
+  /* Sections slide up one after another once the title has landed */
+  .rv-reveal {
+    animation: rv-reveal 0.45s ease-out both;
+    animation-delay: var(--d, 0s);
+  }
+
+  @keyframes rv-reveal {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* RPG window: one per question */
+  .rv-window {
+    position: relative;
+    margin-bottom: 2.5rem;
+    padding: 1.75rem 1.1rem 1.25rem;
+    background: #0d0d0d;
+    border: 3px double #4a4a4a;
+    box-shadow: 4px 4px 0 rgba(0, 229, 255, 0.12);
+  }
+
+  .rv-window-title {
+    display: block;
+    margin-bottom: 1rem;
+    padding: 0 0.4rem;
+    font-family: var(--font-pixel);
+    font-size: 0.7rem;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+    color: var(--color-nes-cyan);
+  }
+
+  /* fieldset legends sit on the frame line, like a classic menu window */
+  fieldset.rv-window > legend.rv-window-title {
+    margin-bottom: 0;
+    background: #0a0a0a;
+  }
+  fieldset.rv-window > legend.rv-window-title + * { margin-top: 0.5rem; }
+
+  /* Picked / allowed counter for the word chips */
+  .rv-slots {
+    flex-shrink: 0;
+    font-family: var(--font-pixel);
+    font-size: 0.65rem;
+    color: var(--color-nes-amber);
+    border: 2px solid #3a3a3a;
+    padding: 0.35rem 0.5rem;
+  }
+  .rv-slots.is-full { border-color: var(--color-nes-amber); }
+
   .rv-chip {
     display: inline-flex;
     align-items: center;
@@ -533,20 +665,29 @@
     padding: 0.6rem 1rem;
     background: #111111;
     border: 2px solid #3a3a3a;
+    box-shadow: 3px 3px 0 #000;
     font-family: var(--font-sans);
     font-size: 0.95rem;
     line-height: 1.3;
     color: var(--color-nes-white);
     cursor: pointer;
     text-align: center;
-    transition: background-color 0.1s, border-color 0.1s, color 0.1s;
+    transition: background-color 0.1s, border-color 0.1s, color 0.1s, transform 0.08s;
     -webkit-tap-highlight-color: transparent;
   }
+
+  .rv-chip:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #000; }
 
   .rv-chip-level {
     flex: 1 1 0;
     min-width: 0;
     padding: 0.6rem 0.4rem;
+  }
+
+  .rv-level-stars {
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: var(--color-nes-amber);
   }
 
   .rv-chip:has(input:checked) {
@@ -555,6 +696,13 @@
     color: #0a0a0a;
     font-weight: 600;
     box-shadow: 3px 3px 0 #7a5500;
+    animation: rv-pop 0.25s cubic-bezier(0.3, 1.8, 0.5, 1);
+  }
+  .rv-chip:has(input:checked) .rv-level-stars { color: #0a0a0a; }
+
+  @keyframes rv-pop {
+    0%   { transform: scale(0.9); }
+    100% { transform: scale(1); }
   }
 
   .rv-chip:has(input:disabled) {
@@ -565,6 +713,50 @@
   .rv-chip:has(input:focus-visible) {
     outline: 2px dashed var(--color-nes-cyan);
     outline-offset: 3px;
+  }
+
+  /* Main call to action gently pulses so it reads as "press start" */
+  .rv-start {
+    animation: rv-start-pulse 1.6s ease-in-out infinite;
+  }
+
+  @keyframes rv-start-pulse {
+    0%, 100% { box-shadow: 4px 4px 0 #7a5500, 0 0 0 rgba(255, 176, 0, 0); }
+    50%      { box-shadow: 4px 4px 0 #7a5500, 0 0 22px rgba(255, 176, 0, 0.55); }
+  }
+
+  /* Item-get banner shown when the review is copied */
+  .rv-itemget {
+    padding: 1.25rem 1rem;
+    border: 3px solid var(--color-nes-green);
+    background: #0b180b;
+    box-shadow: 6px 6px 0 rgba(0, 216, 0, 0.25);
+  }
+
+  .rv-itemget-title {
+    font-size: clamp(0.9rem, 4.5vw, 1.2rem);
+    line-height: 1.5;
+    text-shadow: 3px 3px 0 #7a5500;
+  }
+
+  .rv-itemget.is-playing { animation: rv-itemget 0.5s cubic-bezier(0.2, 1.6, 0.4, 1); }
+  .rv-itemget.is-playing .rv-itemget-title { animation: rv-clear-in 0.5s cubic-bezier(0.2, 1.6, 0.4, 1); }
+
+  @keyframes rv-itemget {
+    0%   { transform: scale(0.85); }
+    100% { transform: scale(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rv-clear,
+    .rv-hero-stars span,
+    .rv-reveal,
+    .rv-caret,
+    .rv-start,
+    .rv-chip:has(input:checked),
+    .rv-itemget.is-playing,
+    .rv-itemget.is-playing .rv-itemget-title { animation: none; }
+    .rv-confetti { display: none; }
   }
 
   .rv-input {
