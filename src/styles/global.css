@@ -618,6 +618,30 @@
     to   { opacity: 1; transform: none; }
   }
 
+  /* Scroll effect (only once the page script has run: html.rv-motion).
+     Each window fades up as it enters the screen; its question text then
+     types out with a block cursor. */
+  .rv-motion .rv-scroll {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  }
+  .rv-motion .rv-scroll.is-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  [data-type].is-typing::after {
+    content: '';
+    display: inline-block;
+    width: 0.55em;
+    height: 1em;
+    margin-left: 2px;
+    vertical-align: -0.12em;
+    background: currentColor;
+    animation: blink 0.5s step-end infinite;
+  }
+
   /* RPG window: one per question */
   .rv-window {
     position: relative;

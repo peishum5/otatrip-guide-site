@@ -82,9 +82,9 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
 
 <div class="mx-auto max-w-2xl px-4 py-10 md:py-12">
   {!tour && (
-    <fieldset class="rv-window rv-reveal" style="--d: 1.4s">
-      <legend class="rv-window-title">▶ WHICH QUEST?</legend>
-      <p class="mb-4 font-sans text-sm text-gray-300">Which tour did you join?</p>
+    <fieldset class="rv-window rv-scroll">
+      <legend class="rv-window-title" data-type>▶ WHICH QUEST?</legend>
+      <p class="mb-4 font-sans text-sm text-gray-300" data-type>Which tour did you join?</p>
       <div class="flex flex-col gap-2.5">
         {TOURS.map((option) => (
           <label class="rv-chip">
@@ -96,10 +96,10 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
     </fieldset>
   )}
 
-  <fieldset class="rv-window rv-reveal" style="--d: 1.5s">
-    <legend class="rv-window-title">▶ PICK YOUR WORDS</legend>
+  <fieldset class="rv-window rv-scroll">
+    <legend class="rv-window-title" data-type>▶ PICK YOUR WORDS</legend>
     <div class="mb-4 flex items-center justify-between gap-3">
-      <p class="font-sans text-sm text-gray-300">Words that fit the tour.</p>
+      <p class="font-sans text-sm text-gray-300" data-type>Words that fit the tour.</p>
       <p class="rv-slots" aria-live="polite">
         <span id="word-count">0</span>/{MAX_WORDS}
       </p>
@@ -114,12 +114,12 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
     </div>
   </fieldset>
 
-  <fieldset class="rv-window rv-reveal" style="--d: 1.6s">
-    <legend class="rv-window-title">▶ RATE YOUR QUEST</legend>
+  <fieldset class="rv-window rv-scroll">
+    <legend class="rv-window-title" data-type>▶ RATE YOUR QUEST</legend>
     <div class="space-y-6">
       {RATING_AXES.map((axis) => (
         <div>
-          <p class="mb-2 font-dot text-base text-nes-white">{axis.label}</p>
+          <p class="mb-2 font-dot text-base text-nes-white" data-type>{axis.label}</p>
           <div class="flex gap-2">
             {RATING_LEVELS.map((level, index) => (
               <label class="rv-chip rv-chip-level">
@@ -136,9 +136,9 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
     </div>
   </fieldset>
 
-  <div class="rv-window rv-reveal" style="--d: 1.7s">
-    <label for="guide" class="rv-window-title">▶ YOUR GUIDE <span class="text-gray-400">(OPTIONAL)</span></label>
-    <p class="mb-4 font-sans text-sm text-gray-300">
+  <div class="rv-window rv-scroll">
+    <label for="guide" class="rv-window-title"><span data-type>▶ YOUR GUIDE</span> <span class="text-gray-400" data-type>(OPTIONAL)</span></label>
+    <p class="mb-4 font-sans text-sm text-gray-300" data-type>
       Their first name goes into your review. Leave blank to skip.
     </p>
     <input
@@ -152,8 +152,8 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
     />
   </div>
 
-  <fieldset class="rv-window rv-reveal" style="--d: 1.8s">
-    <legend class="rv-window-title">▶ WHERE DID YOU BOOK?</legend>
+  <fieldset class="rv-window rv-scroll">
+    <legend class="rv-window-title" data-type>▶ WHERE DID YOU BOOK?</legend>
     <div class="grid grid-cols-2 gap-2.5">
       {BOOKING_SOURCES.map((source, index) => (
         <label class:list={['rv-chip', { 'col-span-2': BOOKING_SOURCES.length % 2 === 1 && index === BOOKING_SOURCES.length - 1 }]}>
@@ -172,7 +172,7 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
 
   <p id="form-error" class="mb-4 hidden border-2 border-nes-red bg-[#1f0d0d] px-4 py-3 font-sans text-sm text-nes-white" role="alert"></p>
 
-  <div class="rv-reveal" style="--d: 1.9s">
+  <div class="rv-scroll">
     <button type="button" id="make-btn" class="rv-start nes-btn nes-btn-gold block w-full whitespace-normal text-center leading-loose">
       ▶ SUBMIT &amp; COPY MY REVIEW
     </button>
@@ -280,6 +280,84 @@ const confetti = Array.from({ length: 28 }, (_, i) => {
           if (i >= fullText.length) clearInterval(timer);
         }, 28);
       }, 1400);
+    }
+
+    /**
+     * Scroll effect: each question window fades up as it enters the screen,
+     * then its question text types itself out line by line. Content is only
+     * hidden once this script runs, so the page still works without it.
+     */
+    var scrollBlocks = Array.prototype.slice.call(document.querySelectorAll('.rv-scroll'));
+    if (!reduceMotion) {
+      document.documentElement.classList.add('rv-motion');
+
+      // Remember each line, then blank it while keeping its height, so the
+      // layout does not jump as letters appear.
+      scrollBlocks.forEach(function (block) {
+        block.querySelectorAll('[data-type]').forEach(function (el) {
+          var text = el.textContent.replace(/\s+/g, ' ').trim();
+          el.setAttribute('data-full', text);
+          el.setAttribute('aria-label', text);
+          // Inline spans have no height of their own; hold the parent instead.
+          var holder = getComputedStyle(el).display === 'inline' ? el.parentElement : el;
+          if (!holder.style.minHeight) holder.style.minHeight = holder.offsetHeight + 'px';
+          el.textContent = '';
+        });
+      });
+
+      var typeLines = function (lines, index) {
+        if (index >= lines.length) return;
+        var el = lines[index];
+        var text = el.getAttribute('data-full') || '';
+        var i = 0;
+        el.classList.add('is-typing');
+        var timer = setInterval(function () {
+          el.textContent = text.slice(0, ++i);
+          if (i >= text.length) {
+            clearInterval(timer);
+            el.classList.remove('is-typing');
+            typeLines(lines, index + 1);
+          }
+        }, 32);
+      };
+
+      var reveal = function (block, animate) {
+        block.classList.add('is-in');
+        var lines = Array.prototype.slice.call(block.querySelectorAll('[data-type]'));
+        if (!animate) {
+          lines.forEach(function (el) { el.textContent = el.getAttribute('data-full') || ''; });
+          return;
+        }
+        // Start typing as the fade-up settles.
+        setTimeout(function () { typeLines(lines, 0); }, 250);
+      };
+
+      // Reveal every window whose top has come up past 85% of the screen.
+      // One already scrolled past (a fast fling) appears at once, untyped.
+      var pending = scrollBlocks.slice();
+      var ticking = false;
+      var check = function () {
+        ticking = false;
+        pending = pending.filter(function (block) {
+          var rect = block.getBoundingClientRect();
+          if (rect.top > window.innerHeight * 0.85) return true;
+          reveal(block, rect.bottom > 0);
+          return false;
+        });
+        if (!pending.length) window.removeEventListener('scroll', onScroll);
+      };
+      var onScroll = function () {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(check);
+        }
+      };
+
+      // Let the title screen play first, then start watching.
+      setTimeout(function () {
+        window.addEventListener('scroll', onScroll, { passive: true });
+        check();
+      }, 1600);
     }
 
     /** Restart a one-shot CSS animation (e.g. the item-get pop). */
