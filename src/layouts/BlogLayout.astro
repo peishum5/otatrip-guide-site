@@ -61,7 +61,7 @@ const displayDate = last_updated || pubDate;
 const siteUrl = (Astro.site ?? new URL('https://otatrip.guide')).origin;
 const canonicalPath = canonical || Astro.url.pathname;
 const canonicalUrl = new URL(canonicalPath, siteUrl).toString();
-const imageUrl = hero_image ? new URL(hero_image, siteUrl).toString() : new URL('/images/og-default.jpg', siteUrl).toString();
+const imageUrl = hero_image ? new URL(hero_image, siteUrl).toString() : new URL('/images/og-default-logo.jpg', siteUrl).toString();
 const graph: Record<string, unknown>[] = [
   {
     "@type": "Article",

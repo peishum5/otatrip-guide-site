@@ -32,7 +32,7 @@ const {
 const siteUrl = (Astro.site ?? new URL('https://otatrip.guide')).origin;
 const canonicalPath = canonical || Astro.url.pathname;
 const canonicalUrl = new URL(canonicalPath, siteUrl).toString();
-const ogImageUrl = new URL(ogImage || '/images/og-default.jpg', siteUrl).toString();
+const ogImageUrl = new URL(ogImage || '/images/og-default-logo.jpg', siteUrl).toString();
 // Strip any brand suffix a page may already carry, then append exactly one.
 const BRAND = 'OTAtrip Guide';
 const baseTitle = title.replace(/\s*\|\s*OTA\s?[Tt]rip Guide\s*$/i, '').trim();
@@ -75,7 +75,7 @@ const fullTitle = baseTitle.includes(BRAND) ? baseTitle : `${baseTitle} | ${BRAN
         "@id": `${siteUrl}/#organization`,
         "name": "OTAtrip Guide",
         "url": siteUrl,
-        "logo": `${siteUrl}/favicon.svg`,
+        "logo": `${siteUrl}/logo.png`,
         "email": CONTACT_EMAIL,
         "areaServed": { "@type": "City", "name": "Kyoto" },
         "sameAs": [TRIPADVISOR_URL, "https://x.com/Otatrip_guide", "https://instagram.com/Otatrip_guide"]
@@ -95,6 +95,7 @@ const fullTitle = baseTitle.includes(BRAND) ? baseTitle : `${baseTitle} | ${BRAN
   <!-- Favicon -->
   <link rel="icon" href="/favicon.ico" sizes="any" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
   <!-- Page-specific head injections (e.g. Bokun widget script) -->
   <slot name="head" />
