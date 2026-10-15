@@ -7,38 +7,48 @@ import ReviewsSection from '../../components/ReviewsSection.astro';
 import { BOKUN_LOADER_SRC } from '../../config/site';
 
 const highlights = [
-  'Walk the iconic stone-paved alleys of Gion and Higashiyama',
-  'Stroll Hanamikoji Street — Kyoto\'s most famous geisha district',
-  'Visit Yasui-Konpiragu shrine, Hokan-ji Temple (Yasaka Pagoda), and Yasaka Shrine',
-  'Discover Nene-no-Michi, Sannenzaka, and Sanneizaka at your own pace',
-  'Hear stories of geiko, maiko, and the traditional entertainment district',
-  'Small groups (max 10 guests) for an intimate, unhurried experience',
+  'A kanpai to start: one bottle of Shinsei, a Fushimi sake, to sip as you walk',
+  'See Pontocho and the Kamo River, then cross into Gion at Minamiza, Japan\'s oldest theatre',
+  'Stroll Hanamikoji Street in Gion Kobu, Kyoto\'s largest geisha district',
+  'Crawl through the stone at Yasui-Konpiragu, the shrine for cutting bad ties',
+  'Yasaka Pagoda, Ninenzaka and Nene-no-Michi, ending at Yasaka Shrine',
+  'Small groups (max 10 guests), about 2.7 km in 90 minutes',
 ];
 
 const timeline = [
-  { time: 'START', desc: 'Meet at Shijo Kiyamachi. Your guide is holding an "Otatrip Guide" sign. Brief intro and overview.' },
-  { time: '+10\'', desc: 'Stroll along the Kamogawa River and enter the Gion district.' },
-  { time: '+20\'', desc: 'Hanamikoji Street — Kyoto\'s most iconic geisha street, lined with traditional machiya teahouses.' },
-  { time: '+30\'', desc: 'Yasui-Konpiragu — a unique Shinto shrine famous for its Enkiri-Enmusubi stone and relationship rituals.' },
-  { time: '+45\'', desc: 'Hokan-ji Temple — the five-story Yasaka Pagoda, one of Kyoto\'s most recognizable landmarks.' },
-  { time: '+60\'', desc: 'Sannenzaka & Sanneizaka — charming stone-paved lanes lined with traditional shops and cafes.' },
-  { time: '+70\'', desc: 'Nene-no-Michi — a serene stone path connecting Kodaiji Temple to Maruyama Park.' },
-  { time: '+80\'', desc: 'Yasaka Shrine — the spiritual heart of Gion and home of the grand Gion Matsuri festival.' },
-  { time: '+90\'', desc: 'Tour ends. Optional: continue exploring the area on your own.' },
+  { time: 'START', desc: 'Meet outside Hankyu Kyoto-Kawaramachi Station Exit 1B, beside McDonald\'s. Your guide is holding an "OTAtrip Guide" sign. Introductions, then a kanpai with Fushimi sake.' },
+  { time: '+8\'',  desc: 'Pontocho and the Kamo River — one of Kyoto\'s five geisha districts, summer river decks, and Japan\'s oldest working elevator at Toka Saikan.' },
+  { time: '+15\'', desc: 'Minamiza — cross the river into Gion. Japan\'s oldest theatre, and the surprising story of how kabuki began.' },
+  { time: '+25\'', desc: 'Shijo Street — the shops of Gion, dango and yatsuhashi, ochaya teahouses, and the story of the Gion Matsuri festival.' },
+  { time: '+33\'', desc: 'Hanamikoji Street — geiko and maiko, and how to tell them apart.' },
+  { time: '+45\'', desc: 'Yasui-Konpiragu — a shrine famous for cutting bad ties. Crawl through the stone and learn how to pray at a shrine.' },
+  { time: '+55\'', desc: 'Yasaka Pagoda (Hokan-ji) — the five-story pagoda first founded in 589. Photo time.' },
+  { time: '+65\'', desc: 'Ninenzaka — the stone-paved slope with a Starbucks inside a traditional townhouse.' },
+  { time: '+72\'', desc: 'Nene-no-Michi and Kodaiji — the story of Hideyoshi and his wife Nene.' },
+  { time: '+80\'', desc: 'Yasaka Shrine — the shrine Gion grew up around, and home of the Gion Matsuri.' },
+  { time: '+90\'', desc: 'Tour ends at Yasaka Shrine. Your guide is happy to recommend where to go next.' },
 ];
 
 const faqs = [
   {
     q: 'How much walking is involved?',
-    a: 'The tour covers the Gion and Higashiyama area — roughly 2–3 km on stone-paved streets and gentle slopes. The pace is relaxed with stops along the way. Comfortable flat shoes are recommended.',
+    a: 'About 2.7 km over 90 minutes, on stone-paved streets with a couple of gentle slopes. The pace is relaxed with stops along the way. Comfortable flat shoes are recommended.',
+  },
+  {
+    q: 'How much sake is included?',
+    a: 'Each guest gets one small bottle of Shinsei, a sake from Fushimi, Kyoto\'s famous sake town. We toast together at the start and you sip it as you walk. The drinking age in Japan is 20, and you are welcome to join without drinking.',
+  },
+  {
+    q: 'Where does the tour start and end?',
+    a: 'It starts outside Hankyu Kyoto-Kawaramachi Station Exit 1B, beside McDonald\'s, and ends at Yasaka Shrine.',
   },
   {
     q: 'Is admission to the shrines and temples included?',
-    a: 'All stops on this tour are free to enter. No admission tickets are needed.',
+    a: 'All stops on this tour are free to enter. At Yasui-Konpiragu, the paper for making a wish is an optional ¥100 offering.',
   },
   {
     q: 'What if it rains?',
-    a: 'The tour runs rain or shine — Gion is beautiful in the rain. Bring an umbrella or pick up a compact one at a nearby konbini.',
+    a: 'The tour runs in light rain — Gion is beautiful when the stones are wet. In heavy rain or a typhoon we may cancel, and we will contact you.',
   },
   {
     q: 'What language is the tour in?',
@@ -70,7 +80,7 @@ const photos = [
 
 <BaseLayout
   title="Kyoto Gion Night Walk: Sake, Hidden Gems & Geisha | OTAtrip Guide"
-  description="A 90-minute walk through Gion's iconic stone-paved alleys with sake tastings at 3 local bars. 4 daily slots: 15:30 / 17:30 / 19:30 / 21:30. Small groups, max 10 guests. Rated 4.9/5."
+  description="A 90-minute walk through Gion's stone-paved alleys with a bottle of Fushimi sake in hand, from Pontocho to Yasaka Shrine. 4 daily slots: 15:30 / 17:30 / 19:30 / 21:30. Small groups, max 10 guests. Rated 4.9/5."
   canonical="/tours/gion-sake-walk"
   ogImage="/images/tours/gion/hero.jpg"
 >
@@ -94,7 +104,7 @@ const photos = [
       </h1>
       <p class="font-sans text-gray-300 text-base leading-relaxed mb-8 max-w-xl">
         Walk the stone-paved alleys of Kyoto's most iconic neighborhood.
-        Gion, Hanamikoji, Yasaka Pagoda, Nene-no-Michi — guided by someone who calls Gion home.
+        Hanamikoji, Yasaka Pagoda, Ninenzaka and Yasaka Shrine, with Kyoto sake in hand — guided by someone who lives in Kyoto.
       </p>
       <div class="flex flex-wrap gap-x-8 gap-y-4 mb-8">
         {[
@@ -200,10 +210,11 @@ const photos = [
         <p class="px-eyebrow text-nes-cyan mb-4">// MEETING POINT</p>
         <div class="grid md:grid-cols-2 gap-6">
           <div>
-            <p class="font-sans text-nes-white font-semibold text-sm mb-1">Shijo Kiyamachi</p>
+            <p class="font-sans text-nes-white font-semibold text-sm mb-1">Hankyu Kyoto-Kawaramachi Station, Exit 1B</p>
             <p class="font-sans text-gray-400 text-xs leading-relaxed mb-3">
-              On Kiyamachi Street, slightly south of Shijo — between McDonald's and the Japanese restaurant Kikunoi Roan.
-              Your guide will be holding a sign that reads <span class="text-nes-white">"Otatrip Guide"</span>.
+              Outside on the sidewalk beside McDonald's, in front of the dark wall. Please do not wait inside McDonald's or inside the station.
+              Your guide will be holding a sign that reads <span class="text-nes-white">"OTAtrip Guide"</span>.
+              <a href="/guest/gion-night-walk-meeting-point" class="text-nes-cyan hover:text-nes-amber">See the photo of the exact spot</a>.
             </p>
             <p class="font-sans text-gray-400 text-xs mb-3">
               This is a group tour. Please arrive a few minutes early — late arrivals may cause the tour to start without you.
@@ -221,6 +232,7 @@ const photos = [
             {[
               { k: 'Start times', v: '15:30 / 17:30 / 19:30 / 21:30' },
               { k: 'Duration', v: '90 min' },
+              { k: 'Ends at', v: 'Yasaka Shrine' },
             ].map(row => (
               <div class="flex justify-between border-b border-gray-800 pb-2">
                 <span class="text-gray-400">{row.k}</span>
@@ -275,7 +287,7 @@ const photos = [
     "@context": "https://schema.org",
     "@type": "TouristAttraction",
     "name": "Kyoto Gion Night Walk: Sake, Hidden Gems & Geisha",
-    "description": "A 90-minute walking tour through Gion's stone-paved alleys with sake tastings at 3 local bars. 4 daily slots. Small groups of max 10 guests.",
+    "description": "A 90-minute walking tour through Gion's stone-paved alleys with a bottle of Fushimi sake in hand, from Pontocho to Yasaka Shrine. 4 daily slots. Small groups of max 10 guests.",
     "url": "https://otatrip.guide/tours/gion-sake-walk",
     "image": "https://otatrip.guide/images/tours/gion/hero.jpg",
     "provider": {
