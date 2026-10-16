@@ -1,5 +1,5 @@
 ---
-title: "Kyoto Gion Night Walk: Sake, Hidden Gems & Geisha"
+title: "Kyoto Gion Night Walk: Hidden Gems & Geisha"
 description: "A 90-minute evening walk through Gion with a guide who lives in Kyoto, from Pontocho and Hanamikoji to Yasaka Shrine."
 price: "From ¥5,600 per person"
 duration: "90 minutes"
@@ -12,7 +12,7 @@ highlights:
   - "A small bottle of Kyoto sake for a toast at the start (non-drinkers welcome)"
 ---
 
-# Kyoto Gion Night Walk: Sake, Hidden Gems & Geisha
+# Kyoto Gion Night Walk: Hidden Gems & Geisha
 
 Experience Kyoto's most atmospheric neighborhood after dark with a guide who lives in Kyoto.
 

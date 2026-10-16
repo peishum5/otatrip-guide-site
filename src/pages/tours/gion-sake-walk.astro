@@ -79,8 +79,8 @@ const photos = [
 ---
 
 <BaseLayout
-  title="Kyoto Gion Night Walk: Sake, Hidden Gems & Geisha | OTAtrip Guide"
-  description="A 90-minute walk through Gion's stone-paved alleys and geisha streets, from Pontocho to Yasaka Shrine, with a guide who lives in Kyoto. 4 daily slots: 15:30 / 17:30 / 19:30 / 21:30. Small groups, max 10 guests. Rated 4.9/5."
+  title="Kyoto Gion Night Walk: Hidden Gems & Geisha | OTAtrip Guide"
+  description="A 90-minute walk through Gion's stone-paved alleys and geisha streets, from Pontocho to Yasaka Shrine, with a guide who lives in Kyoto. Starts every 2 hours from 15:30. Small groups, max 10 guests. Rated 4.9/5."
   canonical="/tours/gion-sake-walk"
   ogImage="/images/tours/gion/hero.jpg"
 >
@@ -100,7 +100,7 @@ const photos = [
     <div class="relative z-10 max-w-4xl mx-auto px-4 py-24 md:py-32">
       <p class="font-pixel text-[0.7rem] leading-relaxed text-nes-amber mb-4 rpg-prefix">WALKING TOUR · GION DISTRICT</p>
       <h1 class="font-dot text-4xl md:text-5xl text-nes-white leading-tight mb-5">
-        Kyoto Gion Night Walk: Sake, Hidden Gems & Geisha
+        Kyoto Gion Night Walk: Hidden Gems & Geisha
       </h1>
       <p class="font-sans text-gray-300 text-base leading-relaxed mb-8 max-w-xl">
         Walk the stone-paved alleys of Kyoto's most iconic neighborhood.
@@ -230,7 +230,7 @@ const photos = [
           </div>
           <div class="space-y-2 font-dot text-base">
             {[
-              { k: 'Start times', v: '15:30 / 17:30 / 19:30 / 21:30' },
+              { k: 'Start times', v: '15:30 / 17:30 / 19:30 / 21:30*' },
               { k: 'Duration', v: '90 min' },
               { k: 'Ends at', v: 'Yasaka Shrine' },
             ].map(row => (
@@ -239,6 +239,7 @@ const photos = [
                 <span class="text-nes-white">{row.v}</span>
               </div>
             ))}
+            <p class="font-sans text-xs text-gray-400">* Start times vary by day. Please check the calendar below for available times.</p>
           </div>
         </div>
       </div>
@@ -286,8 +287,8 @@ const photos = [
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "TouristAttraction",
-    "name": "Kyoto Gion Night Walk: Sake, Hidden Gems & Geisha",
-    "description": "A 90-minute walking tour through Gion's stone-paved alleys and geisha streets, from Pontocho to Yasaka Shrine. 4 daily slots. Small groups of max 10 guests.",
+    "name": "Kyoto Gion Night Walk: Hidden Gems & Geisha",
+    "description": "A 90-minute walking tour through Gion's stone-paved alleys and geisha streets, from Pontocho to Yasaka Shrine. Starts every 2 hours from 15:30. Small groups of max 10 guests.",
     "url": "https://otatrip.guide/tours/gion-sake-walk",
     "image": "https://otatrip.guide/images/tours/gion/hero.jpg",
     "provider": {
