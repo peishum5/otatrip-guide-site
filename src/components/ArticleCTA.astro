@@ -37,7 +37,7 @@ const {
       <a href={href} class="nes-btn nes-btn-gold" data-track-label={`${trackPrefix}_tour_details`}>
         {primaryLabel}
       </a>
-      <a href={href} class="nes-btn nes-btn-outline" data-track-label={`${trackPrefix}_book_now`}>
+      <a href={href.startsWith('/tours/') ? `${href}#booking` : href} class="nes-btn nes-btn-outline" data-track-label={`${trackPrefix}_book_now`}>
         {secondaryLabel}
       </a>
     </div>
