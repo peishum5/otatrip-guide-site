@@ -16,7 +16,7 @@ const highlights = [
 ];
 
 const timeline = [
-  { time: '18:00', desc: 'Meet near Kiyamachi-Sanjo. Brief intro to the neighborhood and izakaya culture.' },
+  { time: '18:00', desc: 'Meet at Shijo Kiyamachi. Brief intro to the neighborhood and izakaya culture.' },
   { time: '18:15', desc: 'First izakaya — classic Kyoto small-plates and local draft beer or sake.' },
   { time: '19:00', desc: 'Walk through the narrow lanes of Pontocho alley.' },
   { time: '19:15', desc: 'Second izakaya — regional specialties, your guide explains each dish.' },
@@ -43,7 +43,7 @@ const faqs = [
   },
   {
     q: 'Can I book a private version for my group?',
-    a: 'Yes. Private bookings for 2–8 guests available. Contact us via the Groups page.',
+    a: 'Yes. Private tours and groups of up to 40 guests are available. Contact us via the Groups page.',
   },
 ];
 ---
@@ -179,7 +179,7 @@ const faqs = [
           </div>
           <div class="space-y-2 font-dot text-base">
             {[
-              { k: 'Start times', v: '12:00 / 18:00' },
+              { k: 'Start time', v: '18:00' },
               { k: 'End time', v: '+3 hours' },
               { k: 'Dress code', v: 'Casual' },
             ].map(row => (
@@ -204,7 +204,7 @@ const faqs = [
     </section>
 
     <!-- Reviews -->
-    <ReviewsSection />
+    <ReviewsSection compact />
 
     <!-- Group CTA -->
     <GroupCTA />
