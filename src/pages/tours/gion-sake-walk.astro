@@ -7,16 +7,16 @@ import ReviewsSection from '../../components/ReviewsSection.astro';
 import { BOKUN_LOADER_SRC } from '../../config/site';
 
 const highlights = [
-  'A kanpai to start: one bottle of Shinsei, a Fushimi sake, to sip as you walk',
   'See Pontocho and the Kamo River, then cross into Gion at Minamiza, Japan\'s oldest theatre',
   'Stroll Hanamikoji Street in Gion Kobu, Kyoto\'s largest geisha district',
   'Crawl through the stone at Yasui-Konpiragu, the shrine for cutting bad ties',
   'Yasaka Pagoda, Ninenzaka and Nene-no-Michi, ending at Yasaka Shrine',
   'Small groups (max 10 guests), about 2.7 km in 90 minutes',
+  'A small bottle of Kyoto sake for a toast at the start (non-drinkers welcome)',
 ];
 
 const timeline = [
-  { time: 'START', desc: 'Meet outside Hankyu Kyoto-Kawaramachi Station Exit 1B, beside McDonald\'s. Your guide is holding an "OTAtrip Guide" sign. Introductions, then a kanpai with Fushimi sake.' },
+  { time: 'START', desc: 'Meet outside Hankyu Kyoto-Kawaramachi Station Exit 1B, beside McDonald\'s. Your guide is holding an "OTAtrip Guide" sign. Introductions and a toast to start the evening.' },
   { time: '+8\'',  desc: 'Pontocho and the Kamo River — one of Kyoto\'s five geisha districts, summer river decks, and Japan\'s oldest working elevator at Toka Saikan.' },
   { time: '+15\'', desc: 'Minamiza — cross the river into Gion. Japan\'s oldest theatre, and the surprising story of how kabuki began.' },
   { time: '+25\'', desc: 'Shijo Street — the shops of Gion, dango and yatsuhashi, ochaya teahouses, and the story of the Gion Matsuri festival.' },
@@ -35,10 +35,6 @@ const faqs = [
     a: 'About 2.7 km over 90 minutes, on stone-paved streets with a couple of gentle slopes. The pace is relaxed with stops along the way. Comfortable flat shoes are recommended.',
   },
   {
-    q: 'How much sake is included?',
-    a: 'Each guest gets one small bottle of Shinsei, a sake from Fushimi, Kyoto\'s famous sake town. We toast together at the start and you sip it as you walk. The drinking age in Japan is 20, and you are welcome to join without drinking.',
-  },
-  {
     q: 'Where does the tour start and end?',
     a: 'It starts outside Hankyu Kyoto-Kawaramachi Station Exit 1B, beside McDonald\'s, and ends at Yasaka Shrine.',
   },
@@ -49,6 +45,10 @@ const faqs = [
   {
     q: 'What if it rains?',
     a: 'The tour runs in light rain — Gion is beautiful when the stones are wet. In heavy rain or a typhoon we may cancel, and we will contact you.',
+  },
+  {
+    q: 'Is there any drinking on the tour?',
+    a: 'Just a little. Each guest gets one small bottle of Kyoto sake for a toast at the start. The tour is about Gion itself, so you are welcome to join without drinking. The drinking age in Japan is 20.',
   },
   {
     q: 'What language is the tour in?',
@@ -65,22 +65,22 @@ const photos = [
   { src: '/images/tours/gion/maiko-pagoda.jpg',   alt: 'Maiko in front of Yasaka Pagoda' },
   { src: '/images/tours/tour-yasaka-gate.jpg',    alt: 'Group at Yasaka Shrine gate at night' },
   { src: '/images/tours/gion/maiko-alley.jpg',    alt: 'Maiko walking through a Gion alley', tall: true },
-  { src: '/images/tours/tour-sake-pour.jpg',      alt: 'Sake being poured at a local bar' },
   { src: '/images/tours/tour-gion-walk.jpg',      alt: 'Walking through Gion under lantern light' },
   { src: '/images/tours/gion/maiko-walk-1.jpg',   alt: 'Maiko walking in Gion' },
-  { src: '/images/tours/tour-sake-toast.jpg',     alt: 'Guests toasting with sake shots' },
   { src: '/images/tours/tour-alley-group.jpg',    alt: 'Guide explaining in a Gion alley' },
   { src: '/images/tours/gion/maiko-walk-2.jpg',   alt: 'Maiko in colorful kimonos, Gion' },
   { src: '/images/tours/tour-guide.jpg',          alt: 'Local guide pointing out Kyoto landmarks' },
   { src: '/images/tours/tour-shrine-stone.jpg',   alt: 'Guest at Yasaka Shrine stone tunnel' },
   { src: '/images/tours/tour-night-city.jpg',     alt: 'Group walking through Kyoto at night' },
   { src: '/images/tours/tour-kiyomizu-night.jpg', alt: 'Kiyomizu-dera pagoda at night' },
+  { src: '/images/tours/tour-sake-toast.jpg',     alt: 'Guests making a toast at the start of the tour' },
+  { src: '/images/tours/tour-sake-pour.jpg',      alt: 'Guide pouring a welcome toast for guests' },
 ];
 ---
 
 <BaseLayout
   title="Kyoto Gion Night Walk: Sake, Hidden Gems & Geisha | OTAtrip Guide"
-  description="A 90-minute walk through Gion's stone-paved alleys with a bottle of Fushimi sake in hand, from Pontocho to Yasaka Shrine. 4 daily slots: 15:30 / 17:30 / 19:30 / 21:30. Small groups, max 10 guests. Rated 4.9/5."
+  description="A 90-minute walk through Gion's stone-paved alleys and geisha streets, from Pontocho to Yasaka Shrine, with a guide who lives in Kyoto. 4 daily slots: 15:30 / 17:30 / 19:30 / 21:30. Small groups, max 10 guests. Rated 4.9/5."
   canonical="/tours/gion-sake-walk"
   ogImage="/images/tours/gion/hero.jpg"
 >
@@ -104,7 +104,7 @@ const photos = [
       </h1>
       <p class="font-sans text-gray-300 text-base leading-relaxed mb-8 max-w-xl">
         Walk the stone-paved alleys of Kyoto's most iconic neighborhood.
-        Hanamikoji, Yasaka Pagoda, Ninenzaka and Yasaka Shrine, with Kyoto sake in hand — guided by someone who lives in Kyoto.
+        Hanamikoji, Yasaka Pagoda, Ninenzaka and Yasaka Shrine — guided by someone who lives in Kyoto.
       </p>
       <div class="flex flex-wrap gap-x-8 gap-y-4 mb-8">
         {[
@@ -287,7 +287,7 @@ const photos = [
     "@context": "https://schema.org",
     "@type": "TouristAttraction",
     "name": "Kyoto Gion Night Walk: Sake, Hidden Gems & Geisha",
-    "description": "A 90-minute walking tour through Gion's stone-paved alleys with a bottle of Fushimi sake in hand, from Pontocho to Yasaka Shrine. 4 daily slots. Small groups of max 10 guests.",
+    "description": "A 90-minute walking tour through Gion's stone-paved alleys and geisha streets, from Pontocho to Yasaka Shrine. 4 daily slots. Small groups of max 10 guests.",
     "url": "https://otatrip.guide/tours/gion-sake-walk",
     "image": "https://otatrip.guide/images/tours/gion/hero.jpg",
     "provider": {

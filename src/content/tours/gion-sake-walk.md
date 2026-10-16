@@ -1,15 +1,15 @@
 ---
 title: "Kyoto Gion Night Walk: Sake, Hidden Gems & Geisha"
-description: "A 90-minute evening walk through Gion with a guide who lives in Kyoto. Start with a kanpai of Fushimi sake and sip as you walk from Pontocho to Yasaka Shrine."
+description: "A 90-minute evening walk through Gion with a guide who lives in Kyoto, from Pontocho and Hanamikoji to Yasaka Shrine."
 price: "From ¥5,600 per person"
 duration: "90 minutes"
 highlights:
-  - "A kanpai to start: one bottle of Shinsei, a Fushimi sake, to sip as you walk"
   - "Pontocho, the Kamo River and Minamiza, Japan's oldest theatre"
   - "Hanamikoji Street in Gion Kobu, Kyoto's largest geisha district"
   - "Yasui-Konpiragu, Yasaka Pagoda, Ninenzaka and Nene-no-Michi"
   - "Ends at Yasaka Shrine"
   - "Small groups (max 10 guests)"
+  - "A small bottle of Kyoto sake for a toast at the start (non-drinkers welcome)"
 ---
 
 # Kyoto Gion Night Walk: Sake, Hidden Gems & Geisha
@@ -18,13 +18,13 @@ Experience Kyoto's most atmospheric neighborhood after dark with a guide who liv
 
 ## What to Expect
 
-We meet near Shijo Kiyamachi and start with a kanpai. Each guest gets one small bottle of Shinsei, a sake from Fushimi, Kyoto's sake town, to sip as we walk. Drinking outside is legal in Japan; we just keep our voices down, because people live on these streets.
+We meet near Shijo Kiyamachi and walk about 2.7 km over 90 minutes: past Pontocho and the Kamo River, across into Gion at Minamiza, along Shijo Street and Hanamikoji, then up to Yasui-Konpiragu, the Yasaka Pagoda, Ninenzaka and Nene-no-Michi, ending at Yasaka Shrine.
 
-From there we walk about 2.7 km over 90 minutes: past Pontocho and the Kamo River, across into Gion at Minamiza, along Shijo Street and Hanamikoji, then up to Yasui-Konpiragu, the Yasaka Pagoda, Ninenzaka and Nene-no-Michi, ending at Yasaka Shrine.
+We start with a small toast of Kyoto sake, but the tour is about Gion itself: geiko and maiko, kabuki, Shinto and Buddhism, and the stories behind the streets. Non-drinkers are welcome.
 
 ## Tour Route
 
-1. **Shijo Kiyamachi** — introductions and a sake kanpai
+1. **Shijo Kiyamachi** — introductions and a toast
 2. **Pontocho & Kamo River** — a geisha district, summer river decks, Japan's oldest working elevator
 3. **Minamiza** — Japan's oldest theatre and how kabuki began
 4. **Shijo Street** — Gion's shops, teahouses and the Gion Matsuri
@@ -44,7 +44,7 @@ From there we walk about 2.7 km over 90 minutes: past Pontocho and the Kamo Rive
 | Ends at | Yasaka Shrine |
 | Group size | Max 10 guests |
 | Language | English |
-| Includes | One small bottle of Fushimi sake per person |
+| Includes | One small bottle of Kyoto sake for a toast |
 | Not included | Additional drinks, meals |
 
 ## Who This Tour Is For
@@ -52,7 +52,7 @@ From there we walk about 2.7 km over 90 minutes: past Pontocho and the Kamo Rive
 Perfect for:
 - First-timers who want to experience Gion with someone who lives here
 - Anyone curious about geiko, kabuki, Shinto and Buddhism
-- Travelers who want a relaxed evening walk with a drink in hand
+- Travelers who want a relaxed evening walk with a local
 
 ## Group & Private Options
 
