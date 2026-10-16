@@ -1,53 +1,59 @@
 ---
-title: "Kyoto Gion Night Walk: Sake, Hidden Gems & Geisha"
-description: "An intimate evening walk through Gion's lantern-lit alleys, guided by a local expert. Taste premium Kyoto sake at curated local spots while learning the neighborhood's hidden stories."
-price: "From ¥8,000 per person"
-duration: "3 hours"
+title: "Kyoto Gion Night Walk: Hidden Gems & Geisha"
+description: "A 90-minute evening walk through Gion with a guide who lives in Kyoto, from Pontocho and Hanamikoji to Yasaka Shrine."
+price: "From ¥5,600 per person"
+duration: "90 minutes"
 highlights:
-  - "Visit 3 hand-picked sake bars in Gion"
-  - "Learn to distinguish Fushimi-style sake from other regions"
-  - "Walk the lantern-lit alleys of Hanamikoji and Shinbashi"
-  - "Chance encounters with geiko and maiko culture"
-  - "Small groups (max 8 guests) for an intimate experience"
-  - "Snacks and sake tasting included"
+  - "Pontocho, the Kamo River and Minamiza, Japan's oldest theatre"
+  - "Hanamikoji Street in Gion Kobu, Kyoto's largest geisha district"
+  - "Yasui-Konpiragu, Yasaka Pagoda, Ninenzaka and Nene-no-Michi"
+  - "Ends at Yasaka Shrine"
+  - "Small groups (max 10 guests)"
+  - "A small bottle of Kyoto sake for a toast at the start (non-drinkers welcome)"
 ---
 
-# Kyoto Gion Night Walk: Sake, Hidden Gems & Geisha
+# Kyoto Gion Night Walk: Hidden Gems & Geisha
 
-Experience Kyoto's most atmospheric neighborhood after dark with a local guide who knows every stone-paved alley.
+Experience Kyoto's most atmospheric neighborhood after dark with a guide who lives in Kyoto.
 
 ## What to Expect
 
-The tour begins at dusk when Gion transforms — lanterns glow, wooden machiya townhouses light up, and the evening crowd of locals and guests fills the streets. We walk at a relaxed pace through neighborhoods most visitors never find.
+We meet near Shijo Kiyamachi and walk about 2.7 km over 90 minutes: past Pontocho and the Kamo River, across into Gion at Minamiza, along Shijo Street and Hanamikoji, then up to Yasui-Konpiragu, the Yasaka Pagoda, Ninenzaka and Nene-no-Michi, ending at Yasaka Shrine.
 
-At three carefully chosen sake bars, your guide explains the difference between Kyoto's famous Fushimi sake (soft, feminine, and smooth) and other regional styles. You'll taste premium sake that local residents actually drink, not tourist-facing selections.
+We start with a small toast of Kyoto sake, but the tour is about Gion itself: geiko and maiko, kabuki, Shinto and Buddhism, and the stories behind the streets. Non-drinkers are welcome.
 
-## Tour Highlights
+## Tour Route
 
-- **3 sake tastings** at local-favorite bars
-- **Hanamikoji** — the iconic lantern-lit street
-- **Shinbashi** — the photogenic canal area
-- **Gion Shimbashi** designated traditional townscape
-- Stories of geiko, maiko, and the traditional entertainment district
+1. **Shijo Kiyamachi** — introductions and a toast
+2. **Pontocho & Kamo River** — a geisha district, summer river decks, Japan's oldest working elevator
+3. **Minamiza** — Japan's oldest theatre and how kabuki began
+4. **Shijo Street** — Gion's shops, teahouses and the Gion Matsuri
+5. **Hanamikoji** — geiko and maiko, and how to tell them apart
+6. **Yasui-Konpiragu** — the shrine for cutting bad ties
+7. **Yasaka Pagoda** — founded in 589, photo time
+8. **Ninenzaka** — the stone-paved slope
+9. **Nene-no-Michi & Kodaiji** — the story of Hideyoshi and Nene
+10. **Yasaka Shrine** — the end of the tour
 
 ## Practical Info
 
 | Detail | Info |
 |---|---|
-| Duration | 3 hours |
-| Meeting point | Gion-Shijo Station exit 6 |
-| Group size | Max 8 guests |
+| Duration | 90 minutes (about 2.7 km) |
+| Meeting point | Outside Hankyu Kyoto-Kawaramachi Station Exit 1B, beside McDonald's |
+| Ends at | Yasaka Shrine |
+| Group size | Max 10 guests |
 | Language | English |
-| Includes | Sake tastings (3), light snacks |
+| Includes | One small bottle of Kyoto sake for a toast |
 | Not included | Additional drinks, meals |
 
 ## Who This Tour Is For
 
 Perfect for:
-- First-timers who want to experience Gion authentically
-- Sake lovers and curious drinkers
-- Anyone who wants to walk off the tourist trail with a local guide
+- First-timers who want to experience Gion with someone who lives here
+- Anyone curious about geiko, kabuki, Shinto and Buddhism
+- Travelers who want a relaxed evening walk with a local
 
 ## Group & Private Options
 
-Traveling as a group or with a tour company? We offer private bookings for 8+ guests with customizable routing and timing. [Contact us](/groups/) for group rates and availability.
+Traveling as a group or with a tour company? [Contact us](/groups/) for private bookings, group rates and availability.
