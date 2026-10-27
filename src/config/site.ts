@@ -10,7 +10,7 @@ export const SITE_NAME = 'OTAtrip Guide';
 /** Public contact address. Referenced by contact, groups, footer, guest pages. */
 export const CONTACT_EMAIL = 'kyoto.otatrip.guide@gmail.com';
 
-/** Operating company (8E6株式会社) site. Linked from the footer and JSON-LD. */
+/** Operating company (8E6 Inc. / 8E6株式会社) site. Linked from the footer and JSON-LD. */
 export const OPERATOR_URL = 'https://8e6.co.jp/en/';
 
 /** Bokun booking channel UUID (booking widget). */
