@@ -3,7 +3,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Analytics from '../components/Analytics.astro';
 import '../styles/global.css';
-import { CONTACT_EMAIL, TRIPADVISOR_URL } from '../config/site';
+import { CONTACT_EMAIL, OPERATOR_URL, TRIPADVISOR_URL } from '../config/site';
 
 interface Props {
   title: string;
@@ -78,6 +78,12 @@ const fullTitle = baseTitle.includes(BRAND) ? baseTitle : `${baseTitle} | ${BRAN
         "logo": `${siteUrl}/logo.png`,
         "email": CONTACT_EMAIL,
         "areaServed": { "@type": "City", "name": "Kyoto" },
+        "parentOrganization": {
+          "@type": "Organization",
+          "name": "8E6株式会社",
+          "alternateName": "8E6",
+          "url": OPERATOR_URL
+        },
         "sameAs": [TRIPADVISOR_URL, "https://x.com/Otatrip_guide", "https://instagram.com/Otatrip_guide"]
       },
       {
