@@ -1,5 +1,5 @@
 ---
-import { CONTACT_EMAIL } from '../config/site';
+import { CONTACT_EMAIL, OPERATOR_URL } from '../config/site';
 ---
 
 <footer class="bg-nes-black border-t border-gray-800 mt-16">
@@ -76,7 +76,12 @@ import { CONTACT_EMAIL } from '../config/site';
     <div class="pixel-divider mb-6 opacity-20"></div>
 
     <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-      <p class="font-pixel text-gray-500" style="font-size: 0.5rem;">&copy; {new Date().getFullYear()} OTAtrip Guide. All rights reserved.</p>
+      <div class="text-center sm:text-left">
+        <p class="font-pixel text-gray-500" style="font-size: 0.5rem;">&copy; {new Date().getFullYear()} OTAtrip Guide. All rights reserved.</p>
+        <p class="font-dot text-xs text-gray-400 mt-2">
+          Operated by <a href={OPERATOR_URL} target="_blank" rel="noopener" class="text-gray-300 hover:text-nes-amber transition-colors underline underline-offset-2">8E6 Inc.</a>, Kyoto
+        </p>
+      </div>
       <div class="flex items-center gap-4 font-pixel text-gray-500" style="font-size: 0.5rem;">
         <a href="/tours" class="hover:text-nes-amber transition-colors">TOURS</a>
         <span class="text-gray-600">·</span>
