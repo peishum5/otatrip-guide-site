@@ -5,6 +5,8 @@
  * - The gtag snippet only loads in production builds (same behavior as before).
  * - `window.track(name, params)` is the single helper every component uses;
  *   in dev builds it logs to the console instead of sending to GA4.
+ * - Every event is also sent to Vercel Web Analytics as a custom event, so
+ *   clicks stay visible even when the GA4 property is not accessible.
  * - One delegated click listener covers mailto links, outbound links, and any
  *   element carrying a `data-track-label` attribute — new pages get tracking
  *   for free without per-page wiring.
@@ -28,9 +30,18 @@ const isProd = import.meta.env.PROD;
 )}
 
 <script is:inline define:vars={{ debug: !isProd }}>
+  // Queue shim: va() calls made before the insights script loads are kept.
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+
   window.track = function (name, params) {
     if (debug) console.debug('[track]', name, params || {});
     if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+    if (!debug) {
+      try {
+        var data = Object.assign({ path: location.pathname }, params || {});
+        window.va('event', { name: name, data: data });
+      } catch (e) { /* tracking must never break the page */ }
+    }
   };
 
   // Capture phase so events fire before link navigation starts.
