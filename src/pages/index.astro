@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import GionQuest from '../components/GionQuest.astro';
 import GroupCTA from '../components/GroupCTA.astro';
+import PixelIcon from '../components/PixelIcon.astro';
 import ReviewsSection from '../components/ReviewsSection.astro';
 import { getCollection } from 'astro:content';
 import { getBlogSortDate } from '../utils/blog';
@@ -14,7 +15,7 @@ const latestPosts = [...publicPosts]
 
 const tours = [
   {
-    icon: '🏮',
+    icon: 'lantern',
     tag: 'EVENING · GION',
     name: 'Kyoto Gion Night Walk',
     meta: '90 min · Max 10 · Geisha district · EN',
@@ -22,7 +23,7 @@ const tours = [
     href: '/tours/gion-sake-walk',
   },
   {
-    icon: '🍻',
+    icon: 'beer',
     tag: 'EVENING · PONTOCHO',
     name: 'Kyoto Izakaya Hopping',
     meta: '3 hrs · Small group · Food · EN',
@@ -30,7 +31,7 @@ const tours = [
     href: '/tours/izakaya-hopping',
   },
   {
-    icon: '⛩️',
+    icon: 'torii',
     tag: 'DAYTIME · SHIMOGAMO',
     name: 'Shimogamo Shrine & Manga Walk',
     meta: '2 hrs · 10:00 / 14:00 · Manga · EN',
@@ -38,7 +39,7 @@ const tours = [
     href: '/tours/shimogamo-manga-walk',
   },
   {
-    icon: '☕',
+    icon: 'coffee',
     tag: 'DAYTIME · NISHIKI MARKET',
     name: 'Hands-On Coffee Ceremony with a Master',
     meta: '70 min · Max 4 · Coffee · EN',
@@ -46,7 +47,7 @@ const tours = [
     href: '/tours/coffee-ceremony',
   },
   {
-    icon: '🍵',
+    icon: 'matcha',
     tag: 'DAYTIME · KAWARAMACHI',
     name: 'Matcha Tea Ceremony with an Urasenke Master',
     meta: '80 min · Max 5 · Matcha · EN',
@@ -56,12 +57,12 @@ const tours = [
 ];
 
 const stages = [
-  { icon: '🏮', label: 'TOURS',   meta: `${tours.length} walks & workshops`,        href: '/tours',   track: 'home_explore_tours' },
-  { icon: '📖', label: 'GUIDES',  meta: `${publicPosts.length} practical Kyoto guides`, href: '/blog',    track: 'home_explore_blog' },
-  { icon: '👥', label: 'GROUPS',  meta: 'Teams, schools & charters',               href: '/groups',  track: 'home_explore_groups' },
-  { icon: '🎮', label: 'PLAY',    meta: 'Gion Night Quest',                        href: '/game',    track: 'home_explore_game' },
-  { icon: '⛩️', label: 'GUIDE',   meta: 'The people you walk with',                href: '/guide',   track: 'home_explore_guide' },
-  { icon: '✉️', label: 'CONTACT', meta: 'Ask us anything',                         href: '/contact', track: 'home_explore_contact' },
+  { icon: 'lantern', label: 'TOURS',   meta: `${tours.length} walks & workshops`,        href: '/tours',   track: 'home_explore_tours' },
+  { icon: 'book', label: 'BLOG',    meta: `${publicPosts.length} practical Kyoto guides`, href: '/blog',    track: 'home_explore_blog' },
+  { icon: 'people', label: 'GROUPS',  meta: 'Teams, schools & charters',               href: '/groups',  track: 'home_explore_groups' },
+  { icon: 'gamepad', label: 'PLAY',    meta: 'Gion Night Quest',                        href: '/game',    track: 'home_explore_game' },
+  { icon: 'flag', label: 'OUR GUIDE',   meta: 'The people you walk with',                href: '/guide',   track: 'home_explore_guide' },
+  { icon: 'mail', label: 'CONTACT', meta: 'Ask us anything',                         href: '/contact', track: 'home_explore_contact' },
 ];
 ---
 
@@ -231,12 +232,12 @@ const stages = [
       <nav aria-label="Explore OTAtrip Guide" class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
         {stages.map((stage, i) => (
           <a href={stage.href} class="stage-tile group flex items-center gap-3 md:gap-4 p-4 md:p-5" data-track-label={stage.track}>
-            <span class="text-2xl md:text-3xl shrink-0" aria-hidden="true">{stage.icon}</span>
+            <PixelIcon name={stage.icon} size={32} class="shrink-0" />
             <span class="min-w-0 flex-1">
               <span class="block font-pixel text-[0.625rem] md:text-[0.75rem] text-nes-white group-hover:text-nes-amber leading-relaxed">
                 <span class="stage-cursor" aria-hidden="true">▶</span> {stage.label}
               </span>
-              <span class="block font-dot text-xs md:text-sm text-gray-400 mt-1 leading-snug">{stage.meta}</span>
+              <span class="block font-dot text-xs md:text-sm text-gray-300 mt-1 leading-snug">{stage.meta}</span>
             </span>
             <span class="hidden md:block px-label text-gray-400" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
           </a>
@@ -261,7 +262,7 @@ const stages = [
     <div class="space-y-3">
       {tours.map(tour => (
         <a href={tour.href} class="blog-card group flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5 p-5" data-track-label={`home_tour_${tour.href.split('/').pop()}`}>
-          <div class="w-14 h-14 shrink-0 bg-neutral-900 border-2 border-gray-700 group-hover:border-nes-amber flex items-center justify-center text-3xl transition-colors" aria-hidden="true">{tour.icon}</div>
+          <div class="w-14 h-14 shrink-0 bg-neutral-900 border-2 border-gray-700 group-hover:border-nes-amber flex items-center justify-center transition-colors" aria-hidden="true"><PixelIcon name={tour.icon} size={32} /></div>
           <div class="flex-1 min-w-0">
             <p class="px-label text-nes-cyan mb-2">{tour.tag}</p>
             <h3 class="font-dot text-lg md:text-xl text-nes-white group-hover:text-nes-amber transition-colors leading-snug mb-1">{tour.name}</h3>
@@ -374,7 +375,7 @@ const stages = [
                   />
                 ) : (
                   <div class="w-full h-full bg-neutral-900 flex items-center justify-center">
-                    <span class="px-label text-gray-500">KYOTO</span>
+                    <span class="px-label text-gray-400">KYOTO</span>
                   </div>
                 )}
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
@@ -394,7 +395,7 @@ const stages = [
         ))}
       </div>
     ) : (
-      <p class="px-label text-gray-500 text-center py-12">// BLOG POSTS COMING SOON</p>
+      <p class="px-label text-gray-400 text-center py-12">// BLOG POSTS COMING SOON</p>
     )}
 
     <div class="text-center mt-8 md:hidden">

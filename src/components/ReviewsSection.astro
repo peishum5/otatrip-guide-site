@@ -14,20 +14,28 @@ const { onDark = false, compact = false } = Astro.props;
 
 const reviews = [
   {
-    name: 'Kyoko O.',
-    title: 'Great sunset in Kyoto',
-    date: 'Dec 2025',
-    type: 'Friends',
+    name: 'David N.',
+    title: 'A very nice experience',
+    date: 'Jul 2026',
+    type: 'Couples',
     rating: 5,
-    text: "One of the things I appreciated the most was, instead of giving long lectures about architecture or history, they led the tour with conversations and answering our questions. We started at 15:30 in December and Kyoto was amazing in its sunset. The sake was really tasty. I think it was really worth the fee, route is nicely organized and fun. Overall we had a great time.",
+    text: "It was a great experience! Our guide Shumpei was very friendly and knowledgable, it adds so much compared to walking around on your own. Thank you! We learned a lot about the area, saw geishas and were invited by a nice family to make a wish and attack it to a bamboo tree.",
   },
   {
-    name: 'Charlie C.',
-    title: 'Unforgettable tour in Gion',
-    date: 'Dec 2025',
+    name: 'Frida N.',
+    title: 'Friendly, fun and informative',
+    date: 'Jul 2026',
+    type: 'Couples',
+    rating: 5,
+    text: "Friendly and informative, simply a great experience for everyone. We had a wonderful time with Shumpei, who was super kind and nice. Highly recommend!",
+  },
+  {
+    name: 'Jacob B.',
+    title: 'Fun Experience and Conversations',
+    date: 'Jun 2026',
     type: 'Friends',
     rating: 5,
-    text: "This Kyoto tour in Gion was one of the best experiences I've had! We visited the shrines, and the guide shared so much fascinating knowledge about the area. They were incredibly patient, took amazing photos of us, and really made the tour memorable. The sake tasting was fantastic too. Highly recommended!",
+    text: "Fun experience! Had great and interesting conversations with the tour guide. Very insightful and fun! A great way to spend an evening to explore the Gion area.",
   },
   {
     name: 'Solo Traveler',
@@ -36,14 +44,6 @@ const reviews = [
     type: 'Solo',
     rating: 5,
     text: "Wonderful experience with fantastic guides who were very knowledgable, saw shrines when they were virtually empty. Great for solo travelers!",
-  },
-  {
-    name: 'Nathe C.',
-    title: 'Local Experience with a Golden Heart',
-    date: 'Mar 2026',
-    type: 'Solo',
-    rating: 5,
-    text: "Mune was such an awesome guy! Telling me all about the city's hidden gems. Such a down to earth guy who was happy to answer all the questions I had in regards to Kyoto and Japan as a whole. The sake was perfect to start the tour since it is chilly season. Defs take up a tour with these guys! It's more than worth it. See you again Mune! Such a top bloke!",
   },
 ];
 ---
@@ -69,7 +69,7 @@ const reviews = [
         <!-- Stars + type -->
         <div class="flex items-center justify-between">
           <span class="text-nes-amber" style="letter-spacing: 0.08em; font-size: 0.8rem;">{'★'.repeat(review.rating)}</span>
-          <span class="font-pixel text-gray-500" style="font-size: 0.5rem;">{review.type.toUpperCase()}</span>
+          <span class="font-pixel text-gray-400" style="font-size: 0.5rem;">{review.type.toUpperCase()}</span>
         </div>
 
         <!-- Title -->
@@ -81,7 +81,7 @@ const reviews = [
         <!-- Meta -->
         <div class="flex items-center justify-between border-t border-gray-800/60 pt-3">
           <span class="font-sans text-xs font-semibold text-nes-cyan">{review.name}</span>
-          <span class="font-sans text-xs text-gray-500">{review.date}</span>
+          <span class="font-sans text-xs text-gray-400">{review.date}</span>
         </div>
       </div>
     ))}

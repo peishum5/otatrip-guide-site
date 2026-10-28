@@ -43,10 +43,10 @@ const canonicalUrl = new URL(canonical, siteUrl).toString();
   <section class="max-w-6xl mx-auto px-4 py-12">
     <nav class="px-label text-gray-400 mb-8 flex items-center gap-2 flex-wrap" aria-label="Breadcrumb">
       <a href="/" class="hover:text-nes-amber transition-colors">HOME</a>
-      <span class="text-gray-500">/</span>
+      <span class="text-gray-400">/</span>
       <a href="/blog" class="hover:text-nes-amber transition-colors">BLOG</a>
-      <span class="text-gray-500">/</span>
-      <span class="text-gray-500">{category.toUpperCase()}</span>
+      <span class="text-gray-400">/</span>
+      <span class="text-gray-400">{category.toUpperCase()}</span>
     </nav>
 
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -70,7 +70,7 @@ const canonicalUrl = new URL(canonical, siteUrl).toString();
                 {post.data.title}
               </a>
             </h2>
-            <p class="font-sans text-gray-500 text-sm leading-relaxed line-clamp-3 mb-4">{post.data.description}</p>
+            <p class="font-sans text-gray-400 text-sm leading-relaxed line-clamp-3 mb-4">{post.data.description}</p>
             <a
               href={`/blog/${normalizeBlogSlug(post.slug)}`}
               class="nes-btn nes-btn-outline inline-block"

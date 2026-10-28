@@ -119,7 +119,7 @@ const faqs = [
         <h2 class="font-pixel text-[0.8rem] md:text-[0.9rem] leading-relaxed text-nes-amber">WORKSHOP PHOTOS</h2>
         <div class="flex-1 border-t border-gray-800"></div>
       </div>
-      <div class="columns-2 md:columns-3 gap-2 space-y-2">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
         {[
           { src: '/images/tours/coffee-ceremony/lecture-quiz.jpg',   alt: 'The Master sharing the story of Japanese coffee with the group' },
           { src: '/images/tours/coffee-ceremony/grinder-demo.jpg',   alt: 'The Master demonstrating the coffee grinder at each guest\'s station' },
@@ -128,11 +128,11 @@ const faqs = [
           { src: '/images/tours/coffee-ceremony/guests-kettles.jpg', alt: 'Smiling guests holding gooseneck kettles, ready to brew' },
           { src: '/images/tours/coffee-ceremony/group-photo.jpg',    alt: 'Guests posing for a group photo at the end of the workshop' },
         ].map(photo => (
-          <div class="break-inside-avoid overflow-hidden border border-gray-800">
+          <div class="aspect-[4/3] overflow-hidden border border-gray-800">
             <img
               src={photo.src}
               alt={photo.alt}
-              class="w-full object-cover"
+              class="w-full h-full object-cover"
               loading="lazy"
             />
           </div>

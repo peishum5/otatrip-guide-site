@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PixelIcon from '../components/PixelIcon.astro';
 import { CONTACT_EMAIL } from '../config/site';
 ---
 
@@ -45,13 +46,13 @@ import { CONTACT_EMAIL } from '../config/site';
       </div>
       <div class="grid sm:grid-cols-2 gap-4">
         {[
-          { icon: '🗺️', title: 'Area', desc: 'Gion, Higashiyama, Kiyomizu-dera — the heart of old Kyoto.' },
-          { icon: '👥', title: 'Group Size', desc: 'Small groups to larger parties. We split big groups to keep it intimate.' },
-          { icon: '🕐', title: 'Timing', desc: 'Morning, afternoon, or night walks. We work around your schedule.' },
-          { icon: '🌐', title: 'Language', desc: 'English tours as standard. Japanese support available.' },
+          { icon: 'map', title: 'Area', desc: 'Gion, Higashiyama, Kiyomizu-dera — the heart of old Kyoto.' },
+          { icon: 'people', title: 'Group Size', desc: 'Small groups to larger parties. We split big groups to keep it intimate.' },
+          { icon: 'clock', title: 'Timing', desc: 'Morning, afternoon, or night walks. We work around your schedule.' },
+          { icon: 'globe', title: 'Language', desc: 'English tours as standard. Japanese support available.' },
         ].map(item => (
           <div class="dialogue-box flex gap-4 items-start">
-            <span class="text-2xl shrink-0">{item.icon}</span>
+            <PixelIcon name={item.icon} size={28} class="shrink-0" />
             <div>
               <p class="font-pixel text-[0.9rem] text-nes-white mb-1">{item.title.toUpperCase()}</p>
               <p class="font-sans text-xs text-gray-400 leading-relaxed">{item.desc}</p>

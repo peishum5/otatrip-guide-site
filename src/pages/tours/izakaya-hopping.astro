@@ -118,17 +118,17 @@ const faqs = [
         <h2 class="font-pixel text-[0.8rem] md:text-[0.9rem] leading-relaxed text-nes-amber">TOUR PHOTOS</h2>
         <div class="flex-1 border-t border-gray-800"></div>
       </div>
-      <div class="columns-2 md:columns-3 gap-2 space-y-2">
+      <div class="grid grid-cols-3 gap-2">
         {[
           { src: '/images/tours/izakaya/pontocho-alley-night.jpg', alt: 'Pontocho alley lined with izakayas and lanterns at night' },
           { src: '/images/tours/izakaya/izakaya-guests.jpg',       alt: 'Guests enjoying drinks and food inside a Kyoto izakaya' },
           { src: '/images/tours/izakaya/pontocho-lanterns.jpg',    alt: 'Red lanterns glowing in a Pontocho alley at night' },
         ].map(photo => (
-          <div class="break-inside-avoid overflow-hidden border border-gray-800">
+          <div class="aspect-[4/3] overflow-hidden border border-gray-800">
             <img
               src={photo.src}
               alt={photo.alt}
-              class="w-full object-cover"
+              class="w-full h-full object-cover"
               loading="lazy"
             />
           </div>
