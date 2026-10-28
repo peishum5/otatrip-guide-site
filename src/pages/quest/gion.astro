@@ -1,0 +1,470 @@
+---
+/**
+ * Gion "Lost Memories" photo quest. Guests open it from the QR on the quest
+ * card (/quest/gion?k=<passcode>). Not linked from the site and not indexed.
+ *
+ * Everything runs in the browser: progress and small thumbnails stay in
+ * localStorage, landmark photos are checked by /api/quest/judge, and people
+ * photos (selfie, group photo) never leave the phone.
+ * Spots and texts: src/config/gionQuest.ts
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PixelIcon from '../../components/PixelIcon.astro';
+import { SPOTS, STORY } from '../../config/gionQuest';
+---
+
+<BaseLayout
+  title="Gion Night Quest: Lost Memories"
+  description="A photo quest for guests of the Gion night walk."
+  canonical="/quest/gion"
+  noIndex={true}
+>
+  <section class="scanlines bg-nes-black py-10 text-center">
+    <div class="relative z-10 max-w-xl mx-auto px-4">
+      <p class="font-pixel text-[0.6rem] text-nes-amber mb-3 rpg-prefix">PHOTO QUEST</p>
+      <h1 class="font-pixel text-nes-white leading-relaxed" style="font-size: clamp(0.85rem, 4vw, 1.3rem);">
+        GION NIGHT QUEST<br /><span class="text-nes-amber">LOST MEMORIES</span>
+      </h1>
+    </div>
+  </section>
+
+  <div class="max-w-xl mx-auto px-4 pb-16">
+    <!-- Story + start (first visit only) -->
+    <div id="q-intro" class="dialogue-box mt-6" hidden>
+      {STORY.map((line) => <p class="font-sans text-sm text-gray-200 leading-relaxed mb-3">{line}</p>)}
+      <p class="font-sans text-xs text-gray-500 mb-5">
+        No need to stop the tour for it. You can also do it later from your photo library.
+      </p>
+      <button id="q-start" type="button" class="nes-btn rv-start w-full">START</button>
+    </div>
+
+    <!-- Passcode, when the QR did not carry one -->
+    <form id="q-code" class="dialogue-box mt-6" hidden>
+      <label for="q-code-input" class="font-pixel text-[0.6rem] text-nes-cyan block mb-3">ENTER THE CODE ON YOUR QUEST CARD</label>
+      <input id="q-code-input" class="rv-input w-full mb-3" autocomplete="off" autocapitalize="characters" maxlength="64" required />
+      <p id="q-code-error" class="font-sans text-xs text-nes-red mb-3" hidden>That code didn't work. Please ask your guide.</p>
+      <button type="submit" class="nes-btn w-full">OK</button>
+    </form>
+
+    <!-- Memory cards -->
+    <ol id="q-board" class="mt-8 space-y-6" hidden>
+      {SPOTS.map((spot) => (
+        <li class="q-card rv-window" data-spot={spot.id} data-judge={spot.judge}>
+          <div class="flex items-center gap-3 mb-3">
+            <PixelIcon name={spot.icon} size={28} />
+            <span class="font-pixel text-[0.6rem] text-nes-cyan">{spot.label}</span>
+            <span class="q-status ml-auto font-pixel text-[0.55rem] text-gray-500">LOST</span>
+          </div>
+
+          <!-- Before the memory returns -->
+          <div class="q-todo">
+            <p class="font-sans text-sm text-gray-200 leading-relaxed mb-4">{spot.clue}</p>
+            <p class="q-locked font-sans text-xs text-gray-500 mb-3" hidden>Bring back the other memories first.</p>
+            <div class="q-actions flex flex-wrap gap-3">
+              <label class="nes-btn cursor-pointer">
+                {spot.judge === 'ai' ? 'TAKE PHOTO' : 'ADD PHOTO'}
+                <input class="q-file sr-only" type="file" accept="image/*" />
+              </label>
+              {spot.judge === 'self' && (
+                <button type="button" class="q-self nes-btn nes-btn-outline">DONE</button>
+              )}
+            </div>
+            <p class="q-msg font-sans text-sm mt-4" aria-live="polite" hidden></p>
+            <button type="button" class="q-here nes-btn nes-btn-invert mt-3" hidden>I'M HERE</button>
+          </div>
+
+          <!-- After the memory returns -->
+          <div class="q-done" hidden>
+            <img class="q-thumb w-full aspect-[4/3] object-cover mb-4 border-2 border-gray-700" alt="" hidden />
+            <p class="font-pixel text-[0.55rem] text-nes-amber mb-3">{spot.place.toUpperCase()}</p>
+            <div class="q-memory font-sans text-sm text-nes-white leading-relaxed italic">
+              {spot.memory.map((line) => <p class="q-line mb-1">{line}</p>)}
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <!-- Ending -->
+    <div id="q-ending" class="rv-itemget mt-10 text-center" hidden>
+      <p class="rv-itemget-title font-pixel text-nes-amber mb-4">MEMORIES RESTORED</p>
+      <p class="font-sans text-sm text-gray-200 mb-6">Would you leave this memory for the next traveler?</p>
+      <div class="flex flex-col gap-4 items-center">
+        <a id="q-review" class="nes-btn rv-start" href="/review/gion-sake-walk">LEAVE A MEMORY →</a>
+        <button id="q-save" type="button" class="nes-btn nes-btn-invert">SAVE MEMORY CARD</button>
+      </div>
+    </div>
+
+    <p class="text-center mt-12">
+      <button id="q-reset" type="button" class="font-pixel text-[0.5rem] text-gray-600 hover:text-nes-cyan" hidden>START OVER</button>
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  .q-card[data-state='done'] { border-color: var(--color-nes-amber); }
+  .q-card[data-state='done'] .q-status { color: var(--color-nes-green); }
+  .q-line { opacity: 1; }
+  .q-card.is-revealing .q-line {
+    opacity: 0;
+    animation: q-fade-in 0.9s ease forwards;
+  }
+  .q-card.is-revealing .q-line:nth-child(2) { animation-delay: 0.9s; }
+  .q-card.is-revealing .q-line:nth-child(3) { animation-delay: 1.8s; }
+  @keyframes q-fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .q-card.is-revealing .q-line { animation: none; opacity: 1; }
+  }
+</style>
+
+<script>
+  import { SPOTS, REVIEW_URL, UNLOCK_AFTER_MISSES, UPLOAD_MAX_EDGE } from '../../config/gionQuest';
+
+  const STORE_KEY = 'gionQuest.v1';
+  const THUMB_EDGE = 480;
+  const FINAL_ID = SPOTS[SPOTS.length - 1].id;
+
+  interface Saved {
+    code: string;
+    started: boolean;
+    restored: Record<string, { thumb?: string }>;
+    misses: Record<string, number>;
+  }
+
+  function load(): Saved {
+    const empty: Saved = { code: '', started: false, restored: {}, misses: {} };
+    try {
+      const raw = localStorage.getItem(STORE_KEY);
+      return raw ? { ...empty, ...JSON.parse(raw) } : empty;
+    } catch {
+      return empty;
+    }
+  }
+
+  let state = load();
+
+  function save() {
+    try {
+      localStorage.setItem(STORE_KEY, JSON.stringify(state));
+    } catch {
+      // Storage full or blocked: drop thumbnails and keep the progress
+      try {
+        const slim = { ...state, restored: Object.fromEntries(Object.keys(state.restored).map((k) => [k, {}])) };
+        localStorage.setItem(STORE_KEY, JSON.stringify(slim));
+      } catch {
+        // Progress then lives only for this visit
+      }
+    }
+  }
+
+  const $ = <T extends HTMLElement>(sel: string, root: ParentNode = document) => root.querySelector(sel) as T;
+  const intro = $('#q-intro');
+  const codeForm = $<HTMLFormElement>('#q-code');
+  const board = $('#q-board');
+  const ending = $('#q-ending');
+  const resetBtn = $('#q-reset');
+  const cards = [...document.querySelectorAll<HTMLElement>('.q-card')];
+
+  // A code in the QR (?k=...) is saved and then removed from the address bar.
+  const params = new URLSearchParams(location.search);
+  const urlCode = params.get('k');
+  if (urlCode) {
+    state.code = urlCode.trim().slice(0, 64);
+    save();
+    history.replaceState(null, '', location.pathname);
+  }
+  $<HTMLAnchorElement>('#q-review').href = REVIEW_URL;
+
+  function track(name: string, extra: Record<string, unknown> = {}) {
+    window.track?.(name, { quest: 'gion', ...extra });
+  }
+
+  // ---------- screens ----------
+
+  function render() {
+    const needCode = !state.code;
+    codeForm.hidden = !needCode;
+    intro.hidden = needCode || state.started;
+    board.hidden = needCode || !state.started;
+    resetBtn.hidden = !state.started;
+
+    const othersDone = SPOTS.filter((s) => s.id !== FINAL_ID).every((s) => state.restored[s.id]);
+    for (const card of cards) {
+      const id = card.dataset.spot!;
+      const done = !!state.restored[id];
+      card.dataset.state = done ? 'done' : 'todo';
+      $('.q-status', card).textContent = done ? 'RESTORED' : 'LOST';
+      $('.q-todo', card).hidden = done;
+      $('.q-done', card).hidden = !done;
+      const thumb = $<HTMLImageElement>('.q-thumb', card);
+      const src = state.restored[id]?.thumb;
+      thumb.hidden = !src;
+      if (src) thumb.src = src;
+      if (id === FINAL_ID && !done) {
+        $('.q-locked', card).hidden = othersDone;
+        $('.q-actions', card).hidden = !othersDone;
+      }
+      const misses = state.misses[id] ?? 0;
+      $('.q-here', card).hidden = done || card.dataset.judge !== 'ai' || misses < UNLOCK_AFTER_MISSES;
+    }
+    ending.hidden = !state.started || !SPOTS.every((s) => state.restored[s.id]);
+  }
+
+  $('#q-start').addEventListener('click', () => {
+    state.started = true;
+    save();
+    render();
+    track('quest_start');
+  });
+
+  codeForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    state.code = $<HTMLInputElement>('#q-code-input').value.trim().slice(0, 64);
+    $('#q-code-error').hidden = true;
+    save();
+    render();
+  });
+
+  resetBtn.addEventListener('click', () => {
+    if (!confirm('Forget all memories and start over?')) return;
+    state = { code: state.code, started: false, restored: {}, misses: {} };
+    save();
+    render();
+    window.scrollTo({ top: 0 });
+  });
+
+  // ---------- photos ----------
+
+  async function decode(file: File): Promise<ImageBitmap | HTMLImageElement> {
+    try {
+      return await createImageBitmap(file, { imageOrientation: 'from-image' });
+    } catch {
+      const url = URL.createObjectURL(file);
+      try {
+        const img = new Image();
+        img.src = url;
+        await img.decode();
+        return img;
+      } finally {
+        URL.revokeObjectURL(url);
+      }
+    }
+  }
+
+  /** Shrinks to maxEdge and re-encodes as JPEG (this also drops GPS and other metadata). */
+  function toJpeg(img: ImageBitmap | HTMLImageElement, maxEdge: number, quality: number): string {
+    const w = img.width;
+    const h = img.height;
+    const scale = Math.min(1, maxEdge / Math.max(w, h));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(w * scale);
+    canvas.height = Math.round(h * scale);
+    canvas.getContext('2d')!.drawImage(img, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL('image/jpeg', quality);
+  }
+
+  function showMsg(card: HTMLElement, text: string, tone: 'info' | 'warn' = 'info') {
+    const msg = $('.q-msg', card);
+    msg.textContent = text;
+    msg.className = `q-msg font-sans text-sm mt-4 ${tone === 'warn' ? 'text-nes-amber' : 'text-gray-400'}`;
+    msg.hidden = !text;
+  }
+
+  function restore(card: HTMLElement, thumb?: string) {
+    const id = card.dataset.spot!;
+    state.restored[id] = thumb ? { thumb } : {};
+    save();
+    card.classList.add('is-revealing');
+    render();
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    track('quest_memory', { spot: id });
+    if (SPOTS.every((s) => state.restored[s.id])) track('quest_complete');
+  }
+
+  async function judge(spotId: string, dataUrl: string): Promise<{ verdict?: string; hint?: string; error?: string }> {
+    try {
+      const res = await fetch('/api/quest/judge', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ code: state.code, spot: spotId, image: dataUrl.split(',')[1] }),
+      });
+      return await res.json();
+    } catch {
+      return { error: 'network' };
+    }
+  }
+
+  /** Last photo tried at each spot, so "I'M HERE" still keeps it for the memory card. */
+  const lastTry = new Map<string, string>();
+
+  for (const card of cards) {
+    const id = card.dataset.spot!;
+    const fileInput = $<HTMLInputElement>('.q-file', card);
+
+    fileInput.addEventListener('change', async () => {
+      const file = fileInput.files?.[0];
+      fileInput.value = '';
+      if (!file) return;
+
+      let img: ImageBitmap | HTMLImageElement;
+      try {
+        img = await decode(file);
+      } catch {
+        showMsg(card, "Couldn't open that photo. Try another one.", 'warn');
+        return;
+      }
+      const thumb = toJpeg(img, THUMB_EDGE, 0.7);
+      lastTry.set(id, thumb);
+
+      if (card.dataset.judge === 'self') {
+        showMsg(card, '');
+        restore(card, thumb);
+        return;
+      }
+
+      showMsg(card, 'Remembering...');
+      const result = await judge(id, toJpeg(img, UPLOAD_MAX_EDGE, 0.8));
+
+      if (result.verdict === 'ok') {
+        showMsg(card, '');
+        restore(card, thumb);
+        return;
+      }
+      if (result.error === 'code') {
+        state.code = '';
+        save();
+        render();
+        $('#q-code-error').hidden = false;
+        codeForm.scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+      if (result.verdict === 'people') {
+        showMsg(card, 'This memory is about a place, not a person. Try the scenery.', 'warn');
+        return;
+      }
+      if (result.verdict === 'miss') {
+        state.misses[id] = (state.misses[id] ?? 0) + 1;
+        save();
+        render();
+        showMsg(card, `Not quite... ${result.hint ?? ''}`.trim(), 'warn');
+        return;
+      }
+      // Could not check (limit, network, server): never leave the guest stuck
+      state.misses[id] = Math.max(state.misses[id] ?? 0, UNLOCK_AFTER_MISSES);
+      save();
+      render();
+      showMsg(card, "The memory is foggy right now. If you're at the place, tap I'M HERE.", 'warn');
+    });
+
+    card.querySelector('.q-self')?.addEventListener('click', () => restore(card));
+    $('.q-here', card).addEventListener('click', () => {
+      showMsg(card, '');
+      restore(card, lastTry.get(id));
+    });
+  }
+
+  // ---------- memory card image ----------
+
+  function loadImage(src: string): Promise<HTMLImageElement> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = src;
+    });
+  }
+
+  function drawCover(ctx: CanvasRenderingContext2D, img: HTMLImageElement, x: number, y: number, w: number, h: number) {
+    const scale = Math.max(w / img.width, h / img.height);
+    const sw = w / scale;
+    const sh = h / scale;
+    ctx.drawImage(img, (img.width - sw) / 2, (img.height - sh) / 2, sw, sh, x, y, w, h);
+  }
+
+  async function buildCard(): Promise<Blob | null> {
+    try {
+      await document.fonts.load('24px "Press Start 2P"');
+    } catch {
+      // falls back to monospace
+    }
+    const W = 1080;
+    const H = 1350;
+    const canvas = document.createElement('canvas');
+    canvas.width = W;
+    canvas.height = H;
+    const ctx = canvas.getContext('2d')!;
+    ctx.fillStyle = '#0a0a0a';
+    ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = '#ffb000';
+    ctx.lineWidth = 12;
+    ctx.strokeRect(30, 30, W - 60, H - 60);
+
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#f8f8f8';
+    ctx.font = '34px "Press Start 2P", monospace';
+    ctx.fillText('GION NIGHT QUEST', W / 2, 130);
+    ctx.fillStyle = '#ffb000';
+    ctx.fillText('LOST MEMORIES', W / 2, 185);
+
+    const gap = 24;
+    const tileW = (W - 120 - gap) / 2;
+    const tileH = tileW * 0.82;
+    const top = 240;
+    for (let i = 0; i < 4; i++) {
+      const spot = SPOTS[i];
+      const x = 60 + (i % 2) * (tileW + gap);
+      const y = top + Math.floor(i / 2) * (tileH + gap + 50);
+      ctx.fillStyle = '#1a1a1a';
+      ctx.fillRect(x, y, tileW, tileH);
+      const src = spot && state.restored[spot.id]?.thumb;
+      if (src) {
+        try {
+          drawCover(ctx, await loadImage(src), x, y, tileW, tileH);
+        } catch {
+          // leave the tile dark
+        }
+      }
+      ctx.fillStyle = '#00e5ff';
+      ctx.font = '20px "Press Start 2P", monospace';
+      ctx.textAlign = 'left';
+      ctx.fillText(spot ? spot.label : '', x, y + tileH + 34);
+    }
+
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#f8f8f8';
+    ctx.font = 'italic 34px Inter, system-ui, sans-serif';
+    ctx.fillText('I was never lost.', W / 2, 1180);
+    ctx.fillStyle = '#7a7a7a';
+    ctx.font = '22px Inter, system-ui, sans-serif';
+    const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    ctx.fillText(`Kyoto, ${date}  ·  otatrip.guide`, W / 2, 1240);
+
+    return new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+  }
+
+  $('#q-save').addEventListener('click', async () => {
+    const blob = await buildCard();
+    if (!blob) return;
+    const file = new File([blob], 'gion-memory-card.png', { type: 'image/png' });
+    track('quest_card_save');
+    if (navigator.canShare?.({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], title: 'Gion Night Quest' });
+        return;
+      } catch {
+        // cancelled or blocked: fall through to download
+      }
+    }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = file.name;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+  });
+
+  render();
+</script>

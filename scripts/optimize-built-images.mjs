@@ -22,7 +22,9 @@ import sharp from 'sharp';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 // The Vercel adapter deploys .vercel/output/static; dist is what CI/local preview use.
-const OUT_DIRS = ['.vercel/output/static', 'dist'].map(d => join(ROOT, d)).filter(existsSync);
+// With an on-demand route (e.g. /api/quest/judge) Astro writes the static site to dist/client.
+const DIST = existsSync(join(ROOT, 'dist/client')) ? 'dist/client' : 'dist';
+const OUT_DIRS = ['.vercel/output/static', DIST].map(d => join(ROOT, d)).filter(existsSync);
 const WEBP = { quality: 76, effort: 4 };
 const TIME_LIMIT_MS = 5 * 60 * 1000;
 
