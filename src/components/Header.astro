@@ -1,7 +1,7 @@
 ---
 const navLinks = [
   { href: '/tours', label: 'TOURS' },
-  { href: '/blog', label: 'GUIDES' },
+  { href: '/blog', label: 'BLOG' },
   { href: '/groups', label: 'GROUPS' },
   { href: '/guide', label: 'OUR GUIDE' },
   { href: '/game', label: 'PLAY' },
@@ -64,7 +64,7 @@ const currentPath = Astro.url.pathname;
         style="font-size: 0.625rem;"
       >
         {link.label}
-        <span class="text-gray-500">&rsaquo;</span>
+        <span class="text-gray-400">&rsaquo;</span>
       </a>
     ))}
     <a href="/tours" data-track-label="header_mobile_book_a_tour"

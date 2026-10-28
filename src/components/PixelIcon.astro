@@ -1,0 +1,236 @@
+---
+/**
+ * 12x12 pixel-art icons drawn as crisp SVG, used in place of emoji so every
+ * icon on the site matches the retro look. Add a new icon by adding a 12-row
+ * map below ('.' = transparent, letters = palette colors).
+ */
+interface Props {
+  name: keyof typeof ICONS;
+  size?: number;
+  class?: string;
+}
+
+const PALETTE: Record<string, string> = {
+  A: '#ffb000', // amber
+  Y: '#ffe9a8', // pale amber
+  R: '#e8483c', // red
+  D: '#5a3a1a', // dark brown
+  B: '#9a6a3a', // brown
+  W: '#f2f2f2', // white
+  K: '#7a7a7a', // gray
+  C: '#00e5ff', // cyan
+  M: '#5fa832', // green
+  L: '#b5e655', // light green
+};
+
+const ICONS = {
+  lantern: [
+    '....DDDD....',
+    '.....DD.....',
+    '...RRRRRR...',
+    '..RRRRRRRR..',
+    '..DDDDDDDD..',
+    '.RRRRAARRRR.',
+    '.RRRAYYARRR.',
+    '.DDDDAADDDD.',
+    '..RRRRRRRR..',
+    '..RRRRRRRR..',
+    '...RRRRRR...',
+    '....DDDD....',
+  ],
+  beer: [
+    '............',
+    '.WWWWWWW....',
+    'WWWWWWWWW...',
+    'AAAAAAAAAWW.',
+    'AYAAAAAAA..W',
+    'AYAAAAAAA..W',
+    'AYAAAAAAA..W',
+    'AAAAAAAAA..W',
+    'AAAAAAAAAWW.',
+    'AAAAAAAAA...',
+    'AAAAAAAAA...',
+    '.AAAAAAA....',
+  ],
+  torii: [
+    '............',
+    'RRRRRRRRRRRR',
+    '.DDDDDDDDDD.',
+    '..RR.RR.RR..',
+    '..RR.RR.RR..',
+    'RRRRRRRRRRRR',
+    '..RR....RR..',
+    '..RR....RR..',
+    '..RR....RR..',
+    '..RR....RR..',
+    '..RR....RR..',
+    '.DDDD..DDDD.',
+  ],
+  coffee: [
+    '..K..K......',
+    '...K..K.....',
+    '..K..K......',
+    '............',
+    'WWWWWWWWWW..',
+    'WDDDDDDDDWWW',
+    'WWWWWWWWWW.W',
+    'WWWWWWWWWW.W',
+    '.WWWWWWWWWW.',
+    '..WWWWWW....',
+    '............',
+    'KKKKKKKKKKK.',
+  ],
+  matcha: [
+    '............',
+    '............',
+    '...K..K.....',
+    '....K..K....',
+    '...K..K.....',
+    'LLLLLLLLLLLL',
+    'BMLMMMMMLMMB',
+    'BBBBBBBBBBBB',
+    '.BBBBBBBBBB.',
+    '..BBBBBBBB..',
+    '....DDDD....',
+    '............',
+  ],
+  book: [
+    '............',
+    '.WWWW..WWWW.',
+    'WWWWWWWWWWWW',
+    'WKKKWCCWKKKW',
+    'WWWWWCCWWWWW',
+    'WKKKWCCWKKKW',
+    'WWWWWCCWWWWW',
+    'WKKKWCCWKKKW',
+    'WWWWWCCWWWWW',
+    'CCCCCCCCCCCC',
+    '.CCCC..CCCC.',
+    '............',
+  ],
+  people: [
+    '............',
+    '..AA....CC..',
+    '.AAAA..CCCC.',
+    '.AAAA..CCCC.',
+    '..AA....CC..',
+    '............',
+    '.AAAA..CCCC.',
+    'AAAAA..CCCCC',
+    'AAAAA..CCCCC',
+    'AAAAA..CCCCC',
+    'AAAAA..CCCCC',
+    '............',
+  ],
+  gamepad: [
+    '............',
+    '............',
+    '............',
+    '.KKKKKKKKKK.',
+    'KKWKKKKKKKKK',
+    'KWWWKKKKRKRK',
+    'KKWKKKKKKKKK',
+    'KKKKKKKKKKKK',
+    '.KKK....KKK.',
+    '............',
+    '............',
+    '............',
+  ],
+  mail: [
+    '............',
+    '............',
+    'WWWWWWWWWWWW',
+    'WKWWWWWWWWKW',
+    'WWKWWWWWWKWW',
+    'WWWKWWWWKWWW',
+    'WWWWKKKKWWWW',
+    'WWWWWWWWWWWW',
+    'WWWWWWWWWWWW',
+    'WWWWWWWWWWWW',
+    '............',
+    '............',
+  ],
+  flag: [
+    '.KAAAAAA....',
+    '.KAAAAAAAA..',
+    '.KAAAAAAAA..',
+    '.KAAAAAA....',
+    '.K..........',
+    '.K..........',
+    '.K..........',
+    '.K..........',
+    '.K..........',
+    '.K..........',
+    '.K..........',
+    'KKK.........',
+  ],
+  map: [
+    '....RRRR....',
+    '...RRRRRR...',
+    '...RRWWRR...',
+    '...RRWWRR...',
+    '...RRRRRR...',
+    '....RRRR....',
+    '.....RR.....',
+    '.....RR.....',
+    'MMMKKKKMMMKK',
+    'MMMKKKKMMMKK',
+    'MMMKKKKMMMKK',
+    '............',
+  ],
+  clock: [
+    '............',
+    '...WWWWWW...',
+    '..W......W..',
+    '.W...A....W.',
+    'W....A.....W',
+    'W....A.....W',
+    'W....AAA...W',
+    'W..........W',
+    '.W........W.',
+    '..W......W..',
+    '...WWWWWW...',
+    '............',
+  ],
+  globe: [
+    '...CCCCCC...',
+    '..CCMMCCCC..',
+    '.CMMMMCCCCC.',
+    'CCMMMCCCCMMC',
+    'CCCMCCCCMMMC',
+    'CCCCCCCCMMMC',
+    'CCCCCMCCCMCC',
+    'CCCCMMMCCCCC',
+    '.CCCMMCCCCC.',
+    '..CCCCCCCC..',
+    '...CCCCCC...',
+    '............',
+  ],
+} satisfies Record<string, string[]>;
+
+const { name, size = 24, class: className } = Astro.props;
+
+// Merge horizontal runs of the same color into one rect to keep the markup small.
+const rects: { x: number; y: number; w: number; fill: string }[] = [];
+ICONS[name].forEach((row, y) => {
+  let x = 0;
+  while (x < row.length) {
+    const ch = row[x];
+    let w = 1;
+    while (row[x + w] === ch) w++;
+    if (ch !== '.') rects.push({ x, y, w, fill: PALETTE[ch] });
+    x += w;
+  }
+});
+---
+
+<svg
+  viewBox="0 0 12 12"
+  width={size}
+  height={size}
+  shape-rendering="crispEdges"
+  aria-hidden="true"
+  class={className}
+>
+  {rects.map(r => <rect x={r.x} y={r.y} width={r.w} height="1" fill={r.fill} />)}
+</svg>

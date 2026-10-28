@@ -91,7 +91,7 @@ const featuredPost = sortedAll.find(p => p.data.hero_image) ?? sortedAll[0];
             />
           ) : (
             <div class="w-full h-full bg-neutral-900 flex items-center justify-center">
-              <span class="font-pixel text-[0.9rem] text-gray-500">NO IMAGE</span>
+              <span class="font-pixel text-[0.9rem] text-gray-400">NO IMAGE</span>
             </div>
           )}
           <div class="featured-gradient absolute inset-0"></div>
@@ -157,7 +157,7 @@ const featuredPost = sortedAll.find(p => p.data.hero_image) ?? sortedAll[0];
                     />
                   ) : (
                     <div class="w-full h-full bg-neutral-900 flex items-center justify-center">
-                      <span class="font-pixel text-[0.9rem] text-gray-500">KYOTO</span>
+                      <span class="font-pixel text-[0.9rem] text-gray-400">KYOTO</span>
                     </div>
                   )}
                   <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
@@ -169,11 +169,11 @@ const featuredPost = sortedAll.find(p => p.data.hero_image) ?? sortedAll[0];
                   <h3 class="font-dot text-lg text-nes-white group-hover:text-nes-amber transition-colors leading-snug mb-3 line-clamp-2">
                     {post.data.title}
                   </h3>
-                  <p class="font-sans text-gray-500 text-sm leading-relaxed line-clamp-3 mb-5">
+                  <p class="font-sans text-gray-400 text-sm leading-relaxed line-clamp-3 mb-5">
                     {post.data.description}
                   </p>
                   <div class="flex items-center justify-between">
-                    <span class="font-sans text-xs text-gray-500">{post.data.author || 'OTAtrip Guide'}</span>
+                    <span class="font-sans text-xs text-gray-400">{post.data.author || 'OTAtrip Guide'}</span>
                     <span class="px-label text-nes-cyan group-hover:text-nes-amber transition-colors">
                       READ ▶
                     </span>
@@ -187,7 +187,7 @@ const featuredPost = sortedAll.find(p => p.data.hero_image) ?? sortedAll[0];
     ))}
 
     {allPosts.length === 0 && (
-      <p class="font-pixel text-[0.9rem] text-gray-500 text-center py-20">// TRAVEL GUIDES COMING SOON</p>
+      <p class="font-pixel text-[0.9rem] text-gray-400 text-center py-20">// TRAVEL GUIDES COMING SOON</p>
     )}
   </div>
 
