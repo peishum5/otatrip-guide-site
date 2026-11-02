@@ -5,6 +5,7 @@
  */
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ReviewHelper from '../../../components/ReviewHelper.astro';
+import NextTours from '../../../components/NextTours.astro';
 import { TOURS } from '../../../config/reviewHelper';
 
 export function getStaticPaths() {
@@ -21,4 +22,5 @@ const { tour } = Astro.props;
   noIndex={true}
 >
   <ReviewHelper tour={tour} />
+  <NextTours place="review" exclude={tour.slug} />
 </BaseLayout>

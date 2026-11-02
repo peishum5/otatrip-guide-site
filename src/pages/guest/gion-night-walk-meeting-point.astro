@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { CONTACT_EMAIL } from '../../config/site';
+import NextTours from '../../components/NextTours.astro';
 
 const flowSteps = [
   {
@@ -137,4 +138,6 @@ const missedSteps = [
       </div>
     </section>
   </div>
+
+  <NextTours place="meeting" exclude="gion-sake-walk" />
 </BaseLayout>

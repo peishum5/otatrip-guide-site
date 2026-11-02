@@ -1,0 +1,79 @@
+---
+/**
+ * "Next quest" block for guests who already booked with us: suggests other
+ * experiences on the guest pages (meeting point, review helper).
+ *
+ * - To suggest another experience (e.g. the shrine magic show), add one entry
+ *   to NEXT_TOURS. The tour page must exist at `href`.
+ * - Clicks are tracked as cta_click with label guest_next_<place>_<id>.
+ */
+import PixelIcon from './PixelIcon.astro';
+
+interface Props {
+  /** Where the block is shown; used in the tracking label. */
+  place: string;
+  /** Slug of the tour the guest is on, so we don't suggest it again. */
+  exclude?: string;
+}
+
+const NEXT_TOURS = [
+  {
+    id: 'coffee-ceremony',
+    name: 'Hands-On Coffee Ceremony with a Master',
+    tagline: 'Hidden alley cafe near Nishiki Market. Brew two coffees yourself.',
+    time: 'Daytime',
+    duration: '70 minutes',
+    href: '/tours/coffee-ceremony',
+    photo: '/images/tours/coffee-ceremony/guests-kettles.jpg',
+  },
+  {
+    id: 'shimogamo-manga-walk',
+    name: 'Shimogamo Shrine & Manga Walk',
+    tagline: 'World Heritage shrine and forest, turned into your own manga print.',
+    time: 'Morning / Afternoon',
+    duration: '2 hours',
+    href: '/tours/shimogamo-manga-walk',
+    photo: '/images/tours/shimogamo/photo-bridge.jpg',
+    photoPosition: 'center 40%',
+  },
+];
+
+const { place, exclude } = Astro.props;
+const tours = NEXT_TOURS.filter((tour) => tour.id !== exclude);
+---
+
+{tours.length > 0 && (
+  <section class="mx-auto max-w-3xl px-4 pb-14">
+    <p class="mb-2 font-pixel text-[0.8rem] text-nes-cyan">NEXT QUEST</p>
+    <h2 class="mb-2 font-sans text-2xl font-bold leading-tight text-nes-white">More of Kyoto, by day</h2>
+    <p class="mb-6 font-sans text-sm leading-relaxed text-gray-300">
+      Still in Kyoto for a few days? More small-group experiences from OTAtrip Guide.
+    </p>
+    <div class="grid gap-5 sm:grid-cols-2">
+      {tours.map((tour) => (
+        <a
+          href={tour.href}
+          class="dialogue-box group block overflow-hidden transition-colors hover:border-nes-amber"
+          data-track-label={`guest_next_${place}_${tour.id}`}
+        >
+          <div class="-mx-6 -mt-6 mb-5 overflow-hidden border-b-2 border-nes-amber">
+            <img
+              src={tour.photo}
+              alt={tour.name}
+              class="h-40 w-full object-cover"
+              style={tour.photoPosition ? `object-position: ${tour.photoPosition}` : undefined}
+              loading="lazy"
+            />
+          </div>
+          <span class="px-label text-nes-cyan">{tour.time.toUpperCase()}</span>
+          <h3 class="mb-2 mt-2 font-dot text-lg leading-snug text-nes-white">{tour.name}</h3>
+          <p class="mb-4 font-sans text-sm leading-relaxed text-gray-300">{tour.tagline}</p>
+          <div class="flex items-center justify-between gap-3 font-dot text-sm text-gray-300">
+            <span class="inline-flex items-center gap-1.5"><PixelIcon name="clock" size={14} />{tour.duration}</span>
+            <span class="text-nes-amber group-hover:underline">SEE DETAILS &gt;</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+)}
