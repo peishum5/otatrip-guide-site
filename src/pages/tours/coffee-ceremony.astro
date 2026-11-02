@@ -31,7 +31,11 @@ const faqs = [
   },
   {
     q: 'Can children join?',
-    a: 'Yes. Children under 12 are welcome with a paying adult.',
+    a: 'Yes. Children aged 6 and over are welcome with an adult. Everyone pays the same price.',
+  },
+  {
+    q: 'How much does it cost?',
+    a: 'A solo guest pays ¥12,000. For 2 to 4 guests, it is ¥9,000 per person. Each session is private for your group.',
   },
   {
     q: 'I have a food allergy. Can you adjust?',
@@ -83,7 +87,7 @@ const faqs = [
           { label: 'Group size', value: 'Max 4 guests' },
           { label: 'Language', value: 'English' },
           { label: 'Time', value: 'Daytime' },
-          { label: 'Price', value: '¥24,000 / group' },
+          { label: 'Price', value: 'from ¥9,000' },
         ].map(item => (
           <div>
             <div class="font-dot text-xl text-nes-amber">{item.value}</div>
@@ -173,6 +177,14 @@ const faqs = [
               About 5 minutes on foot from Nishiki Market, and about 6 minutes from Subway "Shijo" / Hankyu "Karasuma" stations.
               Please arrive 5 minutes before your start time.
             </p>
+            <a
+              href="https://maps.app.goo.gl/5cavsKSHvoboJD7v9"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-label text-nes-cyan hover:text-nes-amber transition-colors"
+            >
+              ▶ OPEN IN GOOGLE MAPS
+            </a>
           </div>
           <div class="space-y-2 font-dot text-base">
             {[
@@ -242,10 +254,12 @@ const faqs = [
       "url": "https://otatrip.guide"
     },
     "offers": {
-      "@type": "Offer",
-      "price": "24000",
+      "@type": "AggregateOffer",
+      "lowPrice": "9000",
+      "highPrice": "12000",
       "priceCurrency": "JPY",
-      "availability": "https://schema.org/InStock"
+      "availability": "https://schema.org/InStock",
+      "url": "https://otatrip.guide/tours/coffee-ceremony#booking"
     }
   })} />
   <script type="application/ld+json" set:html={JSON.stringify({
@@ -257,5 +271,5 @@ const faqs = [
       "acceptedAnswer": { "@type": "Answer", "text": faq.a }
     }))
   })} />
-  <StickyBookBar price="¥24,000 / group" slug="coffee-ceremony" />
+  <StickyBookBar price="from ¥9,000" slug="coffee-ceremony" />
 </BaseLayout>
