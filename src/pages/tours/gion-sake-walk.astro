@@ -39,6 +39,10 @@ const faqs = [
     a: 'It starts outside Hankyu Kyoto-Kawaramachi Station Exit 1B, beside McDonald\'s, and ends at Yasaka Shrine.',
   },
   {
+    q: 'How much does the tour cost?',
+    a: 'A solo guest pays ¥6,000. For 2 or more guests, it is ¥4,500 per person.',
+  },
+  {
     q: 'Is admission to the shrines and temples included?',
     a: 'All stops on this tour are free to enter. At Yasui-Konpiragu, the paper for making a wish is an optional ¥100 offering.',
   },
@@ -112,7 +116,7 @@ const photos = [
           { label: 'Group size', value: 'Max 10' },
           { label: 'Language', value: 'English' },
           { label: 'Rating', value: '★ 4.9 / 5' },
-          { label: 'Price', value: 'from ¥5,600' },
+          { label: 'Price', value: 'from ¥4,500' },
         ].map(item => (
           <div>
             <div class="font-dot text-xl text-nes-amber">{item.value}</div>
@@ -297,8 +301,9 @@ const photos = [
       "url": "https://otatrip.guide"
     },
     "offers": {
-      "@type": "Offer",
-      "price": "5600",
+      "@type": "AggregateOffer",
+      "lowPrice": "4500",
+      "highPrice": "6000",
       "priceCurrency": "JPY",
       "availability": "https://schema.org/InStock",
       "url": "https://otatrip.guide/tours/gion-sake-walk#booking"
@@ -365,5 +370,5 @@ const photos = [
       "acceptedAnswer": { "@type": "Answer", "text": faq.a }
     }))
   })} />
-  <StickyBookBar price="from ¥5,600" slug="gion-sake-walk" />
+  <StickyBookBar price="from ¥4,500" slug="gion-sake-walk" />
 </BaseLayout>
