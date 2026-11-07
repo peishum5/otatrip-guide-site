@@ -299,16 +299,14 @@ const faqs = [
 
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
-    "@type": "TouristAttraction",
+    "@type": ["TouristTrip", "Product"],
     "name": "Shimogamo Shrine & Manga Walk",
     "description": "A walk through Shimogamo Shrine and Tadasu-no-Mori forest with cinematic photography and a custom manga-style print souvenir.",
     "url": "https://otatrip.guide/tours/shimogamo-manga-walk",
     "image": "https://otatrip.guide/images/tours/shimogamo/photo-bridge.jpg",
-    "provider": {
-      "@type": "TouristInformationCenter",
-      "name": "OTAtrip Guide",
-      "url": "https://otatrip.guide"
-    },
+    "provider": { "@id": "https://otatrip.guide/#organization" },
+    "brand": { "@type": "Brand", "name": "OTAtrip Guide" },
+    "touristType": ["First-time visitors", "Culture lovers", "Small groups"],
     "offers": {
       "@type": "Offer",
       "price": "8500",

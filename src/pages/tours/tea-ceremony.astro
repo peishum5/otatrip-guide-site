@@ -230,16 +230,14 @@ const faqs = [
 
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
-    "@type": "TouristAttraction",
+    "@type": ["TouristTrip", "Product"],
     "name": "Matcha Tea Ceremony with an Urasenke Master",
     "description": "An authentic matcha tea ceremony and tasting class in central Kyoto, led by a certified Urasenke tea master. Whisk your own matcha, enjoy seasonal wagashi, and compare three Japanese teas. 80 minutes, max 5 guests.",
     "url": "https://otatrip.guide/tours/tea-ceremony",
     "image": "https://otatrip.guide/images/tours/tea-ceremony/sensei-guiding.jpg",
-    "provider": {
-      "@type": "TouristInformationCenter",
-      "name": "OTAtrip Guide",
-      "url": "https://otatrip.guide"
-    },
+    "provider": { "@id": "https://otatrip.guide/#organization" },
+    "brand": { "@type": "Brand", "name": "OTAtrip Guide" },
+    "touristType": ["First-time visitors", "Culture lovers", "Small groups"],
     "offers": {
       "@type": "Offer",
       "price": "12000",

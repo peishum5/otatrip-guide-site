@@ -290,16 +290,14 @@ const photos = [
 
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
-    "@type": "TouristAttraction",
+    "@type": ["TouristTrip", "Product"],
     "name": "Kyoto Gion Night Walk: Hidden Gems & Geisha",
     "description": "A 90-minute walking tour through Gion's stone-paved alleys and geisha streets, from Pontocho to Yasaka Shrine. Starts every 2 hours from 15:30. Small groups of max 10 guests.",
     "url": "https://otatrip.guide/tours/gion-sake-walk",
     "image": "https://otatrip.guide/images/tours/gion/hero.jpg",
-    "provider": {
-      "@type": "TouristInformationCenter",
-      "name": "OTAtrip Guide",
-      "url": "https://otatrip.guide"
-    },
+    "provider": { "@id": "https://otatrip.guide/#organization" },
+    "brand": { "@type": "Brand", "name": "OTAtrip Guide" },
+    "touristType": ["First-time visitors", "Culture lovers", "Small groups"],
     "offers": {
       "@type": "AggregateOffer",
       "lowPrice": "4500",
