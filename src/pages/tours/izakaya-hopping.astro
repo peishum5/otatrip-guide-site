@@ -234,16 +234,14 @@ const faqs = [
 
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
-    "@type": "TouristAttraction",
+    "@type": ["TouristTrip", "Product"],
     "name": "Kyoto Izakaya Hopping",
     "description": "An evening bar-hopping tour through Kyoto's most atmospheric backstreets in Pontocho and Kiyamachi. Small groups.",
     "url": "https://otatrip.guide/tours/izakaya-hopping",
     "image": "https://otatrip.guide/images/tours/izakaya/izakaya-guests.jpg",
-    "provider": {
-      "@type": "TouristInformationCenter",
-      "name": "OTAtrip Guide",
-      "url": "https://otatrip.guide"
-    },
+    "provider": { "@id": "https://otatrip.guide/#organization" },
+    "brand": { "@type": "Brand", "name": "OTAtrip Guide" },
+    "touristType": ["First-time visitors", "Culture lovers", "Small groups"],
     "offers": {
       "@type": "Offer",
       "price": "4160",

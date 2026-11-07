@@ -71,13 +71,36 @@ const fullTitle = baseTitle.includes(BRAND) ? baseTitle : `${baseTitle} | ${BRAN
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "Organization",
+        "@type": ["Organization", "TravelAgency"],
         "@id": `${siteUrl}/#organization`,
         "name": "OTAtrip Guide",
+        "description": "Kyoto-based tour company offering small-group, English-language walking tours and hands-on workshops in Kyoto: Gion night walk, izakaya hopping, Shimogamo Shrine manga walk, Japanese coffee workshop and matcha tea ceremony.",
         "url": siteUrl,
         "logo": `${siteUrl}/logo.png`,
+        "image": `${siteUrl}/images/og-default-logo.jpg`,
         "email": CONTACT_EMAIL,
+        "priceRange": "¥4,160–¥12,000",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kyoto",
+          "addressRegion": "Kyoto",
+          "addressCountry": "JP"
+        },
         "areaServed": { "@type": "City", "name": "Kyoto" },
+        "knowsLanguage": ["en", "ja"],
+        "knowsAbout": ["Kyoto walking tours", "Gion", "Geisha district", "Izakaya", "Japanese tea ceremony", "Japanese coffee", "Shimogamo Shrine"],
+        "founder": {
+          "@type": "Person",
+          "name": "Shumpei Nagoshi",
+          "alternateName": "名越俊平",
+          "url": `${siteUrl}/guide`
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer service",
+          "email": CONTACT_EMAIL,
+          "availableLanguage": ["English", "Japanese"]
+        },
         "parentOrganization": {
           "@type": "Organization",
           "name": "8E6 Inc.",
