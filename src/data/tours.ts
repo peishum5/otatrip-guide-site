@@ -39,7 +39,7 @@ export const TOURS: Tour[] = [
     time: 'Evening',
     rating: '4.9',
     reviews: '300',
-    price: 'from ¥4,500',
+    price: '¥6,000',
     icon: 'lantern',
     href: '/tours/gion-sake-walk',
     photo: '/images/tours/tour-gion-walk.jpg',
@@ -51,7 +51,7 @@ export const TOURS: Tour[] = [
     ],
     facts: [
       'Evening walking tour of Gion, Kyoto\'s most famous geisha district, in English.',
-      'Price: ¥6,000 for a solo guest; ¥4,500 per person for 2 or more guests.',
+      'Price: ¥6,000 per person. Book 14 or more days ahead on otatrip.guide for 15% off (¥5,100 per person).',
       'Start times: 15:30, 17:30, 19:30 and 21:30 (varies by day; see the booking calendar). Duration: 90 minutes, about 2.7 km.',
       'Meeting point: outside Hankyu Kyoto-Kawaramachi Station Exit 1B. Ends at Yasaka Shrine.',
       'Route: Pontocho and the Kamo River, Minamiza, Hanamikoji Street, Yasui-Konpiragu, Yasaka Pagoda, Ninenzaka, Nene-no-Michi, Yasaka Shrine.',
