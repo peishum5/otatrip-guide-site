@@ -1,7 +1,7 @@
 ---
 title: "Kyoto Gion Night Walk: Hidden Gems & Geisha"
 description: "A 90-minute evening walk through Gion with a guide who lives in Kyoto, from Pontocho and Hanamikoji to Yasaka Shrine."
-price: "From ¥4,500 per person (¥6,000 for a solo guest)"
+price: "¥6,000 per person (15% off when booked 14+ days ahead)"
 duration: "90 minutes"
 highlights:
   - "Pontocho, the Kamo River and Minamiza, Japan's oldest theatre"

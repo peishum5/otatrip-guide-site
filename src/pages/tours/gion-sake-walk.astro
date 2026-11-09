@@ -40,7 +40,7 @@ const faqs = [
   },
   {
     q: 'How much does the tour cost?',
-    a: 'A solo guest pays ¥6,000. For 2 or more guests, it is ¥4,500 per person.',
+    a: 'It is ¥6,000 per person. Book 14 or more days ahead here and you get 15% off, so it is ¥5,100 per person.',
   },
   {
     q: 'Is admission to the shrines and temples included?',
@@ -116,7 +116,7 @@ const photos = [
           { label: 'Group size', value: 'Max 10' },
           { label: 'Language', value: 'English' },
           { label: 'Rating', value: '★ 4.9 / 5' },
-          { label: 'Price', value: 'from ¥4,500' },
+          { label: 'Price', value: '¥6,000' },
         ].map(item => (
           <div>
             <div class="font-dot text-xl text-nes-amber">{item.value}</div>
@@ -255,7 +255,7 @@ const photos = [
         <h2 class="font-pixel text-[0.8rem] md:text-[0.9rem] leading-relaxed text-nes-amber">BOOK YOUR SPOT</h2>
         <div class="flex-1 border-t border-gray-800"></div>
       </div>
-      <p class="font-sans text-gray-300 text-sm mb-6">Book early to take advantage of early-bird pricing.</p>
+      <p class="font-sans text-gray-300 text-sm mb-6">Book 14 or more days ahead and save 15% (¥5,100 per person). The discount shows in the calendar below.</p>
       <BookingWidget widgetPath="experience-calendar/901507" />
     </section>
 
@@ -299,9 +299,8 @@ const photos = [
     "brand": { "@type": "Brand", "name": "OTAtrip Guide" },
     "touristType": ["First-time visitors", "Culture lovers", "Small groups"],
     "offers": {
-      "@type": "AggregateOffer",
-      "lowPrice": "4500",
-      "highPrice": "6000",
+      "@type": "Offer",
+      "price": "6000",
       "priceCurrency": "JPY",
       "availability": "https://schema.org/InStock",
       "url": "https://otatrip.guide/tours/gion-sake-walk#booking"
@@ -368,5 +367,5 @@ const photos = [
       "acceptedAnswer": { "@type": "Answer", "text": faq.a }
     }))
   })} />
-  <StickyBookBar price="from ¥4,500" slug="gion-sake-walk" />
+  <StickyBookBar price="¥6,000 / person" slug="gion-sake-walk" />
 </BaseLayout>
