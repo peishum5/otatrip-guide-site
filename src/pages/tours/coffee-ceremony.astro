@@ -243,16 +243,14 @@ const faqs = [
 
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
-    "@type": "TouristAttraction",
+    "@type": ["TouristTrip", "Product"],
     "name": "Hands-On Coffee Ceremony with a Master near Nishiki Market",
     "description": "Learn Japanese pour-over coffee at a hidden alley cafe a few minutes from Nishiki Market, Kyoto. Grind, bloom, and brew two coffees with a Master, then compare them over Kyoto sweets. 70 minutes, max 4 guests.",
     "url": "https://otatrip.guide/tours/coffee-ceremony",
     "image": "https://otatrip.guide/images/tours/coffee-ceremony/master-lecture.jpg",
-    "provider": {
-      "@type": "TouristInformationCenter",
-      "name": "OTAtrip Guide",
-      "url": "https://otatrip.guide"
-    },
+    "provider": { "@id": "https://otatrip.guide/#organization" },
+    "brand": { "@type": "Brand", "name": "OTAtrip Guide" },
+    "touristType": ["First-time visitors", "Culture lovers", "Small groups"],
     "offers": {
       "@type": "AggregateOffer",
       "lowPrice": "9000",
