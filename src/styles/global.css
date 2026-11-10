@@ -434,6 +434,16 @@
     background-color: #111;
   }
 
+  /* Phones: tighter cells so 4–5 column tables need less sideways scrolling */
+  @media (max-width: 640px) {
+    .prose th,
+    .prose td {
+      padding: 0.4rem 0.55rem;
+      font-size: 0.8125rem;
+      line-height: 1.45;
+    }
+  }
+
   /* Blockquote styling */
   .prose blockquote {
     background: #111;
