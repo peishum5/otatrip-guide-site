@@ -23,6 +23,10 @@ export const BOKUN_LOADER_SRC =
 /** GA4 measurement ID. Referenced by Analytics.astro. Do not change. */
 export const GA4_MEASUREMENT_ID = 'G-7NL28Z41JD';
 
+/** Instagram profile. Used by the home page reel section. */
+export const INSTAGRAM_HANDLE = '@Otatrip_guide';
+export const INSTAGRAM_URL = 'https://www.instagram.com/otatrip_guide/';
+
 /** TripAdvisor review page. */
 export const TRIPADVISOR_URL =
   'https://www.tripadvisor.com/Attraction_Review-g298564-d27525194-Reviews-OTAtrip_Guide-Kyoto_Kyoto_Prefecture_Kinki.html';
