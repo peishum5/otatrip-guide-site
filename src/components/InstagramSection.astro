@@ -1,0 +1,102 @@
+---
+/**
+ * Instagram reel covers, self-hosted. No Instagram script or API is loaded:
+ * each tile is a plain image that links out to the reel.
+ *
+ * To add a reel:
+ *   1. Save its cover as public/images/instagram/<id>.jpg (540x720, 3:4 —
+ *      the centre crop Instagram itself uses on the profile grid).
+ *   2. Add it to the top of `reels` with the code from the reel's URL
+ *      (instagram.com/reel/<code>/) and drop the last entry.
+ * Seasonal reels (Gozan no Okuribi etc.) are left out on purpose.
+ */
+import { INSTAGRAM_HANDLE, INSTAGRAM_URL } from '../config/site';
+
+const reels = [
+  { id: 'ep040', code: 'DfjrAqDioU7', title: 'Your iPhone is a transit card' },
+  { id: 'ep041', code: 'DcJVfJZpZQt', title: "Don't walk and eat in Nishiki Market" },
+  { id: 'ep039', code: 'DcGoZqhpHLN', title: 'On Kyoto buses, pay when you get off' },
+  { id: 'ep038', code: 'DcD8svrJadO', title: 'People live here: keep it quiet after dark' },
+  { id: 'ep037', code: 'Db-TmfBp_B4', title: 'Yes, you can wear a kimono' },
+  { id: 'ep036', code: 'Db7UUx5pFkM', title: 'There is no correct side on the escalator' },
+  { id: 'ep033', code: 'Db5B0YtpvOj', title: 'You can do the tea ceremony in a chair' },
+  { id: 'ep031', code: 'Db1zzqWJR2N', title: 'A5 wagyu is not a taste score' },
+];
+---
+
+<section class="max-w-6xl mx-auto px-4 pb-16" aria-labelledby="instagram-heading">
+  <div class="flex items-end justify-between mb-4">
+    <div>
+      <p class="px-eyebrow text-nes-cyan mb-3 rpg-prefix">ON INSTAGRAM</p>
+      <h2 id="instagram-heading" class="px-h2">JAPAN TIPS IN 30 SECONDS</h2>
+    </div>
+    <a
+      href={INSTAGRAM_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="px-label text-nes-cyan hover:text-nes-amber transition-colors hidden md:block"
+      data-track-label="home_instagram_profile"
+    >
+      {INSTAGRAM_HANDLE.toUpperCase()} &rsaquo;
+    </a>
+  </div>
+  <p class="font-sans text-sm text-gray-300 mb-8 max-w-xl">
+    Short ukiyo-e style reels on Japanese etiquette and the small surprises of travelling here.
+  </p>
+
+  <ul class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+    {reels.map((reel, i) => (
+      <li class={i >= 6 ? 'hidden md:block' : ''}>
+        <a
+          href={`https://www.instagram.com/reel/${reel.code}/`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="reel-tile group block relative"
+          aria-label={`Watch on Instagram: ${reel.title}`}
+          data-track-label={`home_instagram_${reel.id}`}
+        >
+          <img
+            src={`/images/instagram/${reel.id}.jpg`}
+            alt={reel.title}
+            class="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+          <span class="img-badge" aria-hidden="true">▶ REEL</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  <div class="text-center mt-8">
+    <a
+      href={INSTAGRAM_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="nes-btn nes-btn-outline"
+      data-track-label="home_instagram_follow"
+    >
+      FOLLOW {INSTAGRAM_HANDLE.toUpperCase()}
+    </a>
+  </div>
+</section>
+
+<style>
+  .reel-tile {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background: #0d0d0d;
+    border: 2px solid #262626;
+    transition: border-color 0.12s, transform 0.08s, box-shadow 0.12s;
+  }
+  .reel-tile:hover,
+  .reel-tile:focus-visible {
+    border-color: var(--color-nes-amber);
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 rgba(255, 176, 0, 0.35);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reel-tile:hover,
+    .reel-tile:focus-visible { transform: none; }
+  }
+</style>
