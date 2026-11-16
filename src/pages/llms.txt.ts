@@ -1,7 +1,6 @@
-import { getCollection } from 'astro:content';
 import { TOURS } from '../data/tours';
 import { CONTACT_EMAIL, OPERATOR_URL, TRIPADVISOR_URL } from '../config/site';
-import { getBlogCategory, getBlogSortDate } from '../utils/blog';
+import { getBlogCategory, getBlogSortDate, getBlogPosts } from '../utils/blog';
 
 /**
  * /llms.txt — a plain-text summary of the site for AI assistants
@@ -14,7 +13,7 @@ export async function GET({ site }: { site: URL | undefined }) {
   const siteUrl = site?.origin || 'https://otatrip.guide';
   const abs = (path: string) => new URL(path, siteUrl).toString();
 
-  const posts = (await getCollection('blog'))
+  const posts = (await getBlogPosts())
     .filter((post) => !post.data.noIndex)
     .sort((a, b) => getBlogSortDate(b) - getBlogSortDate(a));
 

@@ -5,10 +5,9 @@ import GroupCTA from '../components/GroupCTA.astro';
 import InstagramSection from '../components/InstagramSection.astro';
 import PixelIcon from '../components/PixelIcon.astro';
 import ReviewsSection from '../components/ReviewsSection.astro';
-import { getCollection } from 'astro:content';
-import { getBlogSortDate } from '../utils/blog';
+import { getBlogSortDate, getBlogPosts } from '../utils/blog';
 
-const blogPosts = await getCollection('blog');
+const blogPosts = await getBlogPosts();
 const publicPosts = blogPosts.filter((post) => !post.data.noIndex);
 const latestPosts = [...publicPosts]
   .sort((a, b) => getBlogSortDate(b) - getBlogSortDate(a))
@@ -365,7 +364,7 @@ const stages = [
       <div class="grid md:grid-cols-3 gap-5">
         {latestPosts.map(post => (
           <article class="blog-card group">
-            <a href={`/blog/${post.slug}`} class="block h-full">
+            <a href={`/blog/${post.id}`} class="block h-full">
               <div class="relative overflow-hidden" style="height: 180px;">
                 {post.data.hero_image ? (
                   <img

@@ -18,15 +18,20 @@
     "indexnow": "node scripts/indexnow.mjs"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.3.13",
-    "@astrojs/vercel": "^9.0.4",
-    "@tailwindcss/vite": "^4.2.1",
-    "astro": "^5.17.1",
-    "tailwindcss": "^4.2.1"
+    "@astrojs/mdx": "^8.1.3",
+    "@astrojs/vercel": "^11.0.20",
+    "@tailwindcss/vite": "^4.3.5",
+    "astro": "^7.4.7",
+    "tailwindcss": "^4.3.5"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.9",
-    "sharp": "^0.34.5",
+    "@astrojs/check": "^0.9.12",
+    "sharp": "^0.35.5",
     "typescript": "^5.9.3"
+  },
+  "overrides": {
+    "@vercel/routing-utils": {
+      "path-to-regexp": "^6.3.0"
+    }
   }
 }

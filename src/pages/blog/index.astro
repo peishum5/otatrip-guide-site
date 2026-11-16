@@ -1,9 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
-import { getBlogCategory, getBlogSortDate, getCategoryHref, normalizeBlogSlug } from '../../utils/blog';
+import { getBlogCategory, getBlogSortDate, getCategoryHref, normalizeBlogSlug, getBlogPosts } from '../../utils/blog';
 
-const allPosts = await getCollection('blog');
+const allPosts = await getBlogPosts();
 
 const categoryOrder = [
   'Planning Basics',
@@ -80,7 +79,7 @@ const featuredPost = sortedAll.find(p => p.data.hero_image) ?? sortedAll[0];
         <span class="px-eyebrow text-nes-amber rpg-prefix">FEATURED GUIDE</span>
         <div class="flex-1 pixel-divider"></div>
       </div>
-      <a href={`/blog/${normalizeBlogSlug(featuredPost.slug)}`} class="group block relative overflow-hidden blog-card">
+      <a href={`/blog/${normalizeBlogSlug(featuredPost.id)}`} class="group block relative overflow-hidden blog-card">
         <div class="relative h-64 md:h-96">
           {featuredPost.data.hero_image ? (
             <img
@@ -145,7 +144,7 @@ const featuredPost = sortedAll.find(p => p.data.hero_image) ?? sortedAll[0];
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {groupedPosts[category].map(post => (
             <article class="blog-card group">
-              <a href={`/blog/${normalizeBlogSlug(post.slug)}`} class="block h-full">
+              <a href={`/blog/${normalizeBlogSlug(post.id)}`} class="block h-full">
                 <!-- Image -->
                 <div class="relative overflow-hidden" style="height: 200px;">
                   {post.data.hero_image ? (

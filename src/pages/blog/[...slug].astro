@@ -1,26 +1,26 @@
 ---
-import { getCollection } from 'astro:content';
+import { render } from 'astro:content';
 import BlogLayout from '../../layouts/BlogLayout.astro';
-import { getBlogCategory, getBlogSortDate, getCategoryHref, normalizeBlogSlug } from '../../utils/blog';
+import { getBlogCategory, getBlogSortDate, getCategoryHref, normalizeBlogSlug, getBlogPosts } from '../../utils/blog';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = await getBlogPosts();
   return posts.map(post => ({
-    params: { slug: normalizeBlogSlug(post.slug) },
+    params: { slug: normalizeBlogSlug(post.id) },
     props: { post },
   }));
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
-const allPosts = await getCollection('blog');
+const { Content } = await render(post);
+const allPosts = await getBlogPosts();
 const currentCategory = getBlogCategory(post);
 const relatedPosts = allPosts
   .filter((item) => item.id !== post.id && !item.data.noIndex && getBlogCategory(item) === currentCategory)
   .sort((a, b) => getBlogSortDate(b) - getBlogSortDate(a))
   .slice(0, 3)
   .map((item) => ({
-    slug: normalizeBlogSlug(item.slug),
+    slug: normalizeBlogSlug(item.id),
     title: item.data.title,
     description: item.data.description,
     hero_image: item.data.hero_image,

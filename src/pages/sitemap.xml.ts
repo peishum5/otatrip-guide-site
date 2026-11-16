@@ -1,5 +1,4 @@
-import { getCollection } from 'astro:content';
-import { getBlogCategory, getCategoryHref } from '../utils/blog';
+import { getBlogCategory, getCategoryHref, getBlogPosts } from '../utils/blog';
 
 // NOTE: When adding a new top-level page under src/pages, add its route here
 // so it is included in the sitemap. Blog posts and category pages are derived
@@ -21,7 +20,7 @@ const STATIC_ROUTES = [
 
 export async function GET({ site }: { site: URL | undefined }) {
   const siteUrl = site?.origin || 'https://otatrip.guide';
-  const posts = await getCollection('blog');
+  const posts = await getBlogPosts();
   const categoryRoutes = [...new Set(posts.filter((post) => !post.data.noIndex).map((post) => getCategoryHref(getBlogCategory(post))))];
 
   const urls = [

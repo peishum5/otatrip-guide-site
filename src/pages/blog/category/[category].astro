@@ -1,10 +1,9 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getBlogCategory, getBlogSortDate, getCategoryHref, normalizeBlogSlug, slugifyCategory } from '../../../utils/blog';
+import { getBlogCategory, getBlogSortDate, getCategoryHref, normalizeBlogSlug, slugifyCategory, getBlogPosts } from '../../../utils/blog';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = await getBlogPosts();
   const categories = [...new Set(posts.map((post) => getBlogCategory(post)))];
 
   return categories.map((category) => ({
@@ -14,7 +13,7 @@ export async function getStaticPaths() {
 }
 
 const { category } = Astro.props;
-const posts = (await getCollection('blog'))
+const posts = (await getBlogPosts())
   .filter((post) => !post.data.noIndex && getBlogCategory(post) === category)
   .sort((a, b) => getBlogSortDate(b) - getBlogSortDate(a));
 
@@ -53,7 +52,7 @@ const canonicalUrl = new URL(canonical, siteUrl).toString();
       {posts.map((post) => (
         <article class="border-2 border-gray-700 hover:border-nes-amber transition-colors group bg-nes-black">
           {post.data.hero_image && (
-            <a href={`/blog/${normalizeBlogSlug(post.slug)}`} class="block overflow-hidden border-b-2 border-gray-700">
+            <a href={`/blog/${normalizeBlogSlug(post.id)}`} class="block overflow-hidden border-b-2 border-gray-700">
               <div>
                 <img
                   src={post.data.hero_image}
@@ -66,13 +65,13 @@ const canonicalUrl = new URL(canonical, siteUrl).toString();
           )}
           <div class="p-4 md:p-5">
             <h2 class="font-dot text-lg text-nes-white group-hover:text-nes-amber transition-colors leading-snug mb-3">
-              <a href={`/blog/${normalizeBlogSlug(post.slug)}`} class="hover:text-nes-amber transition-colors">
+              <a href={`/blog/${normalizeBlogSlug(post.id)}`} class="hover:text-nes-amber transition-colors">
                 {post.data.title}
               </a>
             </h2>
             <p class="font-sans text-gray-400 text-sm leading-relaxed line-clamp-3 mb-4">{post.data.description}</p>
             <a
-              href={`/blog/${normalizeBlogSlug(post.slug)}`}
+              href={`/blog/${normalizeBlogSlug(post.id)}`}
               class="nes-btn nes-btn-outline inline-block"
               style="font-size: 0.5rem; padding: 0.5rem 0.8rem;"
             >

@@ -1,6 +1,16 @@
-import type { CollectionEntry } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 
 export type BlogPost = CollectionEntry<'blog'>;
+
+/**
+ * All blog posts in a stable order (by entry id = file path).
+ * The content-layer loader (Astro 6+) does not guarantee file order, so we
+ * sort here to keep lists with equal dates in the same order as before.
+ */
+export async function getBlogPosts(): Promise<BlogPost[]> {
+  const posts = await getCollection('blog');
+  return posts.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+}
 
 export function normalizeBlogSlug(slug: string) {
   return slug.replace(/^\/+/, '').replace(/\/+$/, '');
@@ -12,7 +22,7 @@ export function getBlogSortDate(post: BlogPost) {
 }
 
 export function getBlogCategory(post: BlogPost) {
-  const slug = normalizeBlogSlug(post.slug);
+  const slug = normalizeBlogSlug(post.id);
   if (post.data.category) return post.data.category;
   if (slug.startsWith('plan/')) return 'Planning Basics';
   if (slug.startsWith('itineraries/')) return 'Itineraries';
