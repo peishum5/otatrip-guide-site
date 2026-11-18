@@ -1,0 +1,343 @@
+---
+/**
+ * Interactive Kyoto map: a pixel-art diorama built from real map data.
+ * - Geography / rail lines / stations: src/data/map/kyoto-geo.json (generated, see scripts/map/)
+ * - Areas, wording, routes: src/data/areas.ts
+ * - Drawing: src/scripts/kyoto-map/engine.ts
+ * Works without JavaScript as a plain list of area guides.
+ */
+import { AREAS, LANDMARKS, HUB_STATIONS } from '../data/areas';
+import { TOURS } from '../data/tours';
+import { LINES } from '../scripts/kyoto-map/engine';
+import { getBlogPosts } from '../utils/blog';
+
+const posts = (await getBlogPosts()).filter((p) => !p.data.noIndex);
+const areas = AREAS.map((a, i) => {
+  const articles = a.articles.map((id) => posts.find((p) => p.id === id)).filter((p) => !!p);
+  const tours = a.tours.map((id) => TOURS.find((t) => t.id === id)).filter((t) => !!t);
+  return { ...a, n: i + 1, articles, tours, photo: articles[0]?.data.hero_image ?? tours[0]?.photo };
+});
+const clientData = {
+  areas: AREAS.map(({ id, lat, lon, times }) => ({ id, lat, lon, times })),
+  landmarks: LANDMARKS,
+  hubs: HUB_STATIONS,
+};
+const legend = ['jr-kyoto', 'jr-sagano', 'jr-nara', 'subway-karasuma', 'subway-tozai', 'hankyu', 'keihan', 'randen', 'eizan', 'kintetsu'];
+const TIMES = [['morning', 'MORNING'], ['day', 'DAY'], ['night', 'NIGHT']] as const;
+---
+
+<div class="kmap" data-kmap>
+  <script type="application/json" data-kmap-data set:html={JSON.stringify(clientData)} />
+
+  <div class="kmap-main">
+  <div class="kmap-toolbar" role="group" aria-label="Time of day">
+    <span class="px-label">TIME OF DAY</span>
+    {TIMES.map(([id, label]) => (
+      <button type="button" class="kmap-chip" data-time={id} aria-pressed={id === 'day' ? 'true' : 'false'}>{label}</button>
+    ))}
+  </div>
+  <div class="kmap-stage">
+    <canvas class="kmap-canvas" aria-label="Pixel-art map of Kyoto showing rivers, main streets, railway lines and nine areas to visit"></canvas>
+    <canvas class="kmap-labels" aria-hidden="true"></canvas>
+    <div class="kmap-pins">
+      {areas.map((a) => (
+        <button type="button" class="kmap-pin" data-area={a.id} aria-label={`Show ${a.name}`}><span>{a.n}</span></button>
+      ))}
+    </div>
+
+    <div class="kmap-hud kmap-hud-tr" aria-hidden="true"><span class="kmap-north">N<br />▲</span></div>
+    <div class="kmap-hud kmap-hud-br">
+      <button type="button" class="kmap-chip" data-zoom="out" aria-label="Zoom out">−</button>
+      <button type="button" class="kmap-chip" data-zoom="in" aria-label="Zoom in">+</button>
+      <button type="button" class="kmap-chip" data-area="" data-home hidden>ALL KYOTO</button>
+    </div>
+    <div class="kmap-hud kmap-hud-bl">
+      <span class="kmap-scale" data-scale><i></i><b>1 km</b></span>
+    </div>
+  </div>
+  </div>
+
+  <div class="kmap-side">
+    <nav class="kmap-areas" aria-label="Areas">
+      {areas.map((a) => (
+        <button type="button" class="kmap-area-btn" data-area={a.id} aria-pressed="false">
+          <span class="kmap-num">{a.n}</span>{a.name}<em data-now hidden>GOOD NOW</em>
+        </button>
+      ))}
+    </nav>
+
+    <section class="kmap-panel dialogue-box" data-panel="">
+      <p class="px-eyebrow rpg-prefix">HOW TO USE</p>
+      <h2 class="kmap-title">Pick an area</h2>
+      <p class="kmap-body">Tap a number on the map or a name above. Switch between morning, day and night to see where to be, and drag or pinch to look around once you zoom in.</p>
+      <p class="px-label kmap-sub">RAIL LINES</p>
+      <ul class="kmap-legend">
+        {legend.map((id) => (<li><i style={`background:${LINES[id].color}`}></i>{LINES[id].name}</li>))}
+      </ul>
+      <p class="kmap-note">Dashed lines run underground. Rivers, streets, rail lines, stations and landmarks sit at their real positions and the map is to scale. Hills are drawn taller than life and landmark icons are larger than the buildings; the small houses are decoration.</p>
+    </section>
+
+    {areas.map((a) => (
+      <section class="kmap-panel dialogue-box" data-panel={a.id} id={`area-${a.id}`}>
+        {a.photo && <img class="kmap-photo" src={a.photo} alt={a.name} loading="lazy" width="640" height="360" />}
+        <p class="px-eyebrow rpg-prefix">AREA {a.n}</p>
+        <h2 class="kmap-title">{a.name}</h2>
+        <p class="kmap-tagline">{a.tagline}</p>
+
+        <p class="px-label kmap-sub">HOW TO ENJOY IT</p>
+        <ul class="kmap-enjoy">{a.enjoy.map((line) => <li>{line}</li>)}</ul>
+
+        <dl class="kmap-facts">
+          <div><dt>Best time</dt><dd>{a.bestTime}</dd></div>
+          {a.timeNeeded && <div><dt>Time needed</dt><dd>{a.timeNeeded}</dd></div>}
+          <div><dt>Stations</dt><dd>{a.stations}</dd></div>
+        </dl>
+
+        {a.routes.length > 0 && (
+          <>
+            <p class="px-label kmap-sub">GETTING HERE</p>
+            <ul class="kmap-routes">
+              {a.routes.map((r) => (
+                <li>
+                  <button type="button" class="kmap-route" data-lines={r.lines.join(',')} disabled={r.lines.length === 0} aria-pressed="false">
+                    <span class="kmap-route-from">From {r.from}{r.time && <b> · {r.time}</b>}</span>
+                    <span class="kmap-route-how">
+                      {r.lines.map((id) => <i style={`background:${LINES[id].color}`} title={LINES[id].name}></i>)}
+                      {r.how}
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+
+        {a.tours.length > 0 && (
+          <>
+            <p class="px-label kmap-sub">GO WITH A LOCAL GUIDE</p>
+            {a.tours.map((t) => (
+              <a class="kmap-tour" href={t.href} data-track-label={`map_tour_${a.id}_${t.id}`}>
+                <img src={t.photo} alt="" loading="lazy" width="96" height="96" />
+                <span>
+                  <strong>{t.name}</strong>
+                  <small>{t.duration} · {t.price}</small>
+                </span>
+                <b aria-hidden="true">→</b>
+              </a>
+            ))}
+          </>
+        )}
+
+        {a.articles.length > 0 && (
+          <>
+            <p class="px-label kmap-sub">READ MORE</p>
+            <ul class="kmap-links">
+              {a.articles.map((p) => <li><a href={p.data.canonical} data-track-label={`map_article_${a.id}`}>{p.data.title}</a></li>)}
+            </ul>
+          </>
+        )}
+
+        <a class="nes-btn nes-btn-outline kmap-gmaps" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(a.mapsQuery)}`} target="_blank" rel="noopener">OPEN IN GOOGLE MAPS</a>
+      </section>
+    ))}
+
+    <p class="kmap-credit">Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>. Elevation: Terrain Tiles (AWS Open Data).</p>
+  </div>
+</div>
+
+<style is:global>
+  .kmap { display: grid; gap: 1.25rem; grid-template-columns: minmax(0, 1fr); }
+  .kmap > * { min-width: 0; }
+  @media (min-width: 1024px) { .kmap { grid-template-columns: minmax(0, 1fr) 380px; align-items: start; } }
+
+  .kmap-stage {
+    position: relative; overflow: hidden; background: #6ec0f2;
+    border: 3px solid var(--color-nes-amber); box-shadow: 6px 6px 0 rgba(255, 176, 0, 0.35);
+    aspect-ratio: 4 / 3; max-height: 70svh; width: 100%;
+  }
+  @media (min-width: 1024px) {
+    .kmap-stage { aspect-ratio: 3 / 2; max-height: calc(100vh - 170px); }
+    .kmap-main { position: sticky; top: 84px; }
+  }
+  .kmap-toolbar { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+  .kmap-toolbar .px-label { margin-right: 4px; color: #bdbdbd; }
+  .kmap-canvas, .kmap-labels { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .kmap-canvas { image-rendering: pixelated; image-rendering: crisp-edges; cursor: grab; }
+  .kmap-canvas:active { cursor: grabbing; }
+  .kmap-labels, .kmap-pins { pointer-events: none; }
+  .kmap-pins { position: absolute; inset: 0; }
+
+  .kmap-pin {
+    position: absolute; left: 0; top: 0; width: 26px; height: 26px; margin: -34px 0 0 -13px;
+    pointer-events: auto; cursor: pointer; padding: 0;
+    background: var(--color-nes-amber); color: #0a0a0a; border: 2px solid #0a0a0a;
+    font-family: var(--font-pixel); font-size: 10px; line-height: 1;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.55);
+  }
+  .kmap-pin::after {
+    content: ''; position: absolute; left: 50%; bottom: -8px; margin-left: -5px;
+    border: 5px solid transparent; border-top-color: #0a0a0a; border-bottom: 0;
+  }
+  @media (max-width: 639px) {
+    .kmap-pin { width: 20px; height: 20px; margin: -26px 0 0 -10px; font-size: 8px; border-width: 1px; }
+    .kmap-pin::after { bottom: -6px; margin-left: -4px; border-width: 4px; border-bottom: 0; }
+    .kmap-chip { min-width: 32px; min-height: 32px; padding: 0 7px; font-size: 8px; }
+  }
+  .kmap-pin:hover, .kmap-pin:focus-visible { background: #fff; outline: none; z-index: 5 !important; }
+  .kmap-pin[aria-current='true'] { background: var(--color-nes-cyan); z-index: 4 !important; }
+  .kmap:not(.kmap-ready) .kmap-pin { display: none; }
+
+  .kmap-hud { position: absolute; display: flex; gap: 6px; align-items: center; }
+  .kmap-hud-tr { top: 8px; right: 10px; }
+  .kmap-hud-br { bottom: 8px; right: 8px; }
+  .kmap-hud-bl { bottom: 8px; left: 8px; pointer-events: none; }
+  .kmap-chip {
+    min-width: 36px; min-height: 36px; padding: 0 10px; cursor: pointer;
+    font-family: var(--font-pixel); font-size: 9px; letter-spacing: 0.04em;
+    background: rgba(10, 10, 10, 0.86); color: var(--color-nes-white); border: 2px solid #0a0a0a; outline: 1px solid rgba(255, 255, 255, 0.35);
+  }
+  .kmap-chip:hover { color: var(--color-nes-amber); }
+  .kmap-chip[aria-pressed='true'] { background: var(--color-nes-amber); color: #0a0a0a; outline-color: var(--color-nes-amber); }
+  .kmap-chip:focus-visible, .kmap-area-btn:focus-visible, .kmap-route:focus-visible { outline: 2px solid var(--color-nes-cyan); outline-offset: 2px; }
+  .kmap-north { font-family: var(--font-pixel); font-size: 9px; line-height: 1.3; text-align: center; color: #fff; text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000; }
+  .kmap-scale { display: inline-flex; flex-direction: column; gap: 2px; font-family: var(--font-pixel); font-size: 8px; color: #fff; text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000; }
+  .kmap-scale i { display: block; height: 6px; width: 40px; border: 2px solid #fff; border-top: 0; box-shadow: 0 1px 0 #000; }
+  .kmap-scale b { font-weight: 400; }
+
+  .kmap-areas { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 0.9rem; scrollbar-width: thin; }
+  @media (min-width: 1024px) { .kmap-areas { flex-wrap: wrap; overflow: visible; } }
+  .kmap-area-btn {
+    flex: 0 0 auto; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 6px 10px; cursor: pointer; text-align: left;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 600; color: var(--color-nes-white);
+    background: #141414; border: 2px solid #3a3a3a;
+  }
+  .kmap-area-btn:hover { border-color: var(--color-nes-amber); }
+  .kmap-area-btn[aria-pressed='true'] { border-color: var(--color-nes-cyan); color: var(--color-nes-cyan); }
+  .kmap-num { display: inline-grid; place-items: center; width: 20px; height: 20px; background: var(--color-nes-amber); color: #0a0a0a; font-family: var(--font-pixel); font-size: 9px; }
+  .kmap-area-btn em { font-style: normal; font-family: var(--font-pixel); font-size: 7px; color: #0a0a0a; background: var(--color-nes-green); padding: 3px 4px; }
+
+  .kmap-panel { padding: 1.1rem; }
+  .kmap-panel + .kmap-panel { margin-top: 1.25rem; }
+  .kmap-ready .kmap-panel { display: none; margin-top: 0; }
+  .kmap-ready .kmap-panel.is-open { display: block; }
+  .kmap-photo { width: 100%; height: 150px; object-fit: cover; margin-bottom: 0.9rem; border: 1px solid #333; }
+  .kmap-title { font-family: var(--font-pixel); color: var(--color-nes-white); font-size: 0.95rem; line-height: 1.5; margin: 0.4rem 0 0.5rem; }
+  .kmap-tagline { color: var(--color-nes-amber); font-size: 0.9375rem; font-weight: 600; margin-bottom: 0.25rem; }
+  .kmap-body, .kmap-note { color: #cfcfcf; font-size: 0.9rem; line-height: 1.6; }
+  .kmap-note { font-size: 0.8rem; color: #a8a8a8; margin-top: 0.8rem; }
+  .kmap-sub { margin: 1.1rem 0 0.5rem; color: var(--color-nes-cyan); }
+  .kmap-enjoy { display: grid; gap: 0.45rem; }
+  .kmap-enjoy li { position: relative; padding-left: 1.1rem; color: #e6e6e6; font-size: 0.9rem; line-height: 1.55; }
+  .kmap-enjoy li::before { content: '▸'; position: absolute; left: 0; color: var(--color-nes-amber); }
+  .kmap-facts { margin-top: 0.9rem; display: grid; gap: 1px; background: #333; border: 1px solid #333; }
+  .kmap-facts div { display: grid; grid-template-columns: 6.5rem 1fr; gap: 0.5rem; background: #111; padding: 0.5rem 0.6rem; }
+  .kmap-facts dt { color: #9a9a9a; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .kmap-facts dd { color: #f0f0f0; font-size: 0.85rem; line-height: 1.45; }
+  .kmap-routes { display: grid; gap: 6px; }
+  .kmap-route { width: 100%; text-align: left; display: grid; gap: 3px; padding: 0.55rem 0.65rem; background: #111; border: 2px solid #333; color: #e6e6e6; cursor: pointer; font-family: var(--font-sans); }
+  .kmap-route:disabled { cursor: default; opacity: 1; }
+  .kmap-route:not(:disabled):hover { border-color: var(--color-nes-amber); }
+  .kmap-route[aria-pressed='true'] { border-color: var(--color-nes-cyan); }
+  .kmap-route-from { font-size: 0.75rem; color: #9a9a9a; text-transform: uppercase; letter-spacing: 0.04em; }
+  .kmap-route-from b { color: var(--color-nes-amber); font-weight: 600; }
+  .kmap-route-how { font-size: 0.85rem; line-height: 1.45; }
+  .kmap-route-how i, .kmap-legend i { display: inline-block; width: 10px; height: 10px; margin-right: 6px; border: 1px solid rgba(255, 255, 255, 0.5); vertical-align: baseline; }
+  .kmap-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem 0.75rem; font-size: 0.8rem; color: #dcdcdc; }
+  .kmap-tour { display: grid; grid-template-columns: 56px 1fr auto; gap: 0.7rem; align-items: center; padding: 0.5rem; background: #111; border: 2px solid var(--color-nes-amber); color: #fff; text-decoration: none; }
+  .kmap-tour + .kmap-tour { margin-top: 6px; }
+  .kmap-tour:hover { background: #1d1605; }
+  .kmap-tour img { width: 56px; height: 56px; object-fit: cover; }
+  .kmap-tour strong { display: block; font-size: 0.875rem; line-height: 1.35; }
+  .kmap-tour small { color: var(--color-nes-amber); font-size: 0.78rem; }
+  .kmap-tour b { color: var(--color-nes-amber); font-family: var(--font-pixel); font-size: 0.7rem; }
+  .kmap-links { display: grid; gap: 0.35rem; }
+  .kmap-links a { color: var(--color-nes-cyan); font-size: 0.875rem; text-decoration: underline; text-underline-offset: 3px; }
+  .kmap-gmaps { margin-top: 1.1rem; white-space: normal; text-align: center; display: block; }
+  .kmap-credit { margin-top: 0.9rem; font-size: 0.72rem; color: #8a8a8a; }
+  .kmap-credit a { color: #b5b5b5; text-decoration: underline; }
+</style>
+
+<script>
+  import { createKyotoMap, type TimeMode } from '../scripts/kyoto-map/engine';
+
+  const root = document.querySelector<HTMLElement>('[data-kmap]');
+  if (root) {
+    const data = JSON.parse(root.querySelector('[data-kmap-data]')!.textContent || '{}');
+    const stage = root.querySelector<HTMLElement>('.kmap-stage')!;
+    const pins = [...root.querySelectorAll<HTMLButtonElement>('.kmap-pin')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')];
+    const areaBtns = [...root.querySelectorAll<HTMLButtonElement>('.kmap-area-btn')];
+    const homeBtn = root.querySelector<HTMLButtonElement>('[data-home]')!;
+    const scaleBar = root.querySelector<HTMLElement>('[data-scale] i')!;
+    const track = (name: string, params: Record<string, string>) => (window as any).track?.(name, params);
+    let current = '';
+
+    const map = createKyotoMap(root.querySelector<HTMLCanvasElement>('.kmap-canvas')!, root.querySelector<HTMLCanvasElement>('.kmap-labels')!, {
+      ...data,
+      reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+      onCamera: placePins,
+    });
+
+    function placePins() {
+      for (const pin of pins) {
+        const a = data.areas.find((x: any) => x.id === pin.dataset.area);
+        const p = map.place(a.lat, a.lon);
+        pin.style.transform = `translate(${Math.round(p.x)}px, ${Math.round(p.y)}px)`;
+        pin.style.zIndex = String(Math.round(p.y));
+        pin.style.visibility = p.inside ? 'visible' : 'hidden';
+      }
+      scaleBar.style.width = `${Math.round(map.kmPx())}px`;
+      homeBtn.hidden = map.isHome() && !current;
+    }
+
+    function setRoute(btn: HTMLButtonElement | null) {
+      root!.querySelectorAll<HTMLButtonElement>('.kmap-route').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      map.setHighlight(btn?.dataset.lines ? btn.dataset.lines.split(',') : []);
+    }
+
+    function select(id: string, fromUser = true) {
+      current = id;
+      for (const p of panels) p.classList.toggle('is-open', p.dataset.panel === id);
+      for (const b of areaBtns) b.setAttribute('aria-pressed', String(b.dataset.area === id));
+      for (const pin of pins) pin.setAttribute('aria-current', String(pin.dataset.area === id));
+      map.focusArea(id || null);
+      // light up the first rail route into the area so the way in is obvious
+      const panel = panels.find((p) => p.dataset.panel === id);
+      setRoute(id ? panel?.querySelector<HTMLButtonElement>('.kmap-route:not(:disabled)') ?? null : null);
+      history.replaceState(null, '', id ? `#${id}` : location.pathname + location.search);
+      homeBtn.hidden = !id && map.isHome();
+      if (fromUser && id) track('map_area_open', { area: id });
+    }
+
+    function setTime(mode: TimeMode, fromUser = true) {
+      map.setTime(mode);
+      stage.style.background = mode === 'night' ? '#070b24' : mode === 'morning' ? '#f7b98c' : '#6ec0f2';
+      root!.querySelectorAll<HTMLButtonElement>('[data-time]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.time === mode)));
+      for (const b of areaBtns) {
+        const a = data.areas.find((x: any) => x.id === b.dataset.area);
+        b.querySelector<HTMLElement>('[data-now]')!.hidden = !a.times.includes(mode);
+      }
+      if (fromUser) track('map_time_change', { time: mode });
+    }
+
+    root.addEventListener('click', (e) => {
+      const el = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+      if (!el || !root.contains(el)) return;
+      if (el.dataset.area !== undefined) select(el.dataset.area === current && !el.hasAttribute('data-home') ? current : el.dataset.area);
+      else if (el.dataset.time) setTime(el.dataset.time as TimeMode);
+      else if (el.dataset.zoom) map.zoomBy(el.dataset.zoom === 'in' ? 1.6 : 1 / 1.6);
+      else if (el.classList.contains('kmap-route')) setRoute(el.getAttribute('aria-pressed') === 'true' ? null : el);
+    });
+
+    // links such as /map#gion open that area, also when only the #part changes
+    window.addEventListener('hashchange', () => {
+      const id = location.hash.slice(1);
+      if (id !== current && (id === '' || data.areas.some((a: any) => a.id === id))) select(id, false);
+    });
+
+    root.classList.add('kmap-ready');
+    setTime('day', false);
+    const initial = location.hash.slice(1);
+    select(data.areas.some((a: any) => a.id === initial) ? initial : '', false);
+  }
+</script>

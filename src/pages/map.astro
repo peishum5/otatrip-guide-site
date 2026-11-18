@@ -1,0 +1,28 @@
+---
+/**
+ * Kyoto map (work in progress, not public yet).
+ * Hidden the same way as the guest pages: noIndex, and deliberately NOT listed in
+ * the header/footer nav, sitemap.xml.ts or llms.txt.ts. Add it to those when it launches.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import KyotoMap from '../components/KyotoMap.astro';
+---
+
+<BaseLayout
+  title="Kyoto Area Map | OTAtrip Guide"
+  description="A pixel-art map of Kyoto built from real map data: see where each area is, how the train lines connect them, and how to enjoy each one."
+  canonical="/map"
+  noIndex
+>
+  <section class="scanlines bg-nes-black pt-8 pb-5 text-center">
+    <div class="relative z-10 max-w-3xl mx-auto px-4">
+      <p class="px-eyebrow rpg-prefix mb-2">WORLD MAP</p>
+      <h1 class="font-pixel text-nes-white mb-3" style="font-size: clamp(0.9rem, 3vw, 1.5rem); line-height: 1.5;">KYOTO AT A GLANCE</h1>
+      <p class="font-sans text-sm text-gray-300">Nine areas, the train lines between them, and the best time of day for each.</p>
+    </div>
+  </section>
+
+  <div class="max-w-6xl mx-auto px-4 pb-14">
+    <KyotoMap />
+  </div>
+</BaseLayout>
