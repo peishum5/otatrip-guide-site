@@ -6,6 +6,8 @@
  * Do not add new facts here without checking them. Prices are left out on
  * purpose (they change); link to the article instead.
  *
+ * Routes between areas live in src/data/map/routes.ts.
+ *
  * Positions are real latitude/longitude, looked up in OpenStreetMap
  * (scripts/map/fetch-pois.mjs).
  */
@@ -13,19 +15,11 @@ import type { SpriteId } from '../scripts/kyoto-map/sprites';
 
 export type TimeMode = 'morning' | 'day' | 'night';
 
-export interface Route {
-  from: string;
-  how: string;
-  time?: string;
-  /** Line ids from src/scripts/kyoto-map/engine.ts LINES, lit up on the map. Empty for bus / walking. */
-  lines: string[];
-  /** Article the route was taken from. */
-  source: string;
-}
-
 export interface Area {
   id: string;
   name: string;
+  /** Short name for the pin on the map. */
+  short: string;
   tagline: string;
   lat: number;
   lon: number;
@@ -36,7 +30,10 @@ export interface Area {
   stations: string;
   /** "How to enjoy it": three or four short lines. */
   enjoy: string[];
-  routes: Route[];
+  /** Named places inside the area, each with one line from the articles. */
+  spots: { name: string; note: string; at?: string }[];
+  /** Photos already published on this site (public/images/...). */
+  photos: { src: string; label: string }[];
   /** Blog entry ids (src/content/blog/<id>.mdx); the first one supplies the photo. */
   articles: string[];
   /** Tour ids from src/data/tours.ts. */
@@ -48,6 +45,7 @@ export interface Area {
 export const AREAS: Area[] = [
   {
     id: 'gion',
+    short: 'Gion',
     name: 'Gion',
     tagline: 'Lantern-lit teahouse streets. Best after 5pm.',
     lat: 35.0030, lon: 135.7752,
@@ -61,11 +59,16 @@ export const AREAS: Area[] = [
       'Seeing a maiko is luck. Never block, follow or photograph them, and stay out of private alleys.',
       'Pontocho, one block west across the river, has restaurants at every price.',
     ],
-    routes: [
-      { from: 'Kyoto Station', how: 'Bus 206 from stand D2', lines: [], source: 'plan/kyoto-station-guide' },
-      { from: 'Fushimi Inari', how: 'Keihan Line from Fushimi-Inari to Gion-Shijo', time: '10 min', lines: ['keihan'], source: 'plan/transport-kyoto' },
-      { from: 'Arashiyama', how: 'Hankyu from Arashiyama to Kyoto-Kawaramachi (change at Katsura), then walk', time: '35–40 min', lines: ['hankyu'], source: 'plan/transport-kyoto' },
-      { from: 'Nijo Castle', how: 'Tozai subway line to Higashiyama, then 10 min on foot', time: '20 min', lines: ['subway-tozai'], source: 'plan/transport-kyoto' },
+    spots: [
+      { name: 'Hanamikoji', note: 'The classic row of ochaya, the private teahouses where geisha entertain. Walk the part south of Shijo Street.', at: 'hanamikoji' },
+      { name: 'Shirakawa canal at Shimbashi', note: 'A stone lane beside the water under willow trees. Quieter than Hanamikoji.' },
+      { name: 'Ishibei-koji', note: 'A short stone-paved lane between high walls. Photography is banned here.' },
+      { name: 'Nene-no-michi', note: 'The stone path behind Kodaiji Temple that links Gion to the Higashiyama walk.' },
+    ],
+    photos: [
+      { src: '/images/blog/inline/gion-maiko-street.jpg', label: 'Hanamikoji at dusk' },
+      { src: '/images/blog/inline/gion-shimbashi.jpg', label: 'Shimbashi' },
+      { src: '/images/blog/inline/pontocho-night.jpg', label: 'Pontocho' },
     ],
     articles: ['neighborhoods/gion', 'culture/maiko-geisha', 'itineraries/kyoto-at-night'],
     tours: ['gion-sake-walk'],
@@ -73,6 +76,7 @@ export const AREAS: Area[] = [
   },
   {
     id: 'higashiyama',
+    short: 'Higashiyama',
     name: 'Higashiyama & Kiyomizu',
     tagline: 'Stone lanes from Kiyomizudera down to Yasaka Shrine.',
     lat: 34.9965, lon: 135.7815,
@@ -81,13 +85,23 @@ export const AREAS: Area[] = [
     timeNeeded: '2–3 hours',
     stations: 'Bus stop Gojo-zaka or Kiyomizu-michi. The walk ends near Gion-Shijo (Keihan)',
     enjoy: [
-      'Start at Kiyomizudera and walk downhill: about 3 km to Yasaka Shrine.',
+      'Walk south to north: start at Kiyomizudera and finish at Yasaka Shrine, about 3 km.',
+      'Wear flat rubber soles. The stone slopes are steep and slippery when wet.',
       'Kiyomizudera is quietest from 6 to 8am, before the tour groups.',
       'Take Sannenzaka and Ninenzaka on foot. No bus goes where the good lanes are.',
       'The walk ends beside Gion, so it pairs well with an evening there.',
     ],
-    routes: [
-      { from: 'Kyoto Station', how: 'Bus 206 from stand D2 to Gojozaka, then 10 min uphill on foot', time: '20–30 min', lines: [], source: 'plan/transport-kyoto' },
+    spots: [
+      { name: 'Kiyomizudera', note: 'The hilltop temple with the famous wooden stage. Allow 60–75 minutes.', at: 'kiyomizu' },
+      { name: 'Sannenzaka', note: 'A steep stone slope lined with old shopfronts. Take it slowly.' },
+      { name: 'Ninenzaka', note: 'A shorter, gentler slope with ceramics, matcha and sweets.' },
+      { name: 'Kodaiji', note: 'Founded in 1606. Its evening garden light-ups in spring and autumn are among Kyoto\'s best.' },
+      { name: 'Maruyama Park & Yasaka Shrine', note: 'Both free and always open. The shrine gate opens straight onto Shijo Avenue and Gion.', at: 'yasaka-shrine' },
+    ],
+    photos: [
+      { src: '/images/blog/inline/kiyomizudera-stage-view.jpg', label: 'Kiyomizudera' },
+      { src: '/images/blog/inline/higashiyama-sannenzaka-morning.jpg', label: 'Sannenzaka' },
+      { src: '/images/blog/inline/higashiyama-ninenzaka-shops.jpg', label: 'Ninenzaka' },
     ],
     articles: ['neighborhoods/higashiyama', 'sights/kiyomizudera', 'culture/kimono-rental'],
     tours: ['gion-sake-walk'],
@@ -95,6 +109,7 @@ export const AREAS: Area[] = [
   },
   {
     id: 'downtown',
+    short: 'Downtown',
     name: 'Downtown: Kawaramachi, Nishiki & Pontocho',
     tagline: 'Market snacks by day, izakaya alleys by night.',
     lat: 35.0050, lon: 135.7672,
@@ -103,12 +118,20 @@ export const AREAS: Area[] = [
     timeNeeded: '60–90 min for the market',
     stations: 'Karasuma or Kyoto-Kawaramachi (Hankyu), Shijo (subway)',
     enjoy: [
-      'Graze through Nishiki Market in the morning, before it fills up.',
+      'Snack through Nishiki Market before 11am on a weekday, and eat lunch elsewhere.',
+      'Eat at the stall where you bought the food, not while walking.',
       'Walk Pontocho once to read the menus, then choose. Book ahead on weekends.',
       'Three of our hands-on experiences start here: coffee, matcha and izakaya hopping.',
     ],
-    routes: [
-      { from: 'Kyoto Station', how: 'Karasuma subway line north to Shijo', lines: ['subway-karasuma'], source: 'food/nishiki-market' },
+    spots: [
+      { name: 'Nishiki Market', note: 'A covered food arcade. Best buys: pickles, fresh tofu, tamagoyaki and warabi-mochi. Start at the western half.', at: 'nishiki' },
+      { name: 'Teramachi arcade', note: 'A covered shopping street with fans, washi paper, tea and bookshops, 5 minutes on foot from Nishiki.' },
+      { name: 'Pontocho', note: 'A narrow alley of restaurants at every price, one block from the Kamo River.', at: 'pontocho' },
+    ],
+    photos: [
+      { src: '/images/blog/inline/nishiki-market-arcade.jpg', label: 'Nishiki Market' },
+      { src: '/images/blog/inline/nishiki-tamagoyaki-skewer.jpg', label: 'Tamagoyaki' },
+      { src: '/images/blog/inline/pontocho-night.jpg', label: 'Pontocho' },
     ],
     articles: ['food/nishiki-market', 'food/izakaya-etiquette', 'food/what-to-eat-kyoto'],
     tours: ['izakaya-hopping', 'coffee-ceremony', 'tea-ceremony'],
@@ -116,6 +139,7 @@ export const AREAS: Area[] = [
   },
   {
     id: 'kyoto-station',
+    short: 'Kyoto Stn',
     name: 'Kyoto Station',
     tagline: 'Where you arrive, and where most buses and trains start.',
     lat: 34.9858, lon: 135.7588,
@@ -128,13 +152,22 @@ export const AREAS: Area[] = [
       'Trains are faster than buses for Fushimi Inari and Arashiyama.',
       'Coin lockers fill by 10am in peak season. Crosta Kyoto on the B1 floor is the staffed backup.',
     ],
-    routes: [],
+    spots: [
+      { name: 'Karasuma exit (north)', note: 'The side for almost everything: the bus terminal, the subway, taxis and the city centre.' },
+      { name: 'Hachijo exit (south)', note: 'For the Kintetsu line to Nara and the airport limousine bus. Crossing between the two exits takes 10–15 minutes with luggage.' },
+      { name: 'To-ji', note: 'The temple with the five-story pagoda, within walking distance of the station.', at: 'toji' },
+    ],
+    photos: [
+      { src: '/images/blog/inline/kyoto-station-concourse.jpg', label: 'The concourse' },
+      { src: '/images/blog/inline/kyoto-station-arrival.jpg', label: 'Arriving' },
+    ],
     articles: ['plan/kyoto-station-guide', 'plan/transport-kyoto', 'plan/kyoto-luggage-storage'],
     tours: [],
     mapsQuery: 'Kyoto Station',
   },
   {
     id: 'fushimi-inari',
+    short: 'Fushimi Inari',
     name: 'Fushimi Inari',
     tagline: 'Thousands of red gates up a forested mountain.',
     lat: 34.9672, lon: 135.7735,
@@ -145,12 +178,17 @@ export const AREAS: Area[] = [
     enjoy: [
       'Free and open 24 hours, so go early or late and skip the 9am–4pm crowds.',
       'Climb at least to the Yotsutsuji viewpoint, 30–40 minutes uphill.',
-      'The full loop to the summit is 4 km.',
+      'The full loop to the summit is 4 km of uneven stone steps. Wear walking shoes.',
       'On Keihan, get off at Fushimi-Inari, not Fushimi-Momoyama.',
     ],
-    routes: [
-      { from: 'Kyoto Station', how: 'JR Nara Line to Inari. The gate is across the street', time: '5 min', lines: ['jr-nara'], source: 'plan/transport-kyoto' },
-      { from: 'Gion', how: 'Keihan Line from Gion-Shijo to Fushimi-Inari', time: '10 min', lines: ['keihan'], source: 'plan/transport-kyoto' },
+    spots: [
+      { name: 'Lower gates', note: 'The famous torii tunnels, in the first 20 minutes. Every classic photo is taken here.', at: 'fushimi-inari' },
+      { name: 'Yotsutsuji junction', note: 'The first clearing, 30–40 minutes up, with views over southern Kyoto. Most people turn back here.' },
+      { name: 'Summit loop', note: 'Quiet forest and dozens of small sub-shrines. 2–3 hours round trip; the summit itself has little view.' },
+    ],
+    photos: [
+      { src: '/images/blog/inline/fushimi-dawn.jpg', label: 'Lower gates at dawn' },
+      { src: '/images/blog/inline/fushimi-summit.jpg', label: 'View from Yotsutsuji' },
     ],
     articles: ['sights/fushimi-inari', 'food/sake-kyoto'],
     tours: [],
@@ -158,6 +196,7 @@ export const AREAS: Area[] = [
   },
   {
     id: 'arashiyama',
+    short: 'Arashiyama',
     name: 'Arashiyama',
     tagline: 'Bamboo grove, a great temple garden and a quiet river.',
     lat: 35.0150, lon: 135.6760,
@@ -171,9 +210,18 @@ export const AREAS: Area[] = [
       'Add one detour: mossy Jojakko-ji, 5 minutes uphill from the grove.',
       'Eat one block back from the bridge. The places facing it are overpriced.',
     ],
-    routes: [
-      { from: 'Kyoto Station', how: 'JR Sagano Line to Saga-Arashiyama', time: '15 min', lines: ['jr-sagano'], source: 'plan/transport-kyoto' },
-      { from: 'Gion', how: 'Walk to Hankyu Kyoto-Kawaramachi, then Hankyu to Arashiyama (change at Katsura)', time: '35–40 min', lines: ['hankyu'], source: 'plan/transport-kyoto' },
+    spots: [
+      { name: 'Bamboo Grove', note: 'The famous 500 m path just north of Tenryu-ji. Free.', at: 'bamboo' },
+      { name: 'Tenryu-ji', note: 'A UNESCO World Heritage garden from 1339, with the hills as its backdrop. Allow 30–45 minutes.', at: 'tenryuji' },
+      { name: 'Togetsukyo Bridge', note: 'The centre of the district and its best-known view. Best in morning light.', at: 'togetsukyo' },
+      { name: 'Jojakko-ji', note: 'A mossy temple 5 minutes uphill from the grove, with pagoda views and a fraction of the visitors.' },
+      { name: 'Okochi Sanso Villa', note: 'A film star\'s hillside estate at the far end of the bamboo path, with terraced gardens and city views.' },
+      { name: 'Sagano Scenic Railway', note: 'A small tourist train through the Hozugawa gorge. Book weeks ahead in autumn.' },
+    ],
+    photos: [
+      { src: '/images/blog/inline/arashiyama-bamboo-tunnel.jpg', label: 'Bamboo Grove' },
+      { src: '/images/blog/inline/arashiyama-tenryuji-pond.jpg', label: 'Tenryu-ji' },
+      { src: '/images/blog/inline/arashiyama-togetsukyo-bridge.jpg', label: 'Togetsukyo Bridge' },
     ],
     articles: ['neighborhoods/arashiyama', 'sights/arashiyama-bamboo'],
     tours: [],
@@ -181,7 +229,8 @@ export const AREAS: Area[] = [
   },
   {
     id: 'kinkakuji',
-    name: 'Kinkaku-ji & the North-West',
+    short: 'Kinkaku-ji',
+    name: 'Kinkaku-ji',
     tagline: 'The Golden Pavilion, mirrored in its pond.',
     lat: 35.0396, lon: 135.7295,
     times: ['morning', 'day'],
@@ -190,11 +239,19 @@ export const AREAS: Area[] = [
     stations: 'No station at the gate. Bus or taxi',
     enjoy: [
       'Go at the 9am opening or on an overcast day.',
-      'The visit itself takes 30–40 minutes.',
+      'The visit takes 30–40 minutes on a set path. You cannot go inside the pavilion.',
+      'Take the subway to Kitaoji, then a bus. It is more reliable than the bus all the way from Kyoto Station.',
       'No train runs here. A taxi is worth it for a group or a tight schedule.',
     ],
-    routes: [
-      { from: 'Kyoto Station', how: 'Bus 205 from stand B3 to Kinkakuji-michi (not the Rapid 205, which skips it), or a taxi', time: '40 min', lines: [], source: 'plan/transport-kyoto' },
+    spots: [
+      { name: 'Main viewpoint', note: 'Right after the entrance, across the pond. This is the classic reflection shot.', at: 'kinkakuji' },
+      { name: 'Upper garden', note: 'The path loops up past Anmintaku Pond. Usually quieter.' },
+      { name: 'Ryoan-ji', note: 'The famous 15-stone Zen garden, about a 20-minute walk southwest.', at: 'ryoanji' },
+      { name: 'Ninna-ji', note: 'About 10 minutes further on foot. The three make a compact morning.', at: 'ninnaji' },
+    ],
+    photos: [
+      { src: '/images/blog/inline/kinkakuji-reflection.jpg', label: 'The reflection' },
+      { src: '/images/blog/inline/kinkakuji-pond-path.jpg', label: 'The pond path' },
     ],
     articles: ['sights/kinkakuji'],
     tours: [],
@@ -202,21 +259,30 @@ export const AREAS: Area[] = [
   },
   {
     id: 'nijo',
-    name: 'Nijo Castle & the Imperial Palace',
+    short: 'Nijo Castle',
+    name: 'Nijo Castle',
     tagline: 'The shogun\'s castle in the middle of the city grid.',
     lat: 35.0142, lon: 135.7485,
     times: ['day'],
-    bestTime: 'Weekday mornings',
+    bestTime: 'At the 8:45am opening on a weekday',
     timeNeeded: '2–2.5 hours',
     stations: 'Nijojo-mae (subway Tozai Line), 1 min walk',
     enjoy: [
-      'Allow 2–2.5 hours for the castle and its gardens.',
+      'Go at the 8:45am opening. Tour groups fill the palace corridors by midday.',
+      'Allow 2–2.5 hours for the palace and the gardens.',
       'The palace building is closed on Tuesdays in January, July, August and December.',
       'The subway stops at the gate: Nijojo-mae on the Tozai Line is a 1-minute walk.',
     ],
-    routes: [
-      { from: 'Kyoto Station', how: 'Karasuma subway line to Karasuma Oike, change to the Tozai Line for Nijojo-mae', lines: ['subway-karasuma', 'subway-tozai'], source: 'sights/nijo-castle' },
-      { from: 'Gion', how: '10 min on foot to Higashiyama Station, then the Tozai subway line', time: '20 min', lines: ['subway-tozai'], source: 'plan/transport-kyoto' },
+    spots: [
+      { name: 'Ninomaru Palace', note: 'Six connected buildings, from the waiting rooms to the shogun\'s chambers. Shoes off, and no photos inside.', at: 'nijo-castle' },
+      { name: 'Nightingale floors', note: 'Every board chirps under your weight, so nobody could cross the palace unheard.' },
+      { name: 'Ninomaru Garden', note: 'Designed in 1626, with three islands in a central pond.' },
+      { name: 'The main tower base', note: 'Lightning destroyed the tower in 1750 and it was never rebuilt. Only the stone base remains.' },
+    ],
+    photos: [
+      { src: '/images/blog/inline/nijo-castle-outer-walls.jpg', label: 'Outer walls' },
+      { src: '/images/blog/inline/nijo-castle-ninomaru-garden.jpg', label: 'Ninomaru Garden' },
+      { src: '/images/blog/inline/nijo-castle-kano-paintings.jpg', label: 'Kano paintings' },
     ],
     articles: ['sights/nijo-castle'],
     tours: [],
@@ -224,6 +290,7 @@ export const AREAS: Area[] = [
   },
   {
     id: 'shimogamo',
+    short: 'Shimogamo',
     name: 'Shimogamo & the Kamo River',
     tagline: 'A World Heritage shrine inside an ancient forest.',
     lat: 35.0368, lon: 135.7727,
@@ -235,41 +302,51 @@ export const AREAS: Area[] = [
       'Cross the stepping stones at the Kamogawa Delta, where two rivers meet.',
       'Browse Demachi Masugata Shopping Street, a local covered arcade.',
     ],
-    routes: [],
+    spots: [
+      { name: 'Shimogamo Shrine', note: 'A UNESCO World Heritage shrine.', at: 'shimogamo' },
+      { name: 'Tadasu-no-Mori', note: 'The forest you walk through to reach the shrine.' },
+      { name: 'Kamogawa Delta', note: 'Where the Kamo and Takano Rivers meet, famous for its stepping stones.' },
+      { name: 'Demachi Masugata Shopping Street', note: 'A covered arcade with local sweets and fresh produce.' },
+    ],
+    photos: [
+      { src: '/images/tours/shimogamo/photo-shrine.jpg', label: 'Shimogamo Shrine' },
+      { src: '/images/tours/shimogamo/photo-delta.jpg', label: 'Kamogawa Delta' },
+      { src: '/images/tours/shimogamo/photo-bridge.jpg', label: 'Kamo River' },
+    ],
     articles: [],
     tours: ['shimogamo-manga-walk'],
     mapsQuery: 'Shimogamo Shrine Kyoto',
   },
 ];
 
-export interface LandmarkDef { id: string; name: string; lat: number; lon: number; sprite: SpriteId; major?: boolean; glow?: boolean }
+export interface LandmarkDef { id: string; /** Area this landmark belongs to, if any. */ area?: string; name: string; lat: number; lon: number; sprite: SpriteId; major?: boolean; glow?: boolean }
 
 /** Landmark icons. Coordinates from OpenStreetMap. */
 export const LANDMARKS: LandmarkDef[] = [
-  { id: 'kinkakuji', name: 'Kinkaku-ji', lat: 35.03959, lon: 135.72951, sprite: 'kinkaku', major: true },
-  { id: 'kiyomizu', name: 'Kiyomizudera', lat: 34.99442, lon: 135.78448, sprite: 'kiyomizu', major: true },
-  { id: 'yasaka-pagoda', name: 'Yasaka Pagoda', lat: 34.99856, lon: 135.77925, sprite: 'pagoda', major: true },
-  { id: 'yasaka-shrine', name: 'Yasaka Shrine', lat: 35.00349, lon: 135.77839, sprite: 'shrine' },
-  { id: 'hanamikoji', name: 'Hanamikoji', lat: 35.0026, lon: 135.7752, sprite: 'machiya', major: true, glow: true },
-  { id: 'pontocho', name: 'Pontocho', lat: 35.00598, lon: 135.77107, sprite: 'lantern', glow: true },
-  { id: 'nishiki', name: 'Nishiki Market', lat: 35.00503, lon: 135.76471, sprite: 'market', major: true },
-  { id: 'kyoto-tower', name: 'Kyoto Tower', lat: 34.98756, lon: 135.75933, sprite: 'tower', major: true },
-  { id: 'fushimi-inari', name: 'Fushimi Inari', lat: 34.96724, lon: 135.77299, sprite: 'toriis', major: true },
-  { id: 'nijo-castle', name: 'Nijo Castle', lat: 35.01396, lon: 135.74851, sprite: 'castle', major: true },
+  { id: 'kinkakuji', area: 'kinkakuji', name: 'Kinkaku-ji', lat: 35.03959, lon: 135.72951, sprite: 'kinkaku', major: true },
+  { id: 'kiyomizu', area: 'higashiyama', name: 'Kiyomizudera', lat: 34.99442, lon: 135.78448, sprite: 'kiyomizu', major: true },
+  { id: 'yasaka-pagoda', area: 'higashiyama', name: 'Yasaka Pagoda', lat: 34.99856, lon: 135.77925, sprite: 'pagoda', major: true },
+  { id: 'yasaka-shrine', area: 'gion', name: 'Yasaka Shrine', lat: 35.00349, lon: 135.77839, sprite: 'shrine' },
+  { id: 'hanamikoji', area: 'gion', name: 'Hanamikoji', lat: 35.0026, lon: 135.7752, sprite: 'machiya', major: true, glow: true },
+  { id: 'pontocho', area: 'downtown', name: 'Pontocho', lat: 35.00598, lon: 135.77107, sprite: 'lantern', glow: true },
+  { id: 'nishiki', area: 'downtown', name: 'Nishiki Market', lat: 35.00503, lon: 135.76471, sprite: 'market', major: true },
+  { id: 'kyoto-tower', area: 'kyoto-station', name: 'Kyoto Tower', lat: 34.98756, lon: 135.75933, sprite: 'tower', major: true },
+  { id: 'fushimi-inari', area: 'fushimi-inari', name: 'Fushimi Inari', lat: 34.96724, lon: 135.77299, sprite: 'toriis', major: true },
+  { id: 'nijo-castle', area: 'nijo', name: 'Nijo Castle', lat: 35.01396, lon: 135.74851, sprite: 'castle', major: true },
   { id: 'imperial-palace', name: 'Imperial Palace', lat: 35.02526, lon: 135.76235, sprite: 'palace' },
-  { id: 'shimogamo', name: 'Shimogamo Shrine', lat: 35.0390, lon: 135.7730, sprite: 'shrine', major: true },
-  { id: 'bamboo', name: 'Bamboo Grove', lat: 35.0171, lon: 135.6722, sprite: 'bamboo', major: true },
-  { id: 'tenryuji', name: 'Tenryu-ji', lat: 35.01617, lon: 135.67462, sprite: 'temple' },
-  { id: 'togetsukyo', name: 'Togetsukyo Bridge', lat: 35.01287, lon: 135.67776, sprite: 'bridge', major: true },
+  { id: 'shimogamo', area: 'shimogamo', name: 'Shimogamo Shrine', lat: 35.0390, lon: 135.7730, sprite: 'shrine', major: true },
+  { id: 'bamboo', area: 'arashiyama', name: 'Bamboo Grove', lat: 35.0171, lon: 135.6722, sprite: 'bamboo', major: true },
+  { id: 'tenryuji', area: 'arashiyama', name: 'Tenryu-ji', lat: 35.01617, lon: 135.67462, sprite: 'temple' },
+  { id: 'togetsukyo', area: 'arashiyama', name: 'Togetsukyo Bridge', lat: 35.01287, lon: 135.67776, sprite: 'bridge', major: true },
   { id: 'ginkakuji', name: 'Ginkaku-ji', lat: 35.02691, lon: 135.79843, sprite: 'temple' },
   { id: 'heian', name: 'Heian Shrine', lat: 35.01617, lon: 135.7829, sprite: 'torii' },
   { id: 'nanzenji', name: 'Nanzen-ji', lat: 35.01162, lon: 135.79268, sprite: 'temple' },
   { id: 'sanjusangendo', name: 'Sanjusangen-do', lat: 34.98799, lon: 135.77178, sprite: 'hall' },
   { id: 'tofukuji', name: 'Tofuku-ji', lat: 34.97717, lon: 135.77528, sprite: 'temple' },
-  { id: 'toji', name: 'To-ji', lat: 34.98119, lon: 135.74771, sprite: 'pagoda' },
+  { id: 'toji', area: 'kyoto-station', name: 'To-ji', lat: 34.98119, lon: 135.74771, sprite: 'pagoda' },
   { id: 'kitano', name: 'Kitano Tenmangu', lat: 35.03024, lon: 135.73487, sprite: 'shrine' },
-  { id: 'ryoanji', name: 'Ryoan-ji', lat: 35.03349, lon: 135.71806, sprite: 'temple' },
-  { id: 'ninnaji', name: 'Ninna-ji', lat: 35.02975, lon: 135.71403, sprite: 'pagoda' },
+  { id: 'ryoanji', area: 'kinkakuji', name: 'Ryoan-ji', lat: 35.03349, lon: 135.71806, sprite: 'temple' },
+  { id: 'ninnaji', area: 'kinkakuji', name: 'Ninna-ji', lat: 35.02975, lon: 135.71403, sprite: 'pagoda' },
 ];
 
 /** Stations labelled on the full-city view (names as in kyoto-geo.json). */

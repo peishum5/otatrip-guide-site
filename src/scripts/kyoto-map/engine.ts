@@ -24,7 +24,10 @@ export interface MapOptions {
   reducedMotion: boolean;
   /** Called after the camera moved and a new frame was drawn. */
   onCamera?: () => void;
+  /** Called when the map is tapped (not dragged): the station or landmark under the finger, or null. */
+  onTap?: (hit: MapHit | null) => void;
 }
+export interface MapHit { kind: 'station' | 'landmark'; id: string; name: string; lines: string[]; x: number; y: number }
 
 /** Real line colours, nudged so they stay distinct from each other on a small map. */
 export const LINES: Record<string, { name: string; color: string }> = {
@@ -74,16 +77,17 @@ function buildPalette(mode: TimeMode) {
   const raw = (h: string) => pack(hex(h));
   const night = mode === 'night';
   return {
-    town: ['#dcd2b6', '#d5caac', '#e1d8be'].map(t),
-    roof: ['#8d9299', '#7f858d', '#9a9288', '#8a7c6e', '#858b93', '#a39c90'].map(t),
-    wall: t('#c4b99c'),
-    window: night ? raw('#ffd76a') : t('#c4b99c'),
+    town: ['#ded3b6', '#dacfb1', '#e2d8bc'].map(t),
+    roof: ['#cfc4a7', '#c9bea2', '#d3c9ad', '#c6bca4', '#ccc2a9'].map(t),
+    wall: t('#bdb295'),
+    window: night ? raw('#ffd76a') : t('#bdb295'),
     park: ['#8ccc62', '#80c257', '#96d46c'].map(t),
     forest: ['#3f9148', '#37843f', '#2f7638', '#4a9c50'].map(t),
     forestHi: t('#62b25c'),
     water: t('#3d8fe0'),
     waterHi: night ? raw('#7fa8e8') : raw('#bfe3ff'),
     cliff: ['#8a7858', '#77664a'].map(t),
+    step: ['#cfc3a2', '#c8bc9a'].map(t),
     cliffForest: ['#2a6431', '#225528'].map(t),
     board: ['#6b4a2b', '#59391f', '#463018'].map(t),
     road: night ? [raw('#c79a3c'), raw('#8f7434'), raw('#4f4a3a')] : [t('#fffdf0'), t('#f5edd4'), t('#c9bd9a')],
@@ -91,6 +95,7 @@ function buildPalette(mode: TimeMode) {
     star: raw('#e8f0ff'),
     station: raw('#ffffff'),
     stationEdge: raw('#16161c'),
+    casing: night ? raw('#05060f') : raw('#2a2a33'),
     ring: raw('#ffb000'),
     ringSel: raw('#00e5ff'),
     white: raw('#ffffff'),
@@ -157,6 +162,10 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
   let homeMode = true;
   /** onCamera is held back until the caller has the map object in hand. */
   let ready = false;
+  /** Boxes (CSS px) already used by the page's own pins, so map text keeps clear of them. */
+  let reserved: [number, number, number, number][] = [];
+  /** A single spot being pointed at (world metres). */
+  let mark: { x: number; y: number } | null = null;
 
   const idxAt = (x: number, y: number) => clamp(Math.floor((y - g.y0) / cell), 0, rows - 1) * cols + clamp(Math.floor((x - g.x0) / cell), 0, cols - 1);
   const sx = (x: number) => W / 2 + (x - cam.x) * cam.s;
@@ -249,7 +258,8 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
         if (lv > lvS) {
           const end = r > 0 ? Math.round(syS - lvS * LV * s) : Math.round(syS) + board;
           for (let py = Math.max(0, bot); py < Math.min(H, end); py++) {
-            const set = r === 0 && py >= Math.round(syS) ? pal.board : type === 1 ? pal.cliffForest : pal.cliff;
+            // a single step down in town is a gentle slope, not a cliff: shade it lightly
+            const set = r === 0 && py >= Math.round(syS) ? pal.board : type === 1 ? pal.cliffForest : r > 0 && lv - lvS <= 2 ? pal.step : pal.cliff;
             const col = set[(py - bot) % set.length === set.length - 1 ? set.length - 1 : (py >> 1) % (set.length - 1 || 1)];
             const o = py * W;
             for (let px = Math.max(0, xa); px < Math.min(W, xb); px++) { buf[o + px] = col; rowBuf[o + px] = r; }
@@ -319,8 +329,9 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
     const rw = s >= 0.07 ? 2 : 1;
     for (const l of rail) {
       if (l.id === 'shinkansen') { drawLine(l.p, pal.line[l.id], 1, 2); continue; }
-      drawLine(l.p, pal.line[l.id], rw, l.u ? (rw === 2 ? 4 : 3) : 0);
+      if (!l.u && s >= 0.05) drawLine(l.p, pal.casing, rw + 2);
     }
+    for (const l of rail) if (l.id !== 'shinkansen') drawLine(l.p, pal.line[l.id], rw, l.u ? (rw === 2 ? 4 : 3) : 0);
     for (const st of stations) {
       if (!st.hub && s < 0.05) continue;
       const [px, py] = project(st.x, st.y), x = Math.round(px), y = Math.round(py), big = s >= 0.07;
@@ -368,6 +379,7 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
       if (a.id === selected) { ring(a.x, a.y, 620, pal.ringSel, false, 0); ring(a.x, a.y, 640, pal.ringSel, false, 0); }
       else if (a.times.includes(mode)) ring(a.x, a.y, animated ? 380 + 90 * Math.sin(t / 420) : 420, pal.ring, true, animated ? (t / 160) | 0 : 0);
     }
+    if (mark) { const r = animated ? 150 + 50 * Math.sin(t / 220) : 170; ring(mark.x, mark.y, r, pal.white, false, 0); ring(mark.x, mark.y, r + 22 / Math.max(cam.s * 100, 1), pal.ringSel, false, 0); }
     if (!animated) return;
     // water glints
     const tick = (t / 380) | 0;
@@ -416,7 +428,7 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
     lctx.setTransform(k, 0, 0, k, 0, 0);
     lctx.clearRect(0, 0, cw, ch);
     if (!fontsReady) return;
-    const taken: [number, number, number, number][] = areas.map((a) => { const [px, py] = project(a.x, a.y); return [px * cssScale - 15, py * cssScale - 30, px * cssScale + 15, py * cssScale + 4]; });
+    const taken: [number, number, number, number][] = reserved.slice();
     const free = (b: [number, number, number, number]) => b[0] >= 2 && b[2] <= cw - 2 && b[1] >= 2 && b[3] <= ch - 2 && !taken.some((t) => b[0] < t[2] && b[2] > t[0] && b[1] < t[3] && b[3] > t[1]);
     lctx.textBaseline = 'middle'; lctx.lineJoin = 'round';
     const put = (text: string, x: number, y: number, color: string, size: number, centred = false) => {
@@ -487,7 +499,8 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
   }
   function flyTo(x: number, y: number, s: number, ms = 750) {
     s = clamp(s, home.s, MAX_SCALE);
-    if (opts.reducedMotion) { cam.x = x; cam.y = y; cam.s = s; tween = null; updateTouchAction(); dirty = true; return; }
+    const same = Math.abs(cam.x - x) < 1 && Math.abs(cam.y - y) < 1 && Math.abs(cam.s - s) < cam.s * 0.001;
+    if (opts.reducedMotion || same) { cam.x = x; cam.y = y; cam.s = s; tween = null; updateTouchAction(); dirty = true; paint(performance.now()); return; }
     tween = { fx: cam.x, fy: cam.y, fs: cam.s, tx: x, ty: y, ts: s, t0: performance.now(), ms };
   }
   function zoomAt(factor: number, bx = W / 2, by = H / 2) {
@@ -501,10 +514,12 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
   const pointers = new Map<number, { x: number; y: number }>();
   let pinch = 0;
   const local = (e: PointerEvent | WheelEvent) => { const r = canvas.getBoundingClientRect(); return { x: (e.clientX - r.left) / cssScale, y: (e.clientY - r.top) / cssScale }; };
-  const onDown = (e: PointerEvent) => { pointers.set(e.pointerId, local(e)); canvas.setPointerCapture(e.pointerId); pinch = 0; };
+  let downAt: { x: number; y: number } | null = null, moved = 0;
+  const onDown = (e: PointerEvent) => { const p = local(e); pointers.set(e.pointerId, p); try { canvas.setPointerCapture(e.pointerId); } catch { /* not a live pointer */ } pinch = 0; downAt = pointers.size === 1 ? p : null; moved = 0; };
   const onMove = (e: PointerEvent) => {
     const prev = pointers.get(e.pointerId); if (!prev) return;
     const cur = local(e); pointers.set(e.pointerId, cur);
+    moved += Math.abs(cur.x - prev.x) + Math.abs(cur.y - prev.y);
     if (pointers.size === 1) {
       if (cam.s <= home.s * 1.02) return;
       cam.x -= (cur.x - prev.x) / cam.s; cam.y += (cur.y - prev.y) / (cam.s * TILT);
@@ -515,7 +530,28 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
       pinch = d;
     }
   };
-  const onUp = (e: PointerEvent) => { pointers.delete(e.pointerId); pinch = 0; };
+  const onUp = (e: PointerEvent) => {
+    pointers.delete(e.pointerId); pinch = 0;
+    if (e.type === 'pointerup' && downAt && moved < 5) opts.onTap?.(pick(downAt.x, downAt.y));
+    downAt = null;
+  };
+  /** What is drawn under a buffer pixel: the nearest visible landmark or station, if close enough. */
+  function pick(bx: number, by: number): MapHit | null {
+    const s = cam.s, k = s >= 0.085 ? 2 : 1;
+    let best: MapHit | null = null, bd = Infinity;
+    for (const m of landmarks) {
+      if (!m.major && s < home.s * 1.5) continue;
+      const [px, py] = project(m.x, m.y), sp = sprites[m.sprite];
+      const dx = Math.abs(bx - px), dy = Math.abs(by - (py - (sp.h * k) / 2));
+      if (dx <= (sp.w * k) / 2 + 3 && dy <= (sp.h * k) / 2 + 3 && dx + dy < bd) { bd = dx + dy; best = { kind: 'landmark', id: m.id, name: m.name, lines: [], x: m.x, y: m.y }; }
+    }
+    for (const st of stations) {
+      if (!st.hub && s < 0.05) continue;
+      const [px, py] = project(st.x, st.y), d = Math.hypot(bx - px, by - py);
+      if (d <= 7 && d < bd) { bd = d; best = { kind: 'station', id: st.n, name: st.n, lines: st.l.filter((l: string) => l !== 'shinkansen'), x: st.x, y: st.y }; }
+    }
+    return best;
+  }
   const onWheel = (e: WheelEvent) => { if (!e.ctrlKey && !e.metaKey) return; e.preventDefault(); const p = local(e); zoomAt(Math.exp(-e.deltaY * 0.01), p.x, p.y); };
   const onDbl = (e: MouseEvent) => { homeMode = false; const p = local(e as unknown as PointerEvent); const wx = cam.x + (p.x - W / 2) / cam.s, wy = cam.y - (p.y - H / 2) / (cam.s * TILT); flyTo(wx, wy, cam.s * 1.8, 400); };
   canvas.addEventListener('pointerdown', onDown); canvas.addEventListener('pointermove', onMove);
@@ -541,6 +577,16 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
     },
     setTime(m: TimeMode) { mode = m; pal = buildPalette(m); dirty = true; },
     setHighlight(ids: string[]) { highlight = ids; dirty = true; },
+    /** Tell the map which boxes (CSS px) the page's pins cover; redraws only the text. */
+    setReserved(boxes: [number, number, number, number][]) { reserved = boxes; drawLabels(); },
+    /** Point at one spot (ring on the map) and bring it into view; null clears it. */
+    pointAt(lat: number | null, lon?: number) {
+      if (lat === null || lon === undefined) { mark = null; dirty = true; return; }
+      const [x, y] = toXY(lon, lat); mark = { x, y }; homeMode = false; dirty = true;
+      flyTo(x, y - 60, Math.max(cam.s, Math.min(MAX_SCALE, W / (W < 320 ? 1500 : 2200))), 600);
+    },
+    /** Position of a world point (metres, as given in a MapHit) in CSS pixels. */
+    placeXY(x: number, y: number) { const [px, py] = project(x, y); return { x: px * cssScale, y: py * cssScale, inside: px >= 0 && px <= W && py >= 0 && py <= H }; },
     zoomBy(f: number) { const s = clamp(cam.s * f, home.s, MAX_SCALE); homeMode = s <= home.s * 1.001; homeMode ? flyTo(home.x, home.y, home.s, 300) : flyTo(cam.x, cam.y, s, 300); },
     isHome: atHome,
     /** Width of one kilometre (east-west) in CSS pixels, for the scale bar. */

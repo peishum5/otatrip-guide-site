@@ -15,15 +15,21 @@ const QUERIES = {
 };
 const dir = new URL('./.cache/', import.meta.url);
 await mkdir(dir, { recursive: true });
+// Optional: name the layers to refetch, e.g.  node scripts/map/fetch-osm.mjs green water
+const only = process.argv.slice(2);
 for (const [name, q] of Object.entries(QUERIES)) {
+  if (only.length && !only.includes(name)) continue;
   const body = `[out:json][timeout:120];${q}out tags geom;`;
   let ok = false;
-  for (const host of ['https://overpass-api.de', 'https://overpass.kumi.systems']) {
-    const res = await fetch(`${host}/api/interpreter`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': 'map-data-builder/1.0' },
-      body: 'data=' + encodeURIComponent(body),
-    });
+  for (const host of ['https://overpass-api.de', 'https://overpass.kumi.systems', 'https://overpass.private.coffee', 'https://overpass-api.de']) {
+    let res;
+    try {
+      res = await fetch(`${host}/api/interpreter`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': 'map-data-builder/1.0' },
+        body: 'data=' + encodeURIComponent(body),
+      });
+    } catch (err) { console.error(name, host, String(err.cause?.code ?? err.message)); continue; }
     if (!res.ok) { console.error(name, host, res.status); continue; }
     const text = await res.text();
     await writeFile(new URL(`${name}.json`, dir), text);

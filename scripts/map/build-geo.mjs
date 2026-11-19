@@ -148,6 +148,18 @@ for (const e of await load('stations')) {
   if (same) { same.l = [...new Set([...same.l, ...lines])]; same.c.push(p); continue; }
   stations.push({ n, x: p[0], y: p[1], l: lines, c: [p] });
 }
+// Lines are matched to stations by distance, which gets a few wrong where separate
+// stations sit side by side or a platform is far from the station's centre. Corrections:
+const LINE_FIX = {
+  Kyoto: { add: ['jr-sagano'] },          // Sagano Line platforms are at the far west end
+  Tobakaido: { drop: ['jr-nara'] },       // Keihan only; the JR line passes without a station
+  Omiya: { drop: ['randen'] },            // Hankyu only (the Randen stop is Shijo-Omiya)
+  Sai: { drop: ['hankyu'] },              // Randen only (the Hankyu station is Saiin)
+};
+for (const s of stations) {
+  const fix = LINE_FIX[s.n];
+  if (fix) s.l = [...new Set([...s.l.filter((l) => !(fix.drop || []).includes(l)), ...(fix.add || [])])];
+}
 for (const s of stations) {
   s.x = Math.round(s.c.reduce((a, p) => a + p[0], 0) / s.c.length);
   s.y = Math.round(s.c.reduce((a, p) => a + p[1], 0) / s.c.length);
