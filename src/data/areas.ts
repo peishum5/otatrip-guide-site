@@ -319,7 +319,7 @@ export const AREAS: Area[] = [
   },
 ];
 
-export interface LandmarkDef { id: string; /** Area this landmark belongs to, if any. */ area?: string; name: string; lat: number; lon: number; sprite: SpriteId; major?: boolean; glow?: boolean }
+export interface LandmarkDef { id: string; /** Area this landmark belongs to, if any. */ area?: string; name: string; lat: number; lon: number; sprite: SpriteId; major?: boolean; glow?: boolean; /** Shown only when zoomed in (the guide's extra picks). */ detail?: boolean; /** One line shown when tapped. Facts from our articles only, no prices. */ note?: string }
 
 /** Landmark icons. Coordinates from OpenStreetMap. */
 export const LANDMARKS: LandmarkDef[] = [
@@ -333,20 +333,46 @@ export const LANDMARKS: LandmarkDef[] = [
   { id: 'kyoto-tower', area: 'kyoto-station', name: 'Kyoto Tower', lat: 34.98756, lon: 135.75933, sprite: 'tower', major: true },
   { id: 'fushimi-inari', area: 'fushimi-inari', name: 'Fushimi Inari', lat: 34.96724, lon: 135.77299, sprite: 'toriis', major: true },
   { id: 'nijo-castle', area: 'nijo', name: 'Nijo Castle', lat: 35.01396, lon: 135.74851, sprite: 'castle', major: true },
-  { id: 'imperial-palace', name: 'Imperial Palace', lat: 35.02526, lon: 135.76235, sprite: 'palace' },
+  { id: 'imperial-palace', name: 'Imperial Palace', lat: 35.02526, lon: 135.76235, sprite: 'palace', note: "The palace park around it is free to walk." },
   { id: 'shimogamo', area: 'shimogamo', name: 'Shimogamo Shrine', lat: 35.0390, lon: 135.7730, sprite: 'shrine', major: true },
   { id: 'bamboo', area: 'arashiyama', name: 'Bamboo Grove', lat: 35.0171, lon: 135.6722, sprite: 'bamboo', major: true },
   { id: 'tenryuji', area: 'arashiyama', name: 'Tenryu-ji', lat: 35.01617, lon: 135.67462, sprite: 'temple' },
   { id: 'togetsukyo', area: 'arashiyama', name: 'Togetsukyo Bridge', lat: 35.01287, lon: 135.67776, sprite: 'bridge', major: true },
-  { id: 'ginkakuji', name: 'Ginkaku-ji', lat: 35.02691, lon: 135.79843, sprite: 'temple' },
-  { id: 'heian', name: 'Heian Shrine', lat: 35.01617, lon: 135.7829, sprite: 'torii' },
-  { id: 'nanzenji', name: 'Nanzen-ji', lat: 35.01162, lon: 135.79268, sprite: 'temple' },
-  { id: 'sanjusangendo', name: 'Sanjusangen-do', lat: 34.98799, lon: 135.77178, sprite: 'hall' },
-  { id: 'tofukuji', name: 'Tofuku-ji', lat: 34.97717, lon: 135.77528, sprite: 'temple' },
-  { id: 'toji', area: 'kyoto-station', name: 'To-ji', lat: 34.98119, lon: 135.74771, sprite: 'pagoda' },
-  { id: 'kitano', name: 'Kitano Tenmangu', lat: 35.03024, lon: 135.73487, sprite: 'shrine' },
-  { id: 'ryoanji', area: 'kinkakuji', name: 'Ryoan-ji', lat: 35.03349, lon: 135.71806, sprite: 'temple' },
-  { id: 'ninnaji', area: 'kinkakuji', name: 'Ninna-ji', lat: 35.02975, lon: 135.71403, sprite: 'pagoda' },
+  { id: 'ginkakuji', name: 'Ginkaku-ji', lat: 35.02691, lon: 135.79843, sprite: 'temple', note: "At the north end of the Philosopher's Path." },
+  { id: 'heian', name: 'Heian Shrine', lat: 35.01617, lon: 135.7829, sprite: 'torii', note: "Wide, easy canal-side paths nearby. Bean-throwing here at Setsubun, 3 February." },
+  { id: 'nanzenji', name: 'Nanzen-ji', lat: 35.01162, lon: 135.79268, sprite: 'temple', note: "The grounds are free. The yudofu restaurants nearby fill from 11:30, so arrive at 11:00." },
+  { id: 'sanjusangendo', name: 'Sanjusangen-do', lat: 34.98799, lon: 135.77178, sprite: 'hall', note: "Each mid-January, young archers in kimono shoot along the temple's long hall." },
+  { id: 'tofukuji', name: 'Tofuku-ji', lat: 34.97717, lon: 135.77528, sprite: 'temple', note: "Its Tsutenkyo Bridge is Kyoto's most celebrated autumn viewpoint. Arrive before 8am." },
+  { id: 'toji', area: 'kyoto-station', name: 'To-ji', lat: 34.98119, lon: 135.74771, sprite: 'pagoda', note: "On the 21st of every month, one of Japan's largest antique markets fills the grounds." },
+  { id: 'kitano', name: 'Kitano Tenmangu', lat: 35.03024, lon: 135.73487, sprite: 'shrine', note: "Plum blossoms peak around 25 February. Market on the 25th of the month." },
+  { id: 'ryoanji', area: 'kinkakuji', name: 'Ryoan-ji', lat: 35.03349, lon: 135.71806, sprite: 'temple', note: "You view the rock garden from a covered veranda, so it is at its best in rain." },
+  { id: 'ninnaji', area: 'kinkakuji', name: 'Ninna-ji', lat: 35.02975, lon: 135.71403, sprite: 'pagoda', note: "Late-blooming cherry, one to two weeks after the rest of the city." },
+  // --- OTAtrip Guide's extra picks: appear once you zoom in. Notes come from our own articles; positions from OpenStreetMap ---
+  { id: 'shirakawa', area: 'gion', name: "Shirakawa Canal", lat: 35.00558, lon: 135.7745, sprite: 'lane', detail: true, glow: true, note: "The canal at Shimbashi, at its best under lantern light. Almost empty after 10pm." },
+  { id: 'minamiza', area: 'gion', name: "Minamiza Theatre", lat: 35.00349, lon: 135.7724, sprite: 'machiya', detail: true, note: "Kyoto's kabuki theatre, home of the Kaomise performances each December." },
+  { id: 'miyagawacho', area: 'gion', name: "Miyagawacho", lat: 34.99812, lon: 135.76999, sprite: 'lantern', detail: true, glow: true, note: "A geisha district between Gion and the Kamo River, quieter than Hanamikoji." },
+  { id: 'maruyama', area: 'higashiyama', name: "Maruyama Park", lat: 35.00375, lon: 135.78084, sprite: 'sakura', detail: true, note: "Free and always open. Its weeping cherry is lit at night in blossom season." },
+  { id: 'chionin', area: 'higashiyama', name: "Chion-in", lat: 35.00552, lon: 135.78324, sprite: 'gate', detail: true, note: "Known for its giant bell, rung by a team of monks on New Year's Eve." },
+  { id: 'shorenin', area: 'higashiyama', name: "Shoren-in", lat: 35.00748, lon: 135.78337, sprite: 'temple', detail: true, note: "A short walk north of Chion-in. Lit up on autumn evenings." },
+  { id: 'kodaiji', area: 'higashiyama', name: "Kodai-ji", lat: 35.00032, lon: 135.78135, sprite: 'temple', detail: true, note: "A short walk from Yasaka Shrine. Nene-no-michi, the stone path below it, links Gion to the Higashiyama walk." },
+  { id: 'ishibei', area: 'higashiyama', name: "Ishibei-koji", lat: 34.99995, lon: 135.77969, sprite: 'lane', detail: true, note: "A quiet side lane with no souvenir stalls, a 5-minute detour. Photography is not allowed." },
+  { id: 'ninenzaka', area: 'higashiyama', name: "Ninenzaka", lat: 34.99809, lon: 135.78083, sprite: 'lane', detail: true, note: "The lower of the two old lanes below Kiyomizudera. Packed on weekend afternoons, so go early." },
+  { id: 'sannenzaka', area: 'higashiyama', name: "Sannenzaka", lat: 34.99724, lon: 135.78093, sprite: 'lane', detail: true, note: "Leave Kiyomizudera downhill this way, not back down the lane you came up." },
+  { id: 'kyohaku', name: "Kyoto National Museum", lat: 34.99005, lon: 135.77291, sprite: 'museum', detail: true, note: "One of Japan's best collections of Buddhist and decorative art. A good rainy-day stop." },
+  { id: 'teramachi', area: 'downtown', name: "Teramachi Arcade", lat: 35.00618, lon: 135.76696, sprite: 'market', detail: true, note: "A covered shopping street with fans, washi paper, tea and bookshops, 5 minutes on foot from Nishiki Market." },
+  { id: 'manga-museum', name: "Manga Museum", lat: 35.01168, lon: 135.75918, sprite: 'museum', detail: true, note: "A former elementary school with about 50,000 manga on open shelves to read on the spot. Closed Wednesdays." },
+  { id: 'yotsutsuji', area: 'fushimi-inari', name: "Yotsutsuji Viewpoint", lat: 34.96916, lon: 135.78146, sprite: 'view', detail: true, note: "The first clearing on the mountain, 30 to 40 minutes up, with views over southern Kyoto. Most people turn back here." },
+  { id: 'nonomiya', area: 'arashiyama', name: "Nonomiya Shrine", lat: 35.01775, lon: 135.67416, sprite: 'torii', detail: true, note: "A small shrine in the bamboo just before the grove entrance, linked to The Tale of Genji." },
+  { id: 'okochi', area: 'arashiyama', name: "Okochi Sanso", lat: 35.01666, lon: 135.66967, sprite: 'machiya', detail: true, note: "A film star's hillside estate at the far end of the bamboo path. Terraced gardens, city views, no crowds." },
+  { id: 'jojakkoji', area: 'arashiyama', name: "Jojakko-ji", lat: 35.01964, lon: 135.66857, sprite: 'temple', detail: true, note: "A mossy hillside temple that tour groups skip. Ten minutes up to the pagoda for views over Arashiyama." },
+  { id: 'hirano', name: "Hirano Shrine", lat: 35.03236, lon: 135.73251, sprite: 'sakura', detail: true, note: "About 60 varieties of cherry that bloom in turn from late March through late April." },
+  { id: 'kamishichiken', name: "Kamishichiken", lat: 35.03075, lon: 135.73684, sprite: 'lantern', detail: true, glow: true, note: "The oldest of Kyoto's five geisha districts, beside Kitano Tenmangu." },
+  { id: 'philosophers-path', name: "Philosopher's Path", lat: 35.0225, lon: 135.79501, sprite: 'sakura', detail: true, note: "A 2 km canal walk between Nanzen-ji and Ginkaku-ji. Quietest at 7 to 9am." },
+  { id: 'eikando', name: "Eikan-do", lat: 35.0141, lon: 135.79497, sprite: 'temple', detail: true, note: "Our pick if you pay for one autumn night illumination. The queues are very long, so arrive early." },
+  { id: 'keage', name: "Keage Incline", lat: 35.0095, lon: 135.78958, sprite: 'sakura', detail: true, note: "Old railway tracks under rows of cherry trees. Best before 8am, in morning light." },
+  { id: 'tadasu', area: 'shimogamo', name: "Tadasu-no-Mori", lat: 35.03697, lon: 135.77273, sprite: 'forest', detail: true, note: "The forest you walk through to reach the shrine." },
+  { id: 'kamo-delta', area: 'shimogamo', name: "Kamogawa Delta", lat: 35.03011, lon: 135.7717, sprite: 'stones', detail: true, note: "Where the Kamo and Takano Rivers meet, famous for its stepping stones." },
+  { id: 'masugata', area: 'shimogamo', name: "Demachi Masugata", lat: 35.03029, lon: 135.76885, sprite: 'market', detail: true, note: "A covered arcade with local sweets and fresh produce." },
 ];
 
 /** Stations labelled on the full-city view (names as in kyoto-geo.json). */

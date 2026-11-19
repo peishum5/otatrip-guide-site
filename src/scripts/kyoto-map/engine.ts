@@ -14,7 +14,7 @@ import geo from '../../data/map/kyoto-geo.json';
 import { SPRITES, PALETTE, LIT, type SpriteId } from './sprites';
 
 export type TimeMode = 'morning' | 'day' | 'night';
-export interface Landmark { id: string; name: string; lat: number; lon: number; sprite: SpriteId; major?: boolean; glow?: boolean }
+export interface Landmark { id: string; name: string; lat: number; lon: number; sprite: SpriteId; major?: boolean; glow?: boolean; /** Only appears once you zoom in. */ detail?: boolean }
 export interface AreaPin { id: string; lat: number; lon: number; times: TimeMode[] }
 export interface MapOptions {
   landmarks: Landmark[];
@@ -55,6 +55,8 @@ const TILT = 0.62; // how far the board is tipped away from the viewer
 const BASE_STEP = 5; // the basin floor (below ~75 m) is drawn flat
 const EXAG = 2.2; // hills are drawn this many times taller than life
 const MAX_SCALE = 0.15; // px per metre
+const DETAIL_S = 0.07; // zoom at which the extra sights appear
+const DETAIL_LABEL_S = 0.085; // ...and at which they are named
 
 // ---- colour helpers (canvas ImageData is little-endian ABGR) ----
 type RGB = [number, number, number];
@@ -142,6 +144,8 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
   });
   const stations = geo.stations.map((s) => ({ ...s, hub: opts.hubs.includes(s.n) }));
   const landmarks = opts.landmarks.map((m) => { const [x, y] = toXY(m.lon, m.lat); return { ...m, x, y }; }).sort((a, b) => b.y - a.y);
+  /** Three tiers: the main sights always show, the rest from a little zoom, the extra picks once you are close. */
+  const seen = (m: Landmark, s: number) => m.major || (m.detail ? s >= DETAIL_S : s >= home.s * 1.5);
   const areas = opts.areas.map((a) => { const [x, y] = toXY(a.lon, a.lat); return { ...a, x, y }; });
   const sprites = Object.fromEntries(Object.entries(SPRITES).map(([id, rowsS]) => [id, { w: rowsS[0].length, h: rowsS.length, rows: rowsS as readonly string[] }]));
 
@@ -341,7 +345,7 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
     }
     const k = s >= 0.085 ? 2 : 1;
     for (const m of landmarks) {
-      if (!m.major && s < home.s * 1.5) continue;
+      if (!seen(m, s)) continue;
       const [px, py] = project(m.x, m.y);
       if (px < -30 || px > W + 30 || py < -10 || py > H + 40) continue;
       drawSprite(m.sprite, px, py + 1, k);
@@ -447,8 +451,13 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
     const on = (px: number, py: number) => px > 0 && px < W && py > 0 && py < H;
     for (const st of stations) if (st.hub) { const [px, py] = project(st.x, st.y); if (on(px, py)) put(st.n, px * cssScale, py * cssScale, '#ffffff', 11); }
     for (const m of landmarks) {
-      if (!(m.major ? s >= home.s * 1.6 : s >= 0.06)) continue;
+      if (m.detail || !(m.major ? s >= home.s * 1.6 : s >= 0.06)) continue;
       const [px, py] = project(m.x, m.y); if (on(px, py)) put(m.name, px * cssScale, (py - 6) * cssScale, '#ffcf5c', 11);
+    }
+    // the zoomed-in picks come after the main sights, so they never push a bigger name off the map
+    if (s >= DETAIL_LABEL_S) for (const m of landmarks) {
+      if (!m.detail) continue;
+      const [px, py] = project(m.x, m.y); if (on(px, py)) put(m.name, px * cssScale, (py - 6) * cssScale, '#ffe3a1', 10);
     }
     if (s >= 0.06) for (const st of stations) if (!st.hub) { const [px, py] = project(st.x, st.y); if (on(px, py)) put(st.n, px * cssScale, py * cssScale, '#e6e6e6', 10); }
     if (s >= 0.055) for (const l of streetLabels) {
@@ -479,6 +488,7 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
     paint(t);
   }
   function paint(t: number) {
+    if (!W) return; // nothing to draw on until the first resize (a deep link can ask for an area before that)
     const redraw = dirty;
     if (dirty) { renderBase(); base.set(buf); drawLabels(); dirty = false; }
     if (redraw || (!opts.reducedMotion && t - lastAnim > 60)) {
@@ -540,7 +550,7 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
     const s = cam.s, k = s >= 0.085 ? 2 : 1;
     let best: MapHit | null = null, bd = Infinity;
     for (const m of landmarks) {
-      if (!m.major && s < home.s * 1.5) continue;
+      if (!seen(m, s)) continue;
       const [px, py] = project(m.x, m.y), sp = sprites[m.sprite];
       const dx = Math.abs(bx - px), dy = Math.abs(by - (py - (sp.h * k) / 2));
       if (dx <= (sp.w * k) / 2 + 3 && dy <= (sp.h * k) / 2 + 3 && dx + dy < bd) { bd = dx + dy; best = { kind: 'landmark', id: m.id, name: m.name, lines: [], x: m.x, y: m.y }; }

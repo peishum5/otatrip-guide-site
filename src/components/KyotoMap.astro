@@ -42,13 +42,13 @@ const areas = AREAS.map((a, i) => {
 
 const clientData = {
   areas: areas.map(({ id, lat, lon, times, n }) => ({ id, lat, lon, times, n })),
-  landmarks: LANDMARKS,
+  landmarks: LANDMARKS.map(({ note: _note, area: _area, ...m }) => m),
   hubs: HUB_STATIONS,
   lines: LINES,
   // what to say when a landmark on the map is tapped
   tips: Object.fromEntries(LANDMARKS.map((m) => {
     const area = areas.find((a) => a.id === m.area);
-    return [m.id, { note: area?.spots.find((s) => s.at === m.id)?.note ?? '', area: area?.id ?? '', areaName: area?.short ?? '', n: area?.n ?? 0 }];
+    return [m.id, { note: m.note ?? area?.spots.find((s) => s.at === m.id)?.note ?? '', pick: !!m.detail, area: area?.id ?? '', areaName: area?.short ?? '', n: area?.n ?? 0 }];
   })),
 };
 const legend = ['jr-kyoto', 'jr-sagano', 'jr-nara', 'subway-karasuma', 'subway-tozai', 'hankyu', 'keihan', 'randen', 'eizan', 'kintetsu'];
@@ -127,7 +127,7 @@ const TABS = [['enjoy', 'Enjoy'], ['go', 'Getting here'], ['spots', 'Spots']] as
           </li>
         ))}
       </ol>
-      <p class="kmap-note">Tap a station or a landmark on the map for details. Rivers, streets, rail lines, stations and landmarks sit at their real positions and the map is to scale. Hills are drawn taller than life, landmark icons are larger than the buildings, and the small houses are decoration.</p>
+      <p class="kmap-note">Zoom in and more places appear: our guide's own picks, not a list of trendy shops. Tap a station or a landmark on the map for details. Rivers, streets, rail lines, stations and landmarks sit at their real positions and the map is to scale. Hills are drawn taller than life, landmark icons are larger than the buildings, and the small houses are decoration.</p>
     </section>
 
     {areas.map((a, i) => {
@@ -506,7 +506,7 @@ const TABS = [['enjoy', 'Enjoy'], ['go', 'Getting here'], ['spots', 'Spots']] as
       if (!hit) return hideTip();
       tipAt = hit;
       const info = hit.kind === 'landmark' ? data.tips[hit.id] : null;
-      $('[data-tip-kind]', tip).textContent = hit.kind === 'station' ? 'Station' : info?.areaName ? `Landmark · ${info.areaName}` : 'Landmark';
+      $('[data-tip-kind]', tip).textContent = hit.kind === 'station' ? 'Station' : `${info?.pick ? 'Guide pick' : 'Landmark'}${info?.areaName ? ` · ${info.areaName}` : ''}`;
       $('[data-tip-name]', tip).textContent = hit.name;
       $('[data-tip-note]', tip).textContent = info?.note ?? '';
       const ul = $('[data-tip-lines]', tip); ul.replaceChildren();
