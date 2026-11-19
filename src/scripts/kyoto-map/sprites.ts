@@ -242,6 +242,26 @@ export const SPRITES = {
     '.tr.l.rt.',
     'tttTtttTt',
   ],
+  span: [
+    'b...b...b',
+    'bbbbbbbbb',
+    'tBtctBtct',
+  ],
+  arch: [
+    'RRRRRRRRRRR',
+    'RkRRkRRkRRk',
+    'RkRRkRRkRRk',
+    'R.RR.RR.RR.',
+  ],
+  statue: [
+    '...w...',
+    '..www..',
+    '..wWw..',
+    '.wwwww.',
+    '.wWwWw.',
+    'wwwwwww',
+    'ttttttt',
+  ],
   stones: [
     '.c.c.c.c.c.',
     'ctttcttcttc',

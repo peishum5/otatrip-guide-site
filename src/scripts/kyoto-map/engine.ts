@@ -54,7 +54,7 @@ export const toXY = (lon: number, lat: number): [number, number] => [(lon - ORIG
 const TILT = 0.62; // how far the board is tipped away from the viewer
 const BASE_STEP = 5; // the basin floor (below ~75 m) is drawn flat
 const EXAG = 2.2; // hills are drawn this many times taller than life
-const MAX_SCALE = 0.15; // px per metre
+const MAX_SCALE = 0.2; // px per metre
 const DETAIL_S = 0.07; // zoom at which the extra sights appear
 const DETAIL_LABEL_S = 0.085; // ...and at which they are named
 
@@ -145,6 +145,8 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
   const stations = geo.stations.map((s) => ({ ...s, hub: opts.hubs.includes(s.n) }));
   const landmarks = opts.landmarks.map((m) => { const [x, y] = toXY(m.lon, m.lat); return { ...m, x, y }; }).sort((a, b) => b.y - a.y);
   /** Three tiers: the main sights always show, the rest from a little zoom, the extra picks once you are close. */
+  /** The extra picks stay small until you are close, so the main sights keep standing out. */
+  const kDetail = (s: number) => (s >= 0.13 ? 2 : 1);
   const seen = (m: Landmark, s: number) => m.major || (m.detail ? s >= DETAIL_S : s >= home.s * 1.5);
   const areas = opts.areas.map((a) => { const [x, y] = toXY(a.lon, a.lat); return { ...a, x, y }; });
   const sprites = Object.fromEntries(Object.entries(SPRITES).map(([id, rowsS]) => [id, { w: rowsS[0].length, h: rowsS.length, rows: rowsS as readonly string[] }]));
@@ -348,7 +350,7 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
       if (!seen(m, s)) continue;
       const [px, py] = project(m.x, m.y);
       if (px < -30 || px > W + 30 || py < -10 || py > H + 40) continue;
-      drawSprite(m.sprite, px, py + 1, k);
+      drawSprite(m.sprite, px, py + 1, m.detail ? kDetail(s) : k);
     }
   }
 
@@ -547,11 +549,11 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
   };
   /** What is drawn under a buffer pixel: the nearest visible landmark or station, if close enough. */
   function pick(bx: number, by: number): MapHit | null {
-    const s = cam.s, k = s >= 0.085 ? 2 : 1;
+    const s = cam.s, kMain = s >= 0.085 ? 2 : 1;
     let best: MapHit | null = null, bd = Infinity;
     for (const m of landmarks) {
       if (!seen(m, s)) continue;
-      const [px, py] = project(m.x, m.y), sp = sprites[m.sprite];
+      const [px, py] = project(m.x, m.y), sp = sprites[m.sprite], k = m.detail ? kDetail(s) : kMain;
       const dx = Math.abs(bx - px), dy = Math.abs(by - (py - (sp.h * k) / 2));
       if (dx <= (sp.w * k) / 2 + 3 && dy <= (sp.h * k) / 2 + 3 && dx + dy < bd) { bd = dx + dy; best = { kind: 'landmark', id: m.id, name: m.name, lines: [], x: m.x, y: m.y }; }
     }
@@ -599,6 +601,8 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
     placeXY(x: number, y: number) { const [px, py] = project(x, y); return { x: px * cssScale, y: py * cssScale, inside: px >= 0 && px <= W && py >= 0 && py <= H }; },
     zoomBy(f: number) { const s = clamp(cam.s * f, home.s, MAX_SCALE); homeMode = s <= home.s * 1.001; homeMode ? flyTo(home.x, home.y, home.s, 300) : flyTo(cam.x, cam.y, s, 300); },
     isHome: atHome,
+    /** True once the extra picks are on screen; the page shrinks its area pins so they do not sit on top of them. */
+    isClose: () => cam.s >= DETAIL_S,
     /** Width of one kilometre (east-west) in CSS pixels, for the scale bar. */
     kmPx: () => 1000 * cam.s * cssScale,
     /** Position of a place in CSS pixels inside the map box. */

@@ -295,6 +295,11 @@ const TABS = [['enjoy', 'Enjoy'], ['go', 'Getting here'], ['spots', 'Spots']] as
   .kmap-pin[aria-current='true'] b { background: var(--color-nes-cyan); }
   .kmap-pin[aria-current='true'] { z-index: 800 !important; }
   .kmap-pin.is-now b { box-shadow: 0 0 0 2px var(--color-nes-green); }
+  /* zoomed in: the sights take over, so the area pins step back to small numbered tags */
+  .kmap-close .kmap-pin { margin: -22px 0 0 -8px; opacity: 0.9; }
+  .kmap-close .kmap-pin b { width: 16px; height: 16px; font-size: 8px; border-width: 1px; }
+  .kmap-close .kmap-pin b::after { bottom: -5px; margin-left: -4px; border-width: 4px; border-bottom: 0; }
+  .kmap-close .kmap-pin:hover span { opacity: 0; }
   .kmap:not(.kmap-ready) .kmap-pin { display: none; }
   @media (max-width: 639px) {
     .kmap-pin { margin: -27px 0 0 -10px; }
@@ -469,6 +474,8 @@ const TABS = [['enjoy', 'Enjoy'], ['go', 'Getting here'], ['spots', 'Spots']] as
     function layout() {
       const W = stage.clientWidth, H = stage.clientHeight, small = W < 640;
       root!.classList.toggle('kmap-wide', !small && map.isHome());
+      const close = map.isClose();
+      root!.classList.toggle('kmap-close', close);
       const bw = small ? 20 : 24, boxes: [number, number, number, number][] = [];
       const placed = pins.map((pin) => {
         const a = areaOf(pin.dataset.area), p = map.place(a.lat, a.lon);
@@ -484,7 +491,7 @@ const TABS = [['enjoy', 'Enjoy'], ['go', 'Getting here'], ['spots', 'Spots']] as
         const span = pin.querySelector('span')!;
         if (!labelW.has(pin) || !labelW.get(pin)) labelW.set(pin, span.getBoundingClientRect().width);
         const w = labelW.get(pin)!, box: [number, number, number, number] = [p.x + bw / 2 + 2, p.y - bw - 8, p.x + bw / 2 + w, p.y - 8];
-        const ok = p.inside && box[2] < W - 4 && !boxes.some((b) => box[0] < b[2] && box[2] > b[0] && box[1] < b[3] && box[3] > b[1]);
+        const ok = !close && p.inside && box[2] < W - 4 && !boxes.some((b) => box[0] < b[2] && box[2] > b[0] && box[1] < b[3] && box[3] > b[1]);
         pin.classList.toggle('has-label', ok);
         if (ok) boxes.push(box);
       }
