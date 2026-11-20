@@ -82,7 +82,7 @@ function buildPalette(mode: TimeMode) {
     town: ['#ded3b6', '#dacfb1', '#e2d8bc'].map(t),
     roof: ['#cfc4a7', '#c9bea2', '#d3c9ad', '#c6bca4', '#ccc2a9'].map(t),
     wall: t('#bdb295'),
-    window: night ? raw('#ffd76a') : t('#bdb295'),
+    window: night ? raw('#e9c466') : t('#bdb295'),
     park: ['#8ccc62', '#80c257', '#96d46c'].map(t),
     forest: ['#3f9148', '#37843f', '#2f7638', '#4a9c50'].map(t),
     forestHi: t('#62b25c'),
@@ -246,7 +246,7 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
                 const lu = (u * lots) | 0, lw = (v * lots) | 0, fu = u * lots - lu, fv = v * lots - lw;
                 const h = hash(c * 8 + lu, r * 8 + lw, 1);
                 if ((h & 15) === 0) col = pal.park[h % 3];
-                else if (fu > 0.14 && fu < 0.86 && fv > 0.12 && fv < 0.9) col = fv > 0.6 ? (night && ((h >> 8) & 3) === 0 ? pal.window : pal.wall) : pal.roof[(h >> 3) % pal.roof.length];
+                else if (fu > 0.14 && fu < 0.86 && fv > 0.12 && fv < 0.9) col = fv > 0.6 ? (night && ((h >>> 8) & 7) === 0 ? pal.window : pal.wall) : pal.roof[(h >>> 3) % pal.roof.length];
                 else col = pal.town[hsh % 3];
               } else if (type === 1) {
                 const lu = (u * 3) | 0, lw = (v * 3) | 0, fu = u * 3 - lu - 0.5, fv = v * 3 - lw - 0.5;
@@ -383,13 +383,13 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
     // areas that suit the chosen time of day pulse; the chosen area gets a solid ring
     for (const a of areas) {
       if (a.id === selected) { ring(a.x, a.y, 620, pal.ringSel, false, 0); ring(a.x, a.y, 640, pal.ringSel, false, 0); }
-      else if (a.times.includes(mode)) ring(a.x, a.y, animated ? 380 + 90 * Math.sin(t / 420) : 420, pal.ring, true, animated ? (t / 160) | 0 : 0);
+      else if (a.times.includes(mode) && cam.s < DETAIL_S) ring(a.x, a.y, animated ? 400 + 60 * Math.sin(t / 900) : 420, pal.ring, true, 0);
     }
     if (mark) { const r = animated ? 150 + 50 * Math.sin(t / 220) : 170; ring(mark.x, mark.y, r, pal.white, false, 0); ring(mark.x, mark.y, r + 22 / Math.max(cam.s * 100, 1), pal.ringSel, false, 0); }
     if (!animated) return;
     // water glints
-    const tick = (t / 380) | 0;
-    for (let i = 0; i < sparkles.length; i++) if (hash(i, tick, 5) % 23 === 0) buf[sparkles[i]] = pal.waterHi;
+    const tick = (t / 1100) | 0, rare = s >= DETAIL_S ? 90 : 37;
+    for (let i = 0; i < sparkles.length; i++) if (hash(i, tick, 5) % rare === 0) buf[sparkles[i]] = pal.waterHi;
     // trains shuttle along their real lines (sped up)
     for (const tr of trains) {
       const period = tr.total / 55; // seconds end to end
@@ -409,12 +409,12 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
     }
     // lantern glow after dark
     if (mode === 'night') for (const m of landmarks) {
-      if (!m.glow) continue;
-      const [px, py] = project(m.x, m.y), rad = (s >= 0.085 ? 9 : 5) + (hash(m.x | 0, (t / 140) | 0, 7) % 2);
+      if (!m.glow || !seen(m, s)) continue;
+      const [px, py] = project(m.x, m.y), rad = s >= 0.085 ? 9 : 5, breath = 0.36 + 0.06 * Math.sin(t / 1400 + m.x);
       for (let dy = -rad; dy <= rad; dy++) for (let dx = -rad; dx <= rad; dx++) {
         const d = Math.abs(dx) + Math.abs(dy) * 1.4; if (d > rad) continue;
         const xx = Math.round(px) + dx, yy = Math.round(py) - 3 + dy;
-        if (xx >= 0 && xx < W && yy >= 0 && yy < H) blend(yy * W + xx, pal.glow, 0.42 * (1 - d / rad));
+        if (xx >= 0 && xx < W && yy >= 0 && yy < H) blend(yy * W + xx, pal.glow, breath * (1 - d / rad));
       }
     }
     // a few drifting clouds on the wide view (kept off the map once you zoom in)
