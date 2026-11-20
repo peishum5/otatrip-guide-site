@@ -12,7 +12,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # Astro 7 needs Node 22 or newer (it refuses to build on 20)
+          node-version: 22
           cache: npm
       - run: npm ci
       # Required gate: the production build must succeed.
