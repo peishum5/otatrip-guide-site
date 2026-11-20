@@ -14,6 +14,7 @@ import { TOURS } from '../data/tours';
 import { ROUTES } from '../data/map/routes';
 import { LINES, toXY } from '../scripts/kyoto-map/engine';
 import { getBlogPosts } from '../utils/blog';
+import geo from '../data/map/kyoto-geo.json';
 
 const posts = (await getBlogPosts()).filter((p) => !p.data.noIndex);
 const minutes = (t?: string) => (t ? Number(t.match(/\d+/)?.[0] ?? NaN) : NaN);
@@ -51,6 +52,15 @@ const clientData = {
     return [m.id, { note: m.note ?? area?.spots.find((s) => s.at === m.id)?.note ?? '', pick: !!m.detail, area: area?.id ?? '', areaName: area?.short ?? '', n: area?.n ?? 0 }];
   })),
 };
+// what is close to each landmark: straight-line distance on the map, turned into rough walking minutes
+// (x1.3 for real streets, 80 m a minute, the same rule as the walking times between areas)
+const stroll = (m: number) => Math.max(1, Math.round((m * 1.3) / 80));
+const LM = LANDMARKS.map((m) => { const [x, y] = toXY(m.lon, m.lat); return { id: m.id, name: m.name, x, y }; });
+for (const m of LM) {
+  const near = LM.filter((o) => o.id !== m.id).map((o) => ({ o, d: Math.hypot(o.x - m.x, o.y - m.y) })).filter((q) => q.d <= 900).sort((a, b) => a.d - b.d).slice(0, 6);
+  const st = geo.stations.map((t) => ({ t, d: Math.hypot(t.x - m.x, t.y - m.y) })).sort((a, b) => a.d - b.d)[0];
+  Object.assign(clientData.tips[m.id], { near: near.map((q) => [q.o.id, q.o.name, stroll(q.d)]), st: st && st.d <= 2000 ? [st.t.n, stroll(st.d)] : null });
+}
 const legend = ['jr-kyoto', 'jr-sagano', 'jr-nara', 'subway-karasuma', 'subway-tozai', 'hankyu', 'keihan', 'randen', 'eizan', 'kintetsu'];
 const TIMES = [['morning', 'Morning'], ['day', 'Day'], ['night', 'Night']] as const;
 const TABS = [['enjoy', 'Enjoy'], ['go', 'Getting here'], ['spots', 'Spots']] as const;
@@ -85,6 +95,7 @@ const TABS = [['enjoy', 'Enjoy'], ['go', 'Getting here'], ['spots', 'Spots']] as
         <p class="kmap-tip-name" data-tip-name></p>
         <p class="kmap-tip-note" data-tip-note></p>
         <ul class="kmap-tip-lines" data-tip-lines></ul>
+        <p class="kmap-tip-st" data-tip-st></p>
         <button type="button" class="kmap-tip-go" data-tip-go hidden></button>
       </div>
 
@@ -95,6 +106,11 @@ const TABS = [['enjoy', 'Enjoy'], ['go', 'Getting here'], ['spots', 'Spots']] as
         <button type="button" class="kmap-ctl" data-zoom="in" aria-label="Zoom in">+</button>
       </div>
       <div class="kmap-hud kmap-hud-bl"><span class="kmap-scale" data-scale><i></i><b>1 km</b></span></div>
+    </div>
+
+    <div class="kmap-inview" data-inview hidden>
+      <p><span data-inview-title>On this part of the map</span> <small>tap a name to find it</small></p>
+      <div data-inview-list></div>
     </div>
 
     <ul class="kmap-legend" aria-label="Rail lines">
@@ -309,7 +325,7 @@ const TABS = [['enjoy', 'Enjoy'], ['go', 'Getting here'], ['spots', 'Spots']] as
   }
 
   /* what you tapped on the map */
-  .kmap-tip { position: absolute; left: 0; top: 0; z-index: 950; width: max-content; max-width: min(240px, 70%); padding: 9px 30px 10px 11px; background: #0d0d0d; border: 2px solid var(--color-nes-cyan); box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.55); }
+  .kmap-tip { position: absolute; left: 0; top: 0; z-index: 950; width: max-content; max-width: min(250px, 74%); max-height: calc(100% - 12px); overflow-y: auto; padding: 9px 30px 10px 11px; background: #0d0d0d; border: 2px solid var(--color-nes-cyan); box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.55); }
   .kmap-tip-kind { font-family: var(--font-pixel); font-size: 8px; letter-spacing: 0.06em; color: var(--color-nes-cyan); text-transform: uppercase; margin-bottom: 4px; }
   .kmap-tip-name { font-family: var(--font-dot); font-size: 1rem; color: #fff; line-height: 1.3; }
   .kmap-tip-note { font-size: 0.8rem; line-height: 1.45; color: #d6d6d6; margin-top: 4px; }
@@ -317,6 +333,19 @@ const TABS = [['enjoy', 'Enjoy'], ['go', 'Getting here'], ['spots', 'Spots']] as
   .kmap-tip-lines { margin-top: 6px; display: grid; gap: 3px; font-size: 0.8rem; color: #e6e6e6; }
   .kmap-tip-lines i { display: inline-block; width: 10px; height: 10px; margin-right: 6px; border: 1px solid rgba(255, 255, 255, 0.5); }
   .kmap-tip-go { margin-top: 8px; padding: 5px 9px; background: var(--color-nes-amber); color: #0a0a0a !important; border: 0; font-family: var(--font-dot); font-size: 0.85rem; }
+  .kmap-tip-st { margin-top: 6px; font-size: 0.78rem; color: #cfe8ff; }
+  .kmap-tip-st:empty, .kmap-tip-near:empty { display: none; }
+  .kmap-tip-near { margin-top: 7px; padding-top: 6px; border-top: 1px dashed rgba(255, 255, 255, 0.25); display: flex; flex-wrap: wrap; gap: 4px; }
+  .kmap-tip-near b { flex-basis: 100%; font-family: var(--font-pixel); font-size: 8px; font-weight: 400; letter-spacing: 0.06em; color: var(--color-nes-amber); text-transform: uppercase; }
+  .kmap-chip { padding: 3px 7px; background: #1c1c22; border: 1px solid rgba(255, 255, 255, 0.35); color: #fff !important; font-family: var(--font-dot); font-size: 0.8rem; line-height: 1.3; text-align: left; }
+  .kmap-chip small { color: var(--color-nes-amber); font-size: 0.72rem; margin-left: 4px; }
+  .kmap-chip:hover, .kmap-chip:focus-visible { border-color: var(--color-nes-cyan); background: #26262e; }
+  .kmap-inview { margin-top: 10px; }
+  .kmap-inview p { font-family: var(--font-pixel); font-size: 8px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-nes-amber); margin-bottom: 6px; }
+  .kmap-inview p small { font-family: Inter, system-ui, sans-serif; font-size: 0.72rem; letter-spacing: 0; text-transform: none; color: var(--k-dim); margin-left: 8px; }
+  .kmap-inview > div { display: flex; flex-wrap: wrap; gap: 5px; }
+  .kmap-inview .kmap-chip { font-size: 0.85rem; padding: 4px 9px; }
+  @media (max-width: 1023px) { .kmap-inview { margin-top: 6px; } .kmap-inview > div { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 3px; scrollbar-width: none; } .kmap-inview > div::-webkit-scrollbar { display: none; } .kmap-inview .kmap-chip { white-space: nowrap; flex: none; } .kmap-inview p small { display: none; } }
   .kmap-tip-x { position: absolute; top: 2px; right: 2px; width: 26px; height: 26px; background: none; border: 0; color: #bbb !important; font-size: 18px !important; line-height: 1; }
   .kmap-tip-x:hover { color: #fff !important; }
 
@@ -448,7 +477,7 @@ const TABS = [['enjoy', 'Enjoy'], ['go', 'Getting here'], ['spots', 'Spots']] as
 </style>
 
 <script>
-  import { createKyotoMap, type TimeMode, type MapHit } from '../scripts/kyoto-map/engine';
+  import { createKyotoMap, toXY, type TimeMode, type MapHit } from '../scripts/kyoto-map/engine';
 
   const root = document.querySelector<HTMLElement>('[data-kmap]');
   if (root) {
@@ -461,6 +490,8 @@ const TABS = [['enjoy', 'Enjoy'], ['go', 'Getting here'], ['spots', 'Spots']] as
     const areaOf = (id?: string) => data.areas.find((x: any) => x.id === id);
     let current = '', tab = 'enjoy', mode: TimeMode = 'day', tipAt: MapHit | null = null;
     const labelW = new Map<HTMLElement, number>();
+    const inview = $('[data-inview]'), inviewList = $('[data-inview-list]');
+    let inviewKey = '', tipHold = 0;
 
     const map = createKyotoMap($<HTMLCanvasElement>('.kmap-canvas'), $<HTMLCanvasElement>('.kmap-labels'), {
       ...data,
@@ -498,16 +529,40 @@ const TABS = [['enjoy', 'Enjoy'], ['go', 'Getting here'], ['spots', 'Spots']] as
       map.setReserved(boxes);
       scaleBar.style.width = `${Math.round(map.kmPx())}px`;
       homeBtn.hidden = map.isHome() && !current;
+      // under the map: what is near the sight you tapped (with rough walking minutes),
+      // or, with nothing tapped, every sight on this part of the map, nearest the middle first
+      const nearOf = tipAt?.kind === 'landmark' ? (data.tips[tipAt.id]?.near as [string, string, number][] | undefined) : undefined;
+      let list: { id: string; name: string; min?: number }[] = [], title = 'On this part of the map';
+      if (nearOf?.length) { list = nearOf.map(([id, name, min]) => ({ id, name, min })); title = `Near ${tipAt!.name}, on foot`; }
+      else if (close) {
+        const seen: { id: string; name: string; d: number }[] = [];
+        for (const m of data.landmarks) {
+          const p = map.place(m.lat, m.lon);
+          if (p.inside && p.x > 8 && p.x < W - 8 && p.y > 8 && p.y < H - 4) seen.push({ id: m.id, name: m.name, d: Math.hypot(p.x - W / 2, p.y - H / 2) });
+        }
+        list = seen.sort((a, b) => a.d - b.d).slice(0, 18);
+      }
+      const key = title + list.map((m) => m.id).join(',');
+      if (key !== inviewKey) {
+        inviewKey = key; inview.hidden = !list.length;
+        $('[data-inview-title]', inview).textContent = title;
+        inviewList.replaceChildren(...list.map((m) => {
+          const b = document.createElement('button'); b.type = 'button'; b.className = 'kmap-chip'; b.dataset.goto = m.id; b.append(m.name);
+          if (m.min) { const sm = document.createElement('small'); sm.textContent = `${m.min} min`; b.append(sm); }
+          return b;
+        }));
+      }
       if (tipAt) {
         const p = map.placeXY(tipAt.x, tipAt.y);
-        if (!p.inside) return hideTip();
+        if (!p.inside) { if (performance.now() < tipHold) { tip.style.visibility = 'hidden'; return; } return hideTip(); }
+        tip.style.visibility = 'visible';
         const tw = tip.offsetWidth, th = tip.offsetHeight;
         const x = Math.max(6, Math.min(W - tw - 6, p.x - tw / 2)), above = p.y - th - 26;
         tip.style.transform = `translate(${Math.round(x)}px, ${Math.round(above > 6 ? above : Math.min(H - th - 6, p.y + 14))}px)`;
       }
     }
 
-    function hideTip() { tipAt = null; tip.hidden = true; }
+    function hideTip() { const had = tipAt; tipAt = null; tip.hidden = true; tip.style.visibility = 'visible'; if (had) layout(); /* the list under the map goes back to "on this part of the map" */ }
     /** A station or landmark was tapped: say what it is, right there. */
     function showTip(hit: MapHit | null) {
       if (!hit) return hideTip();
@@ -522,12 +577,24 @@ const TABS = [['enjoy', 'Enjoy'], ['go', 'Getting here'], ['spots', 'Spots']] as
         sw.style.background = data.lines[id]?.color ?? '#888';
         li.append(sw, data.lines[id]?.name ?? id); ul.append(li);
       }
+      // the nearest station goes in the bubble; the nearest sights are listed under the map (see layout)
+      $('[data-tip-st]', tip).textContent = info?.st ? `Nearest station: ${info.st[0]}, roughly ${info.st[1]} min on foot` : '';
       const go = $<HTMLButtonElement>('[data-tip-go]', tip);
       go.hidden = !info?.area || info.area === current;
       if (info?.area) { go.textContent = `Open area ${info.n}: ${info.areaName}`; go.dataset.area = info.area; }
       tip.hidden = false;
       layout();
       track('map_tap', { kind: hit.kind, name: hit.name });
+    }
+
+    /** Jump to a sight by id (from a "nearby" or "on this part of the map" name) and say what it is. */
+    function goTo(id: string) {
+      const m = data.landmarks.find((l: any) => l.id === id);
+      if (!m) return;
+      const [x, y] = toXY(m.lon, m.lat);
+      tipHold = performance.now() + 900;
+      map.pointAt(m.lat, m.lon);
+      showTip({ kind: 'landmark', id: m.id, name: m.name, lines: [], x, y });
     }
 
     function setRoute(btn: HTMLButtonElement | null) {
@@ -590,6 +657,7 @@ const TABS = [['enjoy', 'Enjoy'], ['go', 'Getting here'], ['spots', 'Spots']] as
       else if (el.dataset.tab) { setTab(el.dataset.tab); track('map_tab', { tab: el.dataset.tab }); }
       else if (el.dataset.origin) setOrigin(el.closest<HTMLElement>('[data-panel]')!, el.dataset.origin);
       else if (el.dataset.show) { const [lat, lon] = el.dataset.show.split(',').map(Number); hideTip(); map.pointAt(lat, lon); }
+      else if (el.dataset.goto) goTo(el.dataset.goto);
       else if (el.hasAttribute('data-tip-close')) hideTip();
       else if (el.classList.contains('kmap-route')) setRoute(el.getAttribute('aria-pressed') === 'true' ? null : el);
     });
