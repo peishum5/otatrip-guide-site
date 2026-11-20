@@ -24,6 +24,8 @@ export interface MapOptions {
   reducedMotion: boolean;
   /** A picture, not a tool: no dragging, zooming or tapping (used when the map is embedded in an article). */
   still?: boolean;
+  /** Frame these places ([lat, lon]) instead of the whole city (embedded route maps). */
+  fit?: [number, number][];
   /** Called after the camera moved and a new frame was drawn. */
   onCamera?: () => void;
   /** Called when the map is tapped (not dragged): the station or landmark under the finger, or null. */
@@ -206,7 +208,16 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
     buf = new Uint32Array(img.data.buffer);
     base = new Uint32Array(W * H); rowBuf = new Int16Array(W * H);
     fitHome();
-    if (homeMode) { cam.x = home.x; cam.y = home.y; cam.s = home.s; tween = null; }
+    if (opts.fit?.length) {
+      // frame the given places with room around them for pins and names
+      const pts = opts.fit.map(([lat, lon]) => toXY(lon, lat));
+      const xa = Math.min(...pts.map((p) => p[0])), xb = Math.max(...pts.map((p) => p[0]));
+      const ya = Math.min(...pts.map((p) => p[1])), yb = Math.max(...pts.map((p) => p[1]));
+      cam.x = (xa + xb) / 2; cam.y = (ya + yb) / 2 + (H * 0.04) / (home.s * TILT);
+      cam.s = clamp(Math.min((W * 0.66) / Math.max(xb - xa, 1), (H * 0.6) / Math.max((yb - ya) * TILT, 1)), home.s, 0.058); // stays just under the zoom where every small station gets a name
+      homeMode = false; tween = null;
+    }
+    else if (homeMode) { cam.x = home.x; cam.y = home.y; cam.s = home.s; tween = null; }
     else cam.s = clamp(cam.s, home.s, MAX_SCALE);
     updateTouchAction();
     dirty = true;

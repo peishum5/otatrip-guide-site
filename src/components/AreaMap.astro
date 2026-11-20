@@ -1,44 +1,70 @@
 ---
 /**
- * A small "where is this in Kyoto" picture for articles: the whole city at a glance,
- * with the areas the article talks about numbered in the order given.
+ * A small map for articles.
  *
- *   <AreaMap areas="fushimi-inari,higashiyama,gion" title="Today's route" />
+ *   <AreaMap areas="fushimi-inari,higashiyama,gion" title="The day on the map" />
+ *     -> a route: starts at Kyoto Station, an arrowed line through the areas in the order given,
+ *        and under the map the same route as steps with how to get from one to the next.
+ *   <AreaMap areas="gion,downtown,kyoto-station,arashiyama" route={false} />
+ *     -> just where those areas are (no order implied), with minutes from Kyoto Station.
+ *   <AreaMap />  -> all nine areas.
  *
  * It is a picture, not a tool: no dragging or zooming, so it never fights the page scroll.
  * The map code is only downloaded when the picture scrolls into view.
- * Area ids are the ones in src/data/areas.ts. Travel times come from src/data/map/routes.ts.
+ * Area ids are the ones in src/data/areas.ts. How to get between them comes from
+ * src/data/map/routes.ts; nothing about travel is written here.
  */
 import { AREAS, LANDMARKS, HUB_STATIONS } from '../data/areas';
 import { ROUTES } from '../data/map/routes';
+import { toXY } from '../scripts/kyoto-map/engine';
 
 interface Props {
-  /** Comma-separated area ids, in the order to number them. Leave out to show all nine. */
+  /** Comma-separated area ids. With `route` on, this is the order you visit them. Leave out to show all nine. */
   areas?: string;
   title?: string;
+  /** Draw the areas as a route from Kyoto Station (default when `areas` is given). */
+  route?: boolean;
 }
 const { areas = '', title } = Astro.props;
 const ids = areas.split(',').map((s) => s.trim()).filter(Boolean);
 const unknown = ids.filter((id) => !AREAS.some((a) => a.id === id));
 if (unknown.length) throw new Error(`AreaMap: unknown area id(s): ${unknown.join(', ')}`);
+const asRoute = (Astro.props.route ?? true) && ids.length > 0;
 
 const minutes = (t?: string) => (t ? Number(t.match(/\d+/)?.[0] ?? NaN) : NaN);
+const area = (id: string) => AREAS.find((x) => x.id === id)!;
+/** The written way between two areas: the quickest timed one, else the first; else a walking estimate if they are close. */
+function leg(from: string, to: string) {
+  const rows = ROUTES.filter((q) => (q.a === from && q.b === to) || (q.b === from && q.a === to));
+  const timed = rows.filter((q) => !Number.isNaN(minutes(q.time))).sort((x, y) => minutes(x.time) - minutes(y.time))[0];
+  const r = timed ?? rows[0];
+  if (r) return { how: r.how, time: r.time ?? '', kind: r.lines.length ? 'train' : /on foot/i.test(r.how) && !/bus|taxi/i.test(r.how) ? 'walk' : /taxi/i.test(r.how) && /bus/i.test(r.how) ? 'mix' : /taxi/i.test(r.how) ? 'taxi' : /bus/i.test(r.how) ? 'bus' : 'walk' };
+  const a = area(from), b = area(to), [ax, ay] = toXY(a.lon, a.lat), [bx, by] = toXY(b.lon, b.lat), km = Math.hypot(ax - bx, ay - by) / 1000;
+  if (km <= 2.5) return { how: `On foot, about ${km.toFixed(1)} km in a straight line`, time: `roughly ${Math.max(5, Math.round((km * 1300) / 80 / 5) * 5)} min`, kind: 'walk' };
+  return null;
+}
+
 const picked = (ids.length ? ids : AREAS.map((a) => a.id)).map((id, i) => {
-  const a = AREAS.find((x) => x.id === id)!;
-  // quickest timed way in from Kyoto Station
-  const r = ROUTES.filter((q) => (q.a === 'kyoto-station' && q.b === id) || (q.b === 'kyoto-station' && q.a === id))
-    .filter((q) => !Number.isNaN(minutes(q.time)))
-    .sort((x, y) => minutes(x.time) - minutes(y.time))[0];
-  return { id, n: i + 1, name: a.short, lat: a.lat, lon: a.lon, eta: r ? `${minutes(r.time)} min from Kyoto Station by ${r.lines.length ? 'train' : 'bus'}` : id === 'kyoto-station' ? 'where you arrive' : '' };
+  const a = area(id), l = leg('kyoto-station', id);
+  return { id, n: i + 1, name: a.short, lat: a.lat, lon: a.lon, eta: id === 'kyoto-station' ? 'where you arrive' : l && !Number.isNaN(minutes(l.time)) ? `${minutes(l.time)} min from Kyoto Station by ${l.kind === 'train' ? 'train' : l.kind}` : '' };
 });
 const others = AREAS.filter((a) => !picked.some((p) => p.id === a.id)).map((a) => ({ id: a.id, name: a.short, lat: a.lat, lon: a.lon }));
+
+// the route: Kyoto Station (unless it is already the first stop), then each area in turn
+const stn = area('kyoto-station');
+const startsAtStation = picked[0]?.id === 'kyoto-station';
+const stops = asRoute ? [...(startsAtStation ? [] : [{ id: 'kyoto-station', n: 0, name: 'Kyoto Station', lat: stn.lat, lon: stn.lon }]), ...picked] : [];
+const legs = stops.slice(1).map((s, i) => leg(stops[i].id, s.id));
+const ICON: Record<string, string> = { train: 'TRAIN', bus: 'BUS', walk: 'WALK', taxi: 'TAXI', mix: 'TAXI/BUS' };
+
 const clientData = {
-  // only the big landmarks: this view never zooms in
+  // only the big landmarks: this view never zooms in far
   landmarks: LANDMARKS.filter((m) => m.major).map(({ id, name, lat, lon, sprite }) => ({ id, name, lat, lon, sprite, major: true })),
-  areas: [...picked.map((p) => ({ id: p.id, lat: p.lat, lon: p.lon, times: ['day'] })), ...others.map((o) => ({ id: o.id, lat: o.lat, lon: o.lon, times: [] }))],
+  areas: [...picked.map((p) => ({ id: p.id, lat: p.lat, lon: p.lon, times: asRoute ? [] : ['day'] })), ...others.map((o) => ({ id: o.id, lat: o.lat, lon: o.lon, times: [] }))],
   hubs: HUB_STATIONS,
+  ...(asRoute ? { fit: stops.map((s) => [s.lat, s.lon]) } : {}),
 };
-const alt = `Map of Kyoto showing ${picked.map((p) => p.name).join(', ')}`;
+const alt = asRoute ? `Map of Kyoto with the route ${stops.map((s) => s.name).join(' to ')}` : `Map of Kyoto showing ${picked.map((p) => p.name).join(', ')}`;
 ---
 
 <figure class="areamap not-prose" data-areamap>
@@ -47,39 +73,70 @@ const alt = `Map of Kyoto showing ${picked.map((p) => p.name).join(', ')}`;
   <div class="areamap-stage">
     <canvas class="areamap-canvas" aria-label={alt}></canvas>
     <canvas class="areamap-labels" aria-hidden="true"></canvas>
+    {asRoute && <svg class="areamap-route" aria-hidden="true"><g data-route></g></svg>}
     <div class="areamap-pins" aria-hidden="true">
       {others.map((o) => (<span class="areamap-dot" data-lat={o.lat} data-lon={o.lon}></span>))}
-      {picked.map((p) => (<span class="areamap-pin" data-lat={p.lat} data-lon={p.lon}><b>{p.n}</b></span>))}
+      {asRoute && !startsAtStation && <span class="areamap-pin is-start" data-stop data-lat={stn.lat} data-lon={stn.lon}><b>S</b></span>}
+      {picked.map((p) => (<span class="areamap-pin" data-stop data-lat={p.lat} data-lon={p.lon}><b>{p.n}</b></span>))}
     </div>
     <span class="areamap-n" aria-hidden="true">N<br />▲</span>
   </div>
-  <ol class="areamap-list">
-    {picked.map((p) => (
-      <li><b>{p.n}</b><span>{p.name}</span>{p.eta && <small>{p.eta}</small>}</li>
-    ))}
-  </ol>
-  <p class="areamap-credit">North is up and the map is to scale. Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>.</p>
+
+  {asRoute ? (
+    <ol class="areamap-steps">
+      {stops.map((s, i) => (
+        <>
+          {i > 0 && (
+            <li class="areamap-leg">
+              {legs[i - 1] ? (<><i>{ICON[legs[i - 1]!.kind]}</i><span>{legs[i - 1]!.how}{legs[i - 1]!.time && <strong> · {legs[i - 1]!.time}</strong>}</span></>) : (<span>See the day plan below for this hop.</span>)}
+            </li>
+          )}
+          <li class="areamap-stop"><b class={s.n === 0 ? 'is-start' : ''}>{s.n === 0 ? 'S' : s.n}</b><span>{s.n === 0 ? 'Start: Kyoto Station' : s.name}</span></li>
+        </>
+      ))}
+    </ol>
+  ) : (
+    <ol class="areamap-list">
+      {picked.map((p) => (<li><b>{p.n}</b><span>{p.name}</span>{p.eta && <small>{p.eta}</small>}</li>))}
+    </ol>
+  )}
+  <p class="areamap-credit">{asRoute ? 'The line shows the order, not the exact road or track. ' : ''}North is up and the map is to scale. Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>.</p>
 </figure>
 
 <style>
   .areamap { margin: 1.75rem 0; padding: 12px; background: #0d0d0d; border: 2px solid rgba(255, 176, 0, 0.55); box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5); }
   .areamap-title { font-family: var(--font-pixel); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-nes-amber); margin-bottom: 10px; }
   .areamap-stage { position: relative; aspect-ratio: 5 / 3; overflow: hidden; background: #101018; border: 2px solid #0a0a0a; }
-  .areamap-canvas, .areamap-labels { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .areamap-canvas, .areamap-labels, .areamap-route { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
   .areamap-canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
-  .areamap-labels, .areamap-pins { pointer-events: none; }
+  .areamap-labels, .areamap-pins, .areamap-route { pointer-events: none; }
   .areamap-pins { position: absolute; inset: 0; }
-  .areamap:not(.is-ready) .areamap-pins { visibility: hidden; }
+  .areamap:not(.is-ready) .areamap-pins, .areamap:not(.is-ready) .areamap-route { visibility: hidden; }
   .areamap-pin, .areamap-dot { position: absolute; left: 0; top: 0; }
-  .areamap-pin { margin: -29px 0 0 -11px; filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.5)); }
-  .areamap-pin b { position: relative; display: grid; place-items: center; width: 22px; height: 22px; background: var(--color-nes-amber); color: #0a0a0a; border: 2px solid #0a0a0a; font-family: var(--font-pixel); font-size: 9px; font-weight: 400; }
+  .areamap-pin { margin: -30px 0 0 -12px; filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.5)); }
+  .areamap-pin b { position: relative; display: grid; place-items: center; width: 24px; height: 24px; background: var(--color-nes-amber); color: #0a0a0a; border: 2px solid #0a0a0a; font-family: var(--font-pixel); font-size: 10px; font-weight: 400; }
   .areamap-pin b::after { content: ''; position: absolute; left: 50%; bottom: -8px; margin-left: -5px; border: 5px solid transparent; border-top-color: #0a0a0a; border-bottom: 0; }
+  .areamap-pin.is-start b, .areamap-stop b.is-start { background: var(--color-nes-cyan); }
   .areamap-dot { width: 8px; height: 8px; margin: -4px 0 0 -4px; background: #d9d9d9; border: 2px solid #0a0a0a; opacity: 0.85; }
   .areamap-n { position: absolute; top: 6px; right: 8px; font-family: var(--font-pixel); font-size: 8px; line-height: 1.2; text-align: center; color: #0a0a0a; text-shadow: 0 0 2px #fff, 0 0 2px #fff; }
+  /* the route line: dark casing, bright core, arrowheads along the way */
+  .areamap-route :global(.r-case) { fill: none; stroke: #0a0a0a; stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; }
+  .areamap-route :global(.r-core) { fill: none; stroke: #ff3d7f; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+  .areamap-route :global(.r-head) { fill: #fff; stroke: #0a0a0a; stroke-width: 2; stroke-linejoin: round; }
+
+  .areamap-steps { list-style: none; margin: 12px 0 0; padding: 0; }
+  .areamap-steps li { margin: 0; padding: 0; }
+  .areamap-steps li::before { content: none; }
+  .areamap-stop { display: flex; align-items: center; gap: 10px; color: #fff; font-family: var(--font-dot); font-size: 1.02rem; }
+  .areamap-stop b, .areamap-list b { flex: none; display: inline-grid; place-items: center; width: 24px; height: 24px; background: var(--color-nes-amber); color: #0a0a0a; border: 2px solid #0a0a0a; font-family: var(--font-pixel); font-size: 9px; font-weight: 400; }
+  .areamap-leg { display: flex; align-items: baseline; gap: 10px; margin: 3px 0 3px 11px !important; padding: 7px 0 7px 21px !important; border-left: 3px solid #ff3d7f; font-size: 0.86rem; line-height: 1.45; color: #d8d8d8; }
+  .areamap-leg i { flex: none; min-width: 44px; white-space: nowrap; padding: 3px 5px; text-align: center; background: #26262e; color: #fff; font-family: var(--font-pixel); font-size: 7px; font-style: normal; letter-spacing: 0.04em; }
+  .areamap-leg strong { color: var(--color-nes-amber); font-weight: 600; white-space: nowrap; }
+
   .areamap-list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px 18px; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
   .areamap-list li { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 8px; margin: 0; padding: 0; font-size: 0.92rem; color: #f2f2f2; }
   .areamap-list li::before { content: none; }
-  .areamap-list b { flex: none; display: inline-grid; place-items: center; width: 20px; height: 20px; background: var(--color-nes-amber); color: #0a0a0a; font-family: var(--font-pixel); font-size: 8px; font-weight: 400; align-self: center; }
+  .areamap-list b { align-self: center; width: 20px; height: 20px; border: 0; font-size: 8px; }
   .areamap-list span { font-family: var(--font-dot); }
   .areamap-list small { flex-basis: 100%; padding-left: 28px; font-size: 0.78rem; color: #b9b9b9; }
   .areamap-credit { margin: 10px 0 0; font-size: 0.72rem; line-height: 1.4; color: #9a9a9a; }
@@ -89,10 +146,13 @@ const alt = `Map of Kyoto showing ${picked.map((p) => p.name).join(', ')}`;
 <script>
   // The map engine and its data (about 33 KB) load only when a map is about to be seen.
   const roots = document.querySelectorAll<HTMLElement>('[data-areamap]:not([data-areamap-on])');
+  const NS = 'http://www.w3.org/2000/svg';
   const boot = async (root: HTMLElement) => {
     const { createKyotoMap } = await import('../scripts/kyoto-map/engine');
     const data = JSON.parse(root.querySelector('[data-areamap-data]')!.textContent || '{}');
     const pins = [...root.querySelectorAll<HTMLElement>('.areamap-pin, .areamap-dot')];
+    const stops = [...root.querySelectorAll<HTMLElement>('[data-stop]')];
+    const routeG = root.querySelector<SVGGElement>('[data-route]');
     const map = createKyotoMap(root.querySelector<HTMLCanvasElement>('.areamap-canvas')!, root.querySelector<HTMLCanvasElement>('.areamap-labels')!, {
       ...data,
       still: true,
@@ -101,6 +161,20 @@ const alt = `Map of Kyoto showing ${picked.map((p) => p.name).join(', ')}`;
         for (const pin of pins) {
           const p = map.place(Number(pin.dataset.lat), Number(pin.dataset.lon));
           pin.style.transform = `translate(${Math.round(p.x)}px, ${Math.round(p.y)}px)`;
+        }
+        if (routeG && stops.length > 1) {
+          // one line through the stops in order, with an arrowhead in the middle of each hop
+          const pts = stops.map((s) => map.place(Number(s.dataset.lat), Number(s.dataset.lon)));
+          const d = pts.map((p, i) => `${i ? 'L' : 'M'}${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
+          const el = (tag: string, cls: string, attrs: Record<string, string>) => { const e = document.createElementNS(NS, tag); e.setAttribute('class', cls); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
+          const kids: Element[] = [el('path', 'r-case', { d }), el('path', 'r-core', { d })];
+          for (let i = 1; i < pts.length; i++) {
+            const a = pts[i - 1], b = pts[i], len = Math.hypot(b.x - a.x, b.y - a.y);
+            if (len < 26) continue; // too short to carry an arrow
+            const ang = (Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI;
+            kids.push(el('polygon', 'r-head', { points: '9,0 -7,-8 -7,8', transform: `translate(${((a.x + b.x) / 2).toFixed(1)} ${((a.y + b.y) / 2).toFixed(1)}) rotate(${ang.toFixed(1)})` }));
+          }
+          routeG.replaceChildren(...kids);
         }
         root.classList.add('is-ready');
       },
