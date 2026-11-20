@@ -1,0 +1,640 @@
+---
+/**
+ * Interactive Kyoto map: a pixel-art diorama built from real map data.
+ * - Geography / rail lines / stations: src/data/map/kyoto-geo.json (generated, see scripts/map/)
+ * - Areas and wording: src/data/areas.ts · routes: src/data/map/routes.ts
+ * - Drawing: src/scripts/kyoto-map/engine.ts
+ * Works without JavaScript as a plain list of area guides.
+ *
+ * Type rules (site-wide): Press Start 2P only for short labels (never under 8px),
+ * DotGothic16 for names and titles, Inter for body text.
+ */
+import { AREAS, LANDMARKS, HUB_STATIONS } from '../data/areas';
+import { TOURS } from '../data/tours';
+import { ROUTES } from '../data/map/routes';
+import { LINES, toXY } from '../scripts/kyoto-map/engine';
+import { getBlogPosts } from '../utils/blog';
+import geo from '../data/map/kyoto-geo.json';
+
+const posts = (await getBlogPosts()).filter((p) => !p.data.noIndex);
+const minutes = (t?: string) => (t ? Number(t.match(/\d+/)?.[0] ?? NaN) : NaN);
+/** Walking time from a straight-line distance: streets add about 30%, at 80 m a minute, rounded to 5. */
+const walkMin = (km: number) => Math.max(5, Math.round((km * 1300) / 80 / 5) * 5);
+const nameOf = (id: string) => AREAS.find((x) => x.id === id)!;
+
+const areas = AREAS.map((a, i) => {
+  const articles = a.articles.map((id) => posts.find((p) => p.id === id)).filter((p) => !!p);
+  const tours = a.tours.map((id) => TOURS.find((t) => t.id === id)).filter((t) => !!t);
+  // every written route that touches this area, grouped by where you start
+  const routes = ROUTES.filter((r) => r.a === a.id || r.b === a.id).map((r) => ({ ...r, from: r.a === a.id ? r.b : r.a, walk: undefined as number | undefined }));
+  // close neighbours with no written route: straight-line distance measured on the map
+  const [ax, ay] = toXY(a.lon, a.lat);
+  for (const b of AREAS) {
+    if (b.id === a.id || routes.some((r) => r.from === b.id)) continue;
+    const [bx, by] = toXY(b.lon, b.lat), km = Math.hypot(ax - bx, ay - by) / 1000;
+    if (km <= 2.5) routes.push({ a: a.id, b: b.id, from: b.id, how: `On foot. About ${km.toFixed(1)} km in a straight line`, time: `roughly ${walkMin(km)} min`, lines: [], source: 'map', walk: km });
+  }
+  const origins = [...new Set(routes.map((r) => r.from))].sort((x, y) => Number(y === 'kyoto-station') - Number(x === 'kyoto-station') || AREAS.findIndex((q) => q.id === x) - AREAS.findIndex((q) => q.id === y));
+  // quickest timed way in from Kyoto Station, for the at-a-glance tile and the pin
+  const fromStation = routes.filter((r) => r.from === 'kyoto-station' && !Number.isNaN(minutes(r.time))).sort((x, y) => minutes(x.time) - minutes(y.time))[0];
+  const eta = fromStation ? { min: minutes(fromStation.time), by: fromStation.lines.length ? 'train' : 'bus' } : null;
+  return { ...a, n: i + 1, articles, tours, routes, origins, eta };
+});
+
+const clientData = {
+  areas: areas.map(({ id, lat, lon, times, n }) => ({ id, lat, lon, times, n })),
+  landmarks: LANDMARKS.map(({ note: _note, area: _area, ...m }) => m),
+  hubs: HUB_STATIONS,
+  lines: LINES,
+  // what to say when a landmark on the map is tapped
+  tips: Object.fromEntries(LANDMARKS.map((m) => {
+    const area = areas.find((a) => a.id === m.area);
+    return [m.id, { note: m.note ?? area?.spots.find((s) => s.at === m.id)?.note ?? '', pick: !!m.detail, area: area?.id ?? '', areaName: area?.short ?? '', n: area?.n ?? 0 }];
+  })),
+};
+// the nearest station to each landmark: straight-line distance on the map, turned into rough walking minutes
+// (x1.3 for real streets, 80 m a minute, the same rule as the walking times between areas)
+const stroll = (m: number) => Math.max(1, Math.round((m * 1.3) / 80));
+const LM = LANDMARKS.map((m) => { const [x, y] = toXY(m.lon, m.lat); return { id: m.id, name: m.name, x, y }; });
+for (const m of LM) {
+  const st = geo.stations.map((t) => ({ t, d: Math.hypot(t.x - m.x, t.y - m.y) })).sort((a, b) => a.d - b.d)[0];
+  Object.assign(clientData.tips[m.id], { st: st && st.d <= 2000 ? [st.t.n, stroll(st.d)] : null });
+}
+const legend = ['jr-kyoto', 'jr-sagano', 'jr-nara', 'subway-karasuma', 'subway-tozai', 'hankyu', 'keihan', 'randen', 'eizan', 'kintetsu'];
+const TIMES = [['morning', 'Morning'], ['day', 'Day'], ['night', 'Night']] as const;
+const TABS = [['enjoy', 'Enjoy'], ['go', 'Getting here'], ['spots', 'Spots']] as const;
+---
+
+<div class="kmap" data-kmap>
+  <script type="application/json" data-kmap-data set:html={JSON.stringify(clientData)} />
+
+  <div class="kmap-main">
+    <div class="kmap-toolbar">
+      <div class="kmap-seg" role="group" aria-label="Time of day">
+        {TIMES.map(([id, label]) => (
+          <button type="button" data-time={id} aria-pressed={id === 'day' ? 'true' : 'false'}>{label}</button>
+        ))}
+      </div>
+      <p class="kmap-clock" data-clock hidden></p>
+    </div>
+
+    <div class="kmap-stage">
+      <canvas class="kmap-canvas" aria-label="Pixel-art map of Kyoto showing rivers, main streets, railway lines and nine areas to visit"></canvas>
+      <canvas class="kmap-labels" aria-hidden="true"></canvas>
+      <div class="kmap-pins">
+        {areas.map((a) => (
+          <button type="button" class="kmap-pin" data-area={a.id} aria-label={`Show ${a.name}`} tabindex="-1">
+            <b>{a.n}</b><span>{a.short}{a.eta && <small>{a.eta.min} min</small>}</span>
+          </button>
+        ))}
+      </div>
+      <div class="kmap-tip" data-tip hidden>
+        <button type="button" class="kmap-tip-x" data-tip-close aria-label="Close">×</button>
+        <p class="kmap-tip-kind" data-tip-kind></p>
+        <p class="kmap-tip-name" data-tip-name></p>
+        <p class="kmap-tip-note" data-tip-note></p>
+        <ul class="kmap-tip-lines" data-tip-lines></ul>
+        <p class="kmap-tip-st" data-tip-st></p>
+        <a class="kmap-tip-maps" data-tip-maps target="_blank" rel="noopener" hidden>Open in Google Maps ▶</a>
+        <button type="button" class="kmap-tip-go" data-tip-go hidden></button>
+      </div>
+
+      <div class="kmap-hud kmap-hud-tr" aria-hidden="true"><span class="kmap-north">N<br />▲</span></div>
+      <div class="kmap-hud kmap-hud-br">
+        <button type="button" class="kmap-ctl kmap-ctl-wide" data-area="" data-home hidden>All Kyoto</button>
+        <button type="button" class="kmap-ctl" data-zoom="out" aria-label="Zoom out">−</button>
+        <button type="button" class="kmap-ctl" data-zoom="in" aria-label="Zoom in">+</button>
+      </div>
+      <div class="kmap-hud kmap-hud-bl"><span class="kmap-scale" data-scale><i></i><b>1 km</b></span></div>
+    </div>
+
+    <ul class="kmap-legend" aria-label="Rail lines">
+      {legend.map((id) => (<li><i style={`background:${LINES[id].color}`}></i>{LINES[id].name}</li>))}
+      <li class="kmap-legend-note"><i class="kmap-dash"></i>underground</li>
+    </ul>
+  </div>
+
+  <div class="kmap-side">
+    <!-- Nothing chosen yet: compare the areas -->
+    <section class="kmap-panel kmap-index" data-panel="">
+      <p class="px-eyebrow kmap-eyebrow">Nine areas</p>
+      <h2 class="kmap-title">Where to go <span data-mode-label>today</span></h2>
+      <p class="kmap-lead">Pick an area to see how to enjoy it and how to get there. Times are from Kyoto Station.</p>
+      <ol class="kmap-cards">
+        {areas.map((a) => (
+          <li data-card={a.id}>
+            <button type="button" class="kmap-card" data-area={a.id}>
+              <img src={a.photos[0].src} alt="" loading="lazy" width="96" height="96" />
+              <span class="kmap-card-body">
+                <span class="kmap-card-name"><b class="kmap-num">{a.n}</b>{a.name}</span>
+                <span class="kmap-card-tag">{a.tagline}</span>
+                <span class="kmap-card-meta">
+                  <span data-now hidden>Good now</span>
+                  {a.eta ? <span>{a.eta.min} min by {a.eta.by}</span> : a.id === 'kyoto-station' ? <span>You are here on arrival</span> : null}
+                  <span>Best: {a.bestTime.split(/[.;]/)[0]}</span>
+                </span>
+              </span>
+            </button>
+          </li>
+        ))}
+      </ol>
+      <p class="kmap-note">Zoom in and more places appear: our guide's own picks, not a list of trendy shops. Tap one for a line about it and a link to Google Maps for directions. Rivers, streets, rail lines, stations and landmarks sit at their real positions and the map is to scale. Hills are drawn taller than life, landmark icons are larger than the buildings, and the small houses are decoration.</p>
+    </section>
+
+    {areas.map((a, i) => {
+      const prev = areas[(i + areas.length - 1) % areas.length], next = areas[(i + 1) % areas.length];
+      return (
+        <section class="kmap-panel kmap-area" data-panel={a.id} id={`area-${a.id}`}>
+          <div class="kmap-nav">
+            <button type="button" class="kmap-back" data-area="">◀ All areas</button>
+            <span class="kmap-step">
+              <button type="button" data-area={prev.id} aria-label={`Previous area: ${prev.name}`}>◀</button>
+              <span>{a.n} / {areas.length}</span>
+              <button type="button" data-area={next.id} aria-label={`Next area: ${next.name}`}>▶</button>
+            </span>
+          </div>
+
+          <h2 class="kmap-title"><b class="kmap-num">{a.n}</b>{a.name}</h2>
+          <p class="kmap-tagline">{a.tagline}</p>
+
+          <dl class="kmap-glance">
+            <div><dt>Best time</dt><dd>{a.bestTime}</dd></div>
+            {a.timeNeeded && <div><dt>Allow</dt><dd>{a.timeNeeded}</dd></div>}
+            {a.eta && <div><dt>From Kyoto Stn</dt><dd><strong>{a.eta.min} min</strong> by {a.eta.by}</dd></div>}
+          </dl>
+
+          <div class="kmap-tabs" role="tablist" aria-label={`${a.name} details`}>
+            {TABS.map(([id, label]) => (
+              <button type="button" role="tab" data-tab={id} aria-selected={id === 'enjoy' ? 'true' : 'false'}>{label}</button>
+            ))}
+          </div>
+
+          <div class="kmap-pane" data-pane="enjoy">
+            <h3 class="kmap-h3">How to enjoy it</h3>
+            <div class="kmap-photos">
+              {a.photos.map((ph) => (
+                <figure><img src={ph.src} alt={ph.label} loading="lazy" width="320" height="220" /><figcaption>{ph.label}</figcaption></figure>
+              ))}
+            </div>
+            <ul class="kmap-enjoy">{a.enjoy.map((line) => <li>{line}</li>)}</ul>
+
+            {a.tours.length > 0 && (
+              <div class="kmap-tours">
+                <p class="px-label">GO WITH A LOCAL GUIDE</p>
+                {a.tours.map((t) => (
+                  <a class="kmap-tour" href={t.href} data-track-label={`map_tour_${a.id}_${t.id}`}>
+                    <img src={t.photo} alt="" loading="lazy" width="96" height="96" />
+                    <span><strong>{t.name}</strong><small>{t.duration} · {t.price}</small></span>
+                    <b aria-hidden="true">▶</b>
+                  </a>
+                ))}
+              </div>
+            )}
+
+            {a.articles.length > 0 && (
+              <>
+                <h3 class="kmap-h3">Read more</h3>
+                <ul class="kmap-links">
+                  {a.articles.map((p) => <li><a href={p.data.canonical} data-track-label={`map_article_${a.id}`}>{p.data.title}</a></li>)}
+                </ul>
+              </>
+            )}
+          </div>
+
+          <div class="kmap-pane" data-pane="go">
+            <h3 class="kmap-h3">Getting here</h3>
+            {a.origins.length > 0 ? (
+              <>
+                <div class="kmap-origins" role="group" aria-label="Where are you coming from?">
+                  <span>From</span>
+                  {a.origins.map((o, k) => (
+                    <button type="button" data-origin={o} aria-pressed={k === 0 ? 'true' : 'false'}>{nameOf(o).short}</button>
+                  ))}
+                </div>
+                <ul class="kmap-routes">
+                  {a.routes.map((r) => (
+                    <li data-from={r.from}>
+                      <button type="button" class="kmap-route" data-lines={r.lines.join(',')} disabled={r.lines.length === 0} aria-pressed="false">
+                        <span class="kmap-route-top">
+                          <span class="kmap-route-mode">{r.walk ? 'Walk' : r.lines.length ? 'Train' : /on foot/i.test(r.how) && !/bus/i.test(r.how) ? 'Walk' : /taxi/i.test(r.how) && !/bus/i.test(r.how) ? 'Taxi' : 'Bus'}</span>
+                          {r.time && <b>{r.time}</b>}
+                          {r.lines.length > 0 && <em>Show on map</em>}
+                        </span>
+                        <span class="kmap-route-how">
+                          {r.lines.map((id) => <i style={`background:${LINES[id].color}`} title={LINES[id].name}></i>)}
+                          {r.how}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <p class="kmap-body">This is where most routes start. Open another area to see how to reach it from here.</p>
+            )}
+            <dl class="kmap-facts"><div><dt>Stations</dt><dd>{a.stations}</dd></div></dl>
+            <a class="kmap-gmaps" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(a.mapsQuery)}`} target="_blank" rel="noopener">Open in Google Maps ▶</a>
+          </div>
+
+          <div class="kmap-pane" data-pane="spots">
+            <h3 class="kmap-h3">What's here</h3>
+            <ul class="kmap-spots">
+              {a.spots.map((sp) => {
+                const m = LANDMARKS.find((l) => l.id === sp.at);
+                return (
+                  <li>
+                    <span class="kmap-spot-name">{sp.name}</span>
+                    {m && <button type="button" class="kmap-spot-show" data-show={`${m.lat},${m.lon}`}>Show on map</button>}
+                    <span class="kmap-spot-note">{sp.note}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </section>
+      );
+    })}
+
+    <p class="kmap-credit">Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>. Elevation: Terrain Tiles (AWS Open Data). Walking times marked “roughly” are estimated from the straight-line distance.</p>
+  </div>
+</div>
+
+<style is:global>
+  .kmap { --k-line: #2e2e2e; --k-soft: #171717; --k-text: #ececec; --k-dim: #a9a9a9; display: grid; gap: 1.25rem; grid-template-columns: minmax(0, 1fr); }
+  .kmap > * { min-width: 0; }
+  .kmap button { font: inherit; color: inherit; cursor: pointer; transition: background-color 0.15s, border-color 0.15s, color 0.15s, transform 0.08s; }
+  .kmap button:active:not(:disabled) { transform: translateY(1px); }
+  @media (min-width: 1024px) {
+    .kmap { grid-template-columns: minmax(0, 1fr) 400px; align-items: start; gap: 1.75rem; }
+    .kmap-main { position: sticky; top: 84px; }
+  }
+  /* phones: the map stays in view while the details scroll under it */
+  @media (max-width: 1023px) {
+    .kmap-main { position: sticky; top: var(--kmap-top, 60px); z-index: 20; background: var(--color-nes-black); margin: 0 -1rem; padding: 8px 1rem 8px; border-bottom: 1px solid var(--k-line); }
+  }
+
+  /* ---- toolbar ---- */
+  .kmap-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+  .kmap-seg { display: inline-flex; border: 2px solid #3a3a3a; background: #111; }
+  .kmap-seg button { min-height: 36px; padding: 0 14px; background: transparent; border: 0; font-family: var(--font-dot); font-size: 0.95rem; color: var(--k-dim); }
+  .kmap-seg button + button { border-left: 2px solid #3a3a3a; }
+  .kmap-seg button:hover { color: #fff; }
+  .kmap-seg button[aria-pressed='true'] { background: var(--color-nes-amber); color: #0a0a0a; }
+  .kmap-clock { font-family: var(--font-dot); font-size: 0.85rem; color: var(--k-dim); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  /* ---- stage ---- */
+  .kmap-stage { position: relative; overflow: hidden; background: #6ec0f2; border: 3px solid var(--color-nes-amber); width: 100%; height: clamp(200px, 33svh, 290px); }
+  @media (min-width: 1024px) { .kmap-stage { height: auto; aspect-ratio: 3 / 2; max-height: calc(100vh - 210px); box-shadow: 6px 6px 0 rgba(255, 176, 0, 0.3); } }
+  .kmap-canvas, .kmap-labels { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .kmap-canvas { image-rendering: pixelated; image-rendering: crisp-edges; cursor: grab; }
+  .kmap-canvas:active { cursor: grabbing; }
+  .kmap-labels, .kmap-pins { pointer-events: none; }
+  .kmap-pins { position: absolute; inset: 0; }
+
+  /* pin: number flag on the spot, name beside it when there is room */
+  .kmap-pin { position: absolute; left: 0; top: 0; margin: -31px 0 0 -12px; padding: 0; display: flex; align-items: stretch; pointer-events: auto; background: none; border: 0; filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.5)); }
+  .kmap .kmap-pin { transition: none; } /* pins follow the camera frame by frame */
+  .kmap-pin b { position: relative; display: grid; place-items: center; width: 24px; height: 24px; background: var(--color-nes-amber); color: #0a0a0a; border: 2px solid #0a0a0a; font-family: var(--font-pixel); font-size: 9px; font-weight: 400; }
+  .kmap-pin b::after { content: ''; position: absolute; left: 50%; bottom: -8px; margin-left: -5px; border: 5px solid transparent; border-top-color: #0a0a0a; border-bottom: 0; }
+  .kmap-pin span { display: flex; align-items: center; gap: 6px; padding: 0 7px; margin-left: -2px; background: #0a0a0a; color: #fff; border: 2px solid #0a0a0a; font-family: var(--font-dot); font-size: 13px; line-height: 1; white-space: nowrap; opacity: 0; pointer-events: none; }
+  .kmap-pin small { font-size: 11px; color: var(--color-nes-amber); font-variant-numeric: tabular-nums; }
+  .kmap-pin.has-label span { opacity: 1; pointer-events: auto; }
+  .kmap:not(.kmap-wide) .kmap-pin small { display: none; }
+  .kmap-pin:hover b, .kmap-pin:focus-visible b { background: #fff; }
+  .kmap-pin:hover span { opacity: 1; }
+  .kmap-pin:hover { z-index: 900 !important; }
+  .kmap-pin[aria-current='true'] b { background: var(--color-nes-cyan); }
+  .kmap-pin[aria-current='true'] { z-index: 800 !important; }
+  .kmap-pin.is-now b { box-shadow: 0 0 0 2px var(--color-nes-green); }
+  /* zoomed in: the sights take over, so the area pins step back to small numbered tags */
+  .kmap-close .kmap-pin { margin: -22px 0 0 -8px; opacity: 0.9; }
+  .kmap-close .kmap-pin b { width: 16px; height: 16px; font-size: 8px; border-width: 1px; }
+  .kmap-close .kmap-pin b::after { bottom: -5px; margin-left: -4px; border-width: 4px; border-bottom: 0; }
+  .kmap-close .kmap-pin:hover span { opacity: 0; }
+  .kmap:not(.kmap-ready) .kmap-pin { display: none; }
+  @media (max-width: 639px) {
+    .kmap-pin { margin: -27px 0 0 -10px; }
+    .kmap-pin b { width: 20px; height: 20px; font-size: 8px; border-width: 1px; }
+    .kmap-pin b::after { bottom: -6px; margin-left: -4px; border-width: 4px; border-bottom: 0; }
+    .kmap-pin span { font-size: 12px; padding: 0 5px; border-width: 1px; }
+  }
+
+  /* what you tapped on the map */
+  .kmap-tip { position: absolute; left: 0; top: 0; z-index: 950; width: max-content; max-width: min(250px, 74%); max-height: calc(100% - 12px); overflow-y: auto; padding: 9px 30px 10px 11px; background: #0d0d0d; border: 2px solid var(--color-nes-cyan); box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.55); }
+  .kmap-tip-kind { font-family: var(--font-pixel); font-size: 8px; letter-spacing: 0.06em; color: var(--color-nes-cyan); text-transform: uppercase; margin-bottom: 4px; }
+  .kmap-tip-name { font-family: var(--font-dot); font-size: 1rem; color: #fff; line-height: 1.3; }
+  .kmap-tip-note { font-size: 0.8rem; line-height: 1.45; color: #d6d6d6; margin-top: 4px; }
+  .kmap-tip-note:empty, .kmap-tip-lines:empty { display: none; }
+  .kmap-tip-lines { margin-top: 6px; display: grid; gap: 3px; font-size: 0.8rem; color: #e6e6e6; }
+  .kmap-tip-lines i { display: inline-block; width: 10px; height: 10px; margin-right: 6px; border: 1px solid rgba(255, 255, 255, 0.5); }
+  .kmap-tip-go { margin-top: 8px; padding: 5px 9px; background: var(--color-nes-amber); color: #0a0a0a !important; border: 0; font-family: var(--font-dot); font-size: 0.85rem; }
+  .kmap-tip-st { margin-top: 6px; font-size: 0.78rem; color: #cfe8ff; }
+  .kmap-tip-st:empty { display: none; }
+  .kmap-tip-maps { display: inline-block; margin-top: 7px; font-size: 0.8rem; color: var(--color-nes-cyan) !important; text-decoration: underline; }
+  .kmap-tip-maps[hidden] { display: none; }
+  .kmap-tip-x { position: absolute; top: 2px; right: 2px; width: 26px; height: 26px; background: none; border: 0; color: #bbb !important; font-size: 18px !important; line-height: 1; }
+  .kmap-tip-x:hover { color: #fff !important; }
+
+  .kmap-hud { position: absolute; display: flex; gap: 6px; align-items: center; }
+  .kmap-hud-tr { top: 8px; right: 10px; }
+  .kmap-hud-br { bottom: 8px; right: 8px; }
+  .kmap-hud-bl { bottom: 8px; left: 8px; pointer-events: none; }
+  .kmap-ctl { min-width: 36px; height: 36px; padding: 0 8px; background: rgba(10, 10, 10, 0.88); color: #fff !important; border: 2px solid #0a0a0a; outline: 1px solid rgba(255, 255, 255, 0.35); font-family: var(--font-dot) !important; font-size: 1.1rem !important; line-height: 1; }
+  .kmap-ctl-wide { font-size: 0.85rem !important; padding: 0 10px; }
+  .kmap-ctl:hover { background: var(--color-nes-amber); color: #0a0a0a !important; }
+  .kmap button:focus-visible, .kmap a:focus-visible { outline: 2px solid var(--color-nes-cyan); outline-offset: 2px; }
+  .kmap-north, .kmap-scale { font-family: var(--font-pixel); font-size: 8px; color: #fff; text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000; }
+  .kmap-north { line-height: 1.3; text-align: center; }
+  .kmap-scale { display: inline-flex; flex-direction: column; gap: 2px; }
+  .kmap-scale i { display: block; height: 6px; width: 40px; border: 2px solid #fff; border-top: 0; box-shadow: 0 1px 0 #000; }
+  .kmap-scale b { font-weight: 400; }
+
+  /* legend sits with the map, where the colours are */
+  .kmap-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 10px; font-size: 0.78rem; color: var(--k-dim); }
+  .kmap-legend li { display: inline-flex; align-items: center; white-space: nowrap; }
+  .kmap-legend i { display: inline-block; width: 14px; height: 4px; margin-right: 6px; }
+  .kmap-dash { background: repeating-linear-gradient(90deg, #bbb 0 4px, transparent 4px 7px); }
+  @media (max-width: 1023px) { .kmap-legend { flex-wrap: nowrap; overflow-x: auto; margin-top: 6px; padding-bottom: 2px; scrollbar-width: none; } .kmap-legend::-webkit-scrollbar { display: none; } }
+
+  /* ---- side panel ---- */
+  .kmap-panel { background: #0f0f0f; border: 1px solid var(--k-line); padding: 1.15rem 1.15rem 1.4rem; color: var(--k-text); }
+  .kmap-panel + .kmap-panel { margin-top: 1.25rem; }
+  .kmap-ready .kmap-panel { display: none; margin-top: 0; }
+  .kmap-ready .kmap-panel.is-open { display: block; }
+  .kmap-eyebrow { color: var(--color-nes-amber); margin-bottom: 0.45rem; }
+  .kmap-title { display: flex; align-items: center; gap: 10px; font-family: var(--font-dot); font-size: 1.45rem; line-height: 1.25; color: #fff; text-wrap: balance; }
+  .kmap-lead, .kmap-body { color: #cfcfcf; font-size: 0.9375rem; line-height: 1.6; margin-top: 0.4rem; max-width: 60ch; }
+  .kmap-note { font-size: 0.8rem; line-height: 1.55; color: #9c9c9c; margin-top: 1rem; }
+  .kmap-num { flex: 0 0 auto; display: inline-grid; place-items: center; width: 24px; height: 24px; background: var(--color-nes-amber); color: #0a0a0a; font-family: var(--font-pixel); font-size: 9px; font-weight: 400; }
+
+  /* area list (nothing chosen) */
+  .kmap-cards { display: flex; flex-direction: column; gap: 8px; margin-top: 1rem; }
+  .kmap-card { width: 100%; display: grid; grid-template-columns: 64px 1fr; gap: 12px; align-items: center; padding: 8px; text-align: left; background: var(--k-soft); border: 1px solid var(--k-line); }
+  .kmap-card:hover { border-color: var(--color-nes-amber); background: #1c1a14; }
+  .kmap-card img { width: 64px; height: 64px; object-fit: cover; display: block; }
+  .kmap-card-body { display: grid; gap: 3px; min-width: 0; }
+  .kmap-card-name { display: flex; align-items: center; gap: 8px; font-family: var(--font-dot); font-size: 1.05rem; line-height: 1.25; color: #fff; }
+  .kmap-card-name .kmap-num { width: 20px; height: 20px; font-size: 8px; }
+  .kmap-card-tag { font-size: 0.84rem; line-height: 1.4; color: #c4c4c4; }
+  .kmap-card-meta { display: flex; flex-wrap: wrap; gap: 3px 10px; font-size: 0.76rem; color: #9f9f9f; font-variant-numeric: tabular-nums; }
+  .kmap-card-meta span:nth-of-type(2) { color: var(--color-nes-amber); }
+  .kmap-card-meta [data-now] { color: #0a0a0a; background: var(--color-nes-green); padding: 0 5px; font-weight: 600; }
+
+  /* area detail */
+  .kmap-nav { display: flex; justify-content: space-between; align-items: center; margin: -0.3rem 0 0.9rem; font-family: var(--font-dot); font-size: 0.9rem; color: var(--k-dim); }
+  .kmap-nav button { min-height: 34px; padding: 0 8px; background: none; border: 1px solid var(--k-line); color: #dcdcdc; }
+  .kmap-nav button:hover { border-color: var(--color-nes-amber); color: var(--color-nes-amber); }
+  .kmap-step { display: inline-flex; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; }
+  .kmap-tagline { color: var(--color-nes-amber); font-size: 0.975rem; line-height: 1.45; font-weight: 500; margin-top: 0.35rem; }
+
+  .kmap-glance { display: grid; grid-template-columns: repeat(auto-fit, minmax(105px, 1fr)); gap: 1px; margin-top: 0.9rem; background: var(--k-line); border: 1px solid var(--k-line); }
+  .kmap-glance div { background: #141414; padding: 0.55rem 0.65rem; }
+  .kmap-glance dt, .kmap-facts dt { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #9a9a9a; margin-bottom: 2px; }
+  .kmap-glance dd { font-size: 0.86rem; line-height: 1.4; color: #f3f3f3; }
+  .kmap-glance strong { font-family: var(--font-dot); font-size: 1.15rem; font-weight: 400; color: var(--color-nes-amber); font-variant-numeric: tabular-nums; }
+
+  .kmap-tabs { display: none; }
+  .kmap-ready .kmap-tabs { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 1rem; border-bottom: 2px solid var(--k-line); }
+  .kmap-tabs button { min-height: 42px; margin-bottom: -2px; padding: 0 4px; background: none; border: 0; border-bottom: 2px solid transparent; font-family: var(--font-dot); font-size: 0.98rem; color: var(--k-dim); }
+  .kmap-tabs button:hover { color: #fff; }
+  .kmap-tabs button[aria-selected='true'] { color: var(--color-nes-cyan); border-bottom-color: var(--color-nes-cyan); }
+  .kmap-pane { padding-top: 1rem; }
+  .kmap-ready .kmap-pane { display: none; }
+  .kmap-ready .kmap-pane.is-on { display: block; }
+  .kmap-h3 { font-family: var(--font-dot); font-size: 1.05rem; color: #fff; margin: 1.1rem 0 0.55rem; }
+  .kmap-pane > .kmap-h3:first-child { margin-top: 0; }
+  .kmap-ready .kmap-pane > .kmap-h3:first-child { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
+  .kmap-photos { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px; margin-bottom: 0.9rem; }
+  .kmap-photos figure { position: relative; margin: 0; }
+  .kmap-photos img { width: 100%; height: 104px; object-fit: cover; display: block; }
+  .kmap-photos figcaption { position: absolute; left: 0; bottom: 0; max-width: 100%; padding: 2px 6px; background: rgba(10, 10, 10, 0.82); color: #fff; font-size: 0.7rem; line-height: 1.35; }
+  .kmap-enjoy { display: grid; gap: 0.55rem; }
+  .kmap-enjoy li { position: relative; padding-left: 1.15rem; font-size: 0.9375rem; line-height: 1.55; text-wrap: pretty; }
+  .kmap-enjoy li::before { content: ''; position: absolute; left: 0; top: 0.5em; width: 6px; height: 6px; background: var(--color-nes-amber); }
+
+  .kmap-tours { margin-top: 1.1rem; padding: 0.8rem; background: #1a1508; border: 1px solid #5c4410; }
+  .kmap-tours .px-label { color: var(--color-nes-amber); margin-bottom: 0.55rem; }
+  .kmap-tour { display: grid; grid-template-columns: 52px 1fr auto; gap: 0.7rem; align-items: center; padding: 6px; background: #0f0f0f; border: 1px solid #5c4410; color: #fff; text-decoration: none; transition: border-color 0.15s, background-color 0.15s; }
+  .kmap-tour + .kmap-tour { margin-top: 6px; }
+  .kmap-tour:hover { border-color: var(--color-nes-amber); background: #17130a; }
+  .kmap-tour img { width: 52px; height: 52px; object-fit: cover; }
+  .kmap-tour strong { display: block; font-size: 0.875rem; font-weight: 600; line-height: 1.35; }
+  .kmap-tour small { color: var(--color-nes-amber); font-size: 0.78rem; font-variant-numeric: tabular-nums; }
+  .kmap-tour b { color: var(--color-nes-amber); font-size: 0.7rem; padding-right: 4px; }
+  .kmap-links { display: grid; gap: 0.45rem; }
+  .kmap-links a { color: var(--color-nes-cyan); font-size: 0.9rem; line-height: 1.4; text-decoration: underline; text-underline-offset: 3px; }
+  .kmap-links a:hover { color: #fff; }
+
+  .kmap-origins { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 0.75rem; font-size: 0.8rem; color: var(--k-dim); }
+  .kmap-origins button { min-height: 32px; padding: 0 10px; background: var(--k-soft); border: 1px solid #3a3a3a; font-family: var(--font-dot); font-size: 0.88rem; color: #dcdcdc; }
+  .kmap-origins button:hover { border-color: var(--color-nes-amber); }
+  .kmap-origins button[aria-pressed='true'] { background: #fff; border-color: #fff; color: #0a0a0a; }
+  .kmap-routes { display: grid; gap: 6px; }
+  .kmap-ready .kmap-routes li:not(.is-on) { display: none; }
+  .kmap-route { width: 100%; text-align: left; display: grid; gap: 4px; padding: 0.6rem 0.7rem; background: var(--k-soft); border: 1px solid var(--k-line); color: #e9e9e9; }
+  .kmap-route:disabled { cursor: default; opacity: 1; }
+  .kmap-route:not(:disabled):hover { border-color: var(--color-nes-amber); }
+  .kmap-route[aria-pressed='true'] { border-color: var(--color-nes-cyan); box-shadow: inset 3px 0 0 var(--color-nes-cyan); }
+  .kmap-route-top { display: flex; align-items: baseline; gap: 10px; }
+  .kmap-route-mode { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #9a9a9a; }
+  .kmap-route-top b { font-family: var(--font-dot); font-size: 1.05rem; font-weight: 400; color: var(--color-nes-amber); font-variant-numeric: tabular-nums; }
+  .kmap-route-top em { margin-left: auto; font-style: normal; font-size: 0.72rem; color: var(--color-nes-cyan); }
+  .kmap-route[aria-pressed='true'] .kmap-route-top em { visibility: hidden; }
+  .kmap-route-how { font-size: 0.9rem; line-height: 1.5; }
+  .kmap-route-how i { display: inline-block; width: 10px; height: 10px; margin-right: 6px; border: 1px solid rgba(255, 255, 255, 0.5); }
+  .kmap-facts { margin-top: 0.9rem; }
+  .kmap-facts dd { font-size: 0.9rem; line-height: 1.5; color: #f0f0f0; }
+  .kmap-gmaps { display: inline-block; margin-top: 1rem; padding: 0.55rem 0.8rem; border: 1px solid var(--color-nes-amber); color: var(--color-nes-amber); font-family: var(--font-dot); font-size: 0.92rem; text-decoration: none; transition: background-color 0.15s, color 0.15s; }
+  .kmap-gmaps:hover { background: var(--color-nes-amber); color: #0a0a0a; }
+
+  .kmap-spots { display: grid; }
+  .kmap-spots li { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; align-items: baseline; padding: 0.65rem 0; border-top: 1px solid var(--k-line); }
+  .kmap-spots li:first-child { border-top: 0; padding-top: 0; }
+  .kmap-spot-name { font-family: var(--font-dot); font-size: 1rem; color: #fff; }
+  .kmap-spot-note { grid-column: 1 / -1; font-size: 0.88rem; line-height: 1.5; color: #cdcdcd; text-wrap: pretty; }
+  .kmap-spot-show { padding: 3px 8px; background: none; border: 1px solid #3a3a3a; font-size: 0.74rem; color: var(--color-nes-cyan); white-space: nowrap; }
+  .kmap-spot-show:hover { border-color: var(--color-nes-cyan); }
+  .kmap:not(.kmap-ready) .kmap-spot-show, .kmap:not(.kmap-ready) .kmap-origins, .kmap:not(.kmap-ready) .kmap-nav, .kmap:not(.kmap-ready) .kmap-toolbar, .kmap:not(.kmap-ready) .kmap-hud-br { display: none; }
+
+  .kmap-credit { margin-top: 0.9rem; font-size: 0.72rem; line-height: 1.5; color: #8f8f8f; }
+  .kmap-credit a { color: #b9b9b9; text-decoration: underline; }
+  @media (prefers-reduced-motion: reduce) { .kmap button, .kmap-tour, .kmap-gmaps { transition: none; } }
+</style>
+
+<script>
+  import { createKyotoMap, type TimeMode, type MapHit } from '../scripts/kyoto-map/engine';
+
+  const root = document.querySelector<HTMLElement>('[data-kmap]');
+  if (root) {
+    const data = JSON.parse(root.querySelector('[data-kmap-data]')!.textContent || '{}');
+    const $ = <T extends HTMLElement>(sel: string, from: ParentNode = root) => from.querySelector<T>(sel)!;
+    const $$ = <T extends HTMLElement>(sel: string, from: ParentNode = root) => [...from.querySelectorAll<T>(sel)];
+    const stage = $('.kmap-stage'), pins = $$<HTMLButtonElement>('.kmap-pin'), panels = $$('[data-panel]');
+    const homeBtn = $<HTMLButtonElement>('[data-home]'), scaleBar = $('[data-scale] i'), tip = $('[data-tip]');
+    const track = (name: string, params: Record<string, string>) => (window as any).track?.(name, params);
+    const areaOf = (id?: string) => data.areas.find((x: any) => x.id === id);
+    let current = '', tab = 'enjoy', mode: TimeMode = 'day', tipAt: MapHit | null = null;
+    const labelW = new Map<HTMLElement, number>();
+
+    const map = createKyotoMap($<HTMLCanvasElement>('.kmap-canvas'), $<HTMLCanvasElement>('.kmap-labels'), {
+      ...data,
+      // ?motion=off forces the still version (same as the system "reduce motion" setting), for testing
+      reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches || new URLSearchParams(location.search).get('motion') === 'off',
+      onCamera: layout,
+      onTap: showTip,
+    });
+
+    /** Put the pins (and the open tip) where the camera now shows them; name a pin only where there is room. */
+    function layout() {
+      const W = stage.clientWidth, H = stage.clientHeight, small = W < 640;
+      root!.classList.toggle('kmap-wide', !small && map.isHome());
+      const close = map.isClose();
+      root!.classList.toggle('kmap-close', close);
+      const bw = small ? 20 : 24, boxes: [number, number, number, number][] = [];
+      const placed = pins.map((pin) => {
+        const a = areaOf(pin.dataset.area), p = map.place(a.lat, a.lon);
+        pin.style.transform = `translate(${Math.round(p.x)}px, ${Math.round(p.y)}px)`;
+        pin.style.zIndex = String(Math.max(1, Math.round(p.y)));
+        pin.style.visibility = p.inside ? 'visible' : 'hidden';
+        if (p.inside) boxes.push([p.x - bw / 2 - 1, p.y - bw - 9, p.x + bw / 2 + 1, p.y + 2]);
+        return { pin, p, a };
+      });
+      // the open area gets its name first, then areas that suit the time of day, then the rest
+      const rank = (x: (typeof placed)[number]) => (x.a.id === current ? 0 : x.a.times.includes(mode) ? 1 : 2);
+      for (const { pin, p } of [...placed].sort((x, y) => rank(x) - rank(y))) {
+        const span = pin.querySelector('span')!;
+        if (!labelW.has(pin) || !labelW.get(pin)) labelW.set(pin, span.getBoundingClientRect().width);
+        const w = labelW.get(pin)!, box: [number, number, number, number] = [p.x + bw / 2 + 2, p.y - bw - 8, p.x + bw / 2 + w, p.y - 8];
+        const ok = !close && p.inside && box[2] < W - 4 && !boxes.some((b) => box[0] < b[2] && box[2] > b[0] && box[1] < b[3] && box[3] > b[1]);
+        pin.classList.toggle('has-label', ok);
+        if (ok) boxes.push(box);
+      }
+      map.setReserved(boxes);
+      scaleBar.style.width = `${Math.round(map.kmPx())}px`;
+      homeBtn.hidden = map.isHome() && !current;
+      if (tipAt) {
+        const p = map.placeXY(tipAt.x, tipAt.y);
+        if (!p.inside) return hideTip();
+        const tw = tip.offsetWidth, th = tip.offsetHeight;
+        const x = Math.max(6, Math.min(W - tw - 6, p.x - tw / 2)), above = p.y - th - 26;
+        tip.style.transform = `translate(${Math.round(x)}px, ${Math.round(above > 6 ? above : Math.min(H - th - 6, p.y + 14))}px)`;
+      }
+    }
+
+    function hideTip() { tipAt = null; tip.hidden = true; }
+    /** A station or landmark was tapped: say what it is, right there. */
+    function showTip(hit: MapHit | null) {
+      if (!hit) return hideTip();
+      tipAt = hit;
+      const info = hit.kind === 'landmark' ? data.tips[hit.id] : null;
+      $('[data-tip-kind]', tip).textContent = hit.kind === 'station' ? 'Station' : `${info?.pick ? 'Guide pick' : 'Landmark'}${info?.areaName ? ` · ${info.areaName}` : ''}`;
+      $('[data-tip-name]', tip).textContent = hit.name;
+      $('[data-tip-note]', tip).textContent = info?.note ?? '';
+      const ul = $('[data-tip-lines]', tip); ul.replaceChildren();
+      for (const id of hit.lines) {
+        const li = document.createElement('li'), sw = document.createElement('i');
+        sw.style.background = data.lines[id]?.color ?? '#888';
+        li.append(sw, data.lines[id]?.name ?? id); ul.append(li);
+      }
+      // the nearest station, and a way out to Google Maps for everything this map does not try to do (directions, hours)
+      $('[data-tip-st]', tip).textContent = info?.st ? `Nearest station: ${info.st[0]}, roughly ${info.st[1]} min on foot` : '';
+      const gm = $<HTMLAnchorElement>('[data-tip-maps]', tip);
+      gm.hidden = hit.kind !== 'landmark';
+      gm.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${hit.name} Kyoto`)}`;
+      const go = $<HTMLButtonElement>('[data-tip-go]', tip);
+      go.hidden = !info?.area || info.area === current;
+      if (info?.area) { go.textContent = `Open area ${info.n}: ${info.areaName}`; go.dataset.area = info.area; }
+      tip.hidden = false;
+      layout();
+      track('map_tap', { kind: hit.kind, name: hit.name });
+    }
+
+    function setRoute(btn: HTMLButtonElement | null) {
+      $$<HTMLButtonElement>('.kmap-route').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      map.setHighlight(btn?.dataset.lines ? btn.dataset.lines.split(',') : []);
+    }
+    /** Show the routes that start from one place and light up the first rail route. */
+    function setOrigin(panel: HTMLElement, origin?: string) {
+      const chips = $$<HTMLButtonElement>('[data-origin]', panel);
+      const from = origin ?? chips[0]?.dataset.origin;
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.origin === from)));
+      $$('.kmap-routes li', panel).forEach((li) => li.classList.toggle('is-on', li.dataset.from === from));
+      setRoute(panel.querySelector<HTMLButtonElement>('.kmap-routes li.is-on .kmap-route:not(:disabled)'));
+    }
+    function setTab(next: string) {
+      tab = next;
+      $$<HTMLButtonElement>('[data-tab]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === tab)));
+      $$('[data-pane]').forEach((p) => p.classList.toggle('is-on', p.dataset.pane === tab));
+    }
+
+    function select(id: string, fromUser = true) {
+      current = id; hideTip(); map.pointAt(null);
+      for (const p of panels) p.classList.toggle('is-open', p.dataset.panel === id);
+      for (const pin of pins) pin.setAttribute('aria-current', String(pin.dataset.area === id));
+      map.focusArea(id || null);
+      const panel = panels.find((p) => p.dataset.panel === id)!;
+      if (id) setOrigin(panel); else setRoute(null);
+      history.replaceState(null, '', id ? `#${id}` : location.pathname + location.search);
+      if (fromUser) {
+        // keep the reader's place: the top of the details, just under the map
+        const top = panel.getBoundingClientRect().top, under = window.innerWidth < 1024 ? $('.kmap-main').getBoundingClientRect().bottom : 90;
+        if (top < under - 4 || top > window.innerHeight * 0.8) window.scrollBy({ top: top - under - 10, behavior: 'auto' });
+        if (id) track('map_area_open', { area: id });
+      }
+      layout();
+    }
+
+    function setTime(next: TimeMode, fromUser = true) {
+      mode = next;
+      map.setTime(mode);
+      stage.style.background = mode === 'night' ? '#070b24' : mode === 'morning' ? '#f7b98c' : '#6ec0f2';
+      $$<HTMLButtonElement>('[data-time]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.time === mode)));
+      $('[data-mode-label]').textContent = mode === 'night' ? 'tonight' : mode === 'morning' ? 'this morning' : 'today';
+      for (const li of $$('[data-card]')) {
+        const good = areaOf(li.dataset.card).times.includes(mode);
+        li.style.order = good ? '0' : '1';
+        $('[data-now]', li).hidden = !good;
+      }
+      for (const pin of pins) pin.classList.toggle('is-now', areaOf(pin.dataset.area).times.includes(mode));
+      layout();
+      if (fromUser) track('map_time_change', { time: mode });
+    }
+
+    root.addEventListener('click', (e) => {
+      const el = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+      if (!el || !root.contains(el)) return;
+      if (el.dataset.area !== undefined) select(el.dataset.area);
+      else if (el.dataset.time) setTime(el.dataset.time as TimeMode);
+      else if (el.dataset.zoom) map.zoomBy(el.dataset.zoom === 'in' ? 1.6 : 1 / 1.6);
+      else if (el.dataset.tab) { setTab(el.dataset.tab); track('map_tab', { tab: el.dataset.tab }); }
+      else if (el.dataset.origin) setOrigin(el.closest<HTMLElement>('[data-panel]')!, el.dataset.origin);
+      else if (el.dataset.show) { const [lat, lon] = el.dataset.show.split(',').map(Number); hideTip(); map.pointAt(lat, lon); }
+      else if (el.hasAttribute('data-tip-close')) hideTip();
+      else if (el.classList.contains('kmap-route')) setRoute(el.getAttribute('aria-pressed') === 'true' ? null : el);
+    });
+    // links such as /map#gion open that area, also when only the #part changes
+    window.addEventListener('hashchange', () => {
+      const id = location.hash.slice(1);
+      if (id !== current && (id === '' || areaOf(id))) select(id, false);
+    });
+    window.addEventListener('resize', () => { labelW.clear(); });
+    document.fonts?.ready.then(() => { labelW.clear(); layout(); });
+
+    // the map sticks under the site header on phones
+    const header = document.querySelector<HTMLElement>('header');
+    const setTop = () => root.style.setProperty('--kmap-top', `${header?.offsetHeight ?? 60}px`);
+    setTop(); window.addEventListener('resize', setTop);
+
+    // start on the time of day it is in Kyoto right now
+    const now = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Tokyo', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date());
+    const hour = Number(now.slice(0, 2));
+    const clock = $('[data-clock]'); clock.textContent = `Kyoto time ${now}`; clock.hidden = false;
+
+    root.classList.add('kmap-ready');
+    setTab('enjoy');
+    setTime(hour >= 5 && hour < 10 ? 'morning' : hour >= 10 && hour < 17 ? 'day' : 'night', false);
+    const initial = location.hash.slice(1);
+    select(areaOf(initial) ? initial : '', false);
+  }
+</script>

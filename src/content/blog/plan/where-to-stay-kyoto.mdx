@@ -28,6 +28,7 @@ cta:
 ---
 
 import TipBox from '../../../components/TipBox.astro'
+import AreaMap from '../../../components/AreaMap.astro'
 import FastFacts from '../../../components/FastFacts.astro'
 import CrowdMeter from '../../../components/CrowdMeter.astro'
 import ImageCaption from '../../../components/ImageCaption.astro'
@@ -52,6 +53,8 @@ Four areas work for a first visit to Kyoto. The choice is mostly atmosphere agai
 ]} />
 
 ## The Four Areas Compared
+
+<AreaMap areas="gion,downtown,kyoto-station,arashiyama" title="The four areas on the map" route={false} />
 
 | Area | Why stay | Watch out for | Good for |
 |---|---|---|---|
