@@ -22,6 +22,8 @@ export interface MapOptions {
   /** Station names that are labelled even on the full-city view. */
   hubs: string[];
   reducedMotion: boolean;
+  /** A picture, not a tool: no dragging, zooming or tapping (used when the map is embedded in an article). */
+  still?: boolean;
   /** Called after the camera moved and a new frame was drawn. */
   onCamera?: () => void;
   /** Called when the map is tapped (not dragged): the station or landmark under the finger, or null. */
@@ -566,9 +568,11 @@ export function createKyotoMap(canvas: HTMLCanvasElement, labelCanvas: HTMLCanva
   }
   const onWheel = (e: WheelEvent) => { if (!e.ctrlKey && !e.metaKey) return; e.preventDefault(); const p = local(e); zoomAt(Math.exp(-e.deltaY * 0.01), p.x, p.y); };
   const onDbl = (e: MouseEvent) => { homeMode = false; const p = local(e as unknown as PointerEvent); const wx = cam.x + (p.x - W / 2) / cam.s, wy = cam.y - (p.y - H / 2) / (cam.s * TILT); flyTo(wx, wy, cam.s * 1.8, 400); };
-  canvas.addEventListener('pointerdown', onDown); canvas.addEventListener('pointermove', onMove);
-  canvas.addEventListener('pointerup', onUp); canvas.addEventListener('pointercancel', onUp);
-  canvas.addEventListener('wheel', onWheel, { passive: false }); canvas.addEventListener('dblclick', onDbl);
+  if (!opts.still) {
+    canvas.addEventListener('pointerdown', onDown); canvas.addEventListener('pointermove', onMove);
+    canvas.addEventListener('pointerup', onUp); canvas.addEventListener('pointercancel', onUp);
+    canvas.addEventListener('wheel', onWheel, { passive: false }); canvas.addEventListener('dblclick', onDbl);
+  }
 
   const ro = new ResizeObserver(() => resize()); ro.observe(canvas);
   const io = new IntersectionObserver(([en]) => { visible = en.isIntersecting; visible ? start() : stop(); }); io.observe(canvas);
