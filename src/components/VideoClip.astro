@@ -1,0 +1,55 @@
+---
+// Short silent looping clip, styled like ImageCaption. The video only loads and
+// plays while it is on screen, and stays a still poster for reduced-motion users.
+interface Props {
+  src: string;
+  poster: string;
+  alt: string;
+  caption?: string;
+  badge?: string;
+  class?: string;
+}
+
+const { src, poster, alt, caption, badge, class: className = '' } = Astro.props;
+---
+
+<figure class={`video-clip ${className || 'my-7'}`}>
+  <div class="scanlines relative overflow-hidden" style="border: 1px solid rgba(255,176,0,0.2); box-shadow: 4px 4px 0 rgba(255,176,0,0.12);">
+    <video
+      data-src={src}
+      poster={poster}
+      muted
+      loop
+      playsinline
+      preload="none"
+      aria-label={alt}
+      class="w-full block object-cover"
+      style="aspect-ratio: 4 / 5;"
+    ></video>
+    {badge && <span class="img-badge">{badge}</span>}
+  </div>
+  {caption && (
+    <figcaption class="font-sans text-xs text-gray-400 mt-2 leading-relaxed">
+      {caption}
+    </figcaption>
+  )}
+</figure>
+
+<script>
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const videos = document.querySelectorAll<HTMLVideoElement>('.video-clip video[data-src]');
+  if (!reduce && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      for (const { target, isIntersecting } of entries) {
+        const v = target as HTMLVideoElement;
+        if (isIntersecting) {
+          if (!v.src) v.src = v.dataset.src!;
+          v.play().catch(() => {});
+        } else {
+          v.pause();
+        }
+      }
+    }, { rootMargin: '200px 0px' });
+    videos.forEach((v) => io.observe(v));
+  }
+</script>
