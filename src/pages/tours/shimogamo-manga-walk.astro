@@ -111,6 +111,7 @@ const faqs = [
           { label: 'Duration', value: '1.5 hours' },
           { label: 'Start times', value: '10:00 / 14:00' },
           { label: 'Language', value: 'English' },
+          { label: 'Private tour', value: 'Up to 4' },
           { label: 'All ages', value: 'Welcome' },
           { label: 'Price', value: 'from ¥8,500' },
         ].map(item => (
@@ -230,6 +231,7 @@ const faqs = [
               { k: 'Morning slot', v: '10:00 start' },
               { k: 'Afternoon slot', v: '14:00 start' },
               { k: 'Duration', v: '1.5 hours' },
+              { k: 'Group', v: 'Private, up to 4' },
               { k: 'End point', v: 'Meeting point' },
             ].map(row => (
               <div class="flex justify-between border-b border-gray-800 pb-2">
@@ -306,7 +308,7 @@ const faqs = [
     "image": "https://otatrip.guide/images/tours/shimogamo/photo-bridge.jpg",
     "provider": { "@id": "https://otatrip.guide/#organization" },
     "brand": { "@type": "Brand", "name": "OTAtrip Guide" },
-    "touristType": ["First-time visitors", "Culture lovers", "Small groups"],
+    "touristType": ["First-time visitors", "Culture lovers", "Couples", "Families"],
     "offers": {
       "@type": "Offer",
       "price": "8500",
