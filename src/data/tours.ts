@@ -93,7 +93,7 @@ export const TOURS: Tour[] = [
     tagline: 'World Heritage shrine. Photo walk. A 4-panel manga starring you.',
     description: 'A walk through ancient Shimogamo Shrine and Tadasu-no-Mori forest, with a stop at the iconic Kamogawa Delta. Your guide photographs you along the way, then hands you a 4-panel manga page starring you at the end of the tour.',
     duration: '1.5 hours',
-    groupSize: 'Small group',
+    groupSize: 'Private, max 4 guests',
     time: 'Morning / Afternoon',
     rating: null,
     reviews: null,
@@ -110,7 +110,7 @@ export const TOURS: Tour[] = [
     ],
     facts: [
       'Daytime walking tour of Shimogamo Shrine (UNESCO World Heritage) and the Tadasu-no-Mori forest, in English.',
-      'Price from ¥8,500. Start times: 10:00 and 14:00. Duration: 1.5 hours.',
+      'Price from ¥8,500 per person. Each tour is private for your group (up to 4 guests). Start times: 10:00 and 14:00. Duration: 1.5 hours.',
       'Route: Kamo River, Kamogawa Delta stepping stones, Demachi Masugata Shopping Street, Tadasu-no-Mori, Shimogamo Shrine.',
       'The guide takes photos on a smartphone along the way and turns them into a 4-panel manga page starring you, printed and handed over at the end of the tour. The photos are sent as digital files.',
       'Families welcome. Involves a lot of walking; not wheelchair accessible.',
