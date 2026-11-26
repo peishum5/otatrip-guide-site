@@ -8,8 +8,8 @@ import { BOKUN_LOADER_SRC } from '../../config/site';
 
 const highlights = [
   'Walking tour with a guide around Shimogamo Shrine',
-  'Your original short manga — you as the main character',
-  'Digital data: high-resolution files for your social media',
+  'A printed 4-panel manga page starring you, handed over at the end of the tour',
+  'Photos taken by your guide on a smartphone, sent as digital files',
 ];
 
 const itinerary = [
@@ -57,11 +57,11 @@ const notes = [
 const faqs = [
   {
     q: 'What is the manga souvenir?',
-    a: 'We capture cinematic photos of you throughout the walk, then create a custom manga-style page featuring you as the main character. You receive a physical print plus high-resolution digital files.',
+    a: 'Your guide takes plenty of photos of you on a smartphone during the walk, then turns them into a 4-panel manga page with you as the main character. You get the printed page plus the photos as digital files.',
   },
   {
     q: 'When do I receive my manga?',
-    a: 'The physical manga print and digital files are delivered after the tour. Exact timing confirmed at booking.',
+    a: 'The printed manga page is handed to you at the end of the tour. Your photos are sent to you as digital files afterwards.',
   },
   {
     q: 'What are the tour start times?',
@@ -80,7 +80,7 @@ const faqs = [
 
 <BaseLayout
   title="Shimogamo Shrine & Manga Walk — Kyoto Walking Tour | OTAtrip Guide"
-  description="A walk through Shimogamo Shrine and Tadasu-no-Mori forest. Cinematic photography throughout, finishing with a custom manga-style print souvenir."
+  description="A 90-minute walk through Shimogamo Shrine and Tadasu-no-Mori forest. Your guide photographs you along the way, and you take home a 4-panel manga page starring you."
   canonical="/tours/shimogamo-manga-walk"
   ogImage="/images/tours/shimogamo/photo-bridge.jpg"
 >
@@ -108,7 +108,7 @@ const faqs = [
       </p>
       <div class="flex flex-wrap gap-x-8 gap-y-4 mb-8">
         {[
-          { label: 'Duration', value: '~2 hours' },
+          { label: 'Duration', value: '1.5 hours' },
           { label: 'Start times', value: '10:00 / 14:00' },
           { label: 'Language', value: 'English' },
           { label: 'All ages', value: 'Welcome' },
@@ -229,7 +229,7 @@ const faqs = [
             {[
               { k: 'Morning slot', v: '10:00 start' },
               { k: 'Afternoon slot', v: '14:00 start' },
-              { k: 'Duration', v: '~2 hours' },
+              { k: 'Duration', v: '1.5 hours' },
               { k: 'End point', v: 'Meeting point' },
             ].map(row => (
               <div class="flex justify-between border-b border-gray-800 pb-2">
@@ -301,7 +301,7 @@ const faqs = [
     "@context": "https://schema.org",
     "@type": ["TouristTrip", "Product"],
     "name": "Shimogamo Shrine & Manga Walk",
-    "description": "A walk through Shimogamo Shrine and Tadasu-no-Mori forest with cinematic photography and a custom manga-style print souvenir.",
+    "description": "A 90-minute walk through Shimogamo Shrine and Tadasu-no-Mori forest. Your guide photographs you along the way, and you take home a 4-panel manga page starring you.",
     "url": "https://otatrip.guide/tours/shimogamo-manga-walk",
     "image": "https://otatrip.guide/images/tours/shimogamo/photo-bridge.jpg",
     "provider": { "@id": "https://otatrip.guide/#organization" },
